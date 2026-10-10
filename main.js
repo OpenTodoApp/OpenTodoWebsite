@@ -484,7 +484,7 @@
   const typed = $("[data-typed]");
   const PHRASES = [
     [["Call Sarah "], ["next Wed 3pm", "date"], [" "], ["#work", "proj"], [" "], ["p1", "prio"]],
-    [["Pay rent "], ["every month on the 1st", "date"], [" "], ["#home", "proj"]],
+    [["Pay rent "], ["every 1st", "date"], [" "], ["#home", "proj"]],
     [["Draft the talk "], ["tomorrow 9am", "date"], [" "], ["#conference", "proj"], [" "], ["p2", "prio"]],
   ];
   let typedVisible = false, typingStarted = false;
@@ -523,26 +523,78 @@
 })();
 
 /* ------------------------------------------------------------ feature tour */
+// Two levels of tabs: chapters (Plan, Organise, …) and the features inside each.
+// Both use roving tabindex and arrow keys; one figure shows the selected screenshot.
 (() => {
-  const tabs = [...document.querySelectorAll("[data-tour]")];
   const img = document.querySelector("[data-tour-img]");
-  if (!tabs.length || !img) return;
-  const select = (btn) => {
-    tabs.forEach((t) => t.setAttribute("aria-selected", String(t === btn)));
-    if (img.getAttribute("src") === btn.dataset.shot) return;
+  const chapters = [...document.querySelectorAll("[data-chapter]")];
+  if (!img || !chapters.length) return;
+  const panelOf = (ch) => document.querySelector(`[data-panel-for="${ch.dataset.chapter}"]`);
+  const featuresOf = (panel) => [...panel.querySelectorAll("[data-shot]")];
+  const preloaded = new Set();
+  const preload = (src) => { if (preloaded.has(src)) return; preloaded.add(src); const i = new Image(); i.decoding = "async"; i.src = src; };
+
+  const show = (btn) => {
+    if (img.getAttribute("src") === btn.dataset.shot) { img.alt = btn.dataset.alt; return; }
     img.classList.add("swap");
     const next = new Image();
     next.src = btn.dataset.shot;
     const apply = () => { img.src = btn.dataset.shot; img.alt = btn.dataset.alt; img.classList.remove("swap"); };
     next.decode ? next.decode().then(apply, apply) : (next.onload = apply);
   };
-  tabs.forEach((t) => {
-    t.addEventListener("click", () => select(t));
-    t.addEventListener("keydown", (e) => {
-      const i = tabs.indexOf(t);
-      if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); const n = tabs[(i + 1) % tabs.length]; n.focus(); select(n); }
-      if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); const n = tabs[(i - 1 + tabs.length) % tabs.length]; n.focus(); select(n); }
+
+  const selectIn = (list, btn, focus) => {
+    list.forEach((t) => { const on = t === btn; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1; });
+    if (focus) btn.focus();
+  };
+
+  const selectFeature = (btn, focus) => {
+    selectIn(featuresOf(btn.closest("[data-panel-for]")), btn, focus);
+    show(btn);
+  };
+
+  const selectChapter = (ch, focus) => {
+    selectIn(chapters, ch, focus);
+    chapters.forEach((c) => { panelOf(c).hidden = c !== ch; });
+    const feats = featuresOf(panelOf(ch));
+    feats.forEach((f) => preload(f.dataset.shot));
+    selectFeature(feats.find((f) => f.getAttribute("aria-selected") === "true") || feats[0], false);
+  };
+
+  // Arrow keys move within a tab list; Home / End jump to its ends.
+  const keys = (list, onPick, horizontal) => (e) => {
+    const i = list.indexOf(e.currentTarget);
+    const prev = horizontal ? ["ArrowLeft", "ArrowUp"] : ["ArrowUp", "ArrowLeft"];
+    const next = horizontal ? ["ArrowRight", "ArrowDown"] : ["ArrowDown", "ArrowRight"];
+    let j = -1;
+    if (next.includes(e.key)) j = (i + 1) % list.length;
+    else if (prev.includes(e.key)) j = (i - 1 + list.length) % list.length;
+    else if (e.key === "Home") j = 0;
+    else if (e.key === "End") j = list.length - 1;
+    if (j < 0) return;
+    e.preventDefault();
+    onPick(list[j], true);
+  };
+
+  chapters.forEach((ch) => {
+    ch.addEventListener("click", () => selectChapter(ch, false));
+    ch.addEventListener("keydown", keys(chapters, selectChapter, true));
+    ch.addEventListener("pointerenter", () => featuresOf(panelOf(ch)).forEach((f) => preload(f.dataset.shot)), { once: true });
+    const feats = featuresOf(panelOf(ch));
+    feats.forEach((f) => {
+      f.addEventListener("click", () => selectFeature(f, false));
+      f.addEventListener("keydown", keys(feats, selectFeature, false));
+      f.addEventListener("pointerenter", () => preload(f.dataset.shot), { once: true });
     });
   });
-  tabs.forEach((t) => { const pre = new Image(); pre.src = t.dataset.shot; });
+
+  // Preload the first chapter's shots once the tour is close to the viewport.
+  const tour = document.getElementById("tour");
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    io.disconnect();
+    const current = chapters.find((c) => c.getAttribute("aria-selected") === "true") || chapters[0];
+    featuresOf(panelOf(current)).forEach((f) => preload(f.dataset.shot));
+  }, { rootMargin: "400px 0px" });
+  if (tour) io.observe(tour);
 })();
