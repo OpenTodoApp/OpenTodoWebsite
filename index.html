@@ -42,6 +42,7 @@
         <a href="#features">Features</a>
         <a href="#sync">Sync</a>
         <a href="#self-host">Self-host</a>
+        <a href="#tour">Tour</a>
         <a href="#roadmap">Roadmap</a>
       </nav>
       <a class="btn btn-ghost gh" href="https://github.com/pixari/opentodo" rel="noopener">
@@ -236,20 +237,53 @@
       </div>
     </section>
 
-    <!-- =========================== SCREENSHOTS ========================== -->
-    <section class="section shots">
+    <!-- =========================== FEATURE TOUR ========================== -->
+    <section class="section tour" id="tour">
       <div class="wrap">
-        <p class="kicker reveal">Looks like it costs money</p>
-        <h2 class="reveal">Calm, fast, and at home<br><span class="muted">on every screen.</span></h2>
-        <div class="shot-stage">
-          <figure class="shot laptop-shot reveal">
-            <img src="assets/project.png" width="1280" height="800" alt="Project view with the task detail panel open">
-          </figure>
-          <figure class="shot phone-shot reveal">
-            <img src="assets/mobile-dark.png" width="780" height="1688" alt="OpenTodo inbox on a phone in dark mode">
+        <p class="kicker reveal">What you get today</p>
+        <h2 class="reveal">Everything a task app needs.<br><span class="muted">Nothing that phones home.</span></h2>
+        <div class="tour-grid reveal">
+          <div class="tour-list" role="tablist" aria-label="Feature tour">
+            <button role="tab" aria-selected="true" data-tour="today" data-shot="assets/today.png" data-alt="Today view with an Overdue group above today's tasks">
+              <b>Today, with overdue first</b><span>Overdue tasks are grouped at the top, due times inline, priority as the circle colour.</span>
+            </button>
+            <button role="tab" aria-selected="false" data-tour="upcoming" data-shot="assets/upcoming.png" data-alt="Upcoming view grouped by day">
+              <b>Upcoming, grouped by day</b><span>Tomorrow, weekdays, then dates. Quick-add here schedules for tomorrow automatically.</span>
+            </button>
+            <button role="tab" aria-selected="false" data-tour="project" data-shot="assets/project.png" data-alt="Project view with the task detail panel open">
+              <b>Projects and a detail panel</b><span>Colour-coded projects, notes, priority P1–P4, floating due date and time. Every edit saves instantly.</span>
+            </button>
+            <button role="tab" aria-selected="false" data-tour="keys" data-shot="assets/shortcuts.png" data-alt="Keyboard shortcuts overlay">
+              <b>Keyboard everything</b><span><kbd>q</kbd> add, <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>c</kbd> complete, <kbd>1</kbd>–<kbd>4</kbd> priority, <kbd>g</kbd> <kbd>t</kbd> go to Today, <kbd>?</kbd> for the list.</span>
+            </button>
+            <button role="tab" aria-selected="false" data-tour="offline" data-shot="assets/offline.png" data-alt="A task added while the device was offline, with the Offline indicator">
+              <b>Works offline, syncs later</b><span>Add and edit with no signal. The status pill shows what is queued; it uploads the moment you reconnect.</span>
+            </button>
+            <button role="tab" aria-selected="false" data-tour="settings" data-shot="assets/settings.png" data-alt="Settings with an API token just created and the export link">
+              <b>API tokens and export</b><span>Create tokens for scripts and a CLI, download your whole dataset as JSON, sign out and wipe the device.</span>
+            </button>
+            <button role="tab" aria-selected="false" data-tour="dark" data-shot="assets/today-dark.png" data-alt="Today view in dark mode">
+              <b>Dark mode, installable</b><span>Follows your system theme. Add it to your home screen on iPhone, Android or desktop.</span>
+            </button>
+          </div>
+          <figure class="tour-shot">
+            <img data-tour-img src="assets/today.png" width="2560" height="1600" alt="Today view with an Overdue group above today's tasks" loading="lazy">
           </figure>
         </div>
-        <p class="shot-note reveal">Installable as an app on iPhone, Android and desktop. Light and dark mode follow your system.</p>
+        <div class="tour-phones reveal" aria-label="Phone screenshots">
+          <figure class="phone-frame"><img src="assets/mobile-dark.png" width="1170" height="2532" alt="Today view on a phone in dark mode" loading="lazy"></figure>
+          <figure class="phone-frame"><img src="assets/mobile-detail.png" width="1170" height="2532" alt="Task detail panel on a phone" loading="lazy"></figure>
+          <div class="tour-phones-copy">
+            <h3>At home on a phone</h3>
+            <p>The same app, the same offline copy of your data. The detail panel slides over the list; the sidebar tucks behind a menu. No app store, no account on anyone else's server.</p>
+            <ul class="checks">
+              <li>Owner account on first visit, sign-up closed afterwards</li>
+              <li>Sessions on every device, API tokens for scripts</li>
+              <li>Projects, Inbox, Today, Upcoming, Completed</li>
+              <li>Priorities, floating due dates with optional time, notes</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -322,26 +356,86 @@
     <section class="section" id="roadmap">
       <div class="wrap">
         <p class="kicker reveal">What's next</p>
-        <h2 class="reveal">v0.1 is the walking skeleton.<br><span class="muted">Here's where it's walking.</span></h2>
-        <ul class="chips reveal">
-          <li>Natural-language quick add</li>
-          <li>Subtasks</li>
-          <li>Labels &amp; filter queries</li>
-          <li>Recurring tasks</li>
-          <li>Reminders</li>
-          <li>Sharing &amp; comments</li>
-          <li>CalDAV</li>
-          <li>Webhooks</li>
-          <li>Import from other apps</li>
-          <li>Passkeys &amp; OIDC</li>
-          <li>End-to-end encryption</li>
-        </ul>
+        <h2 class="reveal">v0.1 is the walking skeleton.<br><span class="muted">The rest is already written down.</span></h2>
+        <p class="lede narrow reveal">Every planned feature exists as an OpenSpec change: a proposal, behaviour specs with testable scenarios, a design and a task list, all validated before a line of code is written. 35 changes are specified and waiting to be built. Click any item to read exactly how it will behave.</p>
+        <div class="rm-grid">
+          <article class="rm-card reveal">
+            <h3>Capture</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/nlp-quick-add/" rel="noopener">Natural-language quick add</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/cli-client/" rel="noopener">Command-line client</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/email-to-task/" rel="noopener">Email to task</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/share-capture/" rel="noopener">Share sheet &amp; browser extension</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/voice-capture/" rel="noopener">Voice capture</a></li>
+            </ul>
+          </article>
+          <article class="rm-card reveal">
+            <h3>Organise</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/subtask-trees/" rel="noopener">Subtasks with progress</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/labels/" rel="noopener">Labels</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/filter-query-language/" rel="noopener">Filter queries</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/custom-views/" rel="noopener">Saved views &amp; dashboards</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/project-hierarchy/" rel="noopener">Nested projects</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/board-view/" rel="noopener">Sections &amp; Kanban board</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/manual-ordering/" rel="noopener">Drag-and-drop ordering</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/trash-and-history/" rel="noopener">Trash &amp; revision history</a></li>
+            </ul>
+          </article>
+          <article class="rm-card reveal">
+            <h3>Time</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/recurring-tasks/" rel="noopener">Recurring tasks</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/reminders/" rel="noopener">Reminders &amp; push notifications</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/time-blocking/" rel="noopener">Estimates &amp; time blocking</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/absolute-datetimes/" rel="noopener">Time-zone aware due times</a></li>
+            </ul>
+          </article>
+          <article class="rm-card reveal">
+            <h3>Collaborate</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/project-sharing/" rel="noopener">Share projects with roles</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/task-assignment/" rel="noopener">Assignees</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/comments-and-activity/" rel="noopener">Comments &amp; activity log</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/activity-feed/" rel="noopener">Live activity feed</a></li>
+            </ul>
+          </article>
+          <article class="rm-card reveal">
+            <h3>Connect</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/caldav/" rel="noopener">CalDAV two-way sync</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/webhooks/" rel="noopener">Outbound webhooks</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/data-import/" rel="noopener">Import from JSON &amp; CSV</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/backups/" rel="noopener">Scheduled backups to S3 / WebDAV</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/mcp-server/" rel="noopener">Read-only MCP server</a></li>
+            </ul>
+          </article>
+          <article class="rm-card reveal">
+            <h3>Secure</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/passkeys/" rel="noopener">Passkeys</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/oidc-login/" rel="noopener">OIDC single sign-on</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/mfa-totp/" rel="noopener">Two-factor (TOTP)</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/invitations/" rel="noopener">Invitations</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/audit-log/" rel="noopener">Audit log</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/e2ee/" rel="noopener">End-to-end encryption</a></li>
+            </ul>
+          </article>
+          <article class="rm-card reveal">
+            <h3>Engine</h3>
+            <ul>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/realtime-sync-channel/" rel="noopener">Live push between devices</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/collaborative-rich-text/" rel="noopener">Collaborative rich-text notes</a></li>
+              <li><a href="https://github.com/pixari/opentodo/blob/main/openspec/changes/vim-keybindings/" rel="noopener">Vim keybindings</a></li>
+            </ul>
+          </article>
+        </div>
         <div class="nlq reveal" aria-hidden="true">
           <span class="nlq-plus">+</span>
           <span class="nlq-text"><span data-typed></span><i class="caret"></i></span>
-          <span class="nlq-tag">Coming soon</span>
+          <span class="nlq-tag">Specified</span>
         </div>
-        <p class="center reveal"><a class="link-arrow" href="https://github.com/pixari/opentodo/blob/main/ROADMAP.md" rel="noopener">Read the full roadmap →</a></p>
+        <p class="center reveal"><a class="link-arrow" href="https://github.com/pixari/opentodo/blob/main/ROADMAP.md" rel="noopener">Read the full roadmap →</a> <span class="dot-sep">·</span> <a class="link-arrow" href="https://github.com/pixari/opentodo/tree/main/openspec/specs" rel="noopener">Browse the live specs →</a></p>
       </div>
     </section>
 

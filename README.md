@@ -32,6 +32,6 @@ Any static host works too: publish the contents of this folder as-is.
 | `main.js` | Hero demo app, keyboard shortcuts, sync playground, install tabs |
 | `assets/` | Logo, app screenshots (copied from `docs/screenshots`), social image `og.png` |
 
-When the app UI changes, refresh the screenshots in `assets/` from `docs/screenshots/`.
+When the app UI changes, refresh the screenshots: run `scripts/e2e-smoke.mjs` or a seeded capture against a fresh server (see `scripts/README.md`), then copy `docs/screenshots/*.png` into `assets/`. The feature tour (`#tour`) reads `data-shot` paths from the buttons in `index.html`; the roadmap section links each item to its OpenSpec change under `openspec/changes/`. When a change ships, move it from the roadmap cards into the tour with a screenshot.
 
 Live at https://opentodo.pixari.dev. The canonical, `og:url` and `og:image` URLs in `index.html` are absolute; update them if the domain changes.

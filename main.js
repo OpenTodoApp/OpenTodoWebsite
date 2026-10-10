@@ -521,3 +521,28 @@
     }
   }
 })();
+
+/* ------------------------------------------------------------ feature tour */
+(() => {
+  const tabs = [...document.querySelectorAll("[data-tour]")];
+  const img = document.querySelector("[data-tour-img]");
+  if (!tabs.length || !img) return;
+  const select = (btn) => {
+    tabs.forEach((t) => t.setAttribute("aria-selected", String(t === btn)));
+    if (img.getAttribute("src") === btn.dataset.shot) return;
+    img.classList.add("swap");
+    const next = new Image();
+    next.src = btn.dataset.shot;
+    const apply = () => { img.src = btn.dataset.shot; img.alt = btn.dataset.alt; img.classList.remove("swap"); };
+    next.decode ? next.decode().then(apply, apply) : (next.onload = apply);
+  };
+  tabs.forEach((t) => {
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", (e) => {
+      const i = tabs.indexOf(t);
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); const n = tabs[(i + 1) % tabs.length]; n.focus(); select(n); }
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); const n = tabs[(i - 1 + tabs.length) % tabs.length]; n.focus(); select(n); }
+    });
+  });
+  tabs.forEach((t) => { const pre = new Image(); pre.src = t.dataset.shot; });
+})();
