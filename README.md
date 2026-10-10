@@ -2,7 +2,7 @@
 
 The public landing page for OpenTodo. Plain HTML, CSS and JavaScript: no build step, no dependencies.
 
-The app's rules (no telemetry, no third-party requests) apply to the app only. The website may load web fonts, call the GitHub API for the star count, and use analytics; paste the analytics snippet where `index.html` marks it.
+The app's rules (no telemetry, no third-party requests) apply to the app only. The website may load web fonts, call the GitHub API for the star count, and use analytics (self-hosted Umami, loaded in the `<head>` of `index.html`).
 
 ## Run locally
 
