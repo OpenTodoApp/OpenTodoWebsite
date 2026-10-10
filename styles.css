@@ -522,8 +522,5 @@ h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.04; font-weight: 750; }
 .rm-card li:first-child { border-top: 0; }
 .rm-card a { color: #c3cddb; text-decoration: none; display: flex; align-items: center; gap: 8px; }
 .rm-card a::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px rgba(52,211,153,.55); flex: none; }
-.rm-card li.wip { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.rm-card li.wip a::before { background: var(--violet); box-shadow: 0 0 10px rgba(167,139,250,.6); }
-.rm-tag { flex: none; font: 600 10.5px var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--violet); background: rgba(167, 139, 250, .12); padding: 3px 6px; border-radius: 6px; }
 .rm-card a:hover { color: var(--text); }
 .dot-sep { color: var(--dim); margin: 0 8px; }

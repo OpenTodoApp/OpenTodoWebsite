@@ -58,6 +58,6 @@ Arguments: `node scripts/screenshots.mjs [png-dir] [webp-dir]`. `ONLY=today,boar
 
 The feature tour (`#tour`) has chapters (`data-chapter`) whose panels (`data-panel-for`) hold one button per feature; each button names its image in `data-shot` and its alt text in `data-alt`. To add a feature, capture a new shot in `scripts/screenshots.mjs`, then add a button to the right panel. `index.html` gives the tour image `width="2160" height="1350"`; keep new desktop shots at that size.
 
-The specs section links each shipped feature to its live spec under `openspec/specs/<capability>` on GitHub, or to its archived change under `openspec/changes/archive/<date>-<name>/` when the change only touched a broad spec. `collaborative-rich-text` is still linked to `openspec/changes/collaborative-rich-text/` and marked "In progress"; when it is archived, point the link at its archive folder or spec and drop the tag.
+The specs section links each shipped feature to its live spec under `openspec/specs/<capability>` on GitHub, or to its archived change under `openspec/changes/archive/<date>-<name>/` when the change only touched a broad spec.
 
 Live at https://opentodo.pixari.dev. The canonical, `og:url` and `og:image` URLs in `index.html` are absolute; update them if the domain changes.
