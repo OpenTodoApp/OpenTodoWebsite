@@ -104,7 +104,7 @@
       <p class="doc-meta"><span class="crumbs">Using OpenTodo <span aria-hidden="true">›</span> Guides</span><span class="version" title="Latest release these docs describe">Version 0.1.0</span></p>
 <h1 id="trash-and-history">Trash and history</h1>
 <p>Deleting something in OpenTodo doesn&#39;t make it vanish. It goes to the Trash first, and every change to a task is kept in its history, so a slip of the finger is easy to undo.</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#restore-something-from-the-trash">Restore something from the Trash</a></li><li><a href="#delete-for-good">Delete for good</a></li><li><a href="#what-deleting-does">What deleting does</a></li><li><a href="#see-what-changed-on-a-task">See what changed on a task</a></li><li><a href="#bring-back-an-earlier-value">Bring back an earlier value</a></li><li><a href="#activity-on-a-task">Activity on a task</a></li><li><a href="#archived-projects">Archived projects</a></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#restore-something-from-the-trash">Restore something from the Trash</a></li><li><a href="#delete-for-good">Delete for good</a></li><li><a href="#what-deleting-does">What deleting does</a></li><li><a href="#see-what-changed-on-a-task">See what changed on a task</a></li><li><a href="#bring-back-an-earlier-value">Bring back an earlier value</a></li><li><a href="#activity-on-a-task">Activity on a task</a></li><li><a href="#archived-projects">Archived projects</a><ul><li><a href="#bring-back-an-archived-project">Bring back an archived project</a></li></ul></li></ul></nav></details>
 
 <h2 id="restore-something-from-the-trash">Restore something from the Trash<a class="anchor" href="#restore-something-from-the-trash" aria-label="Link to this section: Restore something from the Trash">#</a></h2>
 <p>Open <strong>Trash</strong> in the sidebar (or press <kbd>g</kbd> <kbd>x</kbd>). It lists deleted tasks and projects, newest first, with when they were deleted and how many days they have left.</p>
@@ -137,7 +137,15 @@
 <h2 id="archived-projects">Archived projects<a class="anchor" href="#archived-projects" aria-label="Link to this section: Archived projects">#</a></h2>
 <p>Archiving is different from deleting. An archived project disappears from the sidebar, but it isn&#39;t in the Trash and isn&#39;t deleted after 30 days: it and its tasks are kept as they are. Archive a project from its <strong>Project</strong> menu.</p>
 <p>When you complete the last task of a project, OpenTodo offers to archive it. Projects without open tasks for 30 days are archived automatically, with a notice that has an undo button. To switch automatic archiving off on a device, untick the option under <strong>Settings → Projects</strong>.</p>
-<p>The app has no button yet to bring back a project you archived yourself. Scripts can do it through the <a href="/docs/api/">API</a> by setting the project&#39;s <code>archived</code> field to <code>false</code>.</p>
+<h3 id="bring-back-an-archived-project">Bring back an archived project<a class="anchor" href="#bring-back-an-archived-project" aria-label="Link to this section: Bring back an archived project">#</a></h3>
+<p>Open <strong>Settings → Projects</strong>. Under <strong>Archived projects</strong> you see every archived project, with its parent project and how many open tasks it has. Select <strong>Restore</strong> next to one, and it&#39;s back in the sidebar with all its tasks. With the keyboard, <kbd>Tab</kbd> to the button and press <kbd>Enter</kbd>.</p>
+<p><picture><source srcset="/docs/images/archived-projects-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/archived-projects-light.webp" alt="Settings, Projects section: the automatic archiving option and an Archived projects list with two projects, each with a Restore button." width="1180" height="334" loading="lazy" decoding="async"></picture></p>
+<ul>
+<li>Restoring works offline, like any change, and the project comes back on your other devices after they sync.</li>
+<li>Restoring brings back that one project. If you archived a project with sub-projects, they stay in the list until you restore each of them.</li>
+<li>A project you restore by hand isn&#39;t archived automatically again on that device.</li>
+<li>In a shared project, only the owner or an admin can restore it, the same people who can archive it.</li>
+</ul>
 
       <p class="edit"><a href="https://github.com/pixari/opentodo/edit/main/docs/trash-and-history.md" rel="noopener">Edit this page on GitHub</a></p>
     </article>
@@ -146,7 +154,7 @@
       <a class="next" rel="next" href="/docs/settings/"><span>Next</span>Settings</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#restore-something-from-the-trash">Restore something from the Trash</a></li><li><a href="#delete-for-good">Delete for good</a></li><li><a href="#what-deleting-does">What deleting does</a></li><li><a href="#see-what-changed-on-a-task">See what changed on a task</a></li><li><a href="#bring-back-an-earlier-value">Bring back an earlier value</a></li><li><a href="#activity-on-a-task">Activity on a task</a></li><li><a href="#archived-projects">Archived projects</a></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#restore-something-from-the-trash">Restore something from the Trash</a></li><li><a href="#delete-for-good">Delete for good</a></li><li><a href="#what-deleting-does">What deleting does</a></li><li><a href="#see-what-changed-on-a-task">See what changed on a task</a></li><li><a href="#bring-back-an-earlier-value">Bring back an earlier value</a></li><li><a href="#activity-on-a-task">Activity on a task</a></li><li><a href="#archived-projects">Archived projects</a><ul><li><a href="#bring-back-an-archived-project">Bring back an archived project</a></li></ul></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
