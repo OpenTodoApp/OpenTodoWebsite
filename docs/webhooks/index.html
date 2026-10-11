@@ -101,7 +101,7 @@
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
     <article class="prose" data-audience="developer">
-      <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.1.0</span></p>
+      <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.2.0</span></p>
 <h1 id="webhooks">Webhooks</h1>
 <p>OpenTodo can notify other systems when your tasks and projects change: switch on a light when &quot;Water plants&quot; is completed, post to a chat when a task is created, start an n8n flow when a project is archived. Webhooks are configured per account in <strong>Settings → Webhooks</strong> or through the <a href="/docs/api/#webhooks">API</a>. Nothing is sent until you create one, and requests only ever go to the URLs you configured.</p>
 <details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#events">Events</a></li><li><a href="#payload-version-1">Payload (version 1)</a><ul><li><a href="#encrypted-accounts">Encrypted accounts</a></li><li><a href="#imports">Imports</a></li></ul></li><li><a href="#headers-and-signature">Headers and signature</a><ul><li><a href="#test-vector">Test vector</a></li></ul></li><li><a href="#delivery-retries-and-the-log">Delivery, retries and the log</a></li><li><a href="#private-network-protection">Private network protection</a><ul><li><a href="#allowing-receivers-on-your-lan">Allowing receivers on your LAN</a></li><li><a href="#secrets">Secrets</a></li></ul></li><li><a href="#receiver-recipes">Receiver recipes</a><ul><li><a href="#home-assistant">Home Assistant</a></li><li><a href="#n8n">n8n</a></li><li><a href="#telegram">Telegram</a></li></ul></li></ul></nav></details>
@@ -501,7 +501,7 @@ http.server.HTTPServer((&quot;127.0.0.1&quot;, 8099), Relay).serve_forever()</co
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.1.0 and the changes on <code>main</code> since then.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.2.0.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
