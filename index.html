@@ -27,7 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Analytics (Umami, self-hosted): the website only; the app never loads analytics. -->
+  <!-- Analytics (Umami, self-hosted, no cookies): the website only; the app never loads analytics. analytics.js adds custom events. -->
   <script defer data-cfasync="false" src="https://analytics.pixari.dev/script.js" data-website-id="c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92"></script>
 </head>
 <body>
@@ -568,6 +568,7 @@
     <div class="wrap footer-inner">
       <div class="brand"><img src="assets/favicon.svg" width="22" height="22" alt=""><span>OpenTodo</span></div>
       <p>Free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. Made by people who wanted their tasks back.</p>
+      <p class="fine">This website (not the app) counts visits and clicks with self-hosted <a href="https://umami.is" rel="noopener">Umami</a>: no cookies, no personal data.</p>
       <nav aria-label="Footer">
         <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
         <a href="https://github.com/pixari/opentodo/blob/main/docs/architecture.md" rel="noopener">Architecture</a>
@@ -579,5 +580,6 @@
 
   <!-- data-cfasync="false": Cloudflare Rocket Loader must not rewrite this script (it can keep it from running in Safari). -->
   <script src="main.js" defer data-cfasync="false"></script>
+  <script src="analytics.js" defer data-cfasync="false"></script>
 </body>
 </html>
