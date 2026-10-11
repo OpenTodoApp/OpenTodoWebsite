@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <!-- Analytics (Umami, self-hosted): the website only; the app never loads analytics. -->
-  <script defer src="https://analytics.pixari.dev/script.js" data-website-id="c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92"></script>
+  <script defer data-cfasync="false" src="https://analytics.pixari.dev/script.js" data-website-id="c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -575,6 +575,7 @@
     </div>
   </footer>
 
-  <script src="main.js" defer></script>
+  <!-- data-cfasync="false": Cloudflare Rocket Loader must not rewrite this script (it can keep it from running in Safari). -->
+  <script src="main.js" defer data-cfasync="false"></script>
 </body>
 </html>

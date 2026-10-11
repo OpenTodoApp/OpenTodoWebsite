@@ -534,13 +534,25 @@
   const preloaded = new Set();
   const preload = (src) => { if (preloaded.has(src)) return; preloaded.add(src); const i = new Image(); i.decoding = "async"; i.src = src; };
 
+  // Fade to the new screenshot once it is decoded, but never wait more than a
+  // moment: on a slow connection the swap happens anyway and the image streams in.
+  let pending = 0;
   const show = (btn) => {
-    if (img.getAttribute("src") === btn.dataset.shot) { img.alt = btn.dataset.alt; return; }
+    const src = btn.dataset.shot;
+    if (img.getAttribute("src") === src) { img.alt = btn.dataset.alt; img.classList.remove("swap"); return; }
+    const ticket = ++pending;
     img.classList.add("swap");
+    let done = false;
+    const apply = () => {
+      if (done || ticket !== pending) return;
+      done = true;
+      img.src = src; img.alt = btn.dataset.alt; img.classList.remove("swap");
+    };
     const next = new Image();
-    next.src = btn.dataset.shot;
-    const apply = () => { img.src = btn.dataset.shot; img.alt = btn.dataset.alt; img.classList.remove("swap"); };
-    next.decode ? next.decode().then(apply, apply) : (next.onload = apply);
+    next.onload = apply; next.onerror = apply;
+    next.src = src;
+    if (next.decode) next.decode().then(apply, apply);
+    setTimeout(apply, 350);
   };
 
   const selectIn = (list, btn, focus) => {
