@@ -484,7 +484,7 @@
   const typed = $("[data-typed]");
   const PHRASES = [
     [["Call Sarah "], ["next Wed 3pm", "date"], [" "], ["#work", "proj"], [" "], ["p1", "prio"]],
-    [["Pay rent "], ["every 1st", "date"], [" "], ["#home", "proj"]],
+    [["Pay rent "], ["friday", "date"], [" "], ["#home", "proj"]],
     [["Draft the talk "], ["tomorrow 9am", "date"], [" "], ["#conference", "proj"], [" "], ["p2", "prio"]],
   ];
   let typedVisible = false, typingStarted = false;
