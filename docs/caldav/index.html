@@ -110,13 +110,13 @@
 <h2 id="turn-it-on">Turn it on<a class="anchor" href="#turn-it-on" aria-label="Link to this section: Turn it on">#</a></h2>
 <p>CalDAV is <strong>off by default</strong>: until the owner enables it, every path under <code>/dav/</code> and <code>/.well-known/caldav</code> answers 404 without asking for credentials.</p>
 <ol>
-<li>As the owner, open <strong>Settings → Calendar apps (CalDAV)</strong> and tick <em>Allow calendar apps to sync with this server</em>. It takes effect immediately, no restart.</li>
+<li>As the owner, open <strong>Settings → Integrations → Calendar apps (CalDAV)</strong> and tick <em>Allow calendar apps to sync with this server</em>. It takes effect immediately, no restart.</li>
 <li>Deployments managed as code can set <code>OPENTODO_CALDAV=true</code> instead: it presets the toggle on the <strong>first start only</strong>; afterwards the Settings toggle decides.</li>
 </ol>
 <p>Use HTTPS. Calendar apps send the app password with every request (HTTP Basic); on plain <code>http://</code> it travels unencrypted. Settings warns when the server address is not https. Set <code>OPENTODO_BASE_URL</code> to your public https URL so Settings shows the right address.</p>
 <h2 id="create-an-app-password">Create an app password<a class="anchor" href="#create-an-app-password" aria-label="Link to this section: Create an app password">#</a></h2>
 <p>Calendar apps sign in with <strong>your account email and an app password</strong>, never your account password, an API token or a single sign-on login (all of those are refused at <code>/dav/</code>). App passwords work only for CalDAV: they cannot call the REST API or change the account.</p>
-<p>In <strong>Settings → Calendar apps</strong> enter a name (for example &quot;iPhone&quot;) and choose <em>Create app password</em>. The password (<code>otap_…</code>) is shown <strong>once</strong>; copy it into the calendar app. Create one per device so you can revoke a lost phone without touching the others. The list shows when each was created and last used. Revoking takes effect on the next request. Deactivating an account revokes its app passwords; deleting it removes them.</p>
+<p>In <strong>Settings → Integrations → Calendar apps</strong> enter a name (for example &quot;iPhone&quot;) and choose <em>Create app password</em>. The password (<code>otap_…</code>) is shown <strong>once</strong>; copy it into the calendar app. Create one per device so you can revoke a lost phone without touching the others. The list shows when each was created and last used. Revoking takes effect on the next request. Deactivating an account revokes its app passwords; deleting it removes them.</p>
 <p>Accounts with two-factor authentication or in SSO-only mode use app passwords like everyone else: creating one requires a recent sign-in (the same step-up check as API tokens). Failed sign-ins are limited to 10 a minute per address; after that the endpoint answers 429 for a minute.</p>
 <h2 id="client-setup">Client setup<a class="anchor" href="#client-setup" aria-label="Link to this section: Client setup">#</a></h2>
 <p>The server address is <code>https://&lt;your server&gt;/dav/</code> (Settings shows it). The user name is your account email.</p>
@@ -254,7 +254,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

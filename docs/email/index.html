@@ -110,7 +110,7 @@
 <h2 id="how-it-works">How it works<a class="anchor" href="#how-it-works" aria-label="Link to this section: How it works">#</a></h2>
 <ol>
 <li>The operator creates (or reuses) one mailbox at any provider that supports <strong>plus addressing</strong> (<code>todo+anything@example.com</code> lands in <code>todo@example.com</code>) or a catch-all domain, and gives OpenTodo its IMAP login.</li>
-<li>Each user opens <strong>Settings → Email to task</strong> and gets a secret address such as <code>todo+k3f9w2…@example.com</code>.</li>
+<li>Each user opens <strong>Settings → Capture → Email to task</strong> and gets a secret address such as <code>todo+k3f9w2…@example.com</code>.</li>
 <li>Mail sent to that address is delivered into the shared mailbox. OpenTodo checks the mailbox every minute over IMAP (TLS only), finds the secret in the recipient (<code>Delivered-To</code>, <code>X-Original-To</code>, <code>To</code>, then <code>Cc</code>) and creates the task in that user&#39;s account.</li>
 <li>The message is then marked read and moved to <code>OpenTodo/Processed</code> (or deleted, if the operator prefers). Messages that match no user are moved or deleted the same way, so the mailbox does not fill up.</li>
 </ol>
@@ -251,7 +251,7 @@ secrets:
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

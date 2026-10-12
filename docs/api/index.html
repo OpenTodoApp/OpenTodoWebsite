@@ -111,7 +111,7 @@
 <p>Two options:</p>
 <ul>
 <li><strong>Session cookie</strong> (the web app). Obtained from <code>auth/register</code> or <code>auth/login</code>. State-changing requests must come from the app&#39;s own origin.</li>
-<li><strong>Bearer token</strong> (scripts, CLI, AI assistants). Create one in <strong>Settings → API tokens</strong> or via <code>POST /tokens</code>, then send <code>Authorization: Bearer ot_…</code>.</li>
+<li><strong>Bearer token</strong> (scripts, CLI, AI assistants). Create one in <strong>Settings → Integrations → API tokens</strong> or via <code>POST /tokens</code>, then send <code>Authorization: Bearer ot_…</code>.</li>
 </ul>
 <p>A token has a <strong>scope</strong>: <code>full</code> (the default), <code>read</code> or <code>agent</code>. A <code>read</code> token reads everything its account can read but is refused with 403 <code>insufficient_scope</code> on every request that can change something: every method other than <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and <code>/api/v1/sync</code> whatever the method. That includes creating another token, so a read token cannot escalate itself. Tokens created before scopes existed are <code>full</code>. Give read tokens to anything that only needs to look, such as an AI assistant connected to the <a href="/docs/mcp/">MCP endpoint</a>.</p>
 <p>An <code>agent</code> token is for an AI assistant that may make changes. It is the only scope that may call the MCP write tools, and only while the owner&#39;s <code>writes_enabled</code> and the user&#39;s <code>allow_writes</code> are both on (<a href="/docs/mcp/#letting-an-assistant-make-changes">mcp.md</a>). On the REST API it may write only on the <a href="#agent-tokens">agent content routes</a> (create and edit tasks, projects, labels and comments) under the same switches and limits; every other write is refused like a <code>read</code> token&#39;s, including <code>/api/v1/sync</code>, <code>/api/v1/tokens</code>, every settings route and <code>/api/v1/me/agent-access</code> (even <code>GET</code>). It is stored as a <code>read</code> scope plus a marker, so a server downgraded to a version without <code>agent</code> treats it as read-only.</p>
@@ -1118,8 +1118,8 @@ curl -sS -c jar -X POST &quot;$OT/api/v1/auth/mfa&quot; -H 'Content-Type: applic
 <td>no matching account and provisioning is not allowed</td>
 </tr>
 </tbody></table></div>
-<p><code>start</code> while signed in <strong>links</strong> the provider identity to the current account instead (Settings → Linked accounts) and returns to <code>/settings?linked=1</code>. If that identity is already linked to the same account, the flow is a fresh proof of identity for the session (the <em>fresh</em> routes work for ten minutes) and returns to <code>/settings?reauthenticated=1</code>.</p>
-<p>The callback answers <code>400 oidc_state_invalid</code> (missing, forged, expired or already used state) and <code>409 identity_taken</code> (linking an identity that belongs to another account) as JSON; a browser navigation (<code>Accept: text/html</code>) is redirected to <code>/?error=&lt;code&gt;</code> or <code>/settings?error=&lt;code&gt;</code> instead, so people never see raw JSON.</p>
+<p><code>start</code> while signed in <strong>links</strong> the provider identity to the current account instead (Settings → Account → Linked accounts) and returns to <code>/settings/account?linked=1</code>. If that identity is already linked to the same account, the flow is a fresh proof of identity for the session (the <em>fresh</em> routes work for ten minutes) and returns to <code>/settings/account?reauthenticated=1</code>.</p>
+<p>The callback answers <code>400 oidc_state_invalid</code> (missing, forged, expired or already used state) and <code>409 identity_taken</code> (linking an identity that belongs to another account) as JSON; a browser navigation (<code>Accept: text/html</code>) is redirected to <code>/?error=&lt;code&gt;</code> or <code>/settings/account?error=&lt;code&gt;</code> instead, so people never see raw JSON.</p>
 <p><strong>Owner settings.</strong> <code>GET /api/v1/settings/oidc</code>:</p>
 <pre tabindex="0"><code class="language-json">{
   &quot;enabled&quot;: true, &quot;issuer&quot;: &quot;https://sso.example.com/application/o/opentodo&quot;, &quot;clientId&quot;: &quot;opentodo&quot;,
@@ -2922,7 +2922,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

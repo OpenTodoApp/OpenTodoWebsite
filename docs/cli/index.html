@@ -120,7 +120,7 @@ Email: you@example.com
 Password:
 Signed in to https://todo.example.com as you@example.com (profile &quot;default&quot;).
 Token &quot;cli@laptop&quot; stored in /home/you/.config/opentodo/config.json.</code></pre>
-<p><code>ot login</code> signs in with your email and password, creates an API token named <code>cli@&lt;hostname&gt;</code>, signs the session out again and stores only the token. The password is never echoed and never stored. You will see the token in <strong>Settings → API tokens</strong> in the web app, where it can also be revoked.</p>
+<p><code>ot login</code> signs in with your email and password, creates an API token named <code>cli@&lt;hostname&gt;</code>, signs the session out again and stores only the token. The password is never echoed and never stored. You will see the token in <strong>Settings → Integrations → API tokens</strong> in the web app, where it can also be revoked.</p>
 <p>Other ways to get credentials in:</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead>
@@ -231,7 +231,7 @@ ot project archive Garden [--undo]
 ot project rm Garden [--yes]</code></pre>
 <p>Projects are referenced by name (case-insensitive), full id or unique id prefix.</p>
 <h2 id="tokens-and-export">Tokens and export<a class="anchor" href="#tokens-and-export" aria-label="Link to this section: Tokens and export">#</a></h2>
-<p><code>--scope</code> is <code>full</code> (the default), <code>read</code> or <code>agent</code>; anything else exits with code 2 before a request is sent. An <code>agent</code> token is for an <a href="/docs/mcp/#letting-an-assistant-make-changes">AI assistant</a>: it reads everything and can create and edit tasks, projects, labels and comments (through the MCP write tools or <code>ot</code>, see <a href="#using-ot-from-an-agent">Using ot from an agent</a>), and only while both assistant switches are on (the owner&#39;s and yours, in Settings → AI assistants).</p>
+<p><code>--scope</code> is <code>full</code> (the default), <code>read</code> or <code>agent</code>; anything else exits with code 2 before a request is sent. An <code>agent</code> token is for an <a href="/docs/mcp/#letting-an-assistant-make-changes">AI assistant</a>: it reads everything and can create and edit tasks, projects, labels and comments (through the MCP write tools or <code>ot</code>, see <a href="#using-ot-from-an-agent">Using ot from an agent</a>), and only while both assistant switches are on (the owner&#39;s and yours, in Settings → AI → AI assistants).</p>
 <pre tabindex="0"><code class="language-bash">ot token list                           # with each token's scope
 ot token create backup-script           # prints the secret once, with a notice on stderr
 ot token create reporting --scope read  # read-only: refused on every change
@@ -354,7 +354,7 @@ ot add &quot;Buy milk&quot; --idempotency-key run42-milk --json    # same task, 
 <h2 id="using-ot-from-an-agent">Using ot from an agent<a class="anchor" href="#using-ot-from-an-agent" aria-label="Link to this section: Using ot from an agent">#</a></h2>
 <p><code>ot</code> is a dependable tool for coding agents and automation harnesses. The short version, which the skill file below spells out for the agent itself:</p>
 <ol>
-<li><strong>Give the agent an <code>agent</code> token</strong>, not a full one: <code>ot token create &quot;my assistant&quot; --scope agent</code>, then on the agent&#39;s machine <code>ot auth set-token &lt;token&gt; --server &lt;url&gt;</code>. Turn on <strong>AI assistants may make changes</strong> (owner) and <strong>Allow AI assistants to make changes</strong> (you) in Settings → AI assistants. With that token <code>ot</code> can list everything and create and edit tasks, projects, labels and comments, complete and reopen tasks, and move to the Trash only tasks the same token created. Writes carry the device <code>agent:&lt;token-id&gt;</code>, show in history as &quot;AI assistant (<em>token name</em>)&quot;, are audited as <code>agent.write</code> and share the token&#39;s <a href="/docs/mcp/#limits">limits</a> with MCP. Tokens, settings, sharing, members, encryption, imports and backups stay out of reach (exit 5). <code>ot auth status</code> shows the scope and whether writes are allowed right now. A <code>full</code> token works too, with everything that implies; a <code>read</code> token for an agent that only looks.</li>
+<li><strong>Give the agent an <code>agent</code> token</strong>, not a full one: <code>ot token create &quot;my assistant&quot; --scope agent</code>, then on the agent&#39;s machine <code>ot auth set-token &lt;token&gt; --server &lt;url&gt;</code>. Turn on <strong>AI assistants may make changes</strong> (owner) and <strong>Allow AI assistants to make changes</strong> (you) in Settings → AI → AI assistants. With that token <code>ot</code> can list everything and create and edit tasks, projects, labels and comments, complete and reopen tasks, and move to the Trash only tasks the same token created. Writes carry the device <code>agent:&lt;token-id&gt;</code>, show in history as &quot;AI assistant (<em>token name</em>)&quot;, are audited as <code>agent.write</code> and share the token&#39;s <a href="/docs/mcp/#limits">limits</a> with MCP. Tokens, settings, sharing, members, encryption, imports and backups stay out of reach (exit 5). <code>ot auth status</code> shows the scope and whether writes are allowed right now. A <code>full</code> token works too, with everything that implies; a <code>read</code> token for an agent that only looks.</li>
 <li><strong>Use <code>--json</code></strong> everywhere, and <code>ot schema</code> to discover commands and output shapes.</li>
 <li><strong>Use <code>--dry-run</code></strong> before a write that touches more than one task, and <strong><code>--idempotency-key</code></strong> on creates.</li>
 <li><strong>Handle exit codes:</strong> stop and ask on 3, do not retry 5, retry 4 later.</li>
@@ -382,7 +382,7 @@ ot add &quot;Buy milk&quot; --idempotency-key run42-milk --json    # same task, 
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

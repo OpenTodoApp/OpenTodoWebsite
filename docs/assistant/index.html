@@ -117,7 +117,7 @@
 <li>the provider and model the owner chose,</li>
 <li>what may be sent: task titles and descriptions; project, section and label names; due dates, priorities and completion; comments; names of members of shared projects; your display name, today&#39;s date and your time zone; and the messages you type.</li>
 </ul>
-<p>In a shared project that includes text other members wrote. Select <strong>Accept and continue</strong> to start. Nothing is sent to any provider before you accept. If the owner later switches to another provider, the assistant asks you again. You can withdraw consent in <strong>Settings → Assistant</strong>.</p>
+<p>In a shared project that includes text other members wrote. Select <strong>Accept and continue</strong> to start. Nothing is sent to any provider before you accept. If the owner later switches to another provider, the assistant asks you again. You can withdraw consent in <strong>Settings → AI → Assistant</strong>.</p>
 <h2 id="ask-and-review">Ask and review<a class="anchor" href="#ask-and-review" aria-label="Link to this section: Ask and review">#</a></h2>
 <p>Type a question and press <kbd>Enter</kbd> (<kbd>Shift</kbd>+<kbd>Enter</kbd> adds a line). The answer appears as it is written; lines such as &quot;Looking at Today…&quot; show what the assistant is reading. Screen readers hear the answer a sentence at a time.</p>
 <p>When you ask for changes, the answer ends with <strong>Proposed changes</strong>: one line per task or project, each change in words (&quot;Due Sun 11 Oct → Fri 16 Oct&quot;, &quot;Completed&quot;, &quot;New task in Garden: Buy seeds&quot;).</p>
@@ -136,12 +136,12 @@
 <h2 id="undo">Undo<a class="anchor" href="#undo" aria-label="Link to this section: Undo">#</a></h2>
 <p>After applying, <strong>Undo</strong> appears in the panel and in a short notice at the bottom of the screen. It puts back every value the proposal changed and moves tasks it created to the Trash, in one step, also offline. If you edited one of those fields again in the meantime, your edit stays and the undo names that task. The last 20 applied proposals on a device can be undone.</p>
 <h2 id="apply-small-changes-without-review">Apply small changes without review<a class="anchor" href="#apply-small-changes-without-review" aria-label="Link to this section: Apply small changes without review">#</a></h2>
-<p><strong>Settings → Assistant → Apply small changes without review (this device)</strong> is off by default. When it is on, a proposal that touches at most 3 existing tasks and only changes completion, due dates, priority or labels is applied at once, with an Undo notice. Anything else, including every new task, every move to another project or section, every deletion and every text edit, is always shown for review.</p>
+<p><strong>Settings → AI → Assistant → Apply small changes without review (this device)</strong> is off by default. When it is on, a proposal that touches at most 3 existing tasks and only changes completion, due dates, priority or labels is applied at once, with an Undo notice. Anything else, including every new task, every move to another project or section, every deletion and every text edit, is always shown for review.</p>
 <h2 id="conversations-stay-on-this-device">Conversations stay on this device<a class="anchor" href="#conversations-stay-on-this-device" aria-label="Link to this section: Conversations stay on this device">#</a></h2>
 <p>Conversations are stored only in this browser: never synced, never sent to other people, not in exports or backups. The panel keeps the last 50 conversations for up to 30 days. <strong>History</strong> lists them (also offline), <strong>New</strong> starts another, and <strong>Clear conversations</strong> deletes them. Signing out deletes them too. The server keeps nothing of a conversation after it has answered.</p>
 <p>Offline you can read earlier conversations and apply or undo a proposal that already arrived; asking needs a connection.</p>
 <h2 id="costs-and-limits">Costs and limits<a class="anchor" href="#costs-and-limits" aria-label="Link to this section: Costs and limits">#</a></h2>
-<p>Each answer shows how many tokens it used and how much of your monthly allowance that is (&quot;1,240 tokens · this month 18% of your limit&quot;); <strong>Settings → Assistant</strong> shows the month so far. The owner sets the allowance (500,000 tokens per person per month by default). When you reach it, the assistant says when it resets (the first day of the next month, UTC). One answer at a time per person.</p>
+<p>Each answer shows how many tokens it used and how much of your monthly allowance that is (&quot;1,240 tokens · this month 18% of your limit&quot;); <strong>Settings → AI → Assistant</strong> shows the month so far. The owner sets the allowance (500,000 tokens per person per month by default). When you reach it, the assistant says when it resets (the first day of the next month, UTC). One answer at a time per person.</p>
 <h2 id="safety">Safety<a class="anchor" href="#safety" aria-label="Link to this section: Safety">#</a></h2>
 <ul>
 <li><strong>You confirm every change.</strong> The assistant cannot change anything by itself: the server never applies its proposals; your device does, after you review them (or, for the small changes above, when you turned that on).</li>
@@ -155,7 +155,7 @@
 <p>The assistant is switched off on the public demo.</p>
 <h2 id="for-the-server-owner">For the server owner<a class="anchor" href="#for-the-server-owner" aria-label="Link to this section: For the server owner">#</a></h2>
 <h3 id="turn-it-on">Turn it on<a class="anchor" href="#turn-it-on" aria-label="Link to this section: Turn it on">#</a></h3>
-<p><strong>Settings → Assistant</strong> (owner only):</p>
+<p><strong>Settings → AI → Assistant</strong> (owner only):</p>
 <ol>
 <li>Tick <strong>Allow this provider</strong> for one or more providers and enter the model and key.</li>
 <li>Choose the <strong>Provider everyone uses</strong>.</li>
@@ -200,7 +200,7 @@
 <p><strong>A local model.</strong> Run Ollama or LM Studio on a machine in your network, choose <strong>Compatible endpoint</strong>, enter its base URL (Ollama: <code>http://&lt;host&gt;:11434/v1</code>; LM Studio: <code>http://&lt;host&gt;:1234/v1</code>) and a model that supports tools, and tick <strong>Allow private endpoints</strong>. Without that switch, addresses on private networks are refused, the same rule as for <a href="/docs/webhooks/">webhooks</a>.</p>
 <h3 id="other-settings">Other settings<a class="anchor" href="#other-settings" aria-label="Link to this section: Other settings">#</a></h3>
 <ul>
-<li><strong>Let members bring their own key</strong>: each person may then store a key in <strong>Settings → Assistant</strong>; their turns use it instead of yours.</li>
+<li><strong>Let members bring their own key</strong>: each person may then store a key in <strong>Settings → AI → Assistant</strong>; their turns use it instead of yours.</li>
 <li><strong>Monthly tokens per person</strong>: 500,000 by default; <code>0</code> means unlimited.</li>
 <li>Changing the provider asks everyone to accept the disclosure again.</li>
 <li>Keys are stored in <code>&lt;data&gt;/secrets/assistant.json</code> (mode 0600), never shown again, never in backups, exports or logs. The audit log records <code>settings.changed</code> with <code>assistant.&lt;provider&gt;.key</code> going from <code>unset</code> to <code>set</code>, never the key.</li>
@@ -218,7 +218,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
