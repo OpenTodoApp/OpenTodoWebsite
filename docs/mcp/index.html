@@ -132,8 +132,19 @@
   }
 }</code></pre>
 <p>Menus differ between assistants; look for &quot;add custom connector&quot;, &quot;remote MCP server&quot; or &quot;HTTP server&quot;.</p>
-<p>Clients that only speak stdio can launch the bundled CLI bridge. Sign in with a
-read-only token, then configure the client to run <code>ot mcp</code>:</p>
+<p>Clients that only speak stdio can launch the bundled CLI bridge. Create a
+read-only token, store it with <code>ot auth set-token</code>, then configure the client to
+run <code>ot mcp</code> using the stored profile:</p>
+<pre tabindex="0"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;opentodo&quot;: {
+      &quot;command&quot;: &quot;ot&quot;,
+      &quot;args&quot;: [&quot;mcp&quot;]
+    }
+  }
+}</code></pre>
+<p>If the client cannot use the stored profile, pass the server and read-only token
+through its environment instead:</p>
 <pre tabindex="0"><code class="language-json">{
   &quot;mcpServers&quot;: {
     &quot;opentodo&quot;: {
@@ -149,8 +160,7 @@ read-only token, then configure the client to run <code>ot mcp</code>:</p>
 <p>The bridge reads newline-delimited JSON-RPC from stdin, forwards each message to
 <code>/mcp</code>, and writes only JSON-RPC responses to stdout. It refuses a full-access
 token by default so an assistant is not accidentally given write credentials;
-<code>--allow-full-token</code> is available for an intentional exception. A stored profile
-from <code>ot auth set-token</code> can be used instead of environment variables.</p>
+<code>--allow-full-token</code> is available for an intentional exception.</p>
 <p>To try the endpoint by hand:</p>
 <pre tabindex="0"><code class="language-bash">curl -sS https://todo.example.com/mcp \
   -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Content-Type: application/json' \
