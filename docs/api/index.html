@@ -245,7 +245,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>GET</td>
 <td><code>/api/v1/me</code></td>
 <td>yes</td>
-<td><code>{user, mfa, encryption: {enabled, keyVersion}, minClientVersion, auth}</code>; <code>auth</code> describes the credential, see <a href="#credential-introspection">Credential introspection</a></td>
+<td><code>{user, mfa, encryption: {enabled, keyVersion}, minClientVersion, auth}</code>; <code>auth</code> describes the credential, see <a href="#credential-introspection">Credential introspection</a>. The owner&#39;s session also gets <code>config_warnings: [{variable, message, ignored?}]</code>, configuration problems the server started despite (an invalid <code>OPENTODO_TRUSTED_PROXIES</code> entry), empty when there are none; admins, members and tokens never get the field</td>
 </tr>
 <tr>
 <td>POST</td>
@@ -2922,7 +2922,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
