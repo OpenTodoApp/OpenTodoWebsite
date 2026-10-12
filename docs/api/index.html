@@ -104,7 +104,7 @@
       <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.2.0</span></p>
 <h1 id="http-api">HTTP API</h1>
 <p>Base path: <code>/api/v1</code>. All requests and responses are JSON. Errors look like:</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></details>
 
 <pre tabindex="0"><code class="language-json">{ &quot;error&quot;: { &quot;code&quot;: &quot;invalid_input&quot;, &quot;message&quot;: &quot;task.priority must be an integer from 1 (highest) to 4 (lowest)&quot; } }</code></pre>
 <h2 id="authentication">Authentication<a class="anchor" href="#authentication" aria-label="Link to this section: Authentication">#</a></h2>
@@ -114,7 +114,8 @@
 <li><strong>Bearer token</strong> (scripts, CLI, AI assistants). Create one in <strong>Settings → API tokens</strong> or via <code>POST /tokens</code>, then send <code>Authorization: Bearer ot_…</code>.</li>
 </ul>
 <p>A token has a <strong>scope</strong>: <code>full</code> (the default), <code>read</code> or <code>agent</code>. A <code>read</code> token reads everything its account can read but is refused with 403 <code>insufficient_scope</code> on every request that can change something: every method other than <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and <code>/api/v1/sync</code> whatever the method. That includes creating another token, so a read token cannot escalate itself. Tokens created before scopes existed are <code>full</code>. Give read tokens to anything that only needs to look, such as an AI assistant connected to the <a href="/docs/mcp/">MCP endpoint</a>.</p>
-<p>An <code>agent</code> token is for an AI assistant that may make changes. On the REST API it behaves exactly like a <code>read</code> token: refused on every write, including <code>/api/v1/sync</code>, <code>/api/v1/tokens</code>, every settings route and <code>/api/v1/me/agent-access</code> (even <code>GET</code>). It is the only scope that may call the MCP write tools, and only while the owner&#39;s <code>writes_enabled</code> and the user&#39;s <code>allow_writes</code> are both on (<a href="/docs/mcp/#letting-an-assistant-make-changes">mcp.md</a>). It is stored as a <code>read</code> scope plus a marker, so a server downgraded to a version without <code>agent</code> treats it as read-only.</p>
+<p>An <code>agent</code> token is for an AI assistant that may make changes. It is the only scope that may call the MCP write tools, and only while the owner&#39;s <code>writes_enabled</code> and the user&#39;s <code>allow_writes</code> are both on (<a href="/docs/mcp/#letting-an-assistant-make-changes">mcp.md</a>). On the REST API it may write only on the <a href="#agent-tokens">agent content routes</a> (create and edit tasks, projects, labels and comments) under the same switches and limits; every other write is refused like a <code>read</code> token&#39;s, including <code>/api/v1/sync</code>, <code>/api/v1/tokens</code>, every settings route and <code>/api/v1/me/agent-access</code> (even <code>GET</code>). It is stored as a <code>read</code> scope plus a marker, so a server downgraded to a version without <code>agent</code> treats it as read-only.</p>
+<p><code>GET /api/v1/me</code> tells a client which credential it is using: see <a href="#credential-introspection">Credential introspection</a>.</p>
 <pre tabindex="0"><code class="language-bash">export OT=https://todo.example.com
 export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <p>If you would rather not hand-write requests, the <a href="/docs/cli/"><code>ot</code> command-line client</a> wraps this API and prints the same entity shapes with <code>--json</code>.</p>
@@ -244,7 +245,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>GET</td>
 <td><code>/api/v1/me</code></td>
 <td>yes</td>
-<td><code>{user, mfa, encryption: {enabled, keyVersion}, minClientVersion}</code></td>
+<td><code>{user, mfa, encryption: {enabled, keyVersion}, minClientVersion, auth}</code>; <code>auth</code> describes the credential, see <a href="#credential-introspection">Credential introspection</a></td>
 </tr>
 <tr>
 <td>POST</td>
@@ -453,7 +454,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>POST</td>
 <td><code>/api/v1/tasks</code></td>
 <td>yes</td>
-<td>create → 201 task, see <a href="#task-fields">Task fields</a></td>
+<td>create → 201 task, see <a href="#task-fields">Task fields</a>; optional <code>Idempotency-Key</code> header, see <a href="#idempotency-keys">Idempotency keys</a> (every collection below accepts it on create)</td>
 </tr>
 <tr>
 <td>GET</td>
@@ -1181,6 +1182,140 @@ curl -sS -c jar -X POST &quot;$OT/api/v1/auth/mfa&quot; -H 'Content-Type: applic
 <td>more than 20 requests per minute per address to <code>auth/oidc/start</code> and <code>callback</code> together</td>
 </tr>
 </tbody></table></div>
+<h3 id="idempotency-keys">Idempotency keys<a class="anchor" href="#idempotency-keys" aria-label="Link to this section: Idempotency keys">#</a></h3>
+<p><code>POST /api/v1/{collection}</code> (tasks, projects, labels, sections, views, reminders) accepts an optional <code>Idempotency-Key</code> header: 1 to 128 characters of letters, digits and <code>. _ : -</code>. The server derives the new entity&#39;s id and the ids of its operations from the key, your account and the collection, so a retry after a timeout cannot create a second entity:</p>
+<ul>
+<li>The first request applies and answers <strong>201</strong> with the entity.</li>
+<li>A repeat with the same content answers <strong>200</strong> with the stored entity (later edits included, a tombstone with <code>deleted_at</code> set) and the header <code>Idempotent-Replayed: true</code>. Nothing new is written.</li>
+<li>A repeat with different content (another title, a field added or left out) answers <strong>409 <code>idempotency_conflict</code></strong> and changes nothing. Use a new key.</li>
+<li>A malformed key answers <strong>400 <code>invalid_input</code></strong> naming <code>Idempotency-Key</code>. Unauthenticated and <code>read</code>-token requests are refused as usual (401, 403).</li>
+</ul>
+<p>Keys are scoped to your account: the same key used by someone else names a different entity, and one person&#39;s key can never return, overwrite or collide with another person&#39;s entity (an instance-wide random salt also keeps the derived ids unguessable). There is no key table to expire: the operation log is the record, so a key stays usable for as long as the entity exists. After the entity is permanently deleted from the Trash, or its history purged by end-to-end encryption, the key answers 409. Devices never send the header and sync converges with keyed creates like with any other write. With an <a href="#agent-tokens"><code>agent</code> token</a> the derivation also includes the token, so two tokens using the same key create two entities.</p>
+<pre tabindex="0"><code class="language-bash">curl -s -X POST &quot;$OT/api/v1/tasks&quot; -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Idempotency-Key: run42-milk' \
+  -H 'Content-Type: application/json' -d '{&quot;title&quot;:&quot;Buy milk&quot;}'          # 201
+curl -si -X POST &quot;$OT/api/v1/tasks&quot; -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Idempotency-Key: run42-milk' \
+  -H 'Content-Type: application/json' -d '{&quot;title&quot;:&quot;Buy milk&quot;}'          # 200, Idempotent-Replayed: true, same id
+curl -s -X POST &quot;$OT/api/v1/tasks&quot; -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Idempotency-Key: run42-milk' \
+  -H 'Content-Type: application/json' -d '{&quot;title&quot;:&quot;Buy bread&quot;}'
+# 409 {&quot;error&quot;:{&quot;code&quot;:&quot;idempotency_conflict&quot;,&quot;message&quot;:&quot;this Idempotency-Key was already used for a create with different content; …&quot;}}</code></pre>
+<h3 id="credential-introspection">Credential introspection<a class="anchor" href="#credential-introspection" aria-label="Link to this section: Credential introspection">#</a></h3>
+<p><code>GET /api/v1/me</code> carries an <code>auth</code> object describing the credential of the request. It never contains the secret.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>When</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>method</code></td>
+<td>always</td>
+<td><code>session</code> or <code>token</code></td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>always</td>
+<td><code>full</code>, <code>read</code> or <code>agent</code> (a session is <code>full</code>)</td>
+</tr>
+<tr>
+<td><code>token_id</code>, <code>token_name</code></td>
+<td>tokens</td>
+<td>the token in use, as listed by <code>GET /api/v1/tokens</code></td>
+</tr>
+<tr>
+<td><code>writes_allowed</code></td>
+<td><code>agent</code> tokens</td>
+<td>whether both assistant switches are on right now</td>
+</tr>
+<tr>
+<td><code>writes_denied</code></td>
+<td><code>agent</code> tokens with writes off</td>
+<td><code>writes_disabled_by_owner</code> or <code>writes_disabled_by_user</code></td>
+</tr>
+</tbody></table></div>
+<pre tabindex="0"><code class="language-json">{&quot;user&quot;:{…},&quot;auth&quot;:{&quot;method&quot;:&quot;token&quot;,&quot;scope&quot;:&quot;agent&quot;,&quot;token_id&quot;:&quot;9f1c…&quot;,&quot;token_name&quot;:&quot;desk-assistant&quot;,&quot;writes_allowed&quot;:true}}</code></pre>
+<p><code>ot auth status</code> shows it. A revoked token gets 401 <code>unauthorized</code> and no <code>auth</code> object.</p>
+<h3 id="agent-tokens">Agent tokens<a class="anchor" href="#agent-tokens" aria-label="Link to this section: Agent tokens">#</a></h3>
+<p>An <code>agent</code> token may write through REST on this fixed list of routes only, and only while the owner&#39;s <strong>AI assistants may make changes</strong> and the user&#39;s <strong>Allow AI assistants to make changes</strong> are both on:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Route</th>
+<th>What an agent token may send</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /api/v1/tasks</code></td>
+<td><code>title</code>, <code>description</code>, <code>project_id</code>, <code>section_id</code>, <code>parent_id</code>, <code>priority</code>, <code>due</code>, <code>labels</code>, <code>estimate_minutes</code>, <code>recurrence</code></td>
+</tr>
+<tr>
+<td><code>PATCH /api/v1/tasks/{id}</code></td>
+<td>the same edit fields (not <code>parent_id</code>), <code>due</code>, <code>project_id</code>, <code>section_id</code>, <code>completed_at</code> (complete or reopen) and <code>deleted_at</code> (to the Trash, only tasks the same token created)</td>
+</tr>
+<tr>
+<td><code>DELETE /api/v1/tasks/{id}</code></td>
+<td>only tasks the same token created (to the Trash)</td>
+</tr>
+<tr>
+<td><code>POST /api/v1/projects</code></td>
+<td><code>name</code>, <code>color</code>, <code>parent_id</code> (<code>archived: false</code> is accepted)</td>
+</tr>
+<tr>
+<td><code>PATCH /api/v1/projects/{id}</code></td>
+<td><code>name</code>, <code>color</code></td>
+</tr>
+<tr>
+<td><code>POST /api/v1/labels</code></td>
+<td><code>name</code>, <code>color</code> (an existing label of that name is returned with 200)</td>
+</tr>
+<tr>
+<td><code>POST /api/v1/tasks/{id}/comments</code></td>
+<td><code>body</code>, <code>parent_id</code> (<code>mentions</code> is accepted and dropped: assistant comments notify nobody)</td>
+</tr>
+</tbody></table></div>
+<p>These requests never reach the regular handlers: they are translated into calls of the same tool registry as the <a href="/docs/mcp/#letting-an-assistant-make-changes">MCP write tools</a> (one request is one write call) and applied in one batch through the operation log with device <code>agent:&lt;token-id&gt;</code>, so they show in history as &quot;AI assistant (<em>token name</em>)&quot;, are recorded as <code>agent.write</code> in the audit log, share the token&#39;s limits with MCP (30 write calls a minute, 1,000 changed items a day; beyond that 429 <code>rate_limited</code> with <code>Retry-After</code>), and follow the same rules for end-to-end encrypted accounts. Responses have the usual REST shapes.</p>
+<p>Refusals:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Code</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>403</td>
+<td><code>writes_disabled_by_owner</code>, <code>writes_disabled_by_user</code></td>
+<td>a switch is off (recorded as a failed <code>agent.write</code>)</td>
+</tr>
+<tr>
+<td>403</td>
+<td><code>insufficient_scope</code></td>
+<td>any other write route, or a field outside the list above (<code>assignee_id</code>, <code>position</code>, <code>archived</code>, restoring with <code>deleted_at: null</code>, …)</td>
+</tr>
+<tr>
+<td>403</td>
+<td><code>forbidden</code>, <code>not_permitted</code></td>
+<td>the user&#39;s role in a shared project does not allow it; trashing a task the token did not create</td>
+</tr>
+<tr>
+<td>404</td>
+<td><code>not_found</code></td>
+<td>unknown, deleted or invisible ids (indistinguishable)</td>
+</tr>
+<tr>
+<td>409</td>
+<td><code>encryption_enabled</code></td>
+<td>readable text (title, description, name, comment) for an end-to-end encrypted account</td>
+</tr>
+<tr>
+<td>400</td>
+<td><code>invalid_input</code></td>
+<td>a value the tool refuses (with the tool&#39;s message)</td>
+</tr>
+</tbody></table></div>
+<p>Every other write route (tokens, settings, sync, sharing and members, invitations, encryption keys, imports, backups, webhooks, purging, archiving or deleting projects, user administration) answers 403 <code>insufficient_scope</code>, and the list is enforced by the matched route, so a route added later stays refused until it is added on purpose.</p>
 <h3 id="task-fields">Task fields<a class="anchor" href="#task-fields" aria-label="Link to this section: Task fields">#</a></h3>
 <div class="table-wrap" tabindex="0"><table>
 <thead>
@@ -1758,7 +1893,7 @@ curl -sS &quot;$OT/api/v1/backups&quot; -H &quot;Authorization: Bearer $TOKEN&qu
 <td><code>agent.write</code></td>
 <td>success or failure</td>
 <td>actor = user</td>
-<td><code>tool</code>, <code>token_id</code>, <code>token_name</code>, <code>count</code> (items changed; 0 on failure), <code>reason</code> on failure (<code>writes_disabled_by_owner</code>, <code>writes_disabled_by_user</code>, <code>rate_limited</code>, <code>encryption_enabled</code>, <code>not_found</code>, <code>forbidden</code>, <code>scope_change</code>, <code>not_permitted</code>, <code>invalid_arguments</code>, …). One per MCP write tool call of an <code>agent</code> token; never content or entity ids</td>
+<td><code>tool</code>, <code>token_id</code>, <code>token_name</code>, <code>count</code> (items changed; 0 on failure), <code>reason</code> on failure (<code>writes_disabled_by_owner</code>, <code>writes_disabled_by_user</code>, <code>rate_limited</code>, <code>encryption_enabled</code>, <code>not_found</code>, <code>forbidden</code>, <code>scope_change</code>, <code>not_permitted</code>, <code>invalid_arguments</code>, …). One per MCP write tool call of an <code>agent</code> token, and one per tool a REST write of an <code>agent</code> token runs (<code>update_project</code> for a project rename); never content or entity ids</td>
 </tr>
 <tr>
 <td><code>app_password.created</code>, <code>app_password.revoked</code></td>
@@ -2675,7 +2810,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
       <a class="next" rel="next" href="/docs/cli/"><span>Next</span>Command-line client</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">

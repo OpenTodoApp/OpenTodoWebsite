@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Command-line client · OpenTodo docs</title>
-  <meta name="description" content="The ot command: install, sign in, add and complete tasks, JSON output and exit codes for scripts.">
+  <meta name="description" content="The ot command: install, sign in, add and complete tasks, JSON output, exit codes, dry runs and safe use by AI agents.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)">
@@ -13,7 +13,7 @@
   <meta property="og:url" content="https://opentodo.pixari.dev/docs/cli/">
   <meta property="og:site_name" content="OpenTodo">
   <meta property="og:title" content="Command-line client · OpenTodo docs">
-  <meta property="og:description" content="The ot command: install, sign in, add and complete tasks, JSON output and exit codes for scripts.">
+  <meta property="og:description" content="The ot command: install, sign in, add and complete tasks, JSON output, exit codes, dry runs and safe use by AI agents.">
   <meta property="og:image" content="https://opentodo.pixari.dev/assets/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -104,14 +104,15 @@
       <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.2.0</span></p>
 <h1 id="command-line-client-ot">Command-line client (<code>ot</code>)</h1>
 <p><code>ot</code> is a small, statically linked client for the OpenTodo REST API. It is built for two audiences: people who live in a terminal (<code>ot add &quot;Call the plumber&quot; --due tomorrow</code>, <code>ot today</code>) and scripts, cron jobs and editor integrations that want stable JSON output and exit codes instead of hand-written <code>curl</code>.</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#install">Install</a></li><li><a href="#sign-in">Sign in</a><ul><li><a href="#configuration-file-and-profiles">Configuration file and profiles</a></li></ul></li><li><a href="#tasks">Tasks</a><ul><li><a href="#add-and-edit">Add and edit</a></li><li><a href="#complete-reopen-delete">Complete, reopen, delete</a></li></ul></li><li><a href="#projects">Projects</a></li><li><a href="#tokens-and-export">Tokens and export</a></li><li><a href="#scripting-json-output-and-exit-codes">Scripting: JSON output and exit codes</a><ul><li><a href="#cron-example">Cron example</a></li></ul></li><li><a href="#limits">Limits</a></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#install">Install</a></li><li><a href="#sign-in">Sign in</a><ul><li><a href="#configuration-file-and-profiles">Configuration file and profiles</a></li></ul></li><li><a href="#tasks">Tasks</a><ul><li><a href="#add-and-edit">Add and edit</a></li><li><a href="#complete-reopen-delete">Complete, reopen, delete</a></li></ul></li><li><a href="#projects">Projects</a></li><li><a href="#tokens-and-export">Tokens and export</a></li><li><a href="#scripting-json-output-and-exit-codes">Scripting: JSON output and exit codes</a><ul><li><a href="#machine-readable-help-ot-schema">Machine-readable help: ot schema</a></li><li><a href="#non-interactive-by-default">Non-interactive by default</a></li><li><a href="#dry-run">Dry run</a></li><li><a href="#retry-safe-creates">Retry-safe creates</a></li><li><a href="#read-only-mode">Read-only mode</a></li><li><a href="#cron-example">Cron example</a></li></ul></li><li><a href="#limits">Limits</a></li><li><a href="#using-ot-from-an-agent">Using ot from an agent</a><ul><li><a href="#the-agent-skill-file">The agent skill file</a></li><li><a href="#migrating-scripts">Migrating scripts</a></li></ul></li></ul></nav></details>
 
 <p>It is an <strong>online</strong> client: it keeps no local copy of your tasks and makes no change when the server cannot be reached. Every write goes through the REST API, which records it in the operation log, so changes made with <code>ot</code> reach your phone and browser on their next sync and converge under the same per-field last-writer-wins rule as any other edit.</p>
 <h2 id="install">Install<a class="anchor" href="#install" aria-label="Link to this section: Install">#</a></h2>
-<p>Release assets are published for linux, macOS and Windows on amd64 and arm64 (<code>ot-&lt;os&gt;-&lt;arch&gt;</code>); download one, make it executable and put it on your <code>PATH</code>. Or build from source (Go 1.26+, no other dependency):</p>
-<pre tabindex="0"><code class="language-bash">go install github.com/pixari/opentodo/cmd/ot@latest   # into $(go env GOPATH)/bin
+<p>Release assets are published for linux, macOS and Windows on amd64 and arm64 (<code>ot-&lt;os&gt;-&lt;arch&gt;</code>, with <code>SHA256SUMS</code>); download one, make it executable and put it on your <code>PATH</code>. Or build from source (Go 1.26+, no other dependency):</p>
+<pre tabindex="0"><code class="language-bash">go install github.com/pixari/opentodo/cmd/ot@latest   # into $(go env GOPATH)/bin; or @vX.Y.Z for a release
 # or, from a checkout:
 make cli                                              # -&gt; bin/ot</code></pre>
+<p><code>go install</code> works from a clean <code>GOPATH</code> with the module path as declared (<code>github.com/pixari/opentodo</code>, lower case); an older local Go downloads the required toolchain itself. There is no Homebrew tap or Scoop bucket yet: release assets and <code>go install</code> are the supported ways (package manager manifests may follow later).</p>
 <p>The server container image does not include <code>ot</code>; it belongs on the machine you type on.</p>
 <h2 id="sign-in">Sign in<a class="anchor" href="#sign-in" aria-label="Link to this section: Sign in">#</a></h2>
 <pre tabindex="0"><code class="language-bash">ot login https://todo.example.com
@@ -134,11 +135,11 @@ Token &quot;cli@laptop&quot; stored in /home/you/.config/opentodo/config.json.</
 </tr>
 <tr>
 <td><code>ot auth status</code></td>
-<td>Show the server, the account and the token name in use</td>
+<td>Show the server, the account, the token name and its scope (for an <code>agent</code> token also whether assistant writes are allowed right now)</td>
 </tr>
 <tr>
-<td><code>ot auth logout</code></td>
-<td>Revoke the stored token on the server and remove it locally</td>
+<td><code>ot auth logout --yes</code></td>
+<td>Revoke the stored token on the server and remove it locally (asks on a terminal without <code>--yes</code>). A <code>read</code> or <code>agent</code> token cannot revoke itself: it is removed locally and you revoke it in Settings</td>
 </tr>
 </tbody></table></div>
 <h3 id="configuration-file-and-profiles">Configuration file and profiles<a class="anchor" href="#configuration-file-and-profiles" aria-label="Link to this section: Configuration file and profiles">#</a></h3>
@@ -209,31 +210,74 @@ ot edit 8c2a --due none --project none --note &quot;&quot;     # clear values</c
 <td><code>--title &lt;text&gt;</code></td>
 <td>New title (<code>ot edit</code> only)</td>
 </tr>
+<tr>
+<td><code>--idempotency-key &lt;key&gt;</code></td>
+<td><code>ot add</code> only: a retry with the same key returns the same task, see <a href="#retry-safe-creates">Retry-safe creates</a></td>
+</tr>
 </tbody></table></div>
 <p><code>ot add</code> prints the new task&#39;s id (the whole task with <code>--json</code>). Priority, time and date are validated locally before any request is sent.</p>
 <h3 id="complete-reopen-delete">Complete, reopen, delete<a class="anchor" href="#complete-reopen-delete" aria-label="Link to this section: Complete, reopen, delete">#</a></h3>
 <pre tabindex="0"><code class="language-bash">ot done 8c2a 3f1d          # one or more references
 ot reopen 8c2a
-ot rm 8c2a                 # asks on a terminal; --yes for scripts</code></pre>
+ot rm 8c2a                 # asks on a terminal
+ot rm 8c2a --yes           # required off a terminal and with --json</code></pre>
 <p>A <code>&lt;ref&gt;</code> is a full task id or an id prefix that matches exactly one non-deleted task. An ambiguous prefix changes nothing, exits with code 2 and lists the candidates; with several references all are resolved before anything is changed. Scripts should use full ids from <code>--json</code>. <code>ot rm</code> is a soft delete: the task becomes a tombstone that still appears in the export.</p>
+<p>A task that is already in the requested state (<code>ot done</code> on a completed task, <code>ot reopen</code> on an open one) is reported as <code>unchanged</code>, keeps its completion time and nothing is sent; the command still exits 0. <code>ot edit</code> with values equal to the current ones sends nothing either.</p>
 <h2 id="projects">Projects<a class="anchor" href="#projects" aria-label="Link to this section: Projects">#</a></h2>
 <pre tabindex="0"><code class="language-bash">ot project list [--all]                 # --all includes archived projects
-ot project add &quot;Garden&quot; [--color &quot;#22c55e&quot;]
+ot project add &quot;Garden&quot; [--color &quot;#22c55e&quot;] [--idempotency-key &lt;key&gt;]
 ot project rename Garden &quot;Back garden&quot;
 ot project archive Garden [--undo]
 ot project rm Garden [--yes]</code></pre>
 <p>Projects are referenced by name (case-insensitive), full id or unique id prefix.</p>
 <h2 id="tokens-and-export">Tokens and export<a class="anchor" href="#tokens-and-export" aria-label="Link to this section: Tokens and export">#</a></h2>
-<p><code>--scope</code> is <code>full</code> (the default), <code>read</code> or <code>agent</code>; anything else exits with code 2 before a request is sent. An <code>agent</code> token is for an <a href="/docs/mcp/#letting-an-assistant-make-changes">AI assistant</a>: it reads like a read-only token and can make changes only through the MCP write tools, and only while both assistant switches are on (the owner&#39;s and yours, in Settings → AI assistants).</p>
+<p><code>--scope</code> is <code>full</code> (the default), <code>read</code> or <code>agent</code>; anything else exits with code 2 before a request is sent. An <code>agent</code> token is for an <a href="/docs/mcp/#letting-an-assistant-make-changes">AI assistant</a>: it reads everything and can create and edit tasks, projects, labels and comments (through the MCP write tools or <code>ot</code>, see <a href="#using-ot-from-an-agent">Using ot from an agent</a>), and only while both assistant switches are on (the owner&#39;s and yours, in Settings → AI assistants).</p>
 <pre tabindex="0"><code class="language-bash">ot token list                           # with each token's scope
 ot token create backup-script           # prints the secret once, with a notice on stderr
 ot token create reporting --scope read  # read-only: refused on every change
 ot token create desk-assistant --scope agent   # for an AI assistant that may make changes
-ot token revoke backup-script           # by name, id or id prefix
+ot token revoke backup-script --yes     # by name, id or id prefix
 ot export                               # full JSON export (including tombstones) to stdout
 ot export --out opentodo-$(date +%F).json</code></pre>
 <h2 id="scripting-json-output-and-exit-codes">Scripting: JSON output and exit codes<a class="anchor" href="#scripting-json-output-and-exit-codes" aria-label="Link to this section: Scripting: JSON output and exit codes">#</a></h2>
-<p>Every command accepts <code>--json</code>. Stdout then holds only JSON, with the same field names as the <a href="/docs/api/">REST API</a>: an array for lists, the entity for single results, and the error envelope <code>{&quot;error&quot;:{&quot;code&quot;:&quot;…&quot;,&quot;message&quot;:&quot;…&quot;}}</code> on failure. Nothing else is printed on stdout in that mode, and errors from the server are passed through unchanged.</p>
+<p>Every command accepts <code>--json</code>. Stdout then holds only JSON, with the same field names as the <a href="/docs/api/">REST API</a>: an array for lists, the entity for single results, and the error envelope on failure. The shapes are documented as JSON Schemas with an <strong><code>output_version</code></strong> (currently <code>1</code>, reported by <code>ot version --json</code> and <code>ot schema</code>). Within a version fields are only added; a breaking change would need a new version you opt into.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th><code>--json</code> output (schema)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>list</code>, <code>today</code>, <code>inbox</code>, <code>upcoming</code></td>
+<td>array of <code>task</code></td>
+</tr>
+<tr>
+<td><code>add</code>, <code>edit</code></td>
+<td><code>task</code></td>
+</tr>
+<tr>
+<td><code>done</code>, <code>reopen</code>, <code>rm</code></td>
+<td><code>task_result</code> (one reference) or an array of them: the task plus <code>ref</code> (what you typed) and <code>status</code> (<code>completed</code>, <code>reopened</code>, <code>deleted</code> or <code>unchanged</code>)</td>
+</tr>
+<tr>
+<td><code>project list</code> / <code>add</code>, <code>rename</code>, <code>archive</code>, <code>rm</code></td>
+<td>array of <code>project</code> / <code>project</code></td>
+</tr>
+<tr>
+<td><code>token list</code> / <code>create</code> / <code>revoke</code></td>
+<td>array of <code>token</code> / <code>token_created</code> (<code>{token, secret}</code>) / <code>token</code></td>
+</tr>
+<tr>
+<td>any write command with <code>--dry-run</code></td>
+<td><code>dry_run</code></td>
+</tr>
+<tr>
+<td>any failure</td>
+<td><code>error</code>: <code>{&quot;error&quot;:{&quot;code&quot;:&quot;…&quot;,&quot;message&quot;:&quot;…&quot;,&quot;exit&quot;:N}}</code></td>
+</tr>
+</tbody></table></div>
+<p>On failure the envelope goes to stdout as before (server envelopes keep their <code>code</code> and <code>message</code>; <code>exit</code> is added) and stderr gets one line starting with <code>ot:</code>, so harnesses that only show stderr see what went wrong. Without <code>--json</code> errors go to stderr only.</p>
 <pre tabindex="0"><code class="language-bash">ot list --json --today | jq -r '.[] | &quot;\(.priority) \(.title)&quot;'
 ot add &quot;Nightly backup check&quot; --json | jq -r .id</code></pre>
 <p>Exit codes:</p>
@@ -242,30 +286,58 @@ ot add &quot;Nightly backup check&quot; --json | jq -r .id</code></pre>
 <tr>
 <th>Code</th>
 <th>Meaning</th>
+<th>What a script should do</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>0</td>
-<td>Success</td>
+<td>Success, including &quot;already in that state&quot;</td>
+<td>continue</td>
 </tr>
 <tr>
 <td>1</td>
-<td>The server rejected the request (its message is printed verbatim)</td>
+<td>The server rejected the request or failed (its message is printed verbatim)</td>
+<td>read <code>error.code</code>; retry only <code>internal</code> or <code>rate_limited</code></td>
 </tr>
 <tr>
 <td>2</td>
-<td>Usage or local validation error (bad flag, invalid priority or date, ambiguous reference, missing configuration)</td>
+<td>Usage or local validation error (bad flag, invalid priority or date, ambiguous reference, missing configuration, a destructive command without <code>--yes</code>)</td>
+<td>fix the command</td>
 </tr>
 <tr>
 <td>3</td>
 <td>Authentication or configuration error (wrong password, revoked token, unreadable config file)</td>
+<td>sign in again</td>
 </tr>
 <tr>
 <td>4</td>
 <td>The server could not be reached within the timeout (15 s)</td>
+<td>retry later</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Not permitted: <code>insufficient_scope</code>, <code>forbidden</code>, <code>not_permitted</code>, <code>writes_disabled_by_owner</code>, <code>writes_disabled_by_user</code>, <code>encryption_enabled</code> or <code>read_only</code></td>
+<td>do not retry; change the token, the switch or the role</td>
 </tr>
 </tbody></table></div>
-<p>When stdout is not a terminal, or <code>NO_COLOR</code> is set, colour is off and nothing is prompted (<code>ot rm</code> deletes without asking; pass <code>--yes</code> to be explicit). <code>ot login</code> reads the password from stdin when stdin is not a terminal.</p>
+<h3 id="machine-readable-help-ot-schema">Machine-readable help: <code>ot schema</code><a class="anchor" href="#machine-readable-help-ot-schema" aria-label="Link to this section: Machine-readable help: ot schema">#</a></h3>
+<p><code>ot schema</code> (or <code>ot help --json</code>) prints every command with its arguments, flags and their types, whether it writes or is destructive, whether it supports <code>--dry-run</code> and <code>--idempotency-key</code>, its output schema, the exit codes, the error codes and every JSON Schema. It is generated from the same table as <code>ot help</code>, needs no configuration and no server, and exits 0 offline.</p>
+<pre tabindex="0"><code class="language-bash">ot schema | jq '.commands[] | select(.writes) | .name'
+ot schema | jq '.schemas.task'</code></pre>
+<h3 id="non-interactive-by-default">Non-interactive by default<a class="anchor" href="#non-interactive-by-default" aria-label="Link to this section: Non-interactive by default">#</a></h3>
+<p>Without a terminal on stdin and stdout, <code>ot</code> never prompts and colour is off (also with <code>NO_COLOR</code>). The destructive commands <code>ot rm</code>, <code>ot project rm</code>, <code>ot token revoke</code> and <code>ot auth logout</code> then need <code>--yes</code>, and so do they with <code>--json</code> even on a terminal; without it they exit 2 with code <code>confirmation_required</code> before sending any request. On a terminal without <code>--json</code> they ask. <code>ot login</code> reads the password from stdin when stdin is not a terminal.</p>
+<h3 id="dry-run">Dry run<a class="anchor" href="#dry-run" aria-label="Link to this section: Dry run">#</a></h3>
+<p>Every command that writes accepts <code>--dry-run</code>. It resolves references and current values with reads (so an ambiguous prefix still exits 2), validates, and prints the requests it would send and the resolved targets, then exits as a real run would. Nothing that writes is sent, nothing changes on the server or on any device, and the config file is not touched. An unreachable server exits 4.</p>
+<pre tabindex="0"><code class="language-bash">ot done 8c2a 91f0 --dry-run --json
+# {&quot;command&quot;:&quot;done&quot;,&quot;dry_run&quot;:true,&quot;requests&quot;:[{&quot;method&quot;:&quot;PATCH&quot;,&quot;path&quot;:&quot;/api/v1/tasks/8c2a…&quot;,&quot;body&quot;:{&quot;completed_at&quot;:1760…}},…],
+#  &quot;targets&quot;:[{&quot;ref&quot;:&quot;8c2a&quot;,&quot;id&quot;:&quot;8c2a…&quot;,&quot;title_preview&quot;:&quot;Pay rent&quot;,&quot;status&quot;:&quot;completed&quot;},…]}</code></pre>
+<p>A label that <code>ot add --label</code> would create appears as a planned <code>POST /api/v1/labels</code>, and the planned task refers to it as <code>(planned-1)</code>. <code>ot login --dry-run</code> shows the three requests of a sign-in without prompting for the password.</p>
+<h3 id="retry-safe-creates">Retry-safe creates<a class="anchor" href="#retry-safe-creates" aria-label="Link to this section: Retry-safe creates">#</a></h3>
+<p><code>ot add</code> and <code>ot project add</code> take <code>--idempotency-key &lt;key&gt;</code> (1 to 128 characters of letters, digits and <code>. _ : -</code>), sent as the <a href="/docs/api/#idempotency-keys"><code>Idempotency-Key</code></a> header. Running the same command again with the same key prints the same entity and creates nothing; the same key with different content exits 1 with <code>idempotency_conflict</code>. Because the ids derive from the key, a retry after a timeout converges to one task on every device.</p>
+<pre tabindex="0"><code class="language-bash">ot add &quot;Buy milk&quot; --idempotency-key run42-milk --json    # creates
+ot add &quot;Buy milk&quot; --idempotency-key run42-milk --json    # same task, nothing new</code></pre>
+<h3 id="read-only-mode">Read-only mode<a class="anchor" href="#read-only-mode" aria-label="Link to this section: Read-only mode">#</a></h3>
+<p><code>--read-only</code>, or the optional <code>OPENTODO_READ_ONLY=1</code>, makes every write command fail before any request with code <code>read_only</code> and exit 5; reads work as usual. With a <code>read</code> token, <code>ot</code> refuses writes itself (exit 5, <code>insufficient_scope</code>): it learns the token&#39;s scope from <code>GET /api/v1/me</code> once per run, before its first write. With an <code>agent</code> token it refuses locally what the server would refuse (for example <code>ot project archive</code> or <code>ot token create</code>); the server checks again regardless.</p>
 <h3 id="cron-example">Cron example<a class="anchor" href="#cron-example" aria-label="Link to this section: Cron example">#</a></h3>
 <p>A nightly export kept for 30 days, using environment variables instead of a config file:</p>
 <pre tabindex="0"><code class="language-cron"># m h dom mon dow  command
@@ -277,8 +349,27 @@ ot add &quot;Nightly backup check&quot; --json | jq -r .id</code></pre>
 <li>Online only: no offline queue, no local cache. Offline capture is what the web app and PWA are for.</li>
 <li><code>--due</code> understands a fixed set of words; the natural-language quick-add grammar lives in the web client.</li>
 <li>Rate limits on <code>auth/login</code> apply (10 per minute per address); <code>ot auth set-token</code> avoids them entirely.</li>
-<li>No shell completion scripts yet.</li>
+<li>No shell completion scripts yet (<code>ot schema</code> has everything a completion script needs).</li>
 </ul>
+<h2 id="using-ot-from-an-agent">Using ot from an agent<a class="anchor" href="#using-ot-from-an-agent" aria-label="Link to this section: Using ot from an agent">#</a></h2>
+<p><code>ot</code> is a dependable tool for coding agents and automation harnesses. The short version, which the skill file below spells out for the agent itself:</p>
+<ol>
+<li><strong>Give the agent an <code>agent</code> token</strong>, not a full one: <code>ot token create &quot;my assistant&quot; --scope agent</code>, then on the agent&#39;s machine <code>ot auth set-token &lt;token&gt; --server &lt;url&gt;</code>. Turn on <strong>AI assistants may make changes</strong> (owner) and <strong>Allow AI assistants to make changes</strong> (you) in Settings → AI assistants. With that token <code>ot</code> can list everything and create and edit tasks, projects, labels and comments, complete and reopen tasks, and move to the Trash only tasks the same token created. Writes carry the device <code>agent:&lt;token-id&gt;</code>, show in history as &quot;AI assistant (<em>token name</em>)&quot;, are audited as <code>agent.write</code> and share the token&#39;s <a href="/docs/mcp/#limits">limits</a> with MCP. Tokens, settings, sharing, members, encryption, imports and backups stay out of reach (exit 5). <code>ot auth status</code> shows the scope and whether writes are allowed right now. A <code>full</code> token works too, with everything that implies; a <code>read</code> token for an agent that only looks.</li>
+<li><strong>Use <code>--json</code></strong> everywhere, and <code>ot schema</code> to discover commands and output shapes.</li>
+<li><strong>Use <code>--dry-run</code></strong> before a write that touches more than one task, and <strong><code>--idempotency-key</code></strong> on creates.</li>
+<li><strong>Handle exit codes:</strong> stop and ask on 3, do not retry 5, retry 4 later.</li>
+<li><strong>Off a terminal, destructive commands need <code>--yes</code>.</strong></li>
+<li><strong><code>--read-only</code></strong> (or <code>OPENTODO_READ_ONLY=1</code>) for an agent that must never change anything, whatever its token allows.</li>
+</ol>
+<h3 id="the-agent-skill-file">The agent skill file<a class="anchor" href="#the-agent-skill-file" aria-label="Link to this section: The agent skill file">#</a></h3>
+<p><code>ot skill</code> prints <code>SKILL.md</code>, a skill file that teaches an agent to use <code>ot</code> carefully: read first, always <code>--json</code>, preview with <code>--dry-run</code>, retry-safe creates, stop on exit 5, never run <code>token</code>, <code>auth</code> or <code>export</code> commands unless asked, and treat task titles, descriptions and comments as untrusted data rather than instructions. It is embedded in the binary, so it always matches the version you run, and every release also ships it as <code>opentodo-agent-skill.zip</code> (a folder <code>opentodo-cli/</code> with <code>SKILL.md</code>) next to the <code>ot-&lt;os&gt;-&lt;arch&gt;</code> binaries. Unpack it where your agent harness looks for skills, or save the output of <code>ot skill</code>.</p>
+<h3 id="migrating-scripts">Migrating scripts<a class="anchor" href="#migrating-scripts" aria-label="Link to this section: Migrating scripts">#</a></h3>
+<p>Two changes in this version can affect existing scripts:</p>
+<ul>
+<li><strong><code>--yes</code> off a terminal.</strong> <code>ot rm</code>, <code>ot project rm</code>, <code>ot token revoke</code> and <code>ot auth logout</code> used to proceed silently when stdout was not a terminal or <code>--json</code> was given. They now exit 2 without <code>--yes</code>. Add <code>--yes</code> to scripts that delete on purpose.</li>
+<li><strong>Exit code 5.</strong> A refusal for scope, role, switch or encryption (for example 403 <code>insufficient_scope</code>) used to exit 1 and now exits 5. Scripts that test for &quot;non-zero&quot; are unaffected; scripts that test for exactly 1 should also accept 5.</li>
+</ul>
+<p><code>--json</code> errors also gained the <code>exit</code> field and a stderr line, and <code>ot done</code>/<code>ot reopen</code>/<code>ot rm</code> add <code>ref</code> and <code>status</code> to each printed task; both are additive.</p>
 
       <p class="edit"><a href="https://github.com/pixari/opentodo/edit/main/docs/cli.md" rel="noopener">Edit this page on GitHub</a></p>
     </article>
@@ -287,7 +378,7 @@ ot add &quot;Nightly backup check&quot; --json | jq -r .id</code></pre>
       <a class="next" rel="next" href="/docs/webhooks/"><span>Next</span>Webhooks</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#install">Install</a></li><li><a href="#sign-in">Sign in</a><ul><li><a href="#configuration-file-and-profiles">Configuration file and profiles</a></li></ul></li><li><a href="#tasks">Tasks</a><ul><li><a href="#add-and-edit">Add and edit</a></li><li><a href="#complete-reopen-delete">Complete, reopen, delete</a></li></ul></li><li><a href="#projects">Projects</a></li><li><a href="#tokens-and-export">Tokens and export</a></li><li><a href="#scripting-json-output-and-exit-codes">Scripting: JSON output and exit codes</a><ul><li><a href="#cron-example">Cron example</a></li></ul></li><li><a href="#limits">Limits</a></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#install">Install</a></li><li><a href="#sign-in">Sign in</a><ul><li><a href="#configuration-file-and-profiles">Configuration file and profiles</a></li></ul></li><li><a href="#tasks">Tasks</a><ul><li><a href="#add-and-edit">Add and edit</a></li><li><a href="#complete-reopen-delete">Complete, reopen, delete</a></li></ul></li><li><a href="#projects">Projects</a></li><li><a href="#tokens-and-export">Tokens and export</a></li><li><a href="#scripting-json-output-and-exit-codes">Scripting: JSON output and exit codes</a><ul><li><a href="#machine-readable-help-ot-schema">Machine-readable help: ot schema</a></li><li><a href="#non-interactive-by-default">Non-interactive by default</a></li><li><a href="#dry-run">Dry run</a></li><li><a href="#retry-safe-creates">Retry-safe creates</a></li><li><a href="#read-only-mode">Read-only mode</a></li><li><a href="#cron-example">Cron example</a></li></ul></li><li><a href="#limits">Limits</a></li><li><a href="#using-ot-from-an-agent">Using ot from an agent</a><ul><li><a href="#the-agent-skill-file">The agent skill file</a></li><li><a href="#migrating-scripts">Migrating scripts</a></li></ul></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
