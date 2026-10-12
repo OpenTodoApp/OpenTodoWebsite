@@ -245,7 +245,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>GET</td>
 <td><code>/api/v1/me</code></td>
 <td>yes</td>
-<td><code>{user, mfa, encryption: {enabled, keyVersion}, minClientVersion, auth}</code>; <code>auth</code> describes the credential, see <a href="#credential-introspection">Credential introspection</a></td>
+<td><code>{user, mfa, encryption: {enabled, keyVersion}, minClientVersion, auth}</code>; <code>auth</code> describes the credential, see <a href="#credential-introspection">Credential introspection</a>. The owner&#39;s session also gets <code>config_warnings: [{variable, message, ignored?}]</code>, configuration problems the server started despite (an invalid <code>OPENTODO_TRUSTED_PROXIES</code> entry), empty when there are none; admins, members and tokens never get the field</td>
 </tr>
 <tr>
 <td>POST</td>
