@@ -104,7 +104,7 @@
       <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
 <h1 id="http-api">HTTP API</h1>
 <p>Base path: <code>/api/v1</code>. All requests and responses are JSON. Errors look like:</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li><li><a href="#in-app-assistant">In-app assistant</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#project-invite-links">Project invite links</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li><li><a href="#in-app-assistant">In-app assistant</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></details>
 
 <pre tabindex="0"><code class="language-json">{ &quot;error&quot;: { &quot;code&quot;: &quot;invalid_input&quot;, &quot;message&quot;: &quot;task.priority must be an integer from 1 (highest) to 4 (lowest)&quot; } }</code></pre>
 <h2 id="authentication">Authentication<a class="anchor" href="#authentication" aria-label="Link to this section: Authentication">#</a></h2>
@@ -156,7 +156,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>POST</td>
 <td><code>/api/v1/auth/register</code></td>
 <td>none</td>
-<td><code>{email, name?, password, invitation?}</code> → 201 <code>{user}</code> + cookie. The first account becomes owner; afterwards an <code>invitation</code> secret admits one member while sign-up is closed</td>
+<td><code>{email, name?, password, invitation?, projectInvite?}</code> → 201 <code>{user}</code> + cookie. The first account becomes owner; afterwards an <code>invitation</code> secret admits one member while sign-up is closed, and a <code>projectInvite</code> secret creates a member who joins that project (201 <code>{user, projectId, role}</code>, see <a href="#project-invite-links">Project invite links</a>)</td>
 </tr>
 <tr>
 <td>POST</td>
@@ -217,6 +217,12 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td><code>/api/v1/invitations/{token}</code></td>
 <td>none</td>
 <td>preview <code>{inviterName, email, expiresAt}</code> or 404 <code>invitation_invalid</code>, see <a href="#invitations">Invitations</a></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/project-invites/{token}</code></td>
+<td>none</td>
+<td>preview <code>{inviterName, projectName, role, email, expiresAt, canCreateAccount, alreadyMember?}</code> or 404 <code>invitation_invalid</code>, see <a href="#project-invite-links">Project invite links</a></td>
 </tr>
 <tr>
 <td>GET</td>
@@ -587,6 +593,42 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td><code>/api/v1/projects/{id}/transfer</code></td>
 <td>owner of the project</td>
 <td><code>{userId}</code> → membership; the previous owner becomes an admin</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/projects/{id}/invites</code></td>
+<td>owner, admin of the project</td>
+<td>pending invite links <code>{invites:[…]}</code>, see <a href="#project-invite-links">Project invite links</a></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/projects/{id}/invites</code></td>
+<td>owner, admin of the project, fresh</td>
+<td><code>{role, email?, expiresInHours?}</code> → 201 <code>{invite, link, newAccounts}</code> (link shown once)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/projects/{id}/invites/{inviteId}</code></td>
+<td>owner, admin of the project</td>
+<td>revoke a pending link → 204</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/project-invites/{token}/accept</code></td>
+<td>yes</td>
+<td>join the project as the signed-in account → <code>{projectId, role}</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/settings/project-invites</code></td>
+<td>yes</td>
+<td><code>{membersCanInviteNewPeople}</code> (the owner switch)</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/settings/project-invites</code></td>
+<td>owner</td>
+<td><code>{membersCanInviteNewPeople: true|false}</code> → the same shape</td>
 </tr>
 <tr>
 <td>POST</td>
@@ -997,7 +1039,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <tr>
 <td><code>rate_limited</code></td>
 <td>429</td>
-<td>more than 10 requests per minute per address to <code>auth/login</code>, <code>auth/register</code>, <code>auth/passkey</code> and the invitation preview combined (one shared window), or more than 10 per minute to <code>auth/passkey/options</code> (its own window, so the sign-in screen&#39;s autofill request never uses up password attempts)</td>
+<td>more than 10 requests per minute per address to <code>auth/login</code>, <code>auth/register</code>, <code>auth/passkey</code>, the invitation preview and the project invite link preview and accept routes combined (one shared window), or more than 10 per minute to <code>auth/passkey/options</code> (its own window, so the sign-in screen&#39;s autofill request never uses up password attempts)</td>
 </tr>
 </tbody></table></div>
 <p>The anonymous <code>auth/passkey</code> routes apply the same <code>Origin</code> check as <code>auth/login</code>. A successful passkey sign-in sets the same <code>opentodo_session</code> cookie as a password sign-in. Bearer tokens can list, rename and delete passkeys, but a CLI cannot run a ceremony.</p>
@@ -1315,7 +1357,7 @@ curl -s -X POST &quot;$OT/api/v1/tasks&quot; -H &quot;Authorization: Bearer $TOK
 <td>a value the tool refuses (with the tool&#39;s message)</td>
 </tr>
 </tbody></table></div>
-<p>Every other write route (tokens, settings, sync, sharing and members, invitations, encryption keys, imports, backups, webhooks, purging, archiving or deleting projects, user administration) answers 403 <code>insufficient_scope</code>, and the list is enforced by the matched route, so a route added later stays refused until it is added on purpose.</p>
+<p>Every other write route (tokens, settings, sync, sharing and members, invitations, project invite links, encryption keys, imports, backups, webhooks, purging, archiving or deleting projects, user administration) answers 403 <code>insufficient_scope</code>, and the list is enforced by the matched route, so a route added later stays refused until it is added on purpose.</p>
 <h3 id="task-fields">Task fields<a class="anchor" href="#task-fields" aria-label="Link to this section: Task fields">#</a></h3>
 <div class="table-wrap" tabindex="0"><table>
 <thead>
@@ -1932,10 +1974,28 @@ curl -sS &quot;$OT/api/v1/backups&quot; -H &quot;Authorization: Bearer $TOKEN&qu
 <td><code>invitation_id</code></td>
 </tr>
 <tr>
+<td><code>project_invite.created</code></td>
+<td>success</td>
+<td>actor = creator</td>
+<td><code>project_invite_id</code>, <code>shared_project_id</code>, <code>project_role</code>, <code>invited_email</code> (bound email, if any)</td>
+</tr>
+<tr>
+<td><code>project_invite.revoked</code></td>
+<td>success</td>
+<td>actor = project owner or admin</td>
+<td><code>project_invite_id</code>, <code>shared_project_id</code></td>
+</tr>
+<tr>
+<td><code>project_invite.accepted</code></td>
+<td>success</td>
+<td>actor = the account that joined (new or existing), target = the link&#39;s creator</td>
+<td><code>project_invite_id</code>, <code>shared_project_id</code>, <code>project_role</code></td>
+</tr>
+<tr>
 <td><code>settings.changed</code></td>
 <td>success</td>
 <td>actor = owner (the user for <code>encryption*</code>)</td>
-<td><code>setting</code> (<code>audit.retention_days</code>, <code>audit.log_ip</code>, <code>webhooks_allow_private</code>, <code>mfa.required</code>, <code>mcp.enabled</code>, <code>mcp.writes</code>, <code>agent.writes</code> (actor = the user), <code>caldav.enabled</code>, <code>oidc.*</code>, <code>encryption</code>, <code>encryption.keys</code>), <code>from</code>, <code>to</code></td>
+<td><code>setting</code> (<code>audit.retention_days</code>, <code>audit.log_ip</code>, <code>webhooks_allow_private</code>, <code>mfa.required</code>, <code>mcp.enabled</code>, <code>mcp.writes</code>, <code>agent.writes</code> (actor = the user), <code>caldav.enabled</code>, <code>project_invites.members_create_accounts</code>, <code>oidc.*</code>, <code>encryption</code>, <code>encryption.keys</code>), <code>from</code>, <code>to</code></td>
 </tr>
 <tr>
 <td><code>export.requested</code></td>
@@ -2118,6 +2178,55 @@ curl -X POST … -d '{&quot;userId&quot;:&quot;&lt;bob&gt;&quot;}' $BASE/api/v1/
 # 200 membership; Bob is the owner, the previous owner an admin</code></pre>
 <p>Collections, single reads and the export include the shared projects and their tasks; a shared project carries the read-only keys <code>role</code> (yours) and <code>owner_id</code>. They are ignored when sent back in a write. REST writes are checked with the same role table as sync: a refused write answers <code>403 forbidden</code> and stores nothing. A task cannot change sharing scope: <code>PATCH</code> of <code>project_id</code> to a project shared differently (or to the Inbox from a shared project) answers <code>400 scope_change</code>; create a copy in the destination and delete the original instead, which is what the web app does.</p>
 <p>Membership changes are recorded in the audit log as <code>role.changed</code> with <code>from</code>/<code>to</code> values such as <code>none</code> → <code>project.editor</code>.</p>
+<h3 id="project-invite-links">Project invite links<a class="anchor" href="#project-invite-links" aria-label="Link to this section: Project invite links">#</a></h3>
+<p>A project&#39;s owner or admin can invite someone with a single-use link instead of an email (OpenSpec <code>project-invite-links</code>). Opening the link adds the person to the project with the link&#39;s role; it can also create their account. Links are server-side account data: never written to the op log, never synced, and every route needs a connection.</p>
+<p><strong>Create</strong> — <code>POST /api/v1/projects/{id}/invites</code> (owner or admin of the project; a <em>fresh</em> session, like invitations; <code>read</code> and <code>agent</code> tokens get 403 <code>insufficient_scope</code>):</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>role</code></td>
+<td><code>viewer</code>, <code>editor</code> or <code>admin</code></td>
+<td>required; <code>admin</code> only for the project&#39;s owner (an admin gets 403 <code>forbidden</code>)</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>string</td>
+<td>Bind the link to one address (matched case-insensitively when it is used)</td>
+</tr>
+<tr>
+<td><code>expiresInHours</code></td>
+<td>integer 1–720</td>
+<td>Default 168 (seven days)</td>
+</tr>
+</tbody></table></div>
+<pre tabindex="0"><code class="language-json">{
+  &quot;invite&quot;: {
+    &quot;id&quot;: &quot;…&quot;, &quot;projectId&quot;: &quot;…&quot;, &quot;role&quot;: &quot;editor&quot;, &quot;email&quot;: null,
+    &quot;createdBy&quot;: &quot;&lt;your id&gt;&quot;, &quot;createdByName&quot;: &quot;Alice&quot;,
+    &quot;createdAt&quot;: 1760000000000, &quot;expiresAt&quot;: 1760604800000
+  },
+  &quot;link&quot;: &quot;https://todo.example.com/invite/p/otp_…&quot;,
+  &quot;newAccounts&quot;: true
+}</code></pre>
+<p>The <code>link</code> holds the secret and is returned exactly once; the server stores a hash. <code>newAccounts</code> says whether the link can create an account right now (see below). A viewer or editor gets 403 <code>forbidden</code>, a non-member 404 <code>not_found</code>; bad input is 400 <code>invalid_input</code> naming the field; 20 links per account per hour (429 <code>rate_limited</code>). An end-to-end encrypted account cannot create a link for a project it has not shared yet (409 <code>encryption_enabled</code>).</p>
+<p><strong>List</strong> — <code>GET /api/v1/projects/{id}/invites</code> → <code>{invites: [...]}</code>: the pending links of the project, newest first, same shape as above, never a secret.</p>
+<p><strong>Revoke</strong> — <code>DELETE /api/v1/projects/{id}/invites/{inviteId}</code> → 204 (any owner or admin of the project; repeating it is a no-op). An accepted link answers 409 <code>invitation_spent</code>, an unknown id 404 <code>not_found</code>.</p>
+<p><strong>Preview</strong> — <code>GET /api/v1/project-invites/{token}</code> needs no authentication:</p>
+<pre tabindex="0"><code class="language-json">{&quot;inviterName&quot;: &quot;Alice&quot;, &quot;projectName&quot;: &quot;Home&quot;, &quot;role&quot;: &quot;editor&quot;, &quot;email&quot;: null,
+ &quot;expiresAt&quot;: 1760604800000, &quot;canCreateAccount&quot;: true}</code></pre>
+<p><code>alreadyMember</code> (true or false) is added when the request carries a session. No ids are returned. Unknown, expired, revoked and used links, links to a deleted project, links whose creator was deactivated or can no longer grant the role (removed from the project, or no longer its owner or admin) all answer the same 404 <code>invitation_invalid</code>. Rate limited per client address together with sign-in.</p>
+<p><strong>Join while signed in</strong> — <code>POST /api/v1/project-invites/{token}/accept</code> (session or full token) → 200 <code>{projectId, role}</code>. The account becomes a member, the link is spent, and the devices of every member are woken to sync. Errors: 409 <code>already_member</code> (the link stays pending), 403 <code>invitation_email_mismatch</code>, 404 <code>invitation_invalid</code> (also when the creator lost the right since the preview, or another acceptance won).</p>
+<p><strong>Join with a new account</strong> — <code>POST /api/v1/auth/register</code> with <code>projectInvite</code>:</p>
+<pre tabindex="0"><code class="language-bash">curl -sS &quot;$OT/api/v1/auth/register&quot; -H 'Content-Type: application/json' \
+  -d '{&quot;email&quot;:&quot;dora@example.com&quot;,&quot;name&quot;:&quot;Dora&quot;,&quot;password&quot;:&quot;a long passphrase&quot;,&quot;projectInvite&quot;:&quot;otp_…&quot;}'
+# 201 {&quot;user&quot;:{…,&quot;role&quot;:&quot;member&quot;},&quot;projectId&quot;:&quot;…&quot;,&quot;role&quot;:&quot;editor&quot;} + session cookie</code></pre>
+<p>The account, the membership and the spend commit in one transaction, so a link creates at most one account. A link may create an account when its creator is the server owner or an admin, when open sign-up is on, or when the owner turned on <strong>Members can invite new people with project links</strong> (<code>PUT /api/v1/settings/project-invites</code> <code>{&quot;membersCanInviteNewPeople&quot;: true}</code>; off by default; any signed-in account can read it with <code>GET</code>). Otherwise the answer is 403 <code>project_invite_not_allowed</code> and the person signs in with an existing account first. In SSO-only mode registration answers 403 <code>sso_required</code>; the person signs in through the provider and then joins. Other errors as for invitations (<code>invitation_email_mismatch</code>, <code>email_taken</code>, <code>invalid_input</code>); in every error case the link stays pending.</p>
 <h3 id="assignment-and-notifications">Assignment and notifications<a class="anchor" href="#assignment-and-notifications" aria-label="Link to this section: Assignment and notifications">#</a></h3>
 <p>A task&#39;s <code>assignee_id</code> (OpenSpec <code>task-assignment</code>) is an ordinary task field: set it with <code>POST /api/v1/tasks</code> or <code>PATCH /api/v1/tasks/{id}</code>, clear it with <code>null</code>. In a shared project the assignee must be a current member; for a task in your Inbox or an unshared project it must be you. Viewers cannot assign (<code>403 forbidden</code>, like any write). A refused assignment answers <code>400 not_a_member</code> and stores nothing; the sync endpoint refuses the same operation individually with <code>rejected: [{&quot;id&quot;:&quot;…&quot;,&quot;reason&quot;:&quot;not_a_member&quot;}]</code>.</p>
 <p>When a member leaves or is removed, the server clears <code>assignee_id</code> on every task of that project assigned to them with operations of its own (device <code>server</code>), so every member&#39;s devices see the tasks unassigned after their next sync.</p>
@@ -2515,7 +2624,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <li>Writes to unknown fields or with wrong types are rejected as a whole; nothing is partially applied.</li>
 <li>Deletes are tombstones. Use <code>include_deleted=true</code> or the export to see them.</li>
 <li>Request bodies are limited to 4 MB, except import uploads (<code>OPENTODO_IMPORT_MAX_MB</code>, default 20 MB).</li>
-<li>Rate limits (per IP): <code>auth/login</code>, <code>auth/register</code>, <code>auth/passkey</code>, the invitation preview and the password-reset routes share one window of 10 per minute; <code>auth/passkey/options</code>, <code>auth/mfa</code> and <code>auth/reauth</code> each have their own window of 10 per minute; <code>auth/oidc/start</code> and <code>auth/oidc/callback</code> share a window of 20 per minute; failed <code>/mcp</code> authentications count toward the login window. Per account: invitation creation 20 per hour, mutating <code>/users</code> requests 60 per hour, <code>/me/password</code> 10 per hour, new comments 60 per minute, email-inbox changes 30 per hour.</li>
+<li>Rate limits (per IP): <code>auth/login</code>, <code>auth/register</code>, <code>auth/passkey</code>, the invitation preview, the project invite link preview and accept routes and the password-reset routes share one window of 10 per minute; <code>auth/passkey/options</code>, <code>auth/mfa</code> and <code>auth/reauth</code> each have their own window of 10 per minute; <code>auth/oidc/start</code> and <code>auth/oidc/callback</code> share a window of 20 per minute; failed <code>/mcp</code> authentications count toward the login window. Per account: invitation creation 20 per hour, project invite link creation 20 per hour, mutating <code>/users</code> requests 60 per hour, <code>/me/password</code> 10 per hour, new comments 60 per minute, email-inbox changes 30 per hour.</li>
 </ul>
 <h3 id="error-codes">Error codes<a class="anchor" href="#error-codes" aria-label="Link to this section: Error codes">#</a></h3>
 <p>Every error answers <code>{&quot;error&quot;:{&quot;code&quot;,&quot;message&quot;}}</code>; some validation errors add <code>field</code>. Codes by area (the sections above give the details):</p>
@@ -2581,7 +2690,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>demo_restricted</code></td>
 <td>403</td>
-<td>a feature a demo instance (<code>OPENTODO_DEMO=true</code>) refuses, before authentication: sign-up, invitations, user administration, password change and resets, tokens, app passwords, CalDAV, passkeys, two-factor, settings writes, backups, webhooks, email inbox, import, encryption, push, membership changes, <code>/mcp</code>, the assistant (<code>/api/v1/assistant/*</code>, <code>/api/v1/me/assistant*</code>). See <a href="/docs/self-hosting/demo/#what-is-switched-off">demo instance</a></td>
+<td>a feature a demo instance (<code>OPENTODO_DEMO=true</code>) refuses, before authentication: sign-up, invitations, user administration, password change and resets, tokens, app passwords, CalDAV, passkeys, two-factor, settings writes, backups, webhooks, email inbox, import, encryption, push, membership changes, project invite links (every method), <code>/mcp</code>, the assistant (<code>/api/v1/assistant/*</code>, <code>/api/v1/me/assistant*</code>). See <a href="/docs/self-hosting/demo/#what-is-switched-off">demo instance</a></td>
 </tr>
 <tr>
 <td><code>not_found</code></td>
@@ -2656,12 +2765,17 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>invitation_invalid</code></td>
 <td>404</td>
-<td>unknown, expired, revoked or already accepted invitation</td>
+<td>unknown, expired, revoked or already accepted invitation or project invite link; a project link whose project was deleted or whose creator can no longer grant its role</td>
+</tr>
+<tr>
+<td><code>project_invite_not_allowed</code></td>
+<td>403</td>
+<td>registering through a project invite link that may not create accounts (see <a href="#project-invite-links">Project invite links</a>)</td>
 </tr>
 <tr>
 <td><code>invitation_spent</code></td>
 <td>409</td>
-<td>revoking an accepted invitation</td>
+<td>revoking an accepted invitation or project invite link</td>
 </tr>
 <tr>
 <td><code>reset_invalid</code></td>
@@ -2781,7 +2895,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>already_member</code></td>
 <td>409</td>
-<td>adding an account that is already a member of the project</td>
+<td>adding an account that is already a member of the project, or accepting a project invite link as one</td>
 </tr>
 <tr>
 <td><code>owner_must_transfer</code></td>
@@ -2918,11 +3032,11 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
       <a class="next" rel="next" href="/docs/cli/"><span>Next</span>Command-line client</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li><li><a href="#in-app-assistant">In-app assistant</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#project-invite-links">Project invite links</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li><li><a href="#in-app-assistant">In-app assistant</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
