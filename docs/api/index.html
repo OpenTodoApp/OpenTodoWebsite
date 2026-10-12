@@ -48,7 +48,7 @@
 <p class="side-group">Get started</p>
 <ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/install-app/">Installing the app</a></li></ul>
 <p class="side-group">Guides</p>
-<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
+<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/assistant/">AI assistant</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
 <p class="side-group">Reference</p>
 <ul><li><a href="/docs/quick-add/">Quick add syntax</a></li><li><a href="/docs/filters/">Filter queries</a></li><li><a href="/docs/recurrence/">Recurring task rules</a></li><li><a href="/docs/reminders/">Reminders reference</a></li><li><a href="/docs/capture/">Capturing pages</a></li><li><a href="/docs/import/">Import formats</a></li><li><a href="/docs/e2ee/">End-to-end encryption</a></li></ul>
 </div>
@@ -85,7 +85,7 @@
 <p class="side-group">Get started</p>
 <ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/install-app/">Installing the app</a></li></ul>
 <p class="side-group">Guides</p>
-<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
+<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/assistant/">AI assistant</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
 <p class="side-group">Reference</p>
 <ul><li><a href="/docs/quick-add/">Quick add syntax</a></li><li><a href="/docs/filters/">Filter queries</a></li><li><a href="/docs/recurrence/">Recurring task rules</a></li><li><a href="/docs/reminders/">Reminders reference</a></li><li><a href="/docs/capture/">Capturing pages</a></li><li><a href="/docs/import/">Import formats</a></li><li><a href="/docs/e2ee/">End-to-end encryption</a></li></ul>
 </div>
@@ -104,7 +104,7 @@
       <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.2.0</span></p>
 <h1 id="http-api">HTTP API</h1>
 <p>Base path: <code>/api/v1</code>. All requests and responses are JSON. Errors look like:</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li><li><a href="#in-app-assistant">In-app assistant</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></details>
 
 <pre tabindex="0"><code class="language-json">{ &quot;error&quot;: { &quot;code&quot;: &quot;invalid_input&quot;, &quot;message&quot;: &quot;task.priority must be an integer from 1 (highest) to 4 (lowest)&quot; } }</code></pre>
 <h2 id="authentication">Authentication<a class="anchor" href="#authentication" aria-label="Link to this section: Authentication">#</a></h2>
@@ -2409,6 +2409,54 @@ curl -X POST -H &quot;Authorization: Bearer $TOKEN&quot; https://todo.example.co
 # 200 {&quot;purged&quot;:3,&quot;notice&quot;:&quot;Superseded content operations were deleted from the server. Backups made before this point, …&quot;}
 # without a key record: 409 {&quot;error&quot;:{&quot;code&quot;:&quot;encryption_disabled&quot;,…}}</code></pre>
 <p>Replacing the record (passphrase change, recovery reset) and <code>DELETE</code> need a fresh re-authentication on cookie sessions (403 <code>reauth_required</code>). <code>GET /api/v1/me</code> and <code>GET /api/v1/auth/status</code> carry <code>&quot;encryption&quot;:{&quot;enabled&quot;:true,&quot;keyVersion&quot;:2}</code> and <code>&quot;minClientVersion&quot;:1</code>. The export adds <code>&quot;encryption&quot;</code>: the key record, or <code>null</code>. Refused for encrypted accounts with 409 <code>encryption_enabled</code>: the first share of a project (<code>POST /api/v1/projects/{id}/members</code> on an unshared project) and <code>POST /api/v1/app-passwords</code>; <code>/dav/</code> answers 403. <code>GET /api/v1/settings/caldav</code> adds <code>&quot;encryption&quot;: true|false</code> for the caller.</p>
+<h3 id="in-app-assistant">In-app assistant<a class="anchor" href="#in-app-assistant" aria-label="Link to this section: In-app assistant">#</a></h3>
+<p>The <a href="/docs/assistant/">in-app assistant</a> (OpenSpec <code>in-app-assistant</code>). Every route requires authentication. Settings, consent and usage are server state, never ops; conversations exist only on the device. Keys are write-only: no route ever returns one.</p>
+<p><strong>Owner settings</strong> — <code>GET /api/v1/settings/assistant</code> returns, for the owner:</p>
+<pre tabindex="0"><code class="language-json">{
+  &quot;enabled&quot;: true, &quot;active&quot;: true, &quot;default_provider&quot;: &quot;anthropic&quot;,
+  &quot;providers&quot;: {
+    &quot;anthropic&quot;:  {&quot;enabled&quot;: true,  &quot;model&quot;: &quot;claude-opus-5-5&quot;, &quot;key_set&quot;: true,  &quot;label&quot;: &quot;Anthropic (Claude)&quot;},
+    &quot;openai&quot;:     {&quot;enabled&quot;: false, &quot;model&quot;: &quot;&quot;,                &quot;key_set&quot;: false, &quot;label&quot;: &quot;OpenAI&quot;},
+    &quot;gemini&quot;:     {&quot;enabled&quot;: false, &quot;model&quot;: &quot;&quot;,                &quot;key_set&quot;: false, &quot;label&quot;: &quot;Google Gemini&quot;},
+    &quot;compatible&quot;: {&quot;enabled&quot;: false, &quot;model&quot;: &quot;&quot;, &quot;base_url&quot;: &quot;&quot;, &quot;key_set&quot;: false, &quot;label&quot;: &quot;…&quot;}
+  },
+  &quot;allow_member_keys&quot;: false, &quot;monthly_token_cap_per_user&quot;: 500000, &quot;allow_private_endpoint&quot;: false,
+  &quot;anthropic_models&quot;: [&quot;claude-opus-5-5&quot;, &quot;claude-sonnet-5-5&quot;, &quot;claude-haiku-5-5&quot;], &quot;default_model&quot;: &quot;claude-opus-5-5&quot;
+}</code></pre>
+<p>Members get a status without keys or base URL: <code>{enabled, provider, provider_label, model, allow_member_keys, monthly_token_cap_per_user}</code>. <code>PUT</code> (owner only, 403 <code>forbidden</code> otherwise) takes the same fields (a provider object replaces that provider&#39;s settings) plus <code>keys</code>: <code>{&quot;anthropic&quot;: &quot;sk-…&quot;}</code> sets a key, <code>&quot;&quot;</code> removes it, an absent provider keeps it. Unknown fields are refused. Errors: 400 <code>invalid_input</code> naming the field (an unknown provider, a provider enabled without a model, a hosted provider without a key while member keys are off, the compatible provider without a valid <code>http(s)</code> base URL or with credentials in it, a disabled default provider, a negative cap); 400 <code>private_target</code> when the base URL resolves only to private, loopback, link-local or metadata addresses and <code>allow_private_endpoint</code> is off. A refused request changes nothing. Every changed value is audited as <code>settings.changed</code> (<code>assistant.&lt;field&gt;</code>; keys as <code>assistant.&lt;provider&gt;.key</code> from <code>unset</code> to <code>set</code> or back, never the value; a base URL by scheme and host only).</p>
+<pre tabindex="0"><code class="language-bash">curl -sS -X PUT &quot;$OT/api/v1/settings/assistant&quot; -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Content-Type: application/json' \
+  -d '{&quot;enabled&quot;:true,&quot;default_provider&quot;:&quot;compatible&quot;,&quot;allow_private_endpoint&quot;:true,
+       &quot;providers&quot;:{&quot;compatible&quot;:{&quot;enabled&quot;:true,&quot;model&quot;:&quot;llama3.1&quot;,&quot;base_url&quot;:&quot;http://192.168.1.20:11434/v1&quot;}}}'</code></pre>
+<p><strong>Test connection</strong> — <code>POST /api/v1/settings/assistant/test</code> with <code>{&quot;provider&quot;:&quot;compatible&quot;}</code> (owner only) sends one minimal request with one tool, using the saved settings and key, and answers 200 <code>{ok, code?, message, status?}</code>. <code>code</code> is <code>no_tool_support</code> when the endpoint refuses tool definitions but answers without them, <code>no_key</code>, <code>private_target</code>, <code>provider_auth</code>, <code>provider_rate_limited</code> or <code>provider_error</code>.</p>
+<p><strong>Your consent and key</strong> — <code>GET /api/v1/me/assistant</code>:</p>
+<pre tabindex="0"><code class="language-json">{
+  &quot;available&quot;: true, &quot;enabled&quot;: true, &quot;reason&quot;: &quot;&quot;,
+  &quot;provider&quot;: &quot;anthropic&quot;, &quot;provider_label&quot;: &quot;Anthropic (Claude)&quot;, &quot;model&quot;: &quot;claude-opus-5-5&quot;,
+  &quot;consented&quot;: true, &quot;consent&quot;: {&quot;accepted_at&quot;: 1760000000000, &quot;disclosure_version&quot;: 1, &quot;provider&quot;: &quot;anthropic&quot;},
+  &quot;disclosure_version&quot;: 1, &quot;fields&quot;: [&quot;task titles and descriptions&quot;, &quot;…&quot;],
+  &quot;allow_member_keys&quot;: false, &quot;own_key_set&quot;: false, &quot;operator_key_set&quot;: true
+}</code></pre>
+<p><code>reason</code> is <code>disabled</code>, <code>no_provider</code> or <code>encryption_enabled</code> when <code>available</code> is false. <code>consented</code> is true only for the current disclosure version and provider. <code>PUT /api/v1/me/assistant</code> (sessions and full tokens) takes <code>{&quot;consent&quot;: true, &quot;provider&quot;: &quot;&lt;the provider the disclosure named&gt;&quot;}</code>, <code>{&quot;consent&quot;: false}</code> to withdraw, and <code>{&quot;own_key&quot;: &quot;…&quot;}</code> (<code>&quot;&quot;</code> removes it) when the owner allows member keys (403 <code>forbidden</code> otherwise; audited as <code>assistant.own_key.&lt;provider&gt;</code>). Errors: 409 <code>provider_changed</code> when <code>provider</code> is not the one in effect, 409 <code>encryption_enabled</code>, 409 <code>assistant_disabled</code>. Deleting an account deletes its key.</p>
+<p><strong>Usage</strong> — <code>GET /api/v1/me/assistant/usage</code> → <code>{month, input_tokens, output_tokens, total_tokens, turns, cap, resets_at}</code> for the current UTC month, counted from the provider&#39;s usage fields.</p>
+<p><strong>A turn</strong> — <code>POST /api/v1/assistant/turn</code>, <strong>signed-in sessions only</strong>:</p>
+<pre tabindex="0"><code class="language-json">{&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;text&quot;: &quot;move everything overdue to Friday&quot;}], &quot;timezone&quot;: &quot;Europe/Rome&quot;, &quot;view&quot;: &quot;today&quot;, &quot;selected&quot;: []}</code></pre>
+<p><code>messages</code> is the device&#39;s conversation (at most 40, the last from the user; the whole body at most 256 KB); <code>timezone</code> is an IANA zone; <code>view</code> and <code>selected</code> are optional context. Checks, in order, before any provider request: 404 <code>not_found</code> while the assistant is off; 403 <code>session_required</code> for API tokens; 409 <code>encryption_enabled</code>; 403 <code>consent_required</code>; 413 <code>too_large</code>; 400 <code>invalid_input</code>; 429 <code>assistant_quota</code> (with <code>resets_at</code>); 409 <code>turn_in_progress</code> (one turn per person); 503 <code>assistant_busy</code> with <code>Retry-After</code> (8 turns server-wide); 409 <code>no_key</code>. Cookie requests from another origin get 403 <code>bad_origin</code>.</p>
+<p>The answer is a <code>text/event-stream</code>:</p>
+<pre tabindex="0"><code>event: status
+data: {&quot;text&quot;:&quot;Looking at Today…&quot;}
+
+event: text
+data: {&quot;text&quot;:&quot;I've proposed moving 12 tasks to Friday. &quot;}
+
+event: usage
+data: {&quot;input&quot;:2700,&quot;output&quot;:360,&quot;month_total&quot;:18240,&quot;cap&quot;:500000}
+
+event: changeset
+data: {&quot;items&quot;:[{&quot;entity&quot;:&quot;task&quot;,&quot;entityId&quot;:&quot;…&quot;,&quot;patch&quot;:{&quot;due&quot;:{&quot;date&quot;:&quot;2026-10-16&quot;}},&quot;base&quot;:{&quot;due&quot;:{&quot;date&quot;:&quot;2026-10-09&quot;}},&quot;shared&quot;:false}],&quot;limit&quot;:50}
+
+event: done
+data: {&quot;stop_reason&quot;:&quot;end_turn&quot;,&quot;server_time&quot;:&quot;2026-10-12T10:00:00Z&quot;}</code></pre>
+<p><code>changeset</code> comes at most once, only after <code>end_turn</code>, with at most 50 entities: <code>patch</code> is what to write, <code>base</code> the values it was planned on (for &quot;changed since proposed&quot;), <code>create</code> marks new entities, <code>shared</code> marks shared projects. The server never applies it: the app applies the confirmed part as ordinary ops with device <code>assistant:&lt;device-id&gt;</code>, which <code>/api/v1/sync</code> accepts and history labels &quot;Assistant&quot;. <code>done.stop_reason</code> is <code>end_turn</code>, <code>max_tokens</code> (with a <code>message</code>; no change set), <code>refusal</code> (<code>message</code>: &quot;The model declined this request.&quot;; no change set) or <code>round_limit</code> (more than 8 model calls). A failure ends the stream with <code>event: error</code> and <code>{code, message}</code>: <code>provider_auth</code>, <code>provider_rate_limited</code>, <code>provider_error</code> or <code>timeout</code>; never a key. Usage is recorded whatever the outcome.</p>
 <h2 id="examples">Examples<a class="anchor" href="#examples" aria-label="Link to this section: Examples">#</a></h2>
 <p>Create a task due tomorrow at 9:00 in a project:</p>
 <pre tabindex="0"><code class="language-bash">curl -sS &quot;$OT/api/v1/tasks&quot; -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Content-Type: application/json' \
@@ -2493,7 +2541,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>invalid_op</code></td>
 <td>400</td>
-<td><code>/api/v1/sync</code> batch with an op that fails schema validation (unknown entity or field, wrong type), or a device id starting with the reserved <code>agent:</code> or <code>caldav:</code>; nothing in the batch is applied</td>
+<td><code>/api/v1/sync</code> batch with an op that fails schema validation (unknown entity or field, wrong type), or a device id starting with the reserved <code>agent:</code> or <code>caldav:</code> (<code>assistant:</code> is a device prefix and is accepted); nothing in the batch is applied</td>
 </tr>
 <tr>
 <td><code>unauthorized</code></td>
@@ -2516,6 +2564,11 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <td>cookie-authenticated write from another origin; any <code>/mcp</code> request whose <code>Origin</code> is not this server</td>
 </tr>
 <tr>
+<td><code>session_required</code></td>
+<td>403</td>
+<td><code>POST /api/v1/assistant/turn</code> with an API token: the assistant is used from the app while signed in</td>
+</tr>
+<tr>
 <td><code>insufficient_scope</code></td>
 <td>403</td>
 <td>a write route or <code>/api/v1/sync</code> called with a <code>read</code> or <code>agent</code> API token; <code>/api/v1/me/agent-access</code> with either</td>
@@ -2528,7 +2581,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>demo_restricted</code></td>
 <td>403</td>
-<td>a feature a demo instance (<code>OPENTODO_DEMO=true</code>) refuses, before authentication: sign-up, invitations, user administration, password change and resets, tokens, app passwords, CalDAV, passkeys, two-factor, settings writes, backups, webhooks, email inbox, import, encryption, push, membership changes, <code>/mcp</code>. See <a href="/docs/self-hosting/demo/#what-is-switched-off">demo instance</a></td>
+<td>a feature a demo instance (<code>OPENTODO_DEMO=true</code>) refuses, before authentication: sign-up, invitations, user administration, password change and resets, tokens, app passwords, CalDAV, passkeys, two-factor, settings writes, backups, webhooks, email inbox, import, encryption, push, membership changes, <code>/mcp</code>, the assistant (<code>/api/v1/assistant/*</code>, <code>/api/v1/me/assistant*</code>). See <a href="/docs/self-hosting/demo/#what-is-switched-off">demo instance</a></td>
 </tr>
 <tr>
 <td><code>not_found</code></td>
@@ -2543,7 +2596,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>too_large</code></td>
 <td>413</td>
-<td><code>/mcp</code> body over 1 MB; import file over <code>OPENTODO_IMPORT_MAX_MB</code> or 50,000 rows</td>
+<td><code>/mcp</code> body over 1 MB; an assistant turn over 256 KB or 40 messages; import file over <code>OPENTODO_IMPORT_MAX_MB</code> or 50,000 rows</td>
 </tr>
 <tr>
 <td><code>rate_limited</code></td>
@@ -2801,6 +2854,61 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <td><code>/mcp</code> with an <code>MCP-Protocol-Version</code> header naming an unsupported version</td>
 </tr>
 </tbody></table></div>
+<p><strong>In-app assistant</strong></p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Status</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>consent_required</code></td>
+<td>403</td>
+<td>an assistant turn before you accepted the disclosure for the current provider</td>
+</tr>
+<tr>
+<td><code>encryption_enabled</code></td>
+<td>409</td>
+<td>an assistant turn or consent for an end-to-end encrypted account</td>
+</tr>
+<tr>
+<td><code>turn_in_progress</code></td>
+<td>409</td>
+<td>a second assistant turn while your first is still answering</td>
+</tr>
+<tr>
+<td><code>no_key</code></td>
+<td>409</td>
+<td>an assistant turn when the provider needs a key and none is stored</td>
+</tr>
+<tr>
+<td><code>provider_changed</code></td>
+<td>409</td>
+<td>accepting a disclosure that named a provider no longer in effect</td>
+</tr>
+<tr>
+<td><code>assistant_disabled</code></td>
+<td>409</td>
+<td>accepting the disclosure while the assistant is off</td>
+</tr>
+<tr>
+<td><code>assistant_quota</code></td>
+<td>429</td>
+<td>an assistant turn at your monthly token allowance; <code>resets_at</code> names the reset date</td>
+</tr>
+<tr>
+<td><code>assistant_busy</code></td>
+<td>503</td>
+<td>8 assistant turns already running on the server; retry after <code>Retry-After</code></td>
+</tr>
+<tr>
+<td><code>private_target</code></td>
+<td>400</td>
+<td>the compatible endpoint&#39;s base URL resolves only to private addresses and private endpoints are not allowed</td>
+</tr>
+</tbody></table></div>
 <p>CalDAV (<code>/dav/</code>) answers with WebDAV status codes and precondition elements instead of this envelope; MCP tool errors are JSON-RPC errors (see <a href="/docs/mcp/#protocol-details">mcp.md</a>).</p>
 
       <p class="edit"><a href="https://github.com/pixari/opentodo/edit/main/docs/api.md" rel="noopener">Edit this page on GitHub</a></p>
@@ -2810,7 +2918,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
       <a class="next" rel="next" href="/docs/cli/"><span>Next</span>Command-line client</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#authentication">Authentication</a><ul><li><a href="#how-a-non-browser-client-signs-in">How a non-browser client signs in</a></li><li><a href="#endpoints">Endpoints</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#two-factor-authentication">Two-factor authentication</a></li><li><a href="#single-sign-on">Single sign-on</a></li><li><a href="#idempotency-keys">Idempotency keys</a></li><li><a href="#credential-introspection">Credential introspection</a></li><li><a href="#agent-tokens">Agent tokens</a></li><li><a href="#task-fields">Task fields</a></li><li><a href="#subtasks">Subtasks</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#project-fields">Project fields</a></li><li><a href="#sub-projects">Sub-projects</a></li><li><a href="#sections">Sections</a></li><li><a href="#label-fields">Label fields</a></li><li><a href="#view-fields">View fields</a></li><li><a href="#reminders-and-push">Reminders and push</a></li><li><a href="#invitations">Invitations</a></li><li><a href="#user-administration">User administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#sharing">Sharing</a></li><li><a href="#assignment-and-notifications">Assignment and notifications</a></li><li><a href="#trash-and-history">Trash and history</a></li><li><a href="#comments-and-activity">Comments and activity</a></li><li><a href="#activity-feed">Activity feed</a></li><li><a href="#import">Import</a></li><li><a href="#caldav-and-app-passwords">CalDAV and app passwords</a></li><li><a href="#email-to-task">Email to task</a></li><li><a href="#webhooks">Webhooks</a></li><li><a href="#end-to-end-encryption">End-to-end encryption</a></li><li><a href="#in-app-assistant">In-app assistant</a></li></ul></li><li><a href="#examples">Examples</a></li><li><a href="#behaviour-notes">Behaviour notes</a><ul><li><a href="#error-codes">Error codes</a></li></ul></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
