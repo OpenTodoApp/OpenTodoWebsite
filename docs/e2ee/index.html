@@ -235,7 +235,7 @@ additional authenticated data = utf8(entity + &quot;\0&quot; + entityId + &quot;
 </tr>
 <tr>
 <td>MCP (assistants)</td>
-<td>Encrypted titles, descriptions, project, label and section names read as &quot;Encrypted item&quot; with <code>&quot;encrypted&quot;: true</code>; <code>search_tasks</code> never matches them. Dates, priorities and structure are still reported.</td>
+<td>Encrypted titles, descriptions, project, label and section names read as &quot;Encrypted item&quot; with <code>&quot;encrypted&quot;: true</code>; <code>search_tasks</code> never matches them. Dates, priorities and structure are still reported. Write tools that need readable text are not offered and are refused with <code>encryption_enabled</code>; scheduling, completing, moving, priorities and labels still work.</td>
 </tr>
 <tr>
 <td>Email to task</td>
