@@ -191,7 +191,7 @@
           <article class="card c-wide reveal">
             <div class="card-copy">
               <h3>An API that's a first-class citizen</h3>
-              <p>REST endpoints and API tokens write through the same op log as the app. Create a task with <code>curl</code> and watch it land on your phone within a second or two. CalDAV, webhooks, a CLI and a read-only MCP endpoint build on the same data.</p>
+              <p>REST endpoints and API tokens write through the same op log as the app. Create a task with <code>curl</code> and watch it land on your phone within a second or two. CalDAV, webhooks, a CLI built for scripts and coding agents, and an MCP endpoint for AI assistants build on the same data.</p>
             </div>
             <pre class="code" aria-label="Example API call"><span class="c"># add a task from a script</span>
 <span class="k">curl</span> -X POST $OPENTODO/api/v1/tasks \
@@ -367,8 +367,11 @@
                 <button type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="tour-shot" data-shot="assets/shots/settings-webhooks.webp" data-alt="Webhooks list with two endpoints and their events">
                   <b>Webhooks</b><span>Signed events for Home Assistant, n8n or a chat relay, with retries and a delivery log.</span>
                 </button>
-                <button type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="tour-shot" data-shot="assets/shots/settings-ai.webp" data-alt="AI assistants settings with the MCP endpoint and read-only tokens">
-                  <b>AI assistants (MCP)</b><span>A read-only Model Context Protocol endpoint, off until the owner turns it on.</span>
+                <button type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="tour-shot" data-shot="assets/shots/assistant.webp" data-alt="The assistant panel beside the Inbox proposing to move three overdue tasks to Friday, with Apply all and Discard buttons">
+                  <b>AI assistant</b><span>Ask about your tasks and review the changes it proposes. Your provider and key, off until the owner turns it on.</span>
+                </button>
+                <button type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="tour-shot" data-shot="assets/shots/settings-ai.webp" data-alt="AI assistants settings with the MCP endpoint and agent tokens">
+                  <b>AI assistants (MCP)</b><span>Connect the assistant you already use. Read-only by default; changes only when you allow them.</span>
                 </button>
                 <button type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="tour-shot" data-shot="assets/shots/settings-email.webp" data-alt="Email to task settings with a personal secret address">
                   <b>Email to task</b><span>Forward a mail to your secret address and it lands in the Inbox. No mail server to run.</span>
@@ -521,7 +524,8 @@
               <li><a href="https://github.com/pixari/opentodo/tree/main/openspec/specs/webhooks" rel="noopener">Outbound webhooks</a></li>
               <li><a href="https://github.com/pixari/opentodo/tree/main/openspec/specs/data-import" rel="noopener">Import from JSON &amp; CSV</a></li>
               <li><a href="https://github.com/pixari/opentodo/tree/main/openspec/specs/backups" rel="noopener">Scheduled backups to S3 / WebDAV</a></li>
-              <li><a href="https://github.com/pixari/opentodo/tree/main/openspec/specs/mcp-server" rel="noopener">Read-only MCP server</a></li>
+              <li><a href="https://github.com/pixari/opentodo/tree/main/openspec/specs/mcp-server" rel="noopener">MCP server for AI assistants</a></li>
+              <li><a href="https://github.com/pixari/opentodo/tree/main/openspec/specs/in-app-assistant" rel="noopener">AI assistant in the app</a></li>
             </ul>
           </article>
           <article class="rm-card reveal">
