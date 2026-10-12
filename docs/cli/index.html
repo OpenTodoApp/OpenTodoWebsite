@@ -224,8 +224,11 @@ ot project archive Garden [--undo]
 ot project rm Garden [--yes]</code></pre>
 <p>Projects are referenced by name (case-insensitive), full id or unique id prefix.</p>
 <h2 id="tokens-and-export">Tokens and export<a class="anchor" href="#tokens-and-export" aria-label="Link to this section: Tokens and export">#</a></h2>
-<pre tabindex="0"><code class="language-bash">ot token list
+<p><code>--scope</code> is <code>full</code> (the default), <code>read</code> or <code>agent</code>; anything else exits with code 2 before a request is sent. An <code>agent</code> token is for an <a href="/docs/mcp/#letting-an-assistant-make-changes">AI assistant</a>: it reads like a read-only token and can make changes only through the MCP write tools, and only while both assistant switches are on (the owner&#39;s and yours, in Settings → AI assistants).</p>
+<pre tabindex="0"><code class="language-bash">ot token list                           # with each token's scope
 ot token create backup-script           # prints the secret once, with a notice on stderr
+ot token create reporting --scope read  # read-only: refused on every change
+ot token create desk-assistant --scope agent   # for an AI assistant that may make changes
 ot token revoke backup-script           # by name, id or id prefix
 ot export                               # full JSON export (including tombstones) to stdout
 ot export --out opentodo-$(date +%F).json</code></pre>

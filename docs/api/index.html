@@ -113,7 +113,8 @@
 <li><strong>Session cookie</strong> (the web app). Obtained from <code>auth/register</code> or <code>auth/login</code>. State-changing requests must come from the app&#39;s own origin.</li>
 <li><strong>Bearer token</strong> (scripts, CLI, AI assistants). Create one in <strong>Settings → API tokens</strong> or via <code>POST /tokens</code>, then send <code>Authorization: Bearer ot_…</code>.</li>
 </ul>
-<p>A token has a <strong>scope</strong>: <code>full</code> (the default) or <code>read</code>. A <code>read</code> token reads everything its account can read but is refused with 403 <code>insufficient_scope</code> on every request that can change something: every method other than <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and <code>/api/v1/sync</code> whatever the method. That includes creating another token, so a read token cannot escalate itself. Tokens created before scopes existed are <code>full</code>. Give read tokens to anything that only needs to look, such as an AI assistant connected to the <a href="/docs/mcp/">MCP endpoint</a>.</p>
+<p>A token has a <strong>scope</strong>: <code>full</code> (the default), <code>read</code> or <code>agent</code>. A <code>read</code> token reads everything its account can read but is refused with 403 <code>insufficient_scope</code> on every request that can change something: every method other than <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and <code>/api/v1/sync</code> whatever the method. That includes creating another token, so a read token cannot escalate itself. Tokens created before scopes existed are <code>full</code>. Give read tokens to anything that only needs to look, such as an AI assistant connected to the <a href="/docs/mcp/">MCP endpoint</a>.</p>
+<p>An <code>agent</code> token is for an AI assistant that may make changes. On the REST API it behaves exactly like a <code>read</code> token: refused on every write, including <code>/api/v1/sync</code>, <code>/api/v1/tokens</code>, every settings route and <code>/api/v1/me/agent-access</code> (even <code>GET</code>). It is the only scope that may call the MCP write tools, and only while the owner&#39;s <code>writes_enabled</code> and the user&#39;s <code>allow_writes</code> are both on (<a href="/docs/mcp/#letting-an-assistant-make-changes">mcp.md</a>). It is stored as a <code>read</code> scope plus a marker, so a server downgraded to a version without <code>agent</code> treats it as read-only.</p>
 <pre tabindex="0"><code class="language-bash">export OT=https://todo.example.com
 export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <p>If you would rather not hand-write requests, the <a href="/docs/cli/"><code>ot</code> command-line client</a> wraps this API and prints the same entity shapes with <code>--json</code>.</p>
@@ -259,6 +260,18 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 </tr>
 <tr>
 <td>GET</td>
+<td><code>/api/v1/me/agent-access</code></td>
+<td>session or <code>full</code> token</td>
+<td><code>{allow_writes, owner_allows_writes, mcp_enabled}</code>: your &quot;Allow AI assistants to make changes&quot; switch; <code>read</code> and <code>agent</code> tokens → 403 <code>insufficient_scope</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/me/agent-access</code></td>
+<td>session or <code>full</code> token</td>
+<td><code>{allow_writes: boolean}</code> → same shape; recorded as <code>settings.changed</code> (<code>agent.writes</code>); anything else → 400 <code>invalid_input</code>; demo instances → 403 <code>demo_restricted</code></td>
+</tr>
+<tr>
+<td>GET</td>
 <td><code>/api/v1/me/identities</code></td>
 <td>yes</td>
 <td><code>{identities:[…], provider}</code></td>
@@ -279,7 +292,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>POST</td>
 <td><code>/api/v1/tokens</code></td>
 <td>yes, fresh</td>
-<td><code>{name, scope?}</code> (<code>full</code> default, or <code>read</code>) → 201 <code>{token, secret}</code> (secret shown once); another scope → 400 <code>invalid_input</code></td>
+<td><code>{name, scope?}</code> (<code>full</code> default, <code>read</code> or <code>agent</code>) → 201 <code>{token, secret}</code> (secret shown once); another scope → 400 <code>invalid_input</code></td>
 </tr>
 <tr>
 <td>DELETE</td>
@@ -727,7 +740,7 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>POST</td>
 <td><code>/mcp</code></td>
 <td>bearer token only</td>
-<td>read-only Model Context Protocol endpoint, 404 while disabled; see <a href="/docs/mcp/">mcp.md</a></td>
+<td>Model Context Protocol endpoint, 404 while disabled; write tools only for <code>agent</code> tokens with both switches on; see <a href="/docs/mcp/">mcp.md</a></td>
 </tr>
 </tbody></table></div>
 <h4 id="administration-owner-and-admins">Administration (owner and admins)<a class="anchor" href="#administration-owner-and-admins" aria-label="Link to this section: Administration (owner and admins)">#</a></h4>
@@ -840,13 +853,13 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td>GET</td>
 <td><code>/api/v1/settings/mcp</code></td>
 <td>yes</td>
-<td><code>{enabled, endpoint}</code>: whether the <a href="/docs/mcp/">MCP endpoint</a> is on and its URL</td>
+<td><code>{enabled, writes_enabled, endpoint}</code>: whether the <a href="/docs/mcp/">MCP endpoint</a> is on, whether assistants may make changes, and its URL</td>
 </tr>
 <tr>
 <td>PUT</td>
 <td><code>/api/v1/settings/mcp</code></td>
 <td>owner</td>
-<td><code>{enabled}</code> → <code>{enabled, endpoint}</code></td>
+<td><code>{enabled?, writes_enabled?}</code> (at least one) → <code>{enabled, writes_enabled, endpoint}</code>; each change is recorded as <code>settings.changed</code> (<code>mcp.enabled</code>, <code>mcp.writes</code>)</td>
 </tr>
 <tr>
 <td>GET</td>
@@ -1739,7 +1752,13 @@ curl -sS &quot;$OT/api/v1/backups&quot; -H &quot;Authorization: Bearer $TOKEN&qu
 <td><code>token.created</code>, <code>token.revoked</code></td>
 <td>success</td>
 <td>actor = user</td>
-<td><code>token_id</code>, <code>token_name</code>; <code>token.created</code> also <code>token_scope</code> (<code>full</code> or <code>read</code>)</td>
+<td><code>token_id</code>, <code>token_name</code>; <code>token.created</code> also <code>token_scope</code> (<code>full</code>, <code>read</code> or <code>agent</code>)</td>
+</tr>
+<tr>
+<td><code>agent.write</code></td>
+<td>success or failure</td>
+<td>actor = user</td>
+<td><code>tool</code>, <code>token_id</code>, <code>token_name</code>, <code>count</code> (items changed; 0 on failure), <code>reason</code> on failure (<code>writes_disabled_by_owner</code>, <code>writes_disabled_by_user</code>, <code>rate_limited</code>, <code>encryption_enabled</code>, <code>not_found</code>, <code>forbidden</code>, <code>scope_change</code>, <code>not_permitted</code>, <code>invalid_arguments</code>, …). One per MCP write tool call of an <code>agent</code> token; never content or entity ids</td>
 </tr>
 <tr>
 <td><code>app_password.created</code>, <code>app_password.revoked</code></td>
@@ -1781,7 +1800,7 @@ curl -sS &quot;$OT/api/v1/backups&quot; -H &quot;Authorization: Bearer $TOKEN&qu
 <td><code>settings.changed</code></td>
 <td>success</td>
 <td>actor = owner (the user for <code>encryption*</code>)</td>
-<td><code>setting</code> (<code>audit.retention_days</code>, <code>audit.log_ip</code>, <code>webhooks_allow_private</code>, <code>mfa.required</code>, <code>mcp.enabled</code>, <code>caldav.enabled</code>, <code>oidc.*</code>, <code>encryption</code>, <code>encryption.keys</code>), <code>from</code>, <code>to</code></td>
+<td><code>setting</code> (<code>audit.retention_days</code>, <code>audit.log_ip</code>, <code>webhooks_allow_private</code>, <code>mfa.required</code>, <code>mcp.enabled</code>, <code>mcp.writes</code>, <code>agent.writes</code> (actor = the user), <code>caldav.enabled</code>, <code>oidc.*</code>, <code>encryption</code>, <code>encryption.keys</code>), <code>from</code>, <code>to</code></td>
 </tr>
 <tr>
 <td><code>export.requested</code></td>
@@ -2001,7 +2020,7 @@ curl -X POST -H &quot;Authorization: Bearer $BOB&quot; $BASE/api/v1/notification
 <p><code>projectId</code> and <code>projectName</code> are omitted for a task in the Inbox.</p>
 <h3 id="trash-and-history">Trash and history<a class="anchor" href="#trash-and-history" aria-label="Link to this section: Trash and history">#</a></h3>
 <p>Deleting (<code>DELETE /api/v1/{tasks|projects}/{id}</code>) is a tombstone: the item goes to the Trash and can be restored by writing <code>deleted_at: null</code> (<code>PATCH</code> accepts deleted items). Deleting a project leaves its tasks&#39; <code>project_id</code> alone; clients hide those tasks until the project is restored or purged.</p>
-<p>History is read from the operation log. Each change set groups the field writes made at one timestamp by one device (<code>server</code> for REST writes); <code>from</code> is the previous value in timestamp order, and <code>lost: true</code> marks a write that arrived after a newer one and never became the stored value. Members of a shared project see the history of its tasks; nobody sees another account&#39;s personal items (404 <code>not_found</code>, as for unknown ids and purged items). Restoring an old value is an ordinary write, so it appears in the history too.</p>
+<p>History is read from the operation log. Each change set groups the field writes made at one timestamp by one device (<code>server</code> for REST writes, <code>caldav:&lt;id&gt;</code> for calendar apps, <code>agent:&lt;token-id&gt;</code> for AI assistants); a change set written by an AI assistant also carries <code>device_label</code>: <code>&quot;AI assistant (&lt;token name&gt;)&quot;</code> when you own the token and it still exists, <code>&quot;AI assistant&quot;</code> otherwise. <code>from</code> is the previous value in timestamp order, and <code>lost: true</code> marks a write that arrived after a newer one and never became the stored value. Members of a shared project see the history of its tasks; nobody sees another account&#39;s personal items (404 <code>not_found</code>, as for unknown ids and purged items). Restoring an old value is an ordinary write, so it appears in the history too.</p>
 <pre tabindex="0"><code class="language-sh">curl -sS &quot;$OT/api/v1/tasks/$ID/history&quot; -H &quot;Authorization: Bearer $TOKEN&quot;
 # 200 {&quot;entity&quot;:&quot;task&quot;,&quot;id&quot;:&quot;…&quot;,&quot;more&quot;:false,&quot;changeSets&quot;:[
 #   {&quot;ts&quot;:1760090000000,&quot;device&quot;:&quot;3c54…&quot;,&quot;userId&quot;:&quot;…&quot;,&quot;changes&quot;:[{&quot;opId&quot;:&quot;…&quot;,&quot;field&quot;:&quot;title&quot;,&quot;from&quot;:null,&quot;to&quot;:&quot;Draft&quot;}]},
@@ -2339,7 +2358,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>invalid_op</code></td>
 <td>400</td>
-<td><code>/api/v1/sync</code> batch with an op that fails schema validation (unknown entity or field, wrong type); nothing in the batch is applied</td>
+<td><code>/api/v1/sync</code> batch with an op that fails schema validation (unknown entity or field, wrong type), or a device id starting with the reserved <code>agent:</code> or <code>caldav:</code>; nothing in the batch is applied</td>
 </tr>
 <tr>
 <td><code>unauthorized</code></td>
@@ -2364,7 +2383,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 <tr>
 <td><code>insufficient_scope</code></td>
 <td>403</td>
-<td>a write route or <code>/api/v1/sync</code> called with a <code>read</code> API token</td>
+<td>a write route or <code>/api/v1/sync</code> called with a <code>read</code> or <code>agent</code> API token; <code>/api/v1/me/agent-access</code> with either</td>
 </tr>
 <tr>
 <td><code>demo_token</code></td>

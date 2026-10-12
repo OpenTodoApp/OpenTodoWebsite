@@ -177,7 +177,7 @@
 <h3 id="request-flow-for-a-rest-write">Request flow for a REST write<a class="anchor" href="#request-flow-for-a-rest-write" aria-label="Link to this section: Request flow for a REST write">#</a></h3>
 <p><code>POST /api/v1/tasks</code> → auth middleware resolves the user (session cookie with origin check, or bearer token with its scope) → body fields become ops with <code>ts = now</code>, <code>device = &quot;server&quot;</code> → <code>sync.ApplyStrict</code> resolves each op&#39;s scope and checks the caller&#39;s role → after commit the observer queues webhook deliveries for genuine changes (for every member who can see the scope) and notification sinks record assignments and mentions → <code>sync.NotifyApplied</code> wakes the open event streams of everyone who can see the change → the entity is re-read from <code>scope_fields</code> → JSON response. Devices receive the ops on their next sync, which the wake-up triggers at once.</p>
 <h3 id="reads">Reads<a class="anchor" href="#reads" aria-label="Link to this section: Reads">#</a></h3>
-<p>REST collections, the export, MCP tools and resources, CalDAV reports and webhook payloads all read materialised entities through <code>sync.List</code> / <code>sync.Get</code> (and helpers such as <code>TaskComments</code>, <code>Memberships</code>), restricted to the scopes the caller can see. History and activity are derived on request from the op log (<code>ActivityOps</code>, <code>activity.Derive</code>); there is no separate activity table on the server.</p>
+<p>REST collections, the export, MCP tools (the shared agent tool registry in <code>internal/agenttools</code>, whose write tools plan changes and apply them with <code>ApplyStrict</code> as device <code>agent:&lt;token-id&gt;</code>) and resources, CalDAV reports and webhook payloads all read materialised entities through <code>sync.List</code> / <code>sync.Get</code> (and helpers such as <code>TaskComments</code>, <code>Memberships</code>), restricted to the scopes the caller can see. History and activity are derived on request from the op log (<code>ActivityOps</code>, <code>activity.Derive</code>); there is no separate activity table on the server.</p>
 <h3 id="live-updates">Live updates<a class="anchor" href="#live-updates" aria-label="Link to this section: Live updates">#</a></h3>
 <p><code>GET /api/v1/sync/events</code> is a server-sent event stream per device (<code>httpapi/events.go</code>). It carries only the latest op cursor, never data; the client reacts by running the ordinary sync exchange. <code>sync.Notifier</code> is the in-memory per-user fan-out (at most 16 streams per account). See <a href="/docs/sync/#live-updates">sync.md</a>.</p>
 <h3 id="background-work">Background work<a class="anchor" href="#background-work" aria-label="Link to this section: Background work">#</a></h3>
@@ -280,7 +280,11 @@
 </tr>
 <tr>
 <td><code>mcp</code></td>
-<td>Read-only Model Context Protocol server: a JSON-RPC 2.0 subset whose tools and <code>opentodo://</code> resources only call the materialised reads, and the owner toggle. See <a href="/docs/mcp/">mcp.md</a></td>
+<td>Model Context Protocol server: a JSON-RPC 2.0 subset that serves the tools of <code>agenttools</code> (read tools always; write tools behind the owner&#39;s switch, the user&#39;s switch and an <code>agent</code> token) and read-only <code>opentodo://</code> resources, plus the owner switches. See <a href="/docs/mcp/">mcp.md</a></td>
+</tr>
+<tr>
+<td><code>agenttools</code></td>
+<td>The one registry of tools an AI agent can call (definitions, argument validation, planning into change sets, untrusted-text marking, write limits, the write permission gate, <code>agent.write</code> audit), shared by MCP and the planned in-app assistant; writes only through <code>ApplyStrict</code>. Also the per-user &quot;Allow AI assistants to make changes&quot; switch</td>
 </tr>
 <tr>
 <td><code>email</code></td>
@@ -317,7 +321,7 @@
 </tr>
 <tr>
 <td>Accounts and credentials</td>
-<td><code>users</code>, <code>user_status</code>, <code>sessions</code>, <code>session_auth</code>, <code>session_oidc</code>, <code>api_tokens</code>, <code>api_token_scopes</code>, <code>app_passwords</code>, <code>passkeys</code>, <code>identities</code>, <code>mfa_totp</code>, <code>mfa_recovery_codes</code>, <code>trusted_devices</code>, <code>invitations</code>, <code>password_resets</code></td>
+<td><code>users</code>, <code>user_status</code>, <code>sessions</code>, <code>session_auth</code>, <code>session_oidc</code>, <code>api_tokens</code>, <code>api_token_scopes</code>, <code>api_token_agent</code>, <code>user_agent_access</code>, <code>app_passwords</code>, <code>passkeys</code>, <code>identities</code>, <code>mfa_totp</code>, <code>mfa_recovery_codes</code>, <code>trusted_devices</code>, <code>invitations</code>, <code>password_resets</code></td>
 </tr>
 <tr>
 <td>Features</td>
