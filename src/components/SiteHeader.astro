@@ -32,6 +32,7 @@ const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefi
         {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
       </ul>
     </nav>
+    <a class="btn btn-secondary btn-small header-cta header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /> Star on GitHub</a>
     <a class="btn btn-primary btn-small header-cta" href={SITE.demo}>Try the demo</a>
     <details class="nav-menu">
       <summary><Icon name="menu" size={18} /> Menu</summary>
@@ -43,7 +44,7 @@ const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefi
         </nav>
         <div class="menu-cta">
           <a class="btn btn-primary" href={SITE.demo}>Try the demo</a>
-          <a class="btn btn-secondary" href={SITE.appRepo}><Icon name="code" size={18} /> Source on GitHub</a>
+          <a class="btn btn-secondary" href={SITE.appRepo} data-star><Icon name="star" size={18} /> Star on GitHub</a>
         </div>
       </div>
     </details>

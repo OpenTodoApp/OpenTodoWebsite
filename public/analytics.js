@@ -84,6 +84,7 @@
         if (url.pathname.startsWith("/docs") && !location.pathname.startsWith("/docs")) send("cta-docs", { section, label: label(a), path: url.pathname.slice(0, 120) });
         return;
       }
+      if (a.hasAttribute("data-star")) { send("cta-star", { section }); return; }
       const target = targetOf(url);
       const data = { target, section, label: label(a), path: (url.hostname + url.pathname).slice(0, 120) };
       if (target === "demo") send("cta-demo", data);
