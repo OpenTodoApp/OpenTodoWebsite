@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/" aria-current="page">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/" aria-current="page">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -111,7 +111,7 @@
 <p>Two options:</p>
 <ul>
 <li><strong>Session cookie</strong> (the web app). Obtained from <code>auth/register</code> or <code>auth/login</code>. State-changing requests must come from the app&#39;s own origin.</li>
-<li><strong>Bearer token</strong> (scripts, CLI, AI assistants). Create one in <strong>Settings → Integrations → API tokens</strong> or via <code>POST /tokens</code>, then send <code>Authorization: Bearer ot_…</code>.</li>
+<li><strong>Bearer token</strong> (scripts, CLI, AI assistants). Create one in <strong>Settings → Integrations → API tokens</strong> (<strong>New token</strong>, then a name and the access) or via <code>POST /tokens</code>, then send <code>Authorization: Bearer ot_…</code>.</li>
 </ul>
 <p>A token has a <strong>scope</strong>: <code>full</code> (the default), <code>read</code> or <code>agent</code>. A <code>read</code> token reads everything its account can read but is refused with 403 <code>insufficient_scope</code> on every request that can change something: every method other than <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and <code>/api/v1/sync</code> whatever the method. That includes creating another token, so a read token cannot escalate itself. Tokens created before scopes existed are <code>full</code>. Give read tokens to anything that only needs to look, such as an AI assistant connected to the <a href="/docs/mcp/">MCP endpoint</a>.</p>
 <p>An <code>agent</code> token is for an AI assistant that may make changes. It is the only scope that may call the MCP write tools, and only while the owner&#39;s <code>writes_enabled</code> and the user&#39;s <code>allow_writes</code> are both on (<a href="/docs/mcp/#letting-an-assistant-make-changes">mcp.md</a>). On the REST API it may write only on the <a href="#agent-tokens">agent content routes</a> (create and edit tasks, projects, labels and comments) under the same switches and limits; every other write is refused like a <code>read</code> token&#39;s, including <code>/api/v1/sync</code>, <code>/api/v1/tokens</code>, every settings route and <code>/api/v1/me/agent-access</code> (even <code>GET</code>). It is stored as a <code>read</code> scope plus a marker, so a server downgraded to a version without <code>agent</code> treats it as read-only.</p>
@@ -438,6 +438,12 @@ export TOKEN=ot_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
 <td><code>/api/v1/push/subscriptions/{id}</code></td>
 <td>yes</td>
 <td>204, or 404 <code>not_found</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/push/test</code></td>
+<td>yes</td>
+<td><code>{deviceId}</code> → 200 <code>{outcome, testId?, subscription, status?, error?}</code>: sends one real test push to that device; 5 per account per 10 minutes, see <a href="#reminders-and-push">Reminders and push</a></td>
 </tr>
 </tbody></table></div>
 <h4 id="tasks-projects-and-other-synced-data">Tasks, projects and other synced data<a class="anchor" href="#tasks-projects-and-other-synced-data" aria-label="Link to this section: Tasks, projects and other synced data">#</a></h4>
@@ -1681,6 +1687,12 @@ curl -X POST -H &quot;Authorization: Bearer $T&quot; -d '{&quot;name&quot;:&quot
 <pre tabindex="0"><code class="language-json">{&quot;deviceId&quot;: &quot;8c1f…&quot;, &quot;endpoint&quot;: &quot;https://fcm.googleapis.com/fcm/send/…&quot;,
  &quot;keys&quot;: {&quot;p256dh&quot;: &quot;BCVx…&quot;, &quot;auth&quot;: &quot;BTBZ…&quot;}, &quot;includeContent&quot;: false}</code></pre>
 <p>It answers 201 <code>{&quot;subscription&quot;: {&quot;id&quot;, &quot;deviceId&quot;, &quot;includeContent&quot;, &quot;createdAt&quot;, &quot;lastOkAt&quot;, &quot;lastError&quot;, &quot;failures&quot;, &quot;needsRenewal&quot;}}</code>; the endpoint and keys are never returned. Posting again for the same device replaces its subscription (200). A body without an <code>https</code> endpoint URL, an uncompressed P-256 <code>p256dh</code> key or a 16-byte <code>auth</code> secret is rejected with 400 <code>invalid_input</code>. A subscription created with a browser session is deleted when that session signs out or is revoked; the push service answering 404/410 deletes it as well, and <code>needsRenewal</code> turns true after 5 consecutive failed sends. With <code>OPENTODO_PUSH=off</code> every <code>/api/v1/push/</code> route answers 404 <code>not_found</code>.</p>
+<p><strong>Test push.</strong> <code>POST /api/v1/push/test</code> with <code>{&quot;deviceId&quot;: &quot;…&quot;}</code> sends one real push to the caller&#39;s subscription for that device, through the same encryption, VAPID signature and push service as a reminder, and records it in the subscription&#39;s delivery status (<code>lastOkAt</code>, <code>failures</code>, removal when gone). The payload is <code>{&quot;type&quot;:&quot;test&quot;,&quot;testId&quot;:&quot;…&quot;,&quot;sentAt&quot;:…}</code> and carries no task data; the service worker always shows it as a system notification and reports receipt to the open page. A push-service outcome is a successful diagnostic, so it answers 200:</p>
+<pre tabindex="0"><code class="language-json">{&quot;outcome&quot;: &quot;sent&quot;, &quot;testId&quot;: &quot;Zk3q…&quot;, &quot;subscription&quot;: {&quot;id&quot;: &quot;…&quot;, &quot;lastOkAt&quot;: 1760000000000, &quot;failures&quot;: 0, …}}
+{&quot;outcome&quot;: &quot;no_subscription&quot;, &quot;subscription&quot;: null}
+{&quot;outcome&quot;: &quot;gone&quot;, &quot;subscription&quot;: null}
+{&quot;outcome&quot;: &quot;failed&quot;, &quot;status&quot;: 500, &quot;error&quot;: &quot;push service answered 500&quot;, &quot;subscription&quot;: {…, &quot;failures&quot;: 1}}</code></pre>
+<p><code>gone</code> means the push service reported the subscription expired and the server removed it; enable notifications again on that device. <code>failed</code> without <code>status</code> means the push service could not be reached. Errors: 400 <code>bad_request</code> without <code>deviceId</code>, 401 <code>unauthorized</code>, 403 <code>insufficient_scope</code> for read and agent tokens, 429 <code>rate_limited</code> after 5 tests per account in 10 minutes (counted before anything is sent), 404 <code>not_found</code> with <code>OPENTODO_PUSH=off</code>, 403 <code>demo_restricted</code> on a demo instance.</p>
 <p><code>POST /api/v1/sync</code> accepts an optional <code>tzOffset</code> (minutes east of UTC, −840…840): the device&#39;s zone, used for the REST recomputation above.</p>
 <h3 id="invitations">Invitations<a class="anchor" href="#invitations" aria-label="Link to this section: Invitations">#</a></h3>
 <p>Invitations let the owner admit one person with one single-use, expiring link while sign-up stays closed. Accounts with the <code>owner</code> or <code>admin</code> role may create, list or revoke them; a member gets 403 <code>forbidden</code>. Invitations always admit a <code>member</code>. Invitations are server-side account data: they are never written to the op log and never sync to devices.</p>
@@ -3058,7 +3070,7 @@ curl -sS &quot;$OT/api/v1/views&quot; -H &quot;Authorization: Bearer $TOKEN&quot
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

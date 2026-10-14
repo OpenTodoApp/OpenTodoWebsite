@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -163,6 +163,13 @@
 <p>The notes field formats as you type. Start a line with <code>- </code> for a bullet list, <code>1. </code> for a numbered list, <code>[ ] </code> for a checklist or <code># </code> for a heading. Select text and press <kbd>Ctrl</kbd>+<kbd>B</kbd> for bold or <kbd>Ctrl</kbd>+<kbd>K</kbd> for a link (<kbd>⌘</kbd> on a Mac). If two of your devices edit the same note at the same time, both sets of changes are kept.</p>
 <h3 id="dates-and-times">Dates and times<a class="anchor" href="#dates-and-times" aria-label="Link to this section: Dates and times">#</a></h3>
 <p>A due date is just a calendar day, and a time is the time on the clock where you are. A task due Tuesday at 09:00 shows Tuesday at 09:00 on every device, even when you travel.</p>
+<p>Type the date and time in the <strong>Due</strong> fields, or pick them. Dates and times are shown in the format you chose in <strong>Settings → Preferences → Date and time</strong>, and you can type them the same way:</p>
+<ul>
+<li><strong>Date:</strong> a date in your format (<code>14/10</code> or <code>10/14</code>, with or without a year), an ISO date (<code>2026-10-14</code>), or a word: <code>today</code>, <code>tomorrow</code>, a weekday such as <code>fri</code>, <code>next week</code> or <code>3 Nov</code>. A date without a year that has already passed this year means next year. Press <kbd>Enter</kbd> or leave the field to save it. If the date doesn&#39;t exist (<code>31/02</code>), the field says so and the task keeps its date.</li>
+<li><strong>Calendar:</strong> the calendar button next to the date, or <kbd>Alt</kbd>+<kbd>↓</kbd> in the field, opens a month whose weeks start on your first day of the week. Arrow keys move by day and week, <kbd>Page Up</kbd> and <kbd>Page Down</kbd> by month, <kbd>Home</kbd> and <kbd>End</kbd> to the start and end of the week, <kbd>Enter</kbd> picks the day and <kbd>Esc</kbd> closes it.</li>
+<li><strong>Time:</strong> <code>15</code>, <code>1530</code>, <code>15:30</code>, <code>3pm</code>, <code>3:30 pm</code> or <code>noon</code>, whichever clock you use. <kbd>↓</kbd> in the field shows times in 15-minute steps to pick from.</li>
+</ul>
+<p>Clear the date to remove the due date, or clear the time to keep only the day.</p>
 <p>For things that happen at a fixed moment, like a call with someone in another country, tick <strong>Fixed to time zone</strong> under Due (or press <kbd>z</kbd> with the panel open). The task is then tied to your current time zone, and devices elsewhere show it converted to their local time, with the original time as a hint.</p>
 <h2 id="complete-reopen-and-delete">Complete, reopen and delete<a class="anchor" href="#complete-reopen-and-delete" aria-label="Link to this section: Complete, reopen and delete">#</a></h2>
 <p>Click the circle next to a task, or press <kbd>c</kbd>. Completed tasks move to <strong>Completed</strong> in the sidebar, where you can reopen them.</p>
@@ -192,7 +199,7 @@
 <h3 id="sub-projects">Sub-projects<a class="anchor" href="#sub-projects" aria-label="Link to this section: Sub-projects">#</a></h3>
 <p>Sub-projects work like folders: &quot;Work&quot; can hold &quot;Q4 launch&quot;, which can hold more. A project&#39;s page lists its sub-projects at the bottom with their task counts. Use the small arrow next to a project in the sidebar, or <kbd>←</kbd> / <kbd>→</kbd>, to fold and unfold it. Folding is remembered on each device separately.</p>
 <h3 id="when-a-project-is-done">When a project is done<a class="anchor" href="#when-a-project-is-done" aria-label="Link to this section: When a project is done">#</a></h3>
-<p>When you complete the last open task of a project, OpenTodo offers to archive it; press <kbd>Enter</kbd> to accept or any other key to keep it. Projects that have had no open tasks for 30 days are archived automatically, with a notice you can undo. You can turn that off in <strong>Settings → General → Projects</strong> (each device has its own setting). To bring an archived project back, open <strong>Settings → General → Projects</strong> and select <strong>Restore</strong> next to it under <strong>Archived projects</strong>; see <a href="/docs/trash-and-history/#bring-back-an-archived-project">Trash and history</a>.</p>
+<p>When you complete the last open task of a project, OpenTodo offers to archive it; press <kbd>Enter</kbd> to accept or any other key to keep it. Projects that have had no open tasks for 30 days are archived automatically, with a notice you can undo. You can turn that off in <strong>Settings → Projects</strong> (each device has its own setting). To bring an archived project back, open <strong>Settings → Projects</strong> and select <strong>Restore</strong> next to it under <strong>Archived projects</strong>; see <a href="/docs/trash-and-history/#bring-back-an-archived-project">Trash and history</a>.</p>
 <h2 id="put-things-in-order">Put things in order<a class="anchor" href="#put-things-in-order" aria-label="Link to this section: Put things in order">#</a></h2>
 <p>In the Inbox and in projects, you decide the order. Drag a task to a new place (on a touch screen, press and hold first), or select it and press <kbd>Alt</kbd>+<kbd>↑</kbd> / <kbd>Alt</kbd>+<kbd>↓</kbd>. <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>↑</kbd> sends it to the top. Dropping a task on the middle of another one makes it a subtask. Projects in the sidebar can be reordered the same way.</p>
 <p>Today, Upcoming, labels and filters sort themselves by date and priority, so dragging is switched off there.</p>
@@ -214,7 +221,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

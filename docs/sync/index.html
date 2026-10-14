@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/" aria-current="page">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/" aria-current="page">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/" aria-current="page">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/" aria-current="page">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -104,7 +104,7 @@
       <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Internals</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
 <h1 id="sync-protocol">Sync protocol</h1>
 <p>OpenTodo syncs with a field-level, last-writer-wins operation log. It is a state-based CRDT (a map of LWW registers), which gives three properties:</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#operation">Operation</a><ul><li><a href="#schema-v1">Schema (v1)</a></li><li><a href="#zoned-due-values">Zoned due values</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#reminders">Reminders</a></li><li><a href="#mergeable-documents">Mergeable documents</a></li><li><a href="#comments">Comments</a></li><li><a href="#activity">Activity</a></li><li><a href="#project-preferences-and-the-activity-feed">Project preferences and the activity feed</a></li><li><a href="#task-labels">Task labels</a></li><li><a href="#sections">Sections</a></li><li><a href="#manual-order">Manual order</a></li><li><a href="#saved-views">Saved views</a></li><li><a href="#encrypted-values">Encrypted values</a></li></ul></li><li><a href="#winner-rule">Winner rule</a></li><li><a href="#clocks">Clocks</a></li><li><a href="#exchange">Exchange</a><ul><li><a href="#paging">Paging</a></li></ul></li><li><a href="#sharing-scopes">Sharing scopes</a></li><li><a href="#live-updates">Live updates</a></li><li><a href="#log-generation">Log generation</a></li><li><a href="#deletes">Deletes</a></li><li><a href="#purge">Purge</a></li><li><a href="#history">History</a></li><li><a href="#trees-subtasks">Trees: subtasks</a></li><li><a href="#trees-sub-projects">Trees: sub-projects</a></li><li><a href="#rest-writes">REST writes</a></li><li><a href="#caldav">CalDAV</a></li><li><a href="#limits">Limits</a></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#operation">Operation</a><ul><li><a href="#schema-v1">Schema (v1)</a></li><li><a href="#zoned-due-values">Zoned due values</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#reminders">Reminders</a></li><li><a href="#mergeable-documents">Mergeable documents</a></li><li><a href="#comments">Comments</a></li><li><a href="#activity">Activity</a></li><li><a href="#project-preferences-and-the-activity-feed">Project preferences and the activity feed</a></li><li><a href="#date-and-time-preferences">Date and time preferences</a></li><li><a href="#task-labels">Task labels</a></li><li><a href="#sections">Sections</a></li><li><a href="#manual-order">Manual order</a></li><li><a href="#saved-views">Saved views</a></li><li><a href="#encrypted-values">Encrypted values</a></li></ul></li><li><a href="#winner-rule">Winner rule</a></li><li><a href="#clocks">Clocks</a></li><li><a href="#exchange">Exchange</a><ul><li><a href="#paging">Paging</a></li></ul></li><li><a href="#sharing-scopes">Sharing scopes</a></li><li><a href="#live-updates">Live updates</a></li><li><a href="#log-generation">Log generation</a></li><li><a href="#deletes">Deletes</a></li><li><a href="#purge">Purge</a></li><li><a href="#history">History</a></li><li><a href="#trees-subtasks">Trees: subtasks</a></li><li><a href="#trees-sub-projects">Trees: sub-projects</a></li><li><a href="#rest-writes">REST writes</a></li><li><a href="#caldav">CalDAV</a></li><li><a href="#limits">Limits</a></li></ul></nav></details>
 
 <ul>
 <li><strong>Convergence</strong>: replicas that have seen the same ops hold the same state, in any order.</li>
@@ -114,7 +114,7 @@
 <h2 id="operation">Operation<a class="anchor" href="#operation" aria-label="Link to this section: Operation">#</a></h2>
 <pre tabindex="0"><code class="language-json">{
   &quot;id&quot;: &quot;0d1f…&quot;,                 // unique per op (UUID v4)
-  &quot;entity&quot;: &quot;task&quot;,              // &quot;task&quot; | &quot;project&quot; | &quot;label&quot; | &quot;view&quot; | &quot;reminder&quot; | &quot;section&quot; | &quot;comment&quot; | &quot;project_prefs&quot;
+  &quot;entity&quot;: &quot;task&quot;,              // &quot;task&quot; | &quot;project&quot; | &quot;label&quot; | &quot;view&quot; | &quot;reminder&quot; | &quot;section&quot; | &quot;comment&quot; | &quot;project_prefs&quot; | &quot;user_prefs&quot;
   &quot;entityId&quot;: &quot;8c2a…&quot;,           // UUID of the entity
   &quot;field&quot;: &quot;title&quot;,              // must be in the schema for the entity
   &quot;value&quot;: &quot;Buy oat milk&quot;,       // JSON, type-checked per field
@@ -361,6 +361,21 @@
 <td><code>feed_seen_at</code></td>
 <td>number (Unix ms: the activity-feed &quot;seen until&quot; time; personal scope only)</td>
 </tr>
+<tr>
+<td>user_prefs</td>
+<td><code>date_format</code></td>
+<td>string: <code>&quot;system&quot;</code>, <code>&quot;day-month&quot;</code>, <code>&quot;month-day&quot;</code> or <code>&quot;iso&quot;</code> (personal scope only)</td>
+</tr>
+<tr>
+<td>user_prefs</td>
+<td><code>time_format</code></td>
+<td>string: <code>&quot;system&quot;</code>, <code>&quot;12h&quot;</code> or <code>&quot;24h&quot;</code></td>
+</tr>
+<tr>
+<td>user_prefs</td>
+<td><code>week_start</code></td>
+<td>string: <code>&quot;system&quot;</code>, <code>&quot;mon&quot;</code>, <code>&quot;sun&quot;</code> or <code>&quot;sat&quot;</code></td>
+</tr>
 </tbody></table></div>
 <p><code>actor</code> on served ops (OpenSpec <code>comments-and-activity</code>) is the account that wrote the op, taken from <code>ops.user_id</code>, which the server always sets from the authenticated submitter; a value sent by a client is ignored. It is additive and optional: older clients ignore it, and ops from an older server simply lack it.</p>
 <p>Adding fields is backwards compatible. Renaming or removing is not; it needs an OpenSpec change with a migration plan.</p>
@@ -424,6 +439,8 @@
 <h3 id="project-preferences-and-the-activity-feed">Project preferences and the activity feed<a class="anchor" href="#project-preferences-and-the-activity-feed" aria-label="Link to this section: Project preferences and the activity feed">#</a></h3>
 <p><code>project_prefs</code> (OpenSpec <code>activity-feed</code>, design D1) holds one user&#39;s personal preferences for a project; its <code>entityId</code> is the project id. Its ops always resolve to the <strong>author&#39;s personal scope</strong>, also for a shared project, so they sync to the author&#39;s own devices and never to other members; any member, viewers included, may write their own. Today it has one field, <code>feed_seen_at</code>: the time up to which the user has seen the project&#39;s activity, taken from the newest displayed event&#39;s <code>ts</code> (an op timestamp, not the device clock). A client never writes a value smaller than the one it holds, and LWW on <code>(ts, device)</code> keeps the later mark, so two devices converge to the later time. Purging a project purges every member&#39;s <code>project_prefs</code> for it (with markers, so a stale mark cannot bring it back); sharing a project or leaving it does not touch them.</p>
 <p>Unread counts are computed locally: events of a shared project by another actor with <code>ts</code> greater than <code>feed_seen_at</code>. A device with no <code>feed_seen_at</code> for a project uses the time of its first sync after the upgrade (stored per device as <code>feedBaseline</code>), so existing history does not show up as unread. <code>GET /api/v1/activity</code> serves the cross-project feed from the op log (see <a href="/docs/api/#activity-feed">api.md</a>).</p>
+<h3 id="date-and-time-preferences">Date and time preferences<a class="anchor" href="#date-and-time-preferences" aria-label="Link to this section: Date and time preferences">#</a></h3>
+<p><code>user_prefs</code> (OpenSpec <code>date-time-preferences</code>, design D1) holds one user&#39;s date format, time format and first day of the week. Every client writes it with the <code>entityId</code> <code>&quot;me&quot;</code>; like labels and reminders it resolves to the <strong>author&#39;s personal scope</strong>, so each account&#39;s <code>&quot;me&quot;</code> row is separate, syncs to that account&#39;s devices only, and is never shared with project members. Values are enumerations carried as strings: a client reads an unknown value (from a newer client) as <code>&quot;system&quot;</code> without rewriting it, so new values stay additive, and an absent row means <code>&quot;system&quot;</code> for all three. Concurrent edits converge per field by LWW on <code>(ts, device)</code>. The row has no REST collection, derives no activity, and is included in the JSON export as <code>user_prefs</code>; importing an own export into an account without preferences restores them. The values are not user-written content, so they stay in plaintext for an encrypted account.</p>
 <h3 id="task-labels">Task labels<a class="anchor" href="#task-labels" aria-label="Link to this section: Task labels">#</a></h3>
 <p><code>task.labels</code> is an array of <strong>label ids</strong>, not names. Renaming or recolouring a label is therefore one op on the label and never touches a task. Ids that point at a deleted label, or at a label this device has not received yet, are kept in the array but not displayed; the chip appears as soon as the label arrives.</p>
 <p>The array is a single LWW register: every write replaces the whole value, and when two devices write different arrays for the same task offline, every replica ends with the array that carries the greater <code>(ts, device)</code>. Concretely, if device A adds <code>errand</code> and device B adds <code>call</code> to the same task while both are offline, only one of the two labels survives on every device. To keep the common case safe the client reads the task&#39;s current array in the same transaction as the write, so sequential edits on one device never lose a label, and remote ops are applied live so the window is only the offline period. Deleting a label removes its id from every carrying task with one op per task; a concurrent array write elsewhere can resurrect the id, which is why deleted ids are hidden rather than trusted to be absent. Merging a label rewrites each carrying task&#39;s array once (source id → target id, de-duplicated) and tombstones the source.</p>
@@ -582,14 +599,14 @@ data: {&quot;cursor&quot;:158}
     </article>
     <nav class="pager" aria-label="Previous and next page">
       <a class="prev" rel="prev" href="/docs/architecture/"><span>Previous</span>Architecture</a>
-      <span></span>
+      <a class="next" rel="next" href="/docs/design-system/"><span>Next</span>Design system</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#operation">Operation</a><ul><li><a href="#schema-v1">Schema (v1)</a></li><li><a href="#zoned-due-values">Zoned due values</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#reminders">Reminders</a></li><li><a href="#mergeable-documents">Mergeable documents</a></li><li><a href="#comments">Comments</a></li><li><a href="#activity">Activity</a></li><li><a href="#project-preferences-and-the-activity-feed">Project preferences and the activity feed</a></li><li><a href="#task-labels">Task labels</a></li><li><a href="#sections">Sections</a></li><li><a href="#manual-order">Manual order</a></li><li><a href="#saved-views">Saved views</a></li><li><a href="#encrypted-values">Encrypted values</a></li></ul></li><li><a href="#winner-rule">Winner rule</a></li><li><a href="#clocks">Clocks</a></li><li><a href="#exchange">Exchange</a><ul><li><a href="#paging">Paging</a></li></ul></li><li><a href="#sharing-scopes">Sharing scopes</a></li><li><a href="#live-updates">Live updates</a></li><li><a href="#log-generation">Log generation</a></li><li><a href="#deletes">Deletes</a></li><li><a href="#purge">Purge</a></li><li><a href="#history">History</a></li><li><a href="#trees-subtasks">Trees: subtasks</a></li><li><a href="#trees-sub-projects">Trees: sub-projects</a></li><li><a href="#rest-writes">REST writes</a></li><li><a href="#caldav">CalDAV</a></li><li><a href="#limits">Limits</a></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#operation">Operation</a><ul><li><a href="#schema-v1">Schema (v1)</a></li><li><a href="#zoned-due-values">Zoned due values</a></li><li><a href="#recurring-tasks">Recurring tasks</a></li><li><a href="#reminders">Reminders</a></li><li><a href="#mergeable-documents">Mergeable documents</a></li><li><a href="#comments">Comments</a></li><li><a href="#activity">Activity</a></li><li><a href="#project-preferences-and-the-activity-feed">Project preferences and the activity feed</a></li><li><a href="#date-and-time-preferences">Date and time preferences</a></li><li><a href="#task-labels">Task labels</a></li><li><a href="#sections">Sections</a></li><li><a href="#manual-order">Manual order</a></li><li><a href="#saved-views">Saved views</a></li><li><a href="#encrypted-values">Encrypted values</a></li></ul></li><li><a href="#winner-rule">Winner rule</a></li><li><a href="#clocks">Clocks</a></li><li><a href="#exchange">Exchange</a><ul><li><a href="#paging">Paging</a></li></ul></li><li><a href="#sharing-scopes">Sharing scopes</a></li><li><a href="#live-updates">Live updates</a></li><li><a href="#log-generation">Log generation</a></li><li><a href="#deletes">Deletes</a></li><li><a href="#purge">Purge</a></li><li><a href="#history">History</a></li><li><a href="#trees-subtasks">Trees: subtasks</a></li><li><a href="#trees-sub-projects">Trees: sub-projects</a></li><li><a href="#rest-writes">REST writes</a></li><li><a href="#caldav">CalDAV</a></li><li><a href="#limits">Limits</a></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

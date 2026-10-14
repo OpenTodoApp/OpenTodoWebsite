@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -136,7 +136,7 @@ docker compose up -d</code></pre>
 <h3 id="calendar-apps-caldav-through-the-proxy">Calendar apps (CalDAV) through the proxy<a class="anchor" href="#calendar-apps-caldav-through-the-proxy" aria-label="Link to this section: Calendar apps (CalDAV) through the proxy">#</a></h3>
 <p>When the owner enables <a href="/docs/caldav/">CalDAV</a>, calendar apps use <code>/dav/</code> and <code>/.well-known/caldav</code> with WebDAV methods (<code>PROPFIND</code>, <code>REPORT</code>, <code>MKCALENDAR</code>, <code>PROPPATCH</code>). Most proxies (Caddy, Traefik, nginx) forward them unchanged; make sure no rule limits methods to GET/POST or blocks <code>/.well-known/</code>, and that the <code>Authorization</code> header is passed through. App passwords travel in every request, so serve CalDAV over https only.</p>
 <h3 id="passkeys-need-an-https-base-url">Passkeys need an https base URL<a class="anchor" href="#passkeys-need-an-https-base-url" aria-label="Link to this section: Passkeys need an https base URL">#</a></h3>
-<p>Passkeys (Settings → Account → Security) are only offered when <code>OPENTODO_BASE_URL</code> is an <code>https://</code> URL; browsers refuse WebAuthn on plain-http origins. With no base URL or an <code>http://</code> LAN address, the server keeps working with passwords and simply hides passkeys (<code>auth/status</code> reports <code>passkeysAvailable: false</code>). For local development <code>http://localhost:8080</code> also works, because browsers treat localhost as secure.</p>
+<p>Passkeys (Settings → Security → Passkeys) are only offered when <code>OPENTODO_BASE_URL</code> is an <code>https://</code> URL; browsers refuse WebAuthn on plain-http origins. With no base URL or an <code>http://</code> LAN address, the server keeps working with passwords and simply hides passkeys (<code>auth/status</code> reports <code>passkeysAvailable: false</code>). For local development <code>http://localhost:8080</code> also works, because browsers treat localhost as secure.</p>
 <p>Passkeys are bound to the <strong>host</strong> of that URL (the relying-party id, for example <code>todo.example.com</code>). If you move the server to a new domain, existing passkeys stop matching: users sign in with their password and register new passkeys from Settings. Paths and ports do not matter, only the host. See <a href="https://github.com/pixari/opentodo/blob/main/SECURITY.md" rel="noopener">SECURITY.md</a> for the credential model.</p>
 <p>Caddy example:</p>
 <pre tabindex="0"><code>todo.example.com {
@@ -200,7 +200,7 @@ docker compose up -d</code></pre>
 <pre tabindex="0"><code class="language-bash">mkdir -p ./data &amp;&amp; sudo chown 65532:65532 ./data
 docker run -v &quot;$PWD/data:/data&quot; ...</code></pre>
 <h2 id="backup-and-restore">Backup and restore<a class="anchor" href="#backup-and-restore" aria-label="Link to this section: Backup and restore">#</a></h2>
-<p>Turn on scheduled backups in <strong>Settings → Data → Backups</strong> (owner only): consistent snapshots of the database, taken while the server runs, written to <code>/data/backups</code>, an S3-compatible bucket or a WebDAV share, with retention and optional encryption. Restore with the binary in the image while the container is stopped:</p>
+<p>Turn on scheduled backups in <strong>Settings → Backups</strong> (owner only): consistent snapshots of the database, taken while the server runs, written to <code>/data/backups</code>, an S3-compatible bucket or a WebDAV share, with retention and optional encryption. Restore with the binary in the image while the container is stopped:</p>
 <pre tabindex="0"><code class="language-bash">docker compose stop opentodo
 docker compose run --rm --no-deps opentodo restore /data/backups/opentodo-20261010-030000-4f1c0a9e.tar.gz
 docker compose start opentodo</code></pre>
@@ -208,7 +208,7 @@ docker compose start opentodo</code></pre>
 <h2 id="trash-retention">Trash retention<a class="anchor" href="#trash-retention" aria-label="Link to this section: Trash retention">#</a></h2>
 <p>Deleted tasks and projects stay in the Trash, restorable, for 30 days; then the server purges them for good (operations and values removed, a small marker kept so devices drop their copies). Set <code>OPENTODO_TRASH_RETENTION_DAYS</code> to change the period (<code>0</code> keeps the Trash until a user empties it). The job runs at startup and once a day. Purged data is gone from the live database, but older backup archives still contain it; restoring one brings back the items as they were when it was taken. See <a href="/docs/sync/#purge">docs/sync.md</a>.</p>
 <h2 id="audit-log">Audit log<a class="anchor" href="#audit-log" aria-label="Link to this section: Audit log">#</a></h2>
-<p>The owner sees an audit log of sign-ins, failed sign-ins, sign-outs, credentials (API tokens, app passwords, passkeys, second factors), invitations, user administration, exports, backups and setting changes in <strong>Settings → Account → Audit log</strong> (API: <a href="/docs/api/#audit-log">docs/api.md</a>). It is stored in <code>opentodo.db</code> inside <code>/data</code>, so it is part of every backup of the volume, and it never contains task content. Nothing needs configuring:</p>
+<p>The owner sees an audit log of sign-ins, failed sign-ins, sign-outs, credentials (API tokens, app passwords, passkeys, second factors), invitations, user administration, exports, backups and setting changes in <strong>Settings → Activity → Audit log</strong> (API: <a href="/docs/api/#audit-log">docs/api.md</a>). It is stored in <code>opentodo.db</code> inside <code>/data</code>, so it is part of every backup of the volume, and it never contains task content. Nothing needs configuring:</p>
 <ul>
 <li><strong>Retention</strong> defaults to 90 days (7–3650, set in Settings). Expired events are pruned at startup, hourly and right after you lower the retention.</li>
 <li><strong>Client addresses</strong> are not recorded unless you turn on address logging in Settings. Behind a reverse proxy the address is the last <code>X-Forwarded-For</code> hop (the one the proxy appended), so make sure the proxy sets that header (Caddy, Traefik and nginx with <code>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</code> do) and that the container is not reachable around the proxy, or a client could send its own header. Turning address logging off erases every stored address immediately.</li>
@@ -216,7 +216,7 @@ docker compose start opentodo</code></pre>
 <li><strong>Export</strong> the log as newline-delimited JSON from the same panel to archive it beyond the retention window.</li>
 </ul>
 <h2 id="two-factor-authentication">Two-factor authentication<a class="anchor" href="#two-factor-authentication" aria-label="Link to this section: Two-factor authentication">#</a></h2>
-<p>Users turn on two-factor authentication in <strong>Settings → Account → Two-factor authentication</strong>. The owner can require it for themselves or for every account there. Nothing needs configuring, but two things are worth knowing:</p>
+<p>Users turn on two-factor authentication in <strong>Settings → Security → Two-factor authentication</strong>. The owner can require it for themselves or for every account there. Nothing needs configuring, but two things are worth knowing:</p>
 <ul>
 <li><p><strong>Keep the host clock right.</strong> Codes are checked against the server&#39;s own clock with 30 seconds of tolerance either way, so a host that drifts by a minute or more rejects valid codes. Docker uses the host&#39;s clock: make sure the host runs NTP (<code>timedatectl</code> should report <code>System clock synchronized: yes</code>; Raspberry Pi OS and every major distribution do this by default). The enrolment step catches large drift straight away with a &quot;code does not match&quot; message.</p>
 </li>
@@ -228,7 +228,7 @@ docker compose start opentodo</code></pre>
 </li>
 </ul>
 <h2 id="managing-users">Managing users<a class="anchor" href="#managing-users" aria-label="Link to this section: Managing users">#</a></h2>
-<p>The owner sees every account in <strong>Settings → Administration → Users</strong> with its role, status and last sign-in (<a href="/docs/api/#user-administration">docs/api.md</a>). From there the owner makes trusted people <strong>admins</strong> (they can invite, and deactivate, reset or delete members, but never act on the owner or other admins), <strong>deactivates</strong> an account (signed out everywhere at once, API tokens and pending invitations revoked, data kept, sign-in blocked until reactivated), creates a <strong>password reset link</strong> for someone who forgot their password (single use, 24 hours, nothing is emailed: copy it and send it yourself), <strong>deletes</strong> an account and its data after typing its email, or <strong>transfers ownership</strong> to another account after re-entering the password (you become an admin). Every user changes their own password in <strong>Settings → Account → Password</strong>. Nothing needs configuring and no SQLite editing is ever needed.</p>
+<p>The owner sees every account in <strong>Settings → Administration → Users</strong> with its role, status and last sign-in (<a href="/docs/api/#user-administration">docs/api.md</a>). From there the owner makes trusted people <strong>admins</strong> (they can invite, and deactivate, reset or delete members, but never act on the owner or other admins), <strong>deactivates</strong> an account (signed out everywhere at once, API tokens and pending invitations revoked, data kept, sign-in blocked until reactivated), creates a <strong>password reset link</strong> for someone who forgot their password (single use, 24 hours, nothing is emailed: copy it and send it yourself), <strong>deletes</strong> an account and its data after typing its email, or <strong>transfers ownership</strong> to another account after re-entering the password (you become an admin). Every user changes their own password in <strong>Settings → Security → Password</strong>. Nothing needs configuring and no SQLite editing is ever needed.</p>
 <h3 id="recovering-owner-access">Recovering owner access<a class="anchor" href="#recovering-owner-access" aria-label="Link to this section: Recovering owner access">#</a></h3>
 <p>Nobody can reset the owner&#39;s password through the app. If the owner forgot it, print a reset link from the host, then open it in a browser and choose a new password:</p>
 <pre tabindex="0"><code class="language-bash">docker compose exec opentodo /opentodo reset-owner-password
@@ -255,7 +255,7 @@ docker compose start opentodo</code></pre>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

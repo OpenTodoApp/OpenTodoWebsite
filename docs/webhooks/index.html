@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/" aria-current="page">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,14 +96,14 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/" aria-current="page">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
     <article class="prose" data-audience="developer">
       <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Integrations</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
 <h1 id="webhooks">Webhooks</h1>
-<p>OpenTodo can notify other systems when your tasks and projects change: switch on a light when &quot;Water plants&quot; is completed, post to a chat when a task is created, start an n8n flow when a project is archived. Webhooks are configured per account in <strong>Settings → Integrations → Webhooks</strong> or through the <a href="/docs/api/#webhooks">API</a>. Nothing is sent until you create one, and requests only ever go to the URLs you configured.</p>
+<p>OpenTodo can notify other systems when your tasks and projects change: switch on a light when &quot;Water plants&quot; is completed, post to a chat when a task is created, start an n8n flow when a project is archived. Webhooks are configured per account in <strong>Settings → Integrations → Webhooks</strong> (choose <strong>Add webhook</strong>, then pick the target URL, events and an optional project) or through the <a href="/docs/api/#webhooks">API</a>. Each webhook&#39;s <strong>⋯</strong> menu has <strong>Send test</strong>, <strong>Delivery log</strong>, <strong>Edit</strong>, <strong>Disable</strong> or <strong>Enable</strong>, and <strong>Delete</strong>, which asks you to confirm. Nothing is sent until you create one, and requests only ever go to the URLs you configured.</p>
 <details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#events">Events</a></li><li><a href="#payload-version-1">Payload (version 1)</a><ul><li><a href="#encrypted-accounts">Encrypted accounts</a></li><li><a href="#imports">Imports</a></li></ul></li><li><a href="#headers-and-signature">Headers and signature</a><ul><li><a href="#test-vector">Test vector</a></li></ul></li><li><a href="#delivery-retries-and-the-log">Delivery, retries and the log</a></li><li><a href="#private-network-protection">Private network protection</a><ul><li><a href="#allowing-receivers-on-your-lan">Allowing receivers on your LAN</a></li><li><a href="#secrets">Secrets</a></li></ul></li><li><a href="#receiver-recipes">Receiver recipes</a><ul><li><a href="#home-assistant">Home Assistant</a></li><li><a href="#n8n">n8n</a></li><li><a href="#telegram">Telegram</a></li></ul></li></ul></nav></details>
 
 <h2 id="events">Events<a class="anchor" href="#events" aria-label="Link to this section: Events">#</a></h2>
@@ -422,7 +422,7 @@ console.log(verify('whsec_opentodo-test-vector-secret-do-not-use', '1760060001',
 <p>Home Assistant, n8n or Node-RED often run on the same network as OpenTodo. The <strong>owner</strong> can switch on <strong>Settings → Integrations → Webhooks → Allow private network targets</strong> (or <code>PUT /api/v1/settings/webhooks</code> with <code>{&quot;allowPrivate&quot;: true}</code>). This applies to every account on the server, so leave it off on a public multi-user server. The scheme restriction and the no-redirect rule stay in force.</p>
 <p>For deployments managed as code, the optional <code>OPENTODO_WEBHOOKS_ALLOW_PRIVATE=true</code> presets the toggle on the first start. After that the value in Settings wins, so the owner can still turn it off.</p>
 <h3 id="secrets">Secrets<a class="anchor" href="#secrets" aria-label="Link to this section: Secrets">#</a></h3>
-<p>The secret (<code>whsec_…</code>) is shown once, when the webhook is created. It is stored in the server database in plaintext because the server needs it to sign each request; the database file is the trust boundary, just as for sessions and API tokens. If a secret leaks, delete the webhook and create a new one. Webhooks are server configuration: they are not part of the JSON export and not synced to devices.</p>
+<p>The secret (<code>whsec_…</code>) is shown once, in the dialog right after the webhook is created, with a <strong>Copy</strong> button. It is stored in the server database in plaintext because the server needs it to sign each request; the database file is the trust boundary, just as for sessions and API tokens. If a secret leaks, delete the webhook and create a new one. Webhooks are server configuration: they are not part of the JSON export and not synced to devices.</p>
 <p>Settings warns when a target uses plain <code>http://</code> outside this machine: the payload contains task content and would cross the network unencrypted.</p>
 <h2 id="receiver-recipes">Receiver recipes<a class="anchor" href="#receiver-recipes" aria-label="Link to this section: Receiver recipes">#</a></h2>
 <h3 id="home-assistant">Home Assistant<a class="anchor" href="#home-assistant" aria-label="Link to this section: Home Assistant">#</a></h3>
@@ -501,7 +501,7 @@ http.server.HTTPServer((&quot;127.0.0.1&quot;, 8099), Relay).serve_forever()</co
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -104,7 +104,7 @@
       <p class="doc-meta"><span class="crumbs">Using OpenTodo <span aria-hidden="true">›</span> Guides</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
 <h1 id="notifications">Notifications</h1>
 <p>OpenTodo tells you about three things: a task someone assigned to you, a comment that mentions you, and reminders you set. Nothing else, and never anything from outside your server.</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#the-bell">The bell</a></li><li><a href="#reminders-inside-the-app">Reminders inside the app</a></li><li><a href="#get-reminders-when-the-app-is-closed">Get reminders when the app is closed</a><ul><li><a href="#on-iphone-and-ipad">On iPhone and iPad</a></li><li><a href="#privacy">Privacy</a></li></ul></li><li><a href="#when-notifications-dont-arrive">When notifications don't arrive</a></li></ul></nav></details>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#the-bell">The bell</a></li><li><a href="#reminders-inside-the-app">Reminders inside the app</a></li><li><a href="#get-reminders-when-the-app-is-closed">Get reminders when the app is closed</a><ul><li><a href="#check-that-it-works">Check that it works</a></li><li><a href="#on-iphone-and-ipad">On iPhone and iPad</a></li><li><a href="#privacy">Privacy</a></li></ul></li><li><a href="#when-notifications-dont-arrive">When notifications don't arrive</a></li></ul></nav></details>
 
 <h2 id="the-bell">The bell<a class="anchor" href="#the-bell" aria-label="Link to this section: The bell">#</a></h2>
 <p>The bell at the top right shows a red count when something new arrived from other people:</p>
@@ -122,12 +122,55 @@
 <p>Push notifications deliver reminders even when OpenTodo isn&#39;t open. Each device decides for itself.</p>
 <ol>
 <li>Open <strong>Settings → Notifications</strong> on the device.</li>
-<li>Tick <strong>Enable notifications on this device</strong> and allow notifications when the browser asks.</li>
-<li>Select <strong>Send test notification</strong> to check that one arrives.</li>
+<li>Turn on <strong>Enable notifications on this device</strong> and allow notifications when the browser asks.</li>
+<li>Select <strong>Send test notification</strong>. Your server sends a real push to this device, the same way it sends reminders, and a notification appears even while OpenTodo is open.</li>
 </ol>
 <p><picture><source srcset="/docs/images/settings-notifications-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/settings-notifications-light.webp" alt="Settings, Notifications section with the options Enable notifications on this device and Include task titles." width="1180" height="300" loading="lazy" decoding="async"></picture></p>
 <p>Repeat this on every device where you want them: your phone, your laptop, your tablet. Turning it off, or signing out, removes that device.</p>
 <p>From a push notification you can <strong>Snooze 10 min</strong> or <strong>Dismiss</strong>, and that applies on all your devices.</p>
+<h3 id="check-that-it-works">Check that it works<a class="anchor" href="#check-that-it-works" aria-label="Link to this section: Check that it works">#</a></h3>
+<p>Below the options, <strong>Delivery check</strong> lists everything push needs on this device, with a fix next to each problem:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Browser supports push</td>
+<td>Private windows and some browsers can&#39;t receive push at all.</td>
+</tr>
+<tr>
+<td>Notifications allowed</td>
+<td>You allowed notifications for this site when the browser asked.</td>
+</tr>
+<tr>
+<td>Offline service worker active</td>
+<td>The background part of the app that receives pushes is running. Reload if it isn&#39;t.</td>
+</tr>
+<tr>
+<td>Subscribed on the server</td>
+<td>Your server knows where to send pushes for this device. Select <strong>Enable</strong> if not.</td>
+</tr>
+<tr>
+<td>Server reaches the push service</td>
+<td>The last push to this device went through. After failures it shows the error; select <strong>Re-enable</strong>.</td>
+</tr>
+<tr>
+<td>Test notification received</td>
+<td>This device reported the last test.</td>
+</tr>
+</tbody></table></div>
+<p>After <strong>Send test notification</strong> you see one of these:</p>
+<ul>
+<li><strong>Received on this device</strong>: the push arrived and the notification was handed to your system. Reminders will reach this device while the app is closed. If you still saw no banner, your operating system hid it (see below).</li>
+<li><strong>Accepted, but this device has not reported receiving it</strong>: your server delivered the push to the browser&#39;s push service, but nothing reached this device within a few seconds. Check the operating system&#39;s notification settings for your browser or the app, focus and do-not-disturb modes, and on iPhone and iPad use the installed app. If it arrives late, the result updates to received.</li>
+<li><strong>This device is not subscribed</strong>: nothing was sent. Turn on <strong>Enable notifications on this device</strong> first.</li>
+<li><strong>The subscription expired</strong>: the push service no longer accepts it and your server removed it. Select <strong>Enable</strong> to subscribe again.</li>
+<li><strong>The push service rejected the test</strong>: the message shows its answer. Try <strong>Re-enable</strong>; if it keeps failing, the push service may be unreachable from your server.</li>
+</ul>
+<p>You can run up to five tests in ten minutes. Without a subscription, <strong>Show a local notification</strong> shows one straight from the page: it only proves that the browser may show notifications, not that reminders reach the device.</p>
 <h3 id="on-iphone-and-ipad">On iPhone and iPad<a class="anchor" href="#on-iphone-and-ipad" aria-label="Link to this section: On iPhone and iPad">#</a></h3>
 <p>Push needs iOS or iPadOS 16.4 or later, and only works in the installed app. Add OpenTodo to your home screen first (<a href="/docs/install-app/#iphone-and-ipad">Installing the app</a>), open it from there, then turn on notifications in its settings.</p>
 <h3 id="privacy">Privacy<a class="anchor" href="#privacy" aria-label="Link to this section: Privacy">#</a></h3>
@@ -138,7 +181,9 @@
 <li><strong>&quot;Notifications are blocked for this site&quot;</strong>: you said no when the browser asked. Allow notifications for your OpenTodo address in the browser&#39;s site settings, then select <strong>Re-enable</strong>.</li>
 <li><strong>&quot;Push notifications are turned off on this server&quot;</strong>: the person running your server has switched push off. Reminders still show inside the app.</li>
 <li><strong>&quot;This browser does not support push notifications&quot;</strong>: try the installed app, or open OpenTodo over <code>https://</code>.</li>
+<li><strong>The test says accepted but not received</strong>: the push left your server but didn&#39;t reach this device. On a Mac, check <strong>System Settings → Notifications</strong> for your browser; on Windows, <strong>Settings → System → Notifications</strong>; on Android, the browser&#39;s or app&#39;s notification settings; on iPhone and iPad, the installed app&#39;s notification settings. Focus and do-not-disturb modes hide notifications too.</li>
 <li><strong>Nothing arrives on a phone</strong>: check that the operating system allows notifications for the app (or the browser), and that battery saving or focus modes aren&#39;t holding them back.</li>
+<li><strong>Running OpenTodo from source with <code>make dev</code></strong>: development builds have no service worker, so push can&#39;t work there and the delivery check says so. Use the production build (<code>make run</code>, <a href="http://localhost:8080" rel="noopener">http://localhost:8080</a>) to test push.</li>
 </ul>
 <p>More fixes in <a href="/docs/troubleshooting/">Troubleshooting</a>.</p>
 
@@ -149,11 +194,11 @@
       <a class="next" rel="next" href="/docs/offline-and-sync/"><span>Next</span>Offline and sync</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#the-bell">The bell</a></li><li><a href="#reminders-inside-the-app">Reminders inside the app</a></li><li><a href="#get-reminders-when-the-app-is-closed">Get reminders when the app is closed</a><ul><li><a href="#on-iphone-and-ipad">On iPhone and iPad</a></li><li><a href="#privacy">Privacy</a></li></ul></li><li><a href="#when-notifications-dont-arrive">When notifications don't arrive</a></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#the-bell">The bell</a></li><li><a href="#reminders-inside-the-app">Reminders inside the app</a></li><li><a href="#get-reminders-when-the-app-is-closed">Get reminders when the app is closed</a><ul><li><a href="#check-that-it-works">Check that it works</a></li><li><a href="#on-iphone-and-ipad">On iPhone and iPad</a></li><li><a href="#privacy">Privacy</a></li></ul></li><li><a href="#when-notifications-dont-arrive">When notifications don't arrive</a></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

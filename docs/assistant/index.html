@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -119,7 +119,7 @@
 </ul>
 <p>In a shared project that includes text other members wrote. Select <strong>Accept and continue</strong> to start. Nothing is sent to any provider before you accept. If the provider changes later (the owner switches, you choose your own, or the owner stops allowing members&#39; own keys), the assistant asks you again. You can withdraw consent in <strong>Settings → AI → Assistant</strong>.</p>
 <h2 id="use-your-own-provider-and-key">Use your own provider and key<a class="anchor" href="#use-your-own-provider-and-key" aria-label="Link to this section: Use your own provider and key">#</a></h2>
-<p>When the server owner ticks <strong>Let members bring their own key</strong>, <strong>Settings → AI → Assistant</strong> shows <strong>Which assistant you use</strong>:</p>
+<p>When the server owner turns on <strong>Let members bring their own key</strong>, <strong>Settings → AI → Assistant</strong> shows <strong>Which assistant you use</strong>:</p>
 <ul>
 <li><strong>The server&#39;s assistant</strong>: the provider and model the owner set up. This is the default.</li>
 <li><strong>My own provider and key</strong>: choose <strong>Anthropic (Claude)</strong>, <strong>OpenAI</strong> or <strong>Google Gemini</strong>, a model, and paste an API key from your own account, then select <strong>Save my provider</strong>. For Anthropic you pick one of the offered models; for OpenAI and Gemini you type the model id (up to 100 characters: letters, digits, <code>.</code>, <code>_</code>, <code>:</code> and <code>-</code>, for example <code>gpt-4.1-mini</code> or <code>gemini-2.5-flash</code>). <strong>Test connection</strong> sends one tiny request with your key to check it (up to 5 tests in 10 minutes).</li>
@@ -146,9 +146,9 @@
 <h2 id="undo">Undo<a class="anchor" href="#undo" aria-label="Link to this section: Undo">#</a></h2>
 <p>After applying, <strong>Undo</strong> appears in the panel and in a short notice at the bottom of the screen. It puts back every value the proposal changed and moves tasks it created to the Trash, in one step, also offline. If you edited one of those fields again in the meantime, your edit stays and the undo names that task. The last 20 applied proposals on a device can be undone.</p>
 <h2 id="apply-small-changes-without-review">Apply small changes without review<a class="anchor" href="#apply-small-changes-without-review" aria-label="Link to this section: Apply small changes without review">#</a></h2>
-<p><strong>Settings → AI → Assistant → Apply small changes without review (this device)</strong> is off by default. When it is on, a proposal that touches at most 3 existing tasks and only changes completion, due dates, priority or labels is applied at once, with an Undo notice. Anything else, including every new task, every move to another project or section, every deletion and every text edit, is always shown for review.</p>
+<p>The switch <strong>Settings → AI → Assistant → Apply small changes without review (this device)</strong> is off by default. When it is on, a proposal that touches at most 3 existing tasks and only changes completion, due dates, priority or labels is applied at once, with an Undo notice. Anything else, including every new task, every move to another project or section, every deletion and every text edit, is always shown for review.</p>
 <h2 id="conversations-stay-on-this-device">Conversations stay on this device<a class="anchor" href="#conversations-stay-on-this-device" aria-label="Link to this section: Conversations stay on this device">#</a></h2>
-<p>Conversations are stored only in this browser: never synced, never sent to other people, not in exports or backups. The panel keeps the last 50 conversations for up to 30 days. <strong>History</strong> lists them (also offline), <strong>New</strong> starts another, and <strong>Clear conversations</strong> deletes them. Signing out deletes them too. The server keeps nothing of a conversation after it has answered.</p>
+<p>Conversations are stored only in this browser: never synced, never sent to other people, not in exports or backups. The panel keeps the last 50 conversations for up to 30 days. <strong>History</strong> lists them (also offline), <strong>New</strong> starts another, and <strong>Clear conversations</strong> deletes them (also <strong>Settings → AI → Assistant → Clear conversations on this device</strong>, which asks you to confirm). Signing out deletes them too. The server keeps nothing of a conversation after it has answered.</p>
 <p>Offline you can read earlier conversations and apply or undo a proposal that already arrived; asking needs a connection.</p>
 <h2 id="costs-and-limits">Costs and limits<a class="anchor" href="#costs-and-limits" aria-label="Link to this section: Costs and limits">#</a></h2>
 <p>Each answer shows how many tokens it used and how much of your monthly allowance that is (&quot;1,240 tokens · this month 18% of your limit&quot;); <strong>Settings → AI → Assistant</strong> shows the month so far. The owner sets the allowance (500,000 tokens per person per month by default). When you reach it, the assistant says when it resets (the first day of the next month, UTC). One answer at a time per person.</p>
@@ -166,12 +166,12 @@
 <p>The assistant is switched off on the public demo.</p>
 <h2 id="for-the-server-owner">For the server owner<a class="anchor" href="#for-the-server-owner" aria-label="Link to this section: For the server owner">#</a></h2>
 <h3 id="turn-it-on">Turn it on<a class="anchor" href="#turn-it-on" aria-label="Link to this section: Turn it on">#</a></h3>
-<p><strong>Settings → AI → Assistant</strong> (owner only):</p>
+<p><strong>Settings → AI → Assistant</strong> shows the owner whether the assistant is on, the provider and model everyone uses, the providers allowed (flagging one without a key), the monthly limit and whether members may bring their own key. Select <strong>Configure</strong> (owner only) to change them:</p>
 <ol>
 <li>Tick <strong>Allow this provider</strong> for one or more providers and enter the model and key.</li>
 <li>Choose the <strong>Provider everyone uses</strong>.</li>
-<li>Tick <strong>Turn on the assistant for this server</strong> and select <strong>Save assistant settings</strong>.</li>
-<li>Select <strong>Test connection</strong>: it sends one tiny request and reports success or the provider&#39;s error. It is the only request the server makes outside someone&#39;s turn.</li>
+<li>Tick <strong>Turn on the assistant for this server</strong> and select <strong>Save assistant settings</strong>. The dialog closes and the section shows the new state.</li>
+<li>In <strong>Configure</strong>, select <strong>Test connection</strong> under a provider: it sends one tiny request and reports success or the provider&#39;s error. It is the only request the server makes outside someone&#39;s turn.</li>
 </ol>
 <div class="table-wrap" tabindex="0"><table>
 <thead>
@@ -230,7 +230,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

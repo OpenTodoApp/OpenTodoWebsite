@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,73 +96,93 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
     <article class="prose" data-audience="user">
       <p class="doc-meta"><span class="crumbs">Using OpenTodo <span aria-hidden="true">›</span> Guides</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
 <h1 id="settings">Settings</h1>
-<p>Open <strong>Settings</strong> with the gear next to your name at the bottom of the sidebar, or press <kbd>g</kbd> then <kbd>s</kbd>. Settings opens on a short list of sections, each with a line saying what&#39;s inside. Pick one to open it.</p>
-<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#account">Account</a></li><li><a href="#general">General</a></li><li><a href="#notifications">Notifications</a></li><li><a href="#data">Data</a></li><li><a href="#capture">Capture</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#ai">AI</a></li><li><a href="#administration">Administration</a></li></ul></nav></details>
+<p>Open <strong>Settings</strong> with the gear next to your name at the bottom of the sidebar, or press <kbd>g</kbd> then <kbd>s</kbd>. Settings opens on your profile card (your initials, name, email and role) and the sections, grouped under <strong>You</strong>, <strong>App</strong>, <strong>Data and connections</strong> and, for the people who run the server, <strong>Server</strong>. Each section has an icon and a line saying what&#39;s inside. Pick one to open it.</p>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#you">You</a><ul><li><a href="#account">Account</a></li><li><a href="#security">Security</a></li><li><a href="#encryption">Encryption</a></li><li><a href="#activity">Activity</a></li></ul></li><li><a href="#app">App</a><ul><li><a href="#preferences">Preferences</a></li><li><a href="#notifications">Notifications</a></li><li><a href="#capture">Capture</a></li><li><a href="#projects">Projects</a></li></ul></li><li><a href="#data-and-connections">Data and connections</a><ul><li><a href="#data">Data</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#ai">AI</a></li></ul></li><li><a href="#server">Server</a><ul><li><a href="#administration">Administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#access-policies">Access policies</a></li></ul></li></ul></nav></details>
 
-<p><picture><source srcset="/docs/images/settings-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/settings-light.webp" alt="The Settings overview: your account line and the list of sections Account, General, Notifications, Data, Capture, Integrations, AI and Administration, each with a short description." width="1500" height="950" loading="lazy" decoding="async"></picture></p>
-<p>On a wide screen the list of sections stays on the left while you work in one, and the current section is highlighted. On a phone, each section starts with a <strong>← Settings</strong> link back to the list. Every section has its own address, such as <code>/settings/integrations</code>, so you can bookmark it or share a link with someone on the same server.</p>
+<p><picture><source srcset="/docs/images/settings-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/settings-light.webp" alt="The Settings overview: the profile card, then the sections grouped under You, App and Data and connections, each with an icon and a short description." width="1500" height="950" loading="lazy" decoding="async"></picture></p>
+<p>On a wide screen the grouped list of sections stays on the left while you work in one, and the current section is highlighted. On a phone, each section starts with a <strong>← Settings</strong> link back to the list. Every section has its own address, such as <code>/settings/integrations</code>, so you can bookmark it or share a link with someone on the same server. Older links keep working: <code>/settings/general</code> opens <strong>Preferences</strong>.</p>
+<p>Inside a section, each panel is a card. It leads with its current state (for example whether two-factor authentication is on and how many recovery codes are left), then its settings as rows with the control on the right. Forms with several fields open from a button, and actions that remove something ask you to confirm first and say what will be lost.</p>
 <p>Some settings follow your account to every device. Others belong to the device you&#39;re on, so your phone and laptop can be set up differently. Settings that apply to one device say &quot;this device&quot; next to them.</p>
 <p>Each panel has a <strong>Help</strong> link on the right that opens its part of this guide next to Settings.</p>
-<p>What you see depends on your role: people who run the server see an extra <strong>Administration</strong> section and a few extra panels, and the public demo shows a note in place of most account and server settings.</p>
-<h2 id="account">Account<a class="anchor" href="#account" aria-label="Link to this section: Account">#</a></h2>
-<p>Your name, email and role, and everything about signing in.</p>
+<p>What you see depends on your role: the owner and admins also see the <strong>Server</strong> group, and the public demo shows a note in place of most account and server settings.</p>
+<h2 id="you">You<a class="anchor" href="#you" aria-label="Link to this section: You">#</a></h2>
+<h3 id="account">Account<a class="anchor" href="#account" aria-label="Link to this section: Account">#</a></h3>
+<p>Your profile card and <strong>Sign out of this device</strong>. Signing out removes your tasks from this device; changes not yet sent are uploaded first, and the app asks you to confirm.</p>
+<h3 id="security">Security<a class="anchor" href="#security" aria-label="Link to this section: Security">#</a></h3>
 <ul>
-<li><strong>Password</strong>: change your password. See <a href="/docs/account-security/#change-your-password">Account security</a>.</li>
-<li><strong>Two-factor authentication</strong>: a code from your phone on top of your password. See <a href="/docs/account-security/#turn-on-two-factor-authentication">Account security</a>. The owner also sets the <strong>policy</strong> here: optional, required for the owner, or required for everyone.</li>
-<li><strong>Security</strong>: passkeys. See <a href="/docs/account-security/#sign-in-with-a-passkey">Account security</a>.</li>
-<li><strong>Recent activity</strong>: sign-ins and token changes from the last 90 days. The owner also sees the server&#39;s <strong>Audit log</strong> here.</li>
+<li><strong>Password</strong>: <strong>Change password</strong> opens the form. See <a href="/docs/account-security/#change-your-password">Account security</a>.</li>
+<li><strong>Two-factor authentication</strong>: a code from your phone on top of your password. The card shows whether it&#39;s on and how many recovery codes are left, and warns when only a few remain. See <a href="/docs/account-security/#turn-on-two-factor-authentication">Account security</a>.</li>
+<li><strong>Passkeys</strong>: sign in with your fingerprint, face or device PIN. See <a href="/docs/account-security/#sign-in-with-a-passkey">Account security</a>.</li>
 <li><strong>Linked accounts</strong>: connect a single sign-on login, if your server offers one.</li>
-<li><strong>End-to-end encryption</strong>: encrypt your task text on your devices. See <a href="/docs/e2ee/">End-to-end encryption</a>.</li>
-<li><strong>Session</strong>: <strong>Sign out</strong> of this device. This also removes your tasks from it; changes not yet sent are uploaded first.</li>
 </ul>
-<h2 id="general">General<a class="anchor" href="#general" aria-label="Link to this section: General">#</a></h2>
+<h3 id="encryption">Encryption<a class="anchor" href="#encryption" aria-label="Link to this section: Encryption">#</a></h3>
+<p>Encrypt your task text on your devices, and keep its recovery key. See <a href="/docs/e2ee/">End-to-end encryption</a>.</p>
+<h3 id="activity">Activity<a class="anchor" href="#activity" aria-label="Link to this section: Activity">#</a></h3>
+<p>Sign-ins and token changes from the last 90 days. The owner also sees the server&#39;s <strong>Audit log</strong> here.</p>
+<h2 id="app">App<a class="anchor" href="#app" aria-label="Link to this section: App">#</a></h2>
+<h3 id="preferences">Preferences<a class="anchor" href="#preferences" aria-label="Link to this section: Preferences">#</a></h3>
 <p>How the app behaves on this device.</p>
 <ul>
-<li><strong>Calendar</strong>: when the Day and Week grid starts and ends, and how long your working day is. See <a href="/docs/time-blocking/#adjust-the-grid">Time blocking</a>.</li>
 <li><strong>Start view</strong>: the view this device opens on. See <a href="/docs/views/#choose-where-the-app-opens">Views</a>.</li>
+<li><strong>Date and time</strong>: how dates and times look and where weeks start, on all your devices (see below).</li>
+<li><strong>Calendar</strong>: when the Day and Week grid starts and ends, and how long your working day is. See <a href="/docs/time-blocking/#adjust-the-grid">Time blocking</a>.</li>
 <li><strong>Keyboard</strong>: turn on Vim keybindings. See <a href="/docs/keyboard/#vim-keybindings">Keyboard shortcuts</a>.</li>
+</ul>
+<h4 id="date-and-time">Date and time<a class="anchor" href="#date-and-time" aria-label="Link to this section: Date and time">#</a></h4>
+<p>Three choices that follow your account to every device, also when you change them offline:</p>
+<ul>
+<li><strong>Date format</strong>: <strong>System</strong> (the way this browser writes dates), <strong>Day-month</strong> (<code>14 Oct</code>, <code>14/10/2026</code>), <strong>Month-day</strong> (<code>Oct 14</code>, <code>10/14/2026</code>) or <strong>ISO</strong> (<code>2026-10-14</code>). Each option shows today&#39;s date in that format. Month and weekday names stay in your browser&#39;s language.</li>
+<li><strong>Time format</strong>: <strong>System</strong>, <strong>12-hour</strong> (<code>3:00 PM</code>) or <strong>24-hour</strong> (<code>15:00</code>).</li>
+<li><strong>First day of the week</strong>: <strong>System</strong>, <strong>Monday</strong>, <strong>Sunday</strong> or <strong>Saturday</strong>. It decides where the Week view and the calendar of a date field start.</li>
+</ul>
+<p>The <strong>Preview</strong> shows a due date, a date, a due time, a comment time and this week as they will appear. A change applies at once everywhere in the app, without a reload: task rows, the task detail, reminders, the Day and Week views, comments, history and the lists in Settings. With a numeric date order on <strong>Automatic</strong>, quick add reads dates like <code>3/11</code> in your date format too.</p>
+<h3 id="notifications">Notifications<a class="anchor" href="#notifications" aria-label="Link to this section: Notifications">#</a></h3>
+<p>Push notifications for reminders on this device, and a test that shows whether they arrive. See <a href="/docs/notifications/">Notifications</a>.</p>
+<h3 id="capture">Capture<a class="anchor" href="#capture" aria-label="Link to this section: Capture">#</a></h3>
+<ul>
 <li><strong>Quick add</strong>: turn natural-language parsing on or off, pick the languages it understands, and the order of day and month in dates like <code>12/11</code>. See <a href="/docs/quick-add/#languages">Quick add syntax</a>.</li>
 <li><strong>Voice capture</strong>: dictate tasks into quick add. Off until you turn it on, and the app explains first what your browser does with the audio. See <a href="/docs/quick-add/#voice">Quick add syntax</a>.</li>
-<li><strong>Projects</strong>: archive projects automatically after 30 days without open tasks, and bring back archived projects with <strong>Restore</strong>. See <a href="/docs/trash-and-history/#archived-projects">Trash and history</a>.</li>
-</ul>
-<h2 id="notifications">Notifications<a class="anchor" href="#notifications" aria-label="Link to this section: Notifications">#</a></h2>
-<p>Push notifications for reminders on this device. See <a href="/docs/notifications/">Notifications</a>.</p>
-<h2 id="data">Data<a class="anchor" href="#data" aria-label="Link to this section: Data">#</a></h2>
-<ul>
-<li><strong>Your data</strong>: <strong>Download export (JSON)</strong> saves everything you have in one file. <strong>Import data…</strong> brings in tasks from a file. See <a href="/docs/import-export/">Import and export</a>. The sync status of this device is shown underneath.</li>
-<li><strong>Backups</strong>: scheduled backups to a folder, S3 or WebDAV (owner only). See <a href="/docs/backups/">Backups</a>.</li>
-</ul>
-<h2 id="capture">Capture<a class="anchor" href="#capture" aria-label="Link to this section: Capture">#</a></h2>
-<ul>
-<li><strong>Capture</strong>: the <strong>Add to OpenTodo</strong> bookmarklet, to save the page you&#39;re reading as a task. See <a href="/docs/capture/">Capturing pages</a>.</li>
+<li><strong>Bookmarklet and extension</strong>: the <strong>Add to OpenTodo</strong> bookmarklet, to save the page you&#39;re reading as a task. See <a href="/docs/capture/">Capturing pages</a>.</li>
 <li><strong>Email to task</strong>: your own secret address; emails sent there become tasks. See <a href="/docs/email/">Email to task</a>.</li>
 </ul>
-<h2 id="integrations">Integrations<a class="anchor" href="#integrations" aria-label="Link to this section: Integrations">#</a></h2>
+<h3 id="projects">Projects<a class="anchor" href="#projects" aria-label="Link to this section: Projects">#</a></h3>
+<p>Archive projects automatically after 30 days without open tasks, and bring back archived projects with <strong>Restore</strong>. See <a href="/docs/trash-and-history/#archived-projects">Trash and history</a>.</p>
+<h2 id="data-and-connections">Data and connections<a class="anchor" href="#data-and-connections" aria-label="Link to this section: Data and connections">#</a></h2>
+<h3 id="data">Data<a class="anchor" href="#data" aria-label="Link to this section: Data">#</a></h3>
+<p><strong>Download export (JSON)</strong> saves everything you have in one file. <strong>Import data…</strong> brings in tasks from a file. See <a href="/docs/import-export/">Import and export</a>. The sync status of this device is shown too.</p>
+<h3 id="integrations">Integrations<a class="anchor" href="#integrations" aria-label="Link to this section: Integrations">#</a></h3>
 <p>These panels connect OpenTodo to other tools. Some appear only when the person running your server has switched the feature on.</p>
 <ul>
 <li><strong>Calendar apps (CalDAV)</strong>: see your tasks in calendar and reminder apps on your phone or computer, with an app password. See <a href="/docs/caldav/">Calendar apps</a>.</li>
 <li><strong>Webhooks</strong>: send a message to another service when tasks change. See <a href="/docs/webhooks/">Webhooks</a>.</li>
 <li><strong>API tokens</strong>: keys for scripts and the <code>ot</code> command-line client. A token is shown once, when you create it. Read-only tokens can&#39;t change anything; tokens for an AI assistant that can make changes work only through the assistant tools and never on the rest of the API. See <a href="/docs/api/">HTTP API</a> and <a href="/docs/cli/">Command-line client</a>.</li>
 </ul>
-<h2 id="ai">AI<a class="anchor" href="#ai" aria-label="Link to this section: AI">#</a></h2>
+<h3 id="ai">AI<a class="anchor" href="#ai" aria-label="Link to this section: AI">#</a></h3>
 <ul>
 <li><strong>Assistant</strong>: the in-app assistant, when the server owner has turned it on: your consent, which assistant you use (the server&#39;s, or your own Anthropic, OpenAI or Gemini provider, model and key, if allowed), this month&#39;s usage, <strong>Apply small changes without review (this device)</strong> and <strong>Clear conversations on this device</strong>. The owner also chooses the provider, models, keys, network and monthly allowance here. See <a href="/docs/assistant/">AI assistant</a>.</li>
 <li><strong>AI assistants</strong>: give an AI assistant read-only access to your tasks, or, when the server owner allows it and you switch on <strong>Allow AI assistants to make changes</strong>, a token for an assistant that can make changes you can undo. See <a href="/docs/mcp/">AI assistants (MCP)</a>. A token you create here is also listed under <strong>Integrations → API tokens</strong>.</li>
 </ul>
-<h2 id="administration">Administration<a class="anchor" href="#administration" aria-label="Link to this section: Administration">#</a></h2>
-<p>Only the owner and admins of the server see this section.</p>
+<h2 id="server">Server<a class="anchor" href="#server" aria-label="Link to this section: Server">#</a></h2>
+<p>Only the owner and admins see this group; <strong>Backups</strong> and <strong>Access policies</strong> are for the owner only.</p>
+<h3 id="administration">Administration<a class="anchor" href="#administration" aria-label="Link to this section: Administration">#</a></h3>
 <ul>
 <li><strong>Users</strong>: everyone with an account, their role and last sign-in. Make someone an admin (owner only), deactivate or reactivate an account, create a password reset link, or delete an account.</li>
 <li><strong>Members</strong>: invite people with a single-use link. See <a href="/docs/sharing/#invite-someone-new">Sharing and comments</a>.</li>
-<li><strong>Project invite links</strong>: <strong>Members can invite new people with project links</strong> (owner only, off by default) lets links that members create in a project&#39;s Share dialog also create accounts. See <a href="/docs/sharing/#who-can-bring-new-people">Who can bring new people</a>.</li>
-<li><strong>Single sign-on</strong>: sign-in through your company or family identity provider (owner only). See <a href="/docs/self-hosting/sso/">Single sign-on</a>.</li>
+</ul>
+<h3 id="backups">Backups<a class="anchor" href="#backups" aria-label="Link to this section: Backups">#</a></h3>
+<p>Scheduled backups to a folder, S3 or WebDAV, the last run and its result, and the next one. See <a href="/docs/backups/">Backups</a>.</p>
+<h3 id="access-policies">Access policies<a class="anchor" href="#access-policies" aria-label="Link to this section: Access policies">#</a></h3>
+<ul>
+<li><strong>Two-factor policy</strong>: optional, required for the owner, or required for everyone. See <a href="/docs/account-security/#turn-on-two-factor-authentication">Account security</a>.</li>
+<li><strong>Single sign-on</strong>: sign-in through your company or family identity provider. See <a href="/docs/self-hosting/sso/">Single sign-on</a>.</li>
+<li><strong>Project invite links</strong>: <strong>Members can invite new people with project links</strong> (off by default) lets links that members create in a project&#39;s Share dialog also create accounts. See <a href="/docs/sharing/#who-can-bring-new-people">Who can bring new people</a>.</li>
 </ul>
 <p>Running the server itself is covered in <a href="/docs/self-hosting/docker/">Running with Docker</a>.</p>
 
@@ -173,11 +193,11 @@
       <a class="next" rel="next" href="/docs/troubleshooting/"><span>Next</span>Troubleshooting and FAQ</a>
     </nav>
   </main>
-  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#account">Account</a></li><li><a href="#general">General</a></li><li><a href="#notifications">Notifications</a></li><li><a href="#data">Data</a></li><li><a href="#capture">Capture</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#ai">AI</a></li><li><a href="#administration">Administration</a></li></ul></nav></aside>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#you">You</a><ul><li><a href="#account">Account</a></li><li><a href="#security">Security</a></li><li><a href="#encryption">Encryption</a></li><li><a href="#activity">Activity</a></li></ul></li><li><a href="#app">App</a><ul><li><a href="#preferences">Preferences</a></li><li><a href="#notifications">Notifications</a></li><li><a href="#capture">Capture</a></li><li><a href="#projects">Projects</a></li></ul></li><li><a href="#data-and-connections">Data and connections</a><ul><li><a href="#data">Data</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#ai">AI</a></li></ul></li><li><a href="#server">Server</a><ul><li><a href="#administration">Administration</a></li><li><a href="#backups">Backups</a></li><li><a href="#access-policies">Access policies</a></li></ul></li></ul></nav></aside>
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

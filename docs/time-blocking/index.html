@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -119,6 +119,7 @@
 <li>A red line marks the current time.</li>
 </ul>
 <p>Use <strong>‹</strong> and <strong>›</strong> (or <kbd>[</kbd> and <kbd>]</kbd>) to go back and forward, and <strong>Today</strong> (or <kbd>t</kbd>) to come back.</p>
+<p>The Week view starts on your first day of the week, and the hours and block times follow your time format (<code>9 AM</code> or <code>09:00</code>). Both are set in <strong>Settings → Preferences → Date and time</strong> and follow you to all your devices. Moving a block still sets the same time; only how it is shown changes.</p>
 <h2 id="place-a-task-on-the-calendar">Place a task on the calendar<a class="anchor" href="#place-a-task-on-the-calendar" aria-label="Link to this section: Place a task on the calendar">#</a></h2>
 <p>Drag a task from the Unscheduled lane onto a time slot. Its due date and time become that slot. The grid works in 15-minute steps.</p>
 <p>To plan from your lists, open the side list with <strong>Plan from a list</strong> and drag tasks from there onto the calendar.</p>
@@ -137,7 +138,7 @@
 <p>Completing a task removes its block and lowers the day&#39;s total.</p>
 <p><picture><source srcset="/docs/images/day-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/day-light.webp" alt="The Day calendar with the day's tasks as blocks between morning and evening." width="1500" height="950" loading="lazy" decoding="async"></picture></p>
 <h2 id="adjust-the-grid">Adjust the grid<a class="anchor" href="#adjust-the-grid" aria-label="Link to this section: Adjust the grid">#</a></h2>
-<p>In <strong>Settings → General → Calendar</strong> you can set when the grid starts and ends (6:00 to 22:00 by default; you can still scroll beyond) and how long your working day is (8 hours by default). These settings belong to each device, so your phone and laptop can differ.</p>
+<p>In <strong>Settings → Preferences → Calendar</strong> you can set when the grid starts and ends (6:00 to 22:00 by default; you can still scroll beyond) and how long your working day is (8 hours by default). These settings belong to each device, so your phone and laptop can differ.</p>
 <h2 id="tips">Tips<a class="anchor" href="#tips" aria-label="Link to this section: Tips">#</a></h2>
 <ul>
 <li>Estimate generously at first. After a week you&#39;ll know how long &quot;quick&quot; things really take.</li>
@@ -157,7 +158,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

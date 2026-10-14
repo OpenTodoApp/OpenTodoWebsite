@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -216,16 +216,16 @@
 <tr>
 <td><code>OPENTODO_OIDC_*</code></td>
 <td>unset</td>
-<td>Optional <a href="/docs/self-hosting/sso/">single sign-on</a> settings (<code>ISSUER</code>, <code>CLIENT_ID</code>, <code>CLIENT_SECRET</code>, <code>DISPLAY_NAME</code>, <code>SSO_ONLY</code>) that override and lock the fields in Settings → Administration → Single sign-on</td>
+<td>Optional <a href="/docs/self-hosting/sso/">single sign-on</a> settings (<code>ISSUER</code>, <code>CLIENT_ID</code>, <code>CLIENT_SECRET</code>, <code>DISPLAY_NAME</code>, <code>SSO_ONLY</code>) that override and lock the fields in Settings → Access policies → Single sign-on</td>
 </tr>
 <tr>
 <td><code>OPENTODO_BACKUP_*</code></td>
 <td>unset</td>
-<td>Optional presets for <a href="/docs/backups/#environment-presets">scheduled backups</a>, applied once; Settings → Data → Backups wins afterwards</td>
+<td>Optional presets for <a href="/docs/backups/#environment-presets">scheduled backups</a>, applied once; Settings → Backups wins afterwards</td>
 </tr>
 </tbody></table></div>
 <h2 id="passkeys">Passkeys<a class="anchor" href="#passkeys" aria-label="Link to this section: Passkeys">#</a></h2>
-<p>Users can add passkeys in <strong>Settings → Account → Security</strong> once the domain is https, which Coolify provisions when the domain starts with <code>https://</code>. Passkeys are tied to the domain&#39;s host. If you later change the domain assigned to the service, existing passkeys stop working: users sign in with their password and register new ones. Passwords are never disabled by passkeys. Details in <a href="/docs/self-hosting/docker/#passkeys-need-an-https-base-url">Running with Docker</a>.</p>
+<p>Users can add passkeys in <strong>Settings → Security → Passkeys</strong> once the domain is https, which Coolify provisions when the domain starts with <code>https://</code>. Passkeys are tied to the domain&#39;s host. If you later change the domain assigned to the service, existing passkeys stop working: users sign in with their password and register new ones. Passwords are never disabled by passkeys. Details in <a href="/docs/self-hosting/docker/#passkeys-need-an-https-base-url">Running with Docker</a>.</p>
 <h2 id="first-visit">First visit<a class="anchor" href="#first-visit" aria-label="Link to this section: First visit">#</a></h2>
 <p>A Coolify service is public as soon as it is deployed, and on a server with no accounts the first visitor creates the owner. Open the domain yourself as soon as the deployment finishes. If someone else got there first (the setup screen is gone and you have no account), delete the resource together with its volume and deploy again. A way to pre-create the owner from Coolify&#39;s generated variables is proposed separately (<code>owner-bootstrap</code>).</p>
 <h2 id="domains">Domains<a class="anchor" href="#domains" aria-label="Link to this section: Domains">#</a></h2>
@@ -233,9 +233,9 @@
 <h2 id="adding-people">Adding people<a class="anchor" href="#adding-people" aria-label="Link to this section: Adding people">#</a></h2>
 <p>Leave <code>OPENTODO_ALLOW_SIGNUP</code> unset. In the app, open <strong>Settings → Administration → Members</strong>, create an invitation (optionally bound to an email, expiring in 1 hour to 30 days) and send the link. It creates one account and then stops working; pending links can be revoked. Links use <code>OPENTODO_BASE_URL</code>, which the compose file sets from Coolify&#39;s domain. See <a href="https://github.com/pixari/opentodo/blob/main/README.md#adding-people" rel="noopener">Adding people</a>. <strong>Settings → Administration → Users</strong> manages accounts afterwards: admins, deactivation, reset links, deletion and owner transfer. If the owner forgot their password, open the service&#39;s terminal in Coolify and run <code>/opentodo reset-owner-password</code> (see <a href="/docs/self-hosting/docker/#recovering-owner-access">Recovering owner access</a>).</p>
 <h2 id="backups">Backups<a class="anchor" href="#backups" aria-label="Link to this section: Backups">#</a></h2>
-<p>Everything is in the <code>/data</code> volume (one file, <code>opentodo.db</code>, plus its WAL files while running, the web push keys and settings secrets). Turn on scheduled backups in <strong>Settings → Data → Backups</strong>: consistent snapshots to <code>/data/backups</code>, an S3-compatible bucket or a WebDAV share, with retention and optional encryption, restorable with <code>opentodo restore</code> (see <a href="/docs/backups/#restore">docs/backups.md</a>). Coolify&#39;s scheduled volume backups archive the volume with <code>tar</code>; a copy taken while the server writes can catch the database mid-write, so set <strong>Archive behavior</strong> to <em>Stop containers during archive</em> there, or rely on the built-in backups. The in-app <strong>Settings → Data → Download export</strong> gives a portable JSON copy at any time.</p>
+<p>Everything is in the <code>/data</code> volume (one file, <code>opentodo.db</code>, plus its WAL files while running, the web push keys and settings secrets). Turn on scheduled backups in <strong>Settings → Backups</strong>: consistent snapshots to <code>/data/backups</code>, an S3-compatible bucket or a WebDAV share, with retention and optional encryption, restorable with <code>opentodo restore</code> (see <a href="/docs/backups/#restore">docs/backups.md</a>). Coolify&#39;s scheduled volume backups archive the volume with <code>tar</code>; a copy taken while the server writes can catch the database mid-write, so set <strong>Archive behavior</strong> to <em>Stop containers during archive</em> there, or rely on the built-in backups. The in-app <strong>Settings → Data → Download export</strong> gives a portable JSON copy at any time.</p>
 <h2 id="audit-log">Audit log<a class="anchor" href="#audit-log" aria-label="Link to this section: Audit log">#</a></h2>
-<p><strong>Settings → Account → Audit log</strong> (owner only) lists sign-ins, failed sign-ins, credentials, invitations, user administration, exports, backups and setting changes, with filters and an NDJSON export. It lives in the <code>/data</code> volume with everything else and needs no configuration: retention defaults to 90 days, client addresses are off by default. If you enable address logging, the address is the last hop of Traefik&#39;s <code>X-Forwarded-For</code> header (the one Traefik appended), which Coolify sets for you; do not publish the container port directly, or clients could bypass the proxy and forge that header. Expect roughly 200 bytes per event. Details in <a href="/docs/self-hosting/docker/#audit-log">Running with Docker</a>.</p>
+<p><strong>Settings → Activity → Audit log</strong> (owner only) lists sign-ins, failed sign-ins, credentials, invitations, user administration, exports, backups and setting changes, with filters and an NDJSON export. It lives in the <code>/data</code> volume with everything else and needs no configuration: retention defaults to 90 days, client addresses are off by default. If you enable address logging, the address is the last hop of Traefik&#39;s <code>X-Forwarded-For</code> header (the one Traefik appended), which Coolify sets for you; do not publish the container port directly, or clients could bypass the proxy and forge that header. Expect roughly 200 bytes per event. Details in <a href="/docs/self-hosting/docker/#audit-log">Running with Docker</a>.</p>
 <h2 id="updating">Updating<a class="anchor" href="#updating" aria-label="Link to this section: Updating">#</a></h2>
 <p>Click <strong>Deploy</strong>. The new version applies database migrations on startup, and your data stays in the volume.</p>
 <ul>
@@ -245,7 +245,7 @@
 </ul>
 <p><strong>Upgrading from 0.1.0 to 0.2.0:</strong> 0.1.0 locked the volume exclusively, so its replacement cannot start beside it (&quot;data directory is in use by another opentodo process&quot;, and Coolify rolls back). For this one upgrade, click <strong>Stop</strong>, then <strong>Deploy</strong> (a minute of downtime while the new image starts). From 0.2.0 on, updates roll without stopping. If you pinned the image tag (for example <code>ghcr.io/pixari/opentodo:0.1</code> in <a href="https://github.com/pixari/opentodo/blob/main/deploy/coolify/opentodo.yaml" rel="noopener"><code>deploy/coolify/opentodo.yaml</code></a>), change it to <code>0.2</code> first.</p>
 <h2 id="behind-cloudflare">Behind Cloudflare<a class="anchor" href="#behind-cloudflare" aria-label="Link to this section: Behind Cloudflare">#</a></h2>
-<p>When the domain&#39;s DNS record is proxied by Cloudflare (orange cloud), every request reaches Coolify&#39;s proxy from a Cloudflare address. Set <code>OPENTODO_TRUSTED_PROXIES=cloudflare</code> in the environment tab and redeploy, so rate limits and the audit log see visitors&#39; addresses (from <code>CF-Connecting-IP</code>) instead of one shared Cloudflare address. With a Cloudflare Tunnel instead, requests arrive from the <code>cloudflared</code> container on Coolify&#39;s Docker network; add that network&#39;s range, for example <code>OPENTODO_TRUSTED_PROXIES=10.0.0.0/8</code> (Coolify&#39;s default address pool), and check <strong>Settings → Account → Audit log</strong> with addresses enabled to confirm it shows your own address. See <a href="/docs/self-hosting/docker/#behind-a-reverse-proxy">Behind a reverse proxy</a>.</p>
+<p>When the domain&#39;s DNS record is proxied by Cloudflare (orange cloud), every request reaches Coolify&#39;s proxy from a Cloudflare address. Set <code>OPENTODO_TRUSTED_PROXIES=cloudflare</code> in the environment tab and redeploy, so rate limits and the audit log see visitors&#39; addresses (from <code>CF-Connecting-IP</code>) instead of one shared Cloudflare address. With a Cloudflare Tunnel instead, requests arrive from the <code>cloudflared</code> container on Coolify&#39;s Docker network; add that network&#39;s range, for example <code>OPENTODO_TRUSTED_PROXIES=10.0.0.0/8</code> (Coolify&#39;s default address pool), and check <strong>Settings → Activity → Audit log</strong> with addresses enabled to confirm it shows your own address. See <a href="/docs/self-hosting/docker/#behind-a-reverse-proxy">Behind a reverse proxy</a>.</p>
 <p>The server sends the service worker with <code>Cache-Control: no-store</code>, so phones pick up a new version on their next visit. Keep Cloudflare&#39;s <strong>Caching → Configuration → Browser Cache TTL</strong> at <em>Respect Existing Headers</em>, and do not add a Cache Rule that caches everything, or Cloudflare may serve an old app shell for hours.</p>
 <h2 id="live-updates">Live updates<a class="anchor" href="#live-updates" aria-label="Link to this section: Live updates">#</a></h2>
 <p>Devices learn about each other&#39;s changes through a long-lived request, <code>GET /api/v1/sync/events</code> (server-sent events). Coolify&#39;s Traefik proxy streams it as is: no labels or settings are needed. The server heartbeats every 25 s, below Traefik&#39;s idle timeouts, and sets no-buffering headers. Use an <code>https://</code> domain so Traefik serves HTTP/2 and the streams of several tabs share one connection.</p>
@@ -273,7 +273,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>

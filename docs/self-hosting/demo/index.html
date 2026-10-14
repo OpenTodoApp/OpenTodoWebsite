@@ -59,7 +59,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav></details>
   <form class="docs-search" role="search" action="/docs/" data-search>
   <label class="sr-only" for="q-bar">Search the docs</label>
@@ -96,7 +96,7 @@
 <p class="side-group">Integrations</p>
 <ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
 <p class="side-group">Internals</p>
-<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li></ul>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
 </div></nav>
   </aside>
   <main id="content" class="docs-main" tabindex="-1">
@@ -195,7 +195,7 @@
 <h2 id="upgrading-from-the-shared-demo-account">Upgrading from the shared demo account<a class="anchor" href="#upgrading-from-the-shared-demo-account" aria-label="Link to this section: Upgrading from the shared demo account">#</a></h2>
 <p>Earlier versions gave every visitor the same account (<code>demo@example.com</code> / <code>opentodo-demo</code>) and a second member (<code>sam@example.com</code>). The first start of this version deletes both accounts with their sessions and data; the hidden owner stays. Visitors with an open tab get <code>401 demo_expired</code> and the expiry screen.</p>
 <h2 id="what-is-switched-off">What is switched off<a class="anchor" href="#what-is-switched-off" aria-label="Link to this section: What is switched off">#</a></h2>
-<p>Every request below is refused with <code>403 {&quot;error&quot;:{&quot;code&quot;:&quot;demo_restricted&quot;,&quot;message&quot;:&quot;&lt;feature&gt; is disabled on this demo instance.&quot;}}</code> before authentication, whoever sends it. The web app hides these sections in Settings (or disables the control) with a short note.</p>
+<p>Every request below is refused with <code>403 {&quot;error&quot;:{&quot;code&quot;:&quot;demo_restricted&quot;,&quot;message&quot;:&quot;&lt;feature&gt; is disabled on this demo instance.&quot;}}</code> before authentication, whoever sends it. The web app shows a short note in their place in Settings: <strong>Administration</strong>, <strong>Backups</strong> and <strong>Access policies</strong> show only the note, and the other sections keep their remaining panels.</p>
 <ul>
 <li>Sign-up, invitations, user administration and owner transfer, password change and password-reset links, linked accounts, single sign-on (<code>/api/v1/auth/oidc/*</code>)</li>
 <li>API tokens, app passwords and CalDAV (<code>/dav/</code>, <code>/.well-known/caldav</code>), passkeys, two-factor enrolment, end-to-end encryption</li>
@@ -237,7 +237,7 @@
 </div>
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
     <nav aria-label="Footer">
       <a href="/docs/">Docs home</a>
       <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
