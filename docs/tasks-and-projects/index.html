@@ -114,16 +114,20 @@
 <p>New tasks without a project land in the <strong>Inbox</strong>. Tasks added inside a project go into that project, and tasks added in <strong>Today</strong> are due today.</p>
 <h2 id="edit-a-task">Edit a task<a class="anchor" href="#edit-a-task" aria-label="Link to this section: Edit a task">#</a></h2>
 <p>Click a task, or select it with <kbd>j</kbd> / <kbd>k</kbd> and press <kbd>Enter</kbd>, to open its panel. Every change is saved as you make it; there is no Save button.</p>
-<p><picture><source srcset="/docs/images/task-detail-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/task-detail-light.webp" alt="A project list with the task panel open on the right, showing the title, notes, project, section, parent task, assignee, priority and due date." width="1500" height="950" loading="lazy" decoding="async"></picture></p>
-<p>In the panel you can change:</p>
+<p><picture><source srcset="/docs/images/task-detail-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/task-detail-light.webp" alt="A project list with the task panel open on the right: the title and notes, then the properties card with project, section, parent task, assignee, priority and due date." width="1500" height="950" loading="lazy" decoding="async"></picture></p>
+<p>The top of the panel has <strong>Complete</strong>, a <strong>⋯</strong> menu with <strong>Copy link</strong>, <strong>Open parent task</strong>, <strong>Open recurring task</strong> and <strong>Delete</strong>, and the <strong>×</strong> that closes it. Below are the <strong>Title</strong> and <strong>Notes</strong>. Notes can have headings, bold and italic text, links, and bullet, numbered and check lists.</p>
+<p>Then comes the properties card. Each row shows its current value, or a quiet &quot;No due date&quot;, &quot;No estimate&quot; and so on when it is empty. Click a row, or <kbd>Tab</kbd> to it and press <kbd>Enter</kbd>, to change it; <kbd>Esc</kbd> closes the editor and leaves you on the row.</p>
 <ul>
-<li><strong>Title</strong> and <strong>Notes</strong>. Notes can have headings, bold and italic text, links, and bullet, numbered and check lists.</li>
-<li><strong>Project</strong>, <strong>Section</strong> and <strong>Parent task</strong>, to move it somewhere else.</li>
-<li><strong>Priority</strong>, from P1 (most important) to P4 (the default).</li>
-<li><strong>Due</strong>, a date with an optional time.</li>
-<li><strong>Reminders</strong>, <strong>Estimate</strong> and <strong>Repeat</strong>. See <a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a> and <a href="/docs/time-blocking/">Time blocking</a>.</li>
-<li><strong>Labels</strong>, <strong>Subtasks</strong> and, further down, <strong>Comments</strong> and <strong>History</strong>.</li>
+<li><strong>Project</strong>, <strong>Section</strong> and <strong>Parent task</strong> move the task. Each opens a list you can search: the projects and tasks you pick most often come first, and nested projects show their path (&quot;Work › Clients&quot;), so two projects with the same name are told apart. Type a new name in <strong>Project</strong> and choose <strong>Create</strong> to make a project and move the task into it. A subtask always shows its parent&#39;s section.</li>
+<li><strong>Assignee</strong>. See <a href="/docs/sharing/#assign-tasks">Assign tasks</a>.</li>
+<li><strong>Priority</strong>, from P1 (most important) to P4 (the default). Click one, or press <kbd>1</kbd> to <kbd>4</kbd> anywhere in the panel outside a text field.</li>
+<li><strong>Due</strong>, a date with an optional time, and the time zone chip next to it.</li>
+<li><strong>Reminders</strong> show as chips. <strong>Add reminder</strong> offers the usual times before the due time, a custom offset or a set date and time; each chip&#39;s <strong>⋯</strong> menu edits, snoozes, dismisses or deletes it.</li>
+<li><strong>Estimate</strong> and <strong>Repeat</strong>. See <a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a> and <a href="/docs/time-blocking/">Time blocking</a>.</li>
+<li><strong>Labels</strong>: open the row to add, create or remove labels.</li>
 </ul>
+<p>Below the card are the <strong>Subtasks</strong> and the <strong>Comments</strong>, <strong>Activity</strong> and <strong>History</strong> tabs.</p>
+<p>If you are a viewer of a shared project, the values read as text and can&#39;t be changed, and <strong>Complete</strong> and <strong>Delete</strong> are hidden. You can still comment.</p>
 <p>Close the panel with <kbd>Esc</kbd> or the <strong>×</strong> at the top. On a phone the panel covers the list; close it to go back.</p>
 <h3 id="quick-changes-from-the-list">Quick changes from the list<a class="anchor" href="#quick-changes-from-the-list" aria-label="Link to this section: Quick changes from the list">#</a></h3>
 <p>You don&#39;t have to open a task to change it. Select it and press:</p>
@@ -170,7 +174,14 @@
 <li><strong>Time:</strong> <code>15</code>, <code>1530</code>, <code>15:30</code>, <code>3pm</code>, <code>3:30 pm</code> or <code>noon</code>, whichever clock you use. <kbd>↓</kbd> in the field shows times in 15-minute steps to pick from.</li>
 </ul>
 <p>Clear the date to remove the due date, or clear the time to keep only the day.</p>
-<p>For things that happen at a fixed moment, like a call with someone in another country, tick <strong>Fixed to time zone</strong> under Due (or press <kbd>z</kbd> with the panel open). The task is then tied to your current time zone, and devices elsewhere show it converted to their local time, with the original time as a hint.</p>
+<p>Under the due date, the <strong>time zone</strong> button shows how the time is meant: <strong>Floating</strong> (the same clock time wherever you are) or a city and its offset, such as <strong>New York · UTC−5</strong> (one moment worldwide). Choose it to:</p>
+<ul>
+<li><strong>Fix to my zone:</strong> tie the time to your current time zone, for things that happen at a fixed moment. Press <kbd>z</kbd> with the panel open to do the same, and again to release it.</li>
+<li><strong>Fix to another time zone:</strong> search any city or zone, for example a call at 15:00 in New York. The panel shows how that reads for you (&quot;15:00 in New York = 21:00 your time (Berlin)&quot;) before you choose <strong>Fix to New York</strong>. Your own zone is listed first, then the zones you used recently.</li>
+<li><strong>Make floating:</strong> release a fixed time to the clock time you currently see.</li>
+</ul>
+<p><picture><source srcset="/docs/images/time-zone-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/time-zone-light.webp" alt="The time zone popover of a due time: the floating and fixed modes explained, Fix to my zone, and a search for another time zone." width="430" height="633" loading="lazy" decoding="async"></picture></p>
+<p>Devices elsewhere show a fixed time converted to their local time, with the original time and city as a hint. Without a time the button is off: a due date alone always stays floating.</p>
 <h2 id="complete-reopen-and-delete">Complete, reopen and delete<a class="anchor" href="#complete-reopen-and-delete" aria-label="Link to this section: Complete, reopen and delete">#</a></h2>
 <p>Click the circle next to a task, or press <kbd>c</kbd>. Completed tasks move to <strong>Completed</strong> in the sidebar, where you can reopen them.</p>
 <p>Deleting a task (the <strong>Delete</strong> button in the panel, or <kbd>Delete</kbd> in the list) moves it to the Trash, along with its subtasks. You can restore it from there. See <a href="/docs/trash-and-history/">Trash and history</a>.</p>
