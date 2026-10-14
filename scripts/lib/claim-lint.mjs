@@ -41,10 +41,11 @@ export function blocks(source) {
 
 /**
  * @param {string} source the whole Markdown file
- * @param {{ docExists: (href: string) => boolean, pageExists?: (href: string) => boolean, file?: string }} opts
+ * @param {{ docExists: (href: string) => boolean, pageExists?: (href: string) => boolean, file?: string, claims?: boolean }} opts
+ *   `claims: false` skips the feature-keyword rule (blog posts about unreleased work); links are still checked.
  * @returns {string[]} problems as "file:line: message"
  */
-export function lint(source, { docExists, pageExists = () => true, file = '<input>' }) {
+export function lint(source, { docExists, pageExists = () => true, file = '<input>', claims = true }) {
   const problems = [];
   for (const b of blocks(source)) {
     const links = [...b.text.matchAll(LINK_RE)].map((m) => m[1] ?? m[2]);
@@ -54,7 +55,7 @@ export function lint(source, { docExists, pageExists = () => true, file = '<inpu
       if (!pageExists(h)) problems.push(`${file}:${b.line}: ${h} is not a page of this site`);
     }
     const word = WORD_RE.exec(b.text.replace(LINK_RE, ' ').replace(/`[^`]*`/g, ' '));
-    if (word && !docs.length && !b.noClaim) {
+    if (claims && word && !docs.length && !b.noClaim) {
       problems.push(`${file}:${b.line}: paragraph mentions "${word[1]}" without a link to the documentation (add one, or mark it <!-- no-claim -->)`);
     }
   }

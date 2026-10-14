@@ -67,4 +67,7 @@ jobs:
           curl -fsS http://127.0.0.1:8080/ | grep -q 'id="hero-title"'
           curl -fsS http://127.0.0.1:8080/docs/import/ | grep -q "Import formats"
           curl -fsS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8080/no-such-page/ | grep -q 404
+          curl -sS -o /dev/null -w "%{http_code} %{redirect_url}\n" http://127.0.0.1:8080/essays/ | grep -q "301 http://127.0.0.1:8080/blog/category/ownership/"
+          curl -sS -o /dev/null -w "%{http_code} %{redirect_url}\n" http://127.0.0.1:8080/essays/your-tasks-on-your-server/ | grep -q "301 http://127.0.0.1:8080/blog/your-tasks-on-your-server/"
+          curl -fsS http://127.0.0.1:8080/blog/ | grep -q "News, releases and how OpenTodo is built"
           sleep 35 && test "$(docker inspect -f '{{.State.Health.Status}}' site)" = healthy

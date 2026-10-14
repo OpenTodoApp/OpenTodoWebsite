@@ -1,0 +1,17 @@
+---
+import BlogListing from '../../../../../components/blog/BlogListing.astro';
+import { CATEGORIES, CATEGORY_LABELS, publishedPosts, type Category } from '../../../../../lib/blog';
+import { PAGE_SIZE } from '../../../../../lib/blog-core.mjs';
+import { CATEGORY_INTRO } from '../../../../../lib/blog-intro';
+
+export async function getStaticPaths() {
+  const all = await publishedPosts();
+  return CATEGORIES.flatMap((category) => {
+    const posts = all.filter((p) => p.data.category === category);
+    const pages = Math.ceil(posts.length / PAGE_SIZE);
+    return Array.from({ length: Math.max(0, pages - 1) }, (_, i) => ({ params: { category, n: String(i + 2) }, props: { category, page: i + 2, pages, posts: posts.slice((i + 1) * PAGE_SIZE, (i + 2) * PAGE_SIZE) } }));
+  });
+}
+const { category, page, pages, posts } = Astro.props as { category: Category; page: number; pages: number; posts: Awaited<ReturnType<typeof publishedPosts>> };
+---
+<BlogListing title={`${CATEGORY_LABELS[category]} · Blog`} heading={CATEGORY_LABELS[category]} lede={CATEGORY_INTRO[category]} description={`OpenTodo blog: ${CATEGORY_LABELS[category]}, older posts.`} posts={posts} page={page} pages={pages} base={`/blog/category/${category}/`} category={category} />

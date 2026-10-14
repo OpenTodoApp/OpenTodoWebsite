@@ -1,12 +1,12 @@
 ---
-// Shared page for guides, toolkit pieces and essays: last-reviewed date, the
+// Shared page for guides and toolkit pieces: last-reviewed date, the
 // templates the piece uses, its docs sources, and the closing calls to action.
 import { getEntries, render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EndCta from './EndCta.astro';
 import Icon from './Icon.astro';
 
-type Entry = CollectionEntry<'guides'> | CollectionEntry<'toolkit'> | CollectionEntry<'essays'>;
+type Entry = CollectionEntry<'guides'> | CollectionEntry<'toolkit'>;
 interface Props { entry: Entry; section: { href: string; label: string } }
 const { entry, section } = Astro.props;
 const d = entry.data;

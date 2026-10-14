@@ -4,7 +4,7 @@
 //   - comparisons: a "checked on" date no older than 180 days, a docs source for
 //     every row where OpenTodo has the feature, at least one gap (website-platform
 //     D4, website-switcher-pages D2)
-//   - templates, guides, toolkit, essays: a last-reviewed date no older than one
+//   - templates, guides, toolkit: a last-reviewed date no older than one
 //     year, sources that resolve in the bundle's docs (website-content-hub D1, D3)
 import { z } from 'astro/zod';
 
@@ -68,7 +68,7 @@ export function compareSchema({ docExists, today = () => new Date() }) {
 }
 const rank = (v) => ({ no: 0, partial: 1, yes: 2 })[v];
 
-/** Shared by guides, toolkit and essays. */
+/** Shared by guides and toolkit pieces. */
 export function articleSchema({ docExists, today = () => new Date(), needsSources = true }) {
   return z.object({
     title: z.string().min(1),
@@ -126,3 +126,48 @@ export function templateSchema({ docExists, today = () => new Date() }) {
     });
   });
 }
+
+/** @type {['news', 'releases', 'development', 'ownership']} */
+export const BLOG_CATEGORIES = ['news', 'releases', 'development', 'ownership'];
+/** Slugs that collide with blog routes (website-blog design D1). */
+export const RESERVED_BLOG_SLUGS = ['page', 'category', 'feed.xml'];
+const VERSION = /^\d+\.\d+\.\d+$/;
+
+/**
+ * Blog posts (website-blog design D1). `releaseExists(version)` answers whether
+ * the version is in the pinned bundle's changelog; `image` is Astro's image()
+ * helper for covers (a plain string is accepted in unit tests).
+ * @param {{ releaseExists: (v: string) => boolean, image?: () => import('astro/zod').ZodType, author?: import('astro/zod').ZodType }} opts
+ */
+export function blogSchema({ releaseExists, image = () => z.string(), author = z.string().min(1) }) {
+  const version = (field) =>
+    z.string().regex(VERSION, `"${field}" must be a version like 0.3.0`)
+      .refine((v) => releaseExists(v), { error: (iss) => `"${field}" ${iss.input} is not a release in the pinned bundle's changelog` });
+  return z.object({
+    title: z.string().min(1),
+    summary: z.string().min(1).max(300),
+    publishedAt: z.preprocess(
+      (v) => (v === undefined || v === null || v instanceof Date ? v ?? undefined : new Date(String(v))),
+      z.date({ error: (iss) => (iss.input === undefined ? '"publishedAt" is required' : '"publishedAt" must be a date (YYYY-MM-DD)') }),
+    ),
+    updatedAt: z.coerce.date().optional(),
+    author,
+    category: z.enum(BLOG_CATEGORIES, { error: () => `"category" must be one of ${BLOG_CATEGORIES.join(', ')}` }),
+    cover: image().optional(),
+    coverAlt: z.string().min(1).optional(),
+    release: version('release').optional(),
+    inDevelopment: z.boolean().default(false),
+    shippedIn: version('shippedIn').optional(),
+    draft: z.boolean().default(false),
+  }).superRefine((d, ctx) => {
+    if (d.cover && !d.coverAlt) ctx.addIssue({ code: 'custom', path: ['coverAlt'], message: 'a cover image needs "coverAlt" (its text alternative)' });
+    if (d.category === 'releases' && !d.release) ctx.addIssue({ code: 'custom', path: ['release'], message: 'a Releases post must name the released version in "release"' });
+    if (d.category !== 'releases' && d.release) ctx.addIssue({ code: 'custom', path: ['release'], message: '"release" is only for posts in the Releases category' });
+    if (d.shippedIn && !d.inDevelopment) ctx.addIssue({ code: 'custom', path: ['shippedIn'], message: '"shippedIn" is only for posts marked "inDevelopment"' });
+    if (d.updatedAt && d.updatedAt < d.publishedAt) ctx.addIssue({ code: 'custom', path: ['updatedAt'], message: '"updatedAt" is before "publishedAt"' });
+  });
+}
+
+/** The folder name of a post must not collide with a blog route. */
+export const blogSlugProblem = (slug) =>
+  RESERVED_BLOG_SLUGS.includes(slug) ? `blog post folder "${slug}" collides with the route /blog/${slug}/; rename it` : null;

@@ -1,7 +1,7 @@
 # Working on the OpenTodo website (guide for AI coding agents and humans)
 
 ## What this is
-The public website of [OpenTodo](https://github.com/pixari/opentodo), live at https://open-todo.app (demo: https://demo.open-todo.app): home page, comparisons, self-hosting and developer pages, templates, guides, toolkit, essays and what's new. The app, its docs sources (`docs/*.md`) and its specs live in the app repository; this repository only builds and serves the site.
+The public website of [OpenTodo](https://github.com/pixari/opentodo), live at https://open-todo.app (demo: https://demo.open-todo.app): home page, comparisons, self-hosting and developer pages, templates, guides, toolkit, blog and what's new. The app, its docs sources (`docs/*.md`) and its specs live in the app repository; this repository only builds and serves the site.
 
 ## Non-negotiables
 1. **Specs before behaviour.** Changes start as an OpenSpec change (`openspec/changes/<name>/`): `/opsx:propose`, `/opsx:apply`, `/opsx:archive`. Validate with `openspec validate --all --strict`. Constraints are in `openspec/config.yaml`.
@@ -13,7 +13,7 @@ The public website of [OpenTodo](https://github.com/pixari/opentodo), live at ht
 ## Layout
 - `src/layouts/Base.astro`: header, navigation (a `<details>` menu below 768 px), footer, preview banner, analytics.
 - `src/components/`: `Icon`, `ScreenshotFrame`, `CompareTable`, `EndCta`, and the islands `HeroDemo`, `FeatureTour`, `SyncPlayground`, `InstallTabs` (each ships its script only to pages that use it, and reads without JavaScript).
-- `src/content/`: collections (`compare`, `templates`, `guides`, `toolkit`, `essays`); schemas and freshness rules in `src/content/schemas.mjs`.
+- `src/content/`: collections (`compare`, `templates`, `guides`, `toolkit`, `blog`, plus `authors.json`); schemas and freshness rules in `src/content/schemas.mjs`.
 - `scripts/`: `fetch-bundle.mjs`, `interim-bundle.mjs`, `check-content.mjs` (claim lint), `templates-check.mjs`, `checks/` (links, emoji, scripts), `serve.mjs`.
 - `interim/`: the stand-in bundle until the app publishes real ones; delete it when `bundle.json` pins a release.
 
@@ -28,6 +28,12 @@ The public website of [OpenTodo](https://github.com/pixari/opentodo), live at ht
 2. Draft it following `content/VOICE.md`: every product claim links to a docs page of the pinned release; a paragraph that only looks like a claim gets `<!-- no-claim -->` on the line above. Set `lastReviewed` to today.
 3. A new template also needs its screenshots: run `npm run templates:check` against the pinned release.
 4. Run the checks, open a **draft** pull request, and link the preview. The maintainer reviews on the rendered page and merges; agents never merge.
+
+## Blog posts
+- One folder per post: `src/content/blog/<slug>/index.md` with its images beside it; the folder name is the URL. Front matter and an example are in the README ("Writing a blog post"); the schema is `blogSchema` in `src/content/schemas.mjs`.
+- Categories: `news`, `releases`, `development`, `ownership`. A `releases` post must name a `release` in the pinned bundle's changelog, so write it as `draft: true` and publish it in the pull request that bumps `bundle.json`.
+- Work not in the pinned release is only written about with `inDevelopment: true` (the page shows a notice); set `shippedIn` once it ships.
+- Agents always open posts as `draft: true`. The maintainer removes `draft` after reviewing the rendered post.
 
 ## Previews and bundle pins
 - A pull request's preview is the `site` artefact of the checks workflow (download, unzip, `npx serve` or `npm run serve`), or a Coolify preview deployment when enabled.

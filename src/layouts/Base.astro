@@ -15,8 +15,11 @@ interface Props {
   /** Omit the " · OpenTodo" suffix (the home page). */
   bareTitle?: boolean;
   ogType?: 'website' | 'article';
+  /** Social preview image (a site path or URL, 1200x630); defaults to the site image. */
+  image?: string;
 }
-const { title, description, bareTitle = false, ogType = 'website' } = Astro.props;
+const { title, description, bareTitle = false, ogType = 'website', image } = Astro.props;
+const ogImage = image ? new URL(image, SITE.url).href : `${SITE.url}/assets/og.png`;
 const fullTitle = bareTitle ? title : `${title} · OpenTodo`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 ---
@@ -36,7 +39,7 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
     <meta property="og:site_name" content="OpenTodo" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${SITE.url}/assets/og.png`} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />

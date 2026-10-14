@@ -35,3 +35,11 @@ test('list items are checked one by one', () => {
   assert.equal(p.length, 1);
   assert.match(p[0], /:5: paragraph mentions "Reminders"/);
 });
+
+test('posts about unreleased work skip the feature rule but still check docs links', () => {
+  const text = md('The new sync engine is much faster.\n\nSee [the old docs](/docs/gone/).\n');
+  assert.equal(lint(text, { docExists, file: 'p.md' }).length, 2);
+  const p = lint(text, { docExists, file: 'p.md', claims: false });
+  assert.equal(p.length, 1);
+  assert.match(p[0], /\/docs\/gone\/ is not a page/);
+});

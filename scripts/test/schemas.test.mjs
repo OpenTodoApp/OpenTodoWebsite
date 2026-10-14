@@ -71,3 +71,37 @@ test('templates refuse undeclared labels and bad due offsets', () => {
   assert.ok(m.some((x) => x.includes('label "b" is not declared')));
   assert.ok(m.some((x) => x.includes('due must be a relative offset')));
 });
+
+import { blogSchema, blogSlugProblem } from '../../src/content/schemas.mjs';
+
+const bs = blogSchema({ releaseExists: (v) => ['0.1.0', '0.2.0', '0.3.0'].includes(v) });
+const post = (over = {}) => ({ title: 'T', summary: 'S', publishedAt: '2026-10-14', author: 'raffaele', category: 'news', ...over });
+
+test('blog: a valid post passes', () => assert.equal(bs.safeParse(post()).success, true));
+
+test('blog: a post without publishedAt fails naming the field', () => {
+  const { publishedAt, ...rest } = post();
+  assert.ok(messages(bs.safeParse(rest)).some((m) => m.startsWith('publishedAt: "publishedAt" is required')));
+});
+
+test('blog: a release post must name a released version', () => {
+  assert.equal(bs.safeParse(post({ category: 'releases', release: '0.3.0' })).success, true);
+  assert.ok(messages(bs.safeParse(post({ category: 'releases', release: '0.4.0' }))).some((m) => m.includes('0.4.0 is not a release')));
+  assert.ok(messages(bs.safeParse(post({ category: 'releases' }))).some((m) => m.includes('must name the released version')));
+  assert.ok(messages(bs.safeParse(post({ release: '0.3.0' }))).some((m) => m.includes('only for posts in the Releases category')));
+});
+
+test('blog: shippedIn must be a released version on an in-development post', () => {
+  assert.equal(bs.safeParse(post({ category: 'development', inDevelopment: true, shippedIn: '0.3.0' })).success, true);
+  assert.ok(messages(bs.safeParse(post({ category: 'development', inDevelopment: true, shippedIn: '9.9.9' }))).some((m) => m.includes('9.9.9 is not a release')));
+});
+
+test('blog: a cover without alt text fails', () => {
+  assert.ok(messages(bs.safeParse(post({ cover: 'cover.png' }))).some((m) => m.startsWith('coverAlt:')));
+});
+
+test('blog: unknown category and reserved slugs are refused', () => {
+  assert.ok(messages(bs.safeParse(post({ category: 'misc' }))).some((m) => m.startsWith('category:')));
+  assert.match(blogSlugProblem('page'), /collides/);
+  assert.equal(blogSlugProblem('hello-world'), null);
+});

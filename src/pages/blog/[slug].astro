@@ -1,0 +1,84 @@
+---
+// One post (website-blog design D3, D4).
+import { getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import CoverImage from '../../components/blog/CoverImage.astro';
+import DevNotice from '../../components/blog/DevNotice.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import { CATEGORY_LABELS, authorOf, categoryUrl, formatDate, isoDate, publishedPosts, readingMinutes, relatedPosts, type Post } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const all = await publishedPosts();
+  return all.map((post, i) => ({ params: { slug: post.id }, props: { post, newer: all[i - 1], older: all[i + 1], all } }));
+}
+const { post, newer, older, all } = Astro.props as { post: Post; newer?: Post; older?: Post; all: Post[] };
+const d = post.data;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
+const author = authorOf(post);
+const related = relatedPosts(post, all);
+const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
+---
+<Base title={d.title} description={d.summary} ogType="article" image={og}>
+  <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
+  <article>
+    <header class="post-head">
+      <div class="wrap">
+        <p class="breadcrumb"><a href="/blog/">Blog</a> / <a href={categoryUrl(d.category)}>{CATEGORY_LABELS[d.category]}</a></p>
+        <h1>{d.title}</h1>
+        <p class="lede">{d.summary}</p>
+        <p class="post-byline">
+          <span>By <strong>{author.name}</strong></span>
+          <span><time datetime={isoDate(d.publishedAt)}>{formatDate(d.publishedAt)}</time></span>
+          {d.updatedAt && <span>Updated <time datetime={isoDate(d.updatedAt)}>{formatDate(d.updatedAt)}</time></span>}
+          <span>{readingMinutes(post.body)} min read</span>
+        </p>
+      </div>
+    </header>
+    {d.cover && (
+      <div class="post-hero">
+        <CoverImage cover={d.cover} alt={d.coverAlt} category={d.category} sizes="(min-width: 1100px) 1024px, 100vw" eager />
+      </div>
+    )}
+    <div class="post-body">
+      <div class="wrap">
+        {d.inDevelopment && <DevNotice publishedAt={d.publishedAt} shippedIn={d.shippedIn} />}
+        {d.release && (
+          <aside class="post-notice post-notice-shipped" aria-label="Release">
+            <Icon name="package" size={20} />
+            <p>The full list of changes is in <a href={`/whats-new/${d.release}/`}>What's new in OpenTodo {d.release}</a>.</p>
+          </aside>
+        )}
+        {toc.length >= 4 && (
+          <nav class="post-toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        )}
+        <div class="post-prose prose"><Content /></div>
+        <footer class="post-author">
+          <strong>{author.name}</strong>
+          <p>{author.bio} <a href={author.url}>More about {author.name.split(' ')[0]}</a></p>
+        </footer>
+        {(newer || older) && (
+          <nav class="post-nav" aria-label="More posts">
+            {older ? <a class="prev" href={`/blog/${older.id}/`} rel="prev"><span>Previous post</span><strong>{older.data.title}</strong></a> : <span />}
+            {newer ? <a class="next" href={`/blog/${newer.id}/`} rel="next"><span>Next post</span><strong>{newer.data.title}</strong></a> : <span />}
+          </nav>
+        )}
+      </div>
+    </div>
+  </article>
+  {related.length > 0 && (
+    <section class="section section-alt" aria-labelledby="related-title" style="margin-top: 3rem">
+      <div class="wrap">
+        <h2 id="related-title" style="font-size: 1.5rem">More in {CATEGORY_LABELS[d.category]}</h2>
+        <div class="post-grid">{related.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
+      </div>
+    </section>
+  )}
+  <EndCta />
+</Base>

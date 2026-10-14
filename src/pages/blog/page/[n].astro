@@ -1,0 +1,14 @@
+---
+// /blog/page/<n>/ for n >= 2.
+import BlogListing from '../../../components/blog/BlogListing.astro';
+import { publishedPosts } from '../../../lib/blog';
+import { PAGE_SIZE } from '../../../lib/blog-core.mjs';
+
+export async function getStaticPaths() {
+  const all = await publishedPosts();
+  const pages = Math.ceil(all.length / PAGE_SIZE);
+  return Array.from({ length: Math.max(0, pages - 1) }, (_, i) => ({ params: { n: String(i + 2) }, props: { page: i + 2, pages, posts: all.slice((i + 1) * PAGE_SIZE, (i + 2) * PAGE_SIZE) } }));
+}
+const { page, pages, posts } = Astro.props;
+---
+<BlogListing title="Blog" heading="News, releases and how OpenTodo is built." lede="Older posts, newest first." description="The OpenTodo blog: older posts." posts={posts} page={page} pages={pages} base="/blog/" />
