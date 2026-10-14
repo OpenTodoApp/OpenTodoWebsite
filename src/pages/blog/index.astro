@@ -1,0 +1,10 @@
+---
+// /blog/: page 1 of the index, the newest post featured (website-blog D3).
+import BlogListing from '../../components/blog/BlogListing.astro';
+import { publishedPosts } from '../../lib/blog';
+import { PAGE_SIZE } from '../../lib/blog-core.mjs';
+
+const all = await publishedPosts();
+const pages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+---
+<BlogListing title="Blog" heading="News, releases and how OpenTodo is built." lede="What's new in OpenTodo and why, the thinking behind it, and how it's made. Written by the people who build it." description="The OpenTodo blog: news, release stories, development notes and essays about owning your tasks." posts={all.slice(0, PAGE_SIZE)} page={1} pages={pages} base="/blog/" featureFirst />

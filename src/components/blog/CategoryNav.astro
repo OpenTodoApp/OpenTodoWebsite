@@ -1,0 +1,11 @@
+---
+import { CATEGORIES, CATEGORY_LABELS, categoryUrl, type Category } from '../../lib/blog';
+interface Props { current?: Category }
+const { current } = Astro.props;
+---
+<nav class="blog-cats" aria-label="Blog categories">
+  <ul>
+    <li><a href="/blog/" aria-current={!current ? 'page' : undefined}>All posts</a></li>
+    {CATEGORIES.map((c) => <li><a href={categoryUrl(c)} aria-current={current === c ? 'page' : undefined}>{CATEGORY_LABELS[c]}</a></li>)}
+  </ul>
+</nav>

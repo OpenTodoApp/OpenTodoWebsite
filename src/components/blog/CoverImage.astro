@@ -1,0 +1,28 @@
+---
+// A post's cover as a responsive <picture> (AVIF and WebP), or, without a cover,
+// a panel in the category's colours with its icon from the sprite.
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import Icon from '../Icon.astro';
+import type { Category } from '../../lib/blog';
+
+interface Props { cover?: ImageMetadata; alt?: string; category: Category; sizes: string; eager?: boolean; class?: string }
+const { cover, alt = '', category, sizes, eager = false, class: className } = Astro.props;
+const ICONS: Record<Category, string> = { news: 'newspaper', releases: 'package', development: 'git-branch', ownership: 'key-round' };
+
+let sources: { type: string; srcset: string }[] = [];
+let fallback: { src: string } | undefined;
+if (cover) {
+  const widths = [400, 640, 960, 1280, 1600].filter((w) => w <= cover.width);
+  sources = await Promise.all((['avif', 'webp'] as const).map(async (format) => ({ type: `image/${format}`, srcset: (await getImage({ src: cover, widths, format, quality: format === 'avif' ? 55 : 72 })).srcSet.attribute })));
+  fallback = await getImage({ src: cover, width: Math.min(960, cover.width), format: 'webp' });
+}
+---
+{cover && fallback ? (
+  <picture class:list={['post-cover', className]}>
+    {sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} />)}
+    <img src={fallback.src} width={cover.width} height={cover.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </picture>
+) : (
+  <div class:list={['post-cover', 'post-cover-panel', `cat-${category}`, className]} aria-hidden="true"><Icon name={ICONS[category]} size={40} /></div>
+)}

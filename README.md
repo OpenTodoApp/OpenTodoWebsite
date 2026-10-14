@@ -50,10 +50,36 @@ GitHub Actions runs them on every pull request and on main (`.github/workflows/`
 | --- | --- |
 | `src/content/compare/` | `/vs/<app>`: honest, dated comparisons |
 | `src/content/templates/` | `/templates/<slug>`: a template tree, turned into a downloadable `opentodo-export` file at build time |
-| `src/content/guides/`, `toolkit/`, `essays/` | Guides, setup toolkits and essays |
+| `src/content/guides/`, `toolkit/` | Guides and setup toolkits |
+| `src/content/blog/<slug>/index.md` | `/blog/<slug>/`: news, releases, development and ownership posts (`/essays/` redirects here) |
 | bundle `changelog.json` | `/whats-new/<version>` and `/feed.xml` |
 
 Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md`, and published only through a reviewed pull request.
+
+### Writing a blog post
+
+1. Create a folder `src/content/blog/<slug>/` with an `index.md`. The folder name is the URL (`/blog/<slug>/`); `page`, `category` and `feed.xml` are reserved. Put the post's images in the same folder.
+2. Start it with front matter:
+
+   ```yaml
+   ---
+   title: "OpenTodo 0.3.0: bring your own AI"
+   summary: One or two sentences for the cards, the feeds and search results (at most 300 characters).
+   publishedAt: 2026-10-14        # the post is hidden until this date
+   updatedAt: 2026-11-02          # optional, shown next to the publish date
+   author: raffaele               # a key in src/content/authors.json
+   category: releases             # news | releases | development | ownership
+   release: 0.3.0                 # releases only, and required there: a version in the pinned bundle's changelog
+   cover: ./cover.jpg             # optional; also the social preview image
+   coverAlt: What the cover shows # required with a cover
+   inDevelopment: false           # true for work that is not in a release yet
+   shippedIn: 0.4.0               # optional, once an in-development post's work is released
+   draft: true                    # drafts never render; remove it once the maintainer approves
+   ---
+   ```
+
+3. Write in Markdown following the "Blog posts" section of `content/VOICE.md`. Every claim about what OpenTodo does links to its docs page (`/docs/...`); a paragraph that only looks like a claim gets `<!-- no-claim -->` on the line above. Posts with `inDevelopment: true` skip the claim rule and show an "In development" notice instead, but their docs links must still resolve.
+4. Run `node scripts/check-content.mjs` (it also runs before every `npm run build`) and open a draft pull request. The post appears on the blog index, its category page, the home page, `/feed.xml` and `/blog/feed.xml` once it is published and the site is built.
 
 ## Deploy on Coolify
 

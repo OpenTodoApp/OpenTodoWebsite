@@ -1,0 +1,25 @@
+---
+// One post on the index or a category page. The featured variant is the large
+// first card on page 1 of the index.
+import CoverImage from './CoverImage.astro';
+import { CATEGORY_LABELS, formatDate, isoDate, readingMinutes, type Post } from '../../lib/blog';
+
+interface Props { post: Post; featured?: boolean; headingLevel?: 2 | 3 }
+const { post, featured = false, headingLevel = 2 } = Astro.props;
+const d = post.data;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+---
+<article class:list={['post-card', featured && 'post-card-featured', d.inDevelopment && !d.shippedIn && 'is-dev']}>
+  <a class="post-card-link" href={`/blog/${post.id}/`}>
+    <CoverImage cover={d.cover} alt="" category={d.category} eager={featured} sizes={featured ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw'} />
+    <div class="post-card-body">
+      <p class="post-meta">
+        <span class="post-cat">{CATEGORY_LABELS[d.category]}</span>
+        {d.inDevelopment && !d.shippedIn && <span class="post-badge">In development</span>}
+      </p>
+      <H class="post-card-title">{d.title}</H>
+      <p class="post-card-summary">{d.summary}</p>
+      <p class="post-meta muted"><time datetime={isoDate(d.publishedAt)}>{formatDate(d.publishedAt)}</time> · {readingMinutes(post.body)} min read</p>
+    </div>
+  </a>
+</article>

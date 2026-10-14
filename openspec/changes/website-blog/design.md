@@ -4,7 +4,7 @@
 
 - The site is Astro 7 with static output (`website-platform`). Content collections with Zod schemas live in `src/content/schemas.mjs`; rules that must fail the build are schema refinements, and the claim-and-source lint (`scripts/check-content.mjs`) runs before every build over guides, toolkit, essays and templates.
 - `website-content-hub` added essays (`src/content/essays/`, two entries), generated "What's new" pages from the bundle's `changelog.json`, and `/feed.xml` with `@astrojs/rss`.
-- The header navigation already holds seven links plus "Try the demo" (and "Star on GitHub" from 1180 px). Below 768 px it collapses into a `<details>` menu.
+- The header navigation already holds seven links plus "Try the demo" (and "Star on GitHub" from 1180 px; moved to 1360 px in this change so the eight links never wrap). Below 768 px it collapses into a `<details>` menu.
 - Code blocks in content are rendered by Astro's default Markdown processor. Highlighting must not need client JavaScript.
 - Specs: `specs/website-blog/spec.md`. Motivation: `proposal.md`.
 
@@ -116,3 +116,9 @@ Rollback: revert the merge. The essays come back with their old URLs, since the 
 ## Open Questions
 
 - The author bio wording and link (the maintainer's choice; it's plain data in `authors.json`).
+
+## Implementation notes
+
+- **Code highlighting is on (D4, task 2.5).** Astro 7's default Markdown processor highlights code with Shiki at build time. `astro.config.mjs` sets `github-light` and `github-dark` with `defaultColor: false`, so both palettes are inline CSS variables, and `site.css` picks one by `prefers-color-scheme`. No client JavaScript; the axe contrast check passes in both themes.
+- **Authors are checked in the schema, not with `reference()` (D2, task 1.2).** Astro's `reference('authors')` logs an unknown key but still exits 0. The blog schema instead refines `author` against the keys of `src/content/authors.json`, so a typo fails the build and names the post and the field.
+- **Pure rules live in `src/lib/blog-core.mjs` (task 1.3).** `src/lib/blog.ts` wraps them with `getCollection`; the `.mjs` module lets `node --test` exercise the publish, reading-time, related-posts and feed rules without Astro.

@@ -1,6 +1,8 @@
 ---
 import { SITE } from '../lib/site';
 import { versionTag } from '../lib/bundle';
+import { publishedPosts } from '../lib/blog';
+const blog = (await publishedPosts()).length > 0;
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -13,11 +15,11 @@ const year = new Date().getFullYear();
       <nav aria-label="Product">
         <h2>Product</h2>
         <ul>
+          {blog && <li><a href="/blog/">Blog</a></li>}
           <li><a href="/vs/">Compare</a></li>
           <li><a href="/templates/">Templates</a></li>
           <li><a href="/guides/">Guides</a></li>
           <li><a href="/toolkit/">Toolkit</a></li>
-          <li><a href="/essays/">Essays</a></li>
           <li><a href="/self-host/">Self-host</a></li>
           <li><a href="/developers/">Developers</a></li>
           <li><a href="/whats-new/">What's new</a></li>

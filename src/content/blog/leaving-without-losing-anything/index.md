@@ -1,9 +1,9 @@
 ---
 title: Leaving without losing anything
 summary: The best test of a tool is how easy it is to leave. Here is what OpenTodo gives you on the way out, and why we care.
-lastReviewed: 2026-10-14
-sources: [/docs/import-export/, /docs/import/, /docs/api/]
-order: 2
+publishedAt: 2026-10-14
+author: raffaele
+category: ownership
 ---
 <!-- no-claim -->
 Every tool you adopt is a bet that it will still suit you in five years. The bet is much safer when leaving is cheap. So before you move your tasks into OpenTodo, here is how you would move them out.

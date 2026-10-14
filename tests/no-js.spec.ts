@@ -1,6 +1,10 @@
 // Every page reads and navigates without JavaScript at 360 px (website-platform D6.4).
 import { expect, test } from '@playwright/test';
+import fs from 'node:fs';
 import { sitePages } from './pages';
+
+// Blog joins the menu once a post is published (website-blog spec).
+const MENU = ['Features', 'Compare', 'Self-host', 'Developers', 'Docs', ...(fs.existsSync('dist/blog/index.html') ? ['Blog'] : [])];
 
 test.use({ javaScriptEnabled: false, viewport: { width: 360, height: 800 } });
 
@@ -14,7 +18,7 @@ for (const url of sitePages()) {
     // The phone menu is a <details>, so it opens without scripts.
     await page.locator('details.nav-menu > summary').click();
     const nav = page.locator('details.nav-menu nav');
-    for (const label of ['Features', 'Compare', 'Self-host', 'Developers', 'Docs']) {
+    for (const label of MENU) {
       await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
     // Every link in the main content is a real link.

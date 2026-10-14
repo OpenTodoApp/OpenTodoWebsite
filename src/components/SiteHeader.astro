@@ -4,17 +4,21 @@
 import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 import { SITE } from '../lib/site';
+import { publishedPosts } from '../lib/blog';
 
 const path = Astro.url.pathname;
 const published = async (c: 'templates' | 'guides') =>
   (await getCollection(c, (e) => !('draft' in e.data) || !e.data.draft)).length > 0;
 // Templates and Guides appear once at least one of each is published (website-content spec).
 const content = (await published('templates')) && (await published('guides'));
+// Blog appears once a post is published (website-blog spec "Blog in navigation").
+const blog = (await publishedPosts()).length > 0;
 
 const links = [
   { href: '/#features', label: 'Features', match: null },
   { href: '/vs/', label: 'Compare', match: '/vs/' },
   ...(content ? [{ href: '/templates/', label: 'Templates', match: '/templates/' }, { href: '/guides/', label: 'Guides', match: '/guides/' }] : []),
+  ...(blog ? [{ href: '/blog/', label: 'Blog', match: '/blog/' }] : []),
   { href: '/self-host/', label: 'Self-host', match: '/self-host/' },
   { href: '/developers/', label: 'Developers', match: '/developers/' },
   { href: '/docs/', label: 'Docs', match: null },

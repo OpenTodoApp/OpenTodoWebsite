@@ -50,6 +50,9 @@ export default defineConfig({
   trailingSlash: 'ignore',
   build: { format: 'directory' },
   integrations: [bundleDocs()],
+  // Code in posts is highlighted at build time (website-blog D4): inline colours for
+  // both themes, switched by the visitor's colour-scheme preference in site.css.
+  markdown: { shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false } },
   vite: {
     resolve: { alias: { '@bundle': bundle.dir } },
     server: { fs: { allow: ['.', bundle.dir] } },

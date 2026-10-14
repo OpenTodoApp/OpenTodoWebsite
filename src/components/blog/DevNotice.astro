@@ -1,0 +1,19 @@
+---
+// The in-development notice of a post (website-blog spec "Work in progress is
+// marked"), or, once the work shipped, where it is available since.
+import Icon from '../Icon.astro';
+import { formatDate } from '../../lib/blog';
+interface Props { publishedAt: Date; shippedIn?: string }
+const { publishedAt, shippedIn } = Astro.props;
+---
+{shippedIn ? (
+  <aside class="post-notice post-notice-shipped" aria-label="Status">
+    <Icon name="circle-check-big" size={20} />
+    <p>The work in this post has shipped: it is available since <a href={`/whats-new/${shippedIn}/`}>OpenTodo {shippedIn}</a>.</p>
+  </aside>
+) : (
+  <aside class="post-notice post-notice-dev" aria-label="Status">
+    <Icon name="flag" size={20} />
+    <p><strong>In development.</strong> This post describes work that is not in a release yet. Details may change before it ships. Written on {formatDate(publishedAt)}.</p>
+  </aside>
+)}

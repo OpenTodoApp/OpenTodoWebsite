@@ -32,3 +32,15 @@ People who use a commercial task app today and wonder whether there is something
 | install the app (from the browser) | download from the app store |
 | share a project | collaborate, synergy |
 | import, export | migrate (except in upgrade notes) |
+
+## Blog posts
+- **First person, from the maintainer.** "I" for the person who builds it, "we" only when others took part. Say what you did and why, like a note to a friend who uses the app.
+- **Concrete and dated.** Name the version, the date, the number. "Reminders arrive on iPhone since 0.3.0" beats "improved notifications".
+- **Pick the category honestly:**
+  - **News:** announcements and milestones.
+  - **Releases:** only for a version in the pinned bundle, with `release:` set. Write it in the pull request that pins that version.
+  - **Development:** how things are built. Mark it `inDevelopment: true` when it describes anything not in a release, and set `shippedIn:` once it ships.
+  - **Ownership:** essays.
+- **Sources as everywhere else.** A sentence about what OpenTodo can do links to its docs page. Development posts about unreleased work are exempt, and carry the in-development notice instead.
+- **Covers are optional.** A cover is a real screenshot or a simple illustration, never stock photography or AI imagery, and always has `coverAlt` text.
+- **Short beats long.** 400 to 1,000 words. One idea per post; split the rest into the next one.

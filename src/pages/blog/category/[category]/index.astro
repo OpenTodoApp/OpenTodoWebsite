@@ -1,0 +1,17 @@
+---
+// /blog/category/<category>/: one category, newest first.
+import BlogListing from '../../../../components/blog/BlogListing.astro';
+import { CATEGORIES, CATEGORY_LABELS, publishedPosts, type Category } from '../../../../lib/blog';
+import { PAGE_SIZE } from '../../../../lib/blog-core.mjs';
+import { CATEGORY_INTRO } from '../../../../lib/blog-intro';
+
+export async function getStaticPaths() {
+  const all = await publishedPosts();
+  return CATEGORIES.map((category) => {
+    const posts = all.filter((p) => p.data.category === category);
+    return { params: { category }, props: { category, posts: posts.slice(0, PAGE_SIZE), pages: Math.max(1, Math.ceil(posts.length / PAGE_SIZE)) } };
+  });
+}
+const { category, posts, pages } = Astro.props as { category: Category; posts: Awaited<ReturnType<typeof publishedPosts>>; pages: number };
+---
+<BlogListing title={`${CATEGORY_LABELS[category]} · Blog`} heading={CATEGORY_LABELS[category]} lede={CATEGORY_INTRO[category]} description={`OpenTodo blog: ${CATEGORY_LABELS[category]}. ${CATEGORY_INTRO[category]}`} posts={posts} page={1} pages={pages} base={`/blog/category/${category}/`} category={category} />

@@ -1,0 +1,51 @@
+---
+// A page of posts: the index (page 1 features the newest post) or a category.
+// Plain links for pagination, so it works without JavaScript.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import CategoryNav from './CategoryNav.astro';
+import PostCard from './PostCard.astro';
+import type { Category, Post } from '../../lib/blog';
+
+interface Props {
+  title: string; heading: string; lede: string; description: string;
+  posts: Post[]; page: number; pages: number; base: string; category?: Category; featureFirst?: boolean;
+}
+const { title, heading, lede, description, posts, page, pages, base, category, featureFirst = false } = Astro.props;
+const pageUrl = (n: number) => (n === 1 ? base : `${base}page/${n}/`);
+const [first, ...rest] = posts;
+const featured = featureFirst && page === 1 ? first : undefined;
+const grid = featured ? rest : posts;
+---
+<Base title={page > 1 ? `${title}, page ${page}` : title} description={description}>
+  <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
+  <section class="page-head blog-head">
+    <div class="wrap">
+      <p class="kicker">Blog</p>
+      <h1>{heading}</h1>
+      <p class="lede">{lede}</p>
+      <CategoryNav current={category} />
+    </div>
+  </section>
+  <section class="section blog-list" style="padding-top: 0.5rem" aria-label="Posts">
+    <div class="wrap">
+      {posts.length === 0 && <p class="lede">No posts here yet.</p>}
+      {featured && <PostCard post={featured} featured />}
+      {grid.length > 0 && (
+        <div class="post-grid">
+          {grid.map((p) => <PostCard post={p} headingLevel={featured ? 3 : 2} />)}
+        </div>
+      )}
+      {pages > 1 && (
+        <nav class="pager" aria-label="Pages">
+          {page > 1 ? <a class="btn btn-secondary" href={pageUrl(page - 1)} rel="prev"><Icon name="arrow-left" size={18} /> Newer posts</a> : <span />}
+          <span class="muted">Page {page} of {pages}</span>
+          {page < pages ? <a class="btn btn-secondary" href={pageUrl(page + 1)} rel="next">Older posts <Icon name="arrow-right" size={18} /></a> : <span />}
+        </nav>
+      )}
+      <p class="meta" style="margin-top: 2rem"><a class="link-arrow" href="/blog/feed.xml"><Icon name="rss" size={16} /> Follow the blog with RSS</a></p>
+    </div>
+  </section>
+  <EndCta />
+</Base>

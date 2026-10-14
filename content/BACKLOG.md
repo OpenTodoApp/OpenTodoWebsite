@@ -12,7 +12,19 @@ The next pieces, top first. Each names its audience, the template it ships with 
 | 6 | Sprint-free planning for a team of five | guide | small teams | Product launch | /docs/sections-and-boards/, /docs/views/ |
 | 7 | Using your own AI model with your tasks | guide | privacy-minded | (none) | /docs/ai-and-agents/, /docs/assistant/ |
 | 8 | Renovation project | template | households | Renovation (new) | /docs/tasks-and-projects/, /docs/reminders/ |
-| 9 | What local-first means for you | essay | everyone | (none) | /docs/offline-and-sync/ |
+| 9 | What local-first means for you | blog (Ownership) | everyone | (none) | /docs/offline-and-sync/ |
 | 10 | Freelancer client tracker | template | freelancers | Client projects (new) | /docs/labels-and-filters/, /docs/time-blocking/ |
 
 When a piece ships, remove its row in the same pull request.
+
+## Blog
+
+| # | Working title | Category | Audience | Docs it relies on |
+| --- | --- | --- | --- | --- |
+| B1 | Welcome to the OpenTodo blog | News | everyone | (none) |
+| B2 | OpenTodo 0.3.0: bring your own AI | Releases | users and self-hosters | /docs/ai-and-agents/, /docs/assistant/, /docs/mcp/ |
+| B3 | How OpenTodo is built: specs first, then AI agents | Development | developers | /docs/architecture/ |
+| B4 | Why sync never asks "which version do you want?" | Development | developers | /docs/sync/, /docs/offline-and-sync/ |
+| B5 | Dates and times in your format (when it ships) | Releases | everyone | /docs/settings/ |
+| B6 | What the first month of OpenTodo taught me | News | everyone | (none) |
+
