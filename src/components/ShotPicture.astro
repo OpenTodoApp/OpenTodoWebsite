@@ -1,0 +1,19 @@
+---
+// A light/dark pair of captures as one responsive <picture> in a browser frame.
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+interface Props { light: ImageMetadata; dark: ImageMetadata; alt: string; url?: string; eager?: boolean }
+const { light, dark, alt, url = 'todo.your-server.com', eager = false } = Astro.props;
+const widths = [480, 800, 1200, 1600, 2160].filter((w) => w <= light.width);
+const sizes = '(min-width: 1200px) 1100px, 100vw';
+const set = async (img: ImageMetadata, media?: string) => Promise.all((['avif', 'webp'] as const).map(async (format) => ({ type: `image/${format}`, media, srcset: (await getImage({ src: img, widths, format, quality: format === 'avif' ? 55 : 72 })).srcSet.attribute })));
+const list = [...(await set(dark, '(prefers-color-scheme: dark)')), ...(await set(light))];
+const fallback = await getImage({ src: light, width: Math.min(1200, light.width), format: 'webp' });
+---
+<figure class="frame">
+  <div class="frame-bar" aria-hidden="true"><i /><i /><i /><span>{url}</span></div>
+  <picture>
+    {list.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} media={s.media} />)}
+    <img src={fallback.src} width={light.width} height={light.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </picture>
+</figure>

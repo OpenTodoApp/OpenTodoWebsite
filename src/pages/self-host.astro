@@ -1,0 +1,81 @@
+---
+// /self-host (website-switcher-pages D4): footprint from the manifest, the sync
+// playground, install methods, backups and links to the self-hosting docs.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import InstallTabs from '../components/InstallTabs.astro';
+import SyncPlayground from '../components/SyncPlayground.astro';
+import { manifest, versionTag } from '../lib/bundle';
+
+const f = manifest.facts;
+const facts = [
+  f.imageMB && { label: 'Container image', value: `about ${f.imageMB} MB` },
+  f.idleMemoryMB && { label: 'Memory when idle', value: `about ${f.idleMemoryMB} MB` },
+  f.database && { label: 'Database', value: `one ${f.database} file` },
+  f.architectures && { label: 'Runs on', value: f.architectures.map((a) => a.replace('linux/', '')).join(' and ') },
+].filter(Boolean) as { label: string; value: string }[];
+---
+<Base title="Self-host OpenTodo" description={`Run OpenTodo on your own server in minutes: one container, one folder of data, ${f.minimumServer ?? 'a small server'} is enough.`}>
+  <section class="page-head">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Self-host</p>
+        <h1>One container. One folder. Yours.</h1>
+        <p class="lede">OpenTodo runs as a single container with no database server and no required configuration. Open the address, create the owner account, invite your people.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#install">Install it <Icon name="arrow-down" size={18} /></a>
+          <a class="btn btn-secondary" href="/docs/self-hosting/docker/"><Icon name="book-open" size={18} /> Self-hosting docs</a>
+        </div>
+      </div>
+      <dl class="facts" aria-label={`Footprint of OpenTodo ${versionTag}`}>
+        {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+      </dl>
+    </div>
+    <div class="wrap"><p class="meta" style="margin-top: 1rem">Figures for OpenTodo {versionTag}. {f.minimumServer && `${f.minimumServer[0].toUpperCase()}${f.minimumServer.slice(1)} is plenty.`}</p></div>
+  </section>
+
+  <section class="section section-alt" id="install" aria-labelledby="install-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="install-title">Install in minutes</h2>
+        <p class="lede">Pick the way you already run things. Every method serves the same app; updates are a new image or binary, and the database migrates itself on start.</p>
+        <ul class="checks">
+          <li><Icon name="check" size={18} /> Sign-up closes after the owner account; invite people with a link</li>
+          <li><Icon name="check" size={18} /> Automatic HTTPS when you deploy with Coolify</li>
+          <li><Icon name="check" size={18} /> Single sign-on with the OpenID Connect provider you already run</li>
+          <li><Icon name="check" size={18} /> A built-in health check for your orchestrator</li>
+        </ul>
+        <p><a class="link-arrow" href="/docs/self-hosting/sso/">Single sign-on</a> · <a class="link-arrow" href="/docs/troubleshooting/">Troubleshooting</a></p>
+      </div>
+      <InstallTabs />
+    </div>
+  </section>
+
+  <section class="section" id="sync" aria-labelledby="sync-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Sync that converges</p>
+        <h2 id="sync-title">Edit anywhere, offline. Never pick a version again.</h2>
+        <p class="lede">Every change is a small operation on one field, stamped with a clock. Devices queue them while offline and exchange them through your server when they reconnect. The same rule runs everywhere, so every device lands on the same state.</p>
+        <p><a class="link-arrow" href="/docs/sync/">How sync works <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+      <SyncPlayground />
+    </div>
+  </section>
+
+  <section class="section section-alt" id="data" aria-labelledby="data-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="data-title">Your data, in one place you control</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><span class="card-icon"><Icon name="hard-drive" size={22} /></span><h3>One folder</h3><p>Everything lives in one data volume around a single database file. Back it up, move it, restore it anywhere.</p><a class="card-link" href="/docs/self-hosting/docker/">Data and volumes <Icon name="arrow-right" size={16} /></a></div>
+        <div class="card"><span class="card-icon"><Icon name="database" size={22} /></span><h3>Scheduled backups</h3><p>To a folder, S3-compatible storage or WebDAV, with retention and optional encryption.</p><a class="card-link" href="/docs/backups/">Backups <Icon name="arrow-right" size={16} /></a></div>
+        <div class="card"><span class="card-icon"><Icon name="file-down" size={22} /></span><h3>Export any time</h3><p>Every person can download all their data as one JSON file and import it on any other server.</p><a class="card-link" href="/docs/import-export/">Import and export <Icon name="arrow-right" size={16} /></a></div>
+      </div>
+    </div>
+  </section>
+
+  <EndCta title="Run it tonight." lede="Try the demo first if you like; your tasks can follow later with an import." />
+</Base>

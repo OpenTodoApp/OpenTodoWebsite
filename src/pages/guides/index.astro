@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleIndex from '../../components/ArticleIndex.astro';
+const entries = (await getCollection('guides', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order);
+const items = entries.map((e) => ({ href: `/guides/${e.id}/`, title: e.data.title, summary: e.data.summary }));
+---
+<ArticleIndex kicker="Guides" title="Methods that work, set up in minutes." lede="Practical guides to proven ways of working, each with a template you can import." description="Practical guides to proven ways of working, each with a template you can import." items={items} icon="compass">
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2 style="font-size: 1.5rem">More to read</h2>
+      <div class="cta-row">
+        <a class="btn btn-secondary" href="/toolkit/">Toolkit: set it up for your household or team</a>
+        <a class="btn btn-secondary" href="/essays/">Essays on owning your tasks</a>
+      </div>
+    </div>
+  </section>
+</ArticleIndex>

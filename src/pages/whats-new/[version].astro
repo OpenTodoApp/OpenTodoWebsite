@@ -1,0 +1,35 @@
+---
+// One page per release in the bundle's changelog (website-content-hub D4). Only
+// released versions are in it, so nothing unreleased can appear.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import { releases } from '../../lib/bundle';
+import { inline } from '../../lib/changelog';
+import { SITE } from '../../lib/site';
+
+export function getStaticPaths() {
+  return releases.map((release) => ({ params: { version: release.version }, props: { release } }));
+}
+const { release } = Astro.props;
+const day = new Date(`${release.date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={`What's new in OpenTodo ${release.version}`} description={`Release notes of OpenTodo ${release.version}, released on ${day}.`} ogType="article">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="breadcrumb"><a href="/whats-new/">What's new</a></p>
+      <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">OpenTodo {release.version}</h1>
+      <p class="updated">Released on <time datetime={release.date}>{day}</time></p>
+      {release.summary && <p class="lede" set:html={inline(release.summary)} />}
+    </div>
+  </section>
+  <div class="wrap narrow prose" style="padding-bottom: 3rem">
+    {release.sections.filter((s) => s.items.length).map((s) => (
+      <section>
+        <h2>{s.title}</h2>
+        <ul>{s.items.map((i) => <li set:html={inline(i)} />)}</ul>
+      </section>
+    ))}
+    <p><a href={`${SITE.appRepo}/releases/tag/v${release.version}`}>Downloads and checksums for v{release.version}</a></p>
+  </div>
+  <EndCta />
+</Base>

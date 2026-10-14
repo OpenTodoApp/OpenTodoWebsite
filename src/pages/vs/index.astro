@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+
+const entries = (await getCollection('compare')).sort((a, b) => a.data.order - b.data.order);
+const day = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title="Compare OpenTodo" description="Honest, dated comparisons of OpenTodo with Todoist, Things and Linear, including where they are ahead.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Compare</p>
+      <h1>Honest comparisons.</h1>
+      <p class="lede">Each page shows where the other app is ahead as well as where OpenTodo is, says when we last checked, and links every OpenTodo claim to the documentation of the current release.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap grid grid-3">
+      {entries.map((e) => (
+        <a class="card" href={`/vs/${e.id}/`}>
+          <h2 style="font-size: 1.35rem">OpenTodo vs {e.data.competitor}</h2>
+          <p>{e.data.audience}</p>
+          <p class="meta">Checked on <time datetime={e.data.checkedOn.toISOString().slice(0, 10)}>{day(e.data.checkedOn)}</time></p>
+          <span class="card-link">Read the comparison <Icon name="arrow-right" size={16} /></span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <EndCta />
+</Base>

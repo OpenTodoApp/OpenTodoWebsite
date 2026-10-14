@@ -1,0 +1,51 @@
+---
+// Main navigation (website-platform spec "Shared layout and navigation"). Below
+// 768 px it collapses into a <details> menu, so it opens without JavaScript.
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import { SITE } from '../lib/site';
+
+const path = Astro.url.pathname;
+const published = async (c: 'templates' | 'guides') =>
+  (await getCollection(c, (e) => !('draft' in e.data) || !e.data.draft)).length > 0;
+// Templates and Guides appear once at least one of each is published (website-content spec).
+const content = (await published('templates')) && (await published('guides'));
+
+const links = [
+  { href: '/#features', label: 'Features', match: null },
+  { href: '/vs/', label: 'Compare', match: '/vs/' },
+  ...(content ? [{ href: '/templates/', label: 'Templates', match: '/templates/' }, { href: '/guides/', label: 'Guides', match: '/guides/' }] : []),
+  { href: '/self-host/', label: 'Self-host', match: '/self-host/' },
+  { href: '/developers/', label: 'Developers', match: '/developers/' },
+  { href: '/docs/', label: 'Docs', match: null },
+];
+const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/">
+      <img src="/assets/favicon.svg" width="28" height="28" alt="" />
+      <span>OpenTodo</span>
+    </a>
+    <nav class="nav-desktop" aria-label="Main">
+      <ul>
+        {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <a class="btn btn-primary btn-small header-cta" href={SITE.demo}>Try the demo</a>
+    <details class="nav-menu">
+      <summary><Icon name="menu" size={18} /> Menu</summary>
+      <div class="menu-panel">
+        <nav aria-label="Main">
+          <ul>
+            {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+          </ul>
+        </nav>
+        <div class="menu-cta">
+          <a class="btn btn-primary" href={SITE.demo}>Try the demo</a>
+          <a class="btn btn-secondary" href={SITE.appRepo}><Icon name="code" size={18} /> Source on GitHub</a>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>

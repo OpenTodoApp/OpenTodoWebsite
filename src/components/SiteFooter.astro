@@ -1,0 +1,49 @@
+---
+import { SITE } from '../lib/site';
+import { versionTag } from '../lib/bundle';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/"><img src="/assets/favicon.svg" width="24" height="24" alt="" /><span>OpenTodo</span></a>
+        <p>An open-source task manager you host yourself. This site describes OpenTodo {versionTag}, the latest release.</p>
+      </div>
+      <nav aria-label="Product">
+        <h2>Product</h2>
+        <ul>
+          <li><a href="/vs/">Compare</a></li>
+          <li><a href="/templates/">Templates</a></li>
+          <li><a href="/guides/">Guides</a></li>
+          <li><a href="/toolkit/">Toolkit</a></li>
+          <li><a href="/essays/">Essays</a></li>
+          <li><a href="/self-host/">Self-host</a></li>
+          <li><a href="/developers/">Developers</a></li>
+          <li><a href="/whats-new/">What's new</a></li>
+          <li><a href="/docs/">Docs</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Source">
+        <h2>Source</h2>
+        <ul>
+          <li><a href={SITE.appRepo}>App on GitHub</a></li>
+          <li><a href={`${SITE.appRepo}/tree/main/openspec/specs`}>App specifications</a></li>
+          <li><a href={SITE.siteRepo}>This website on GitHub</a></li>
+          <li><a href={`${SITE.siteRepo}/tree/main/openspec`}>Website specifications</a></li>
+          <li><a href="/feed.xml">RSS feed</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Licences">
+        <h2>Licences</h2>
+        <ul>
+          <li><a href={`${SITE.appRepo}/blob/main/LICENSE`}>App: AGPL-3.0</a></li>
+          <li><a href={`${SITE.siteRepo}/blob/main/LICENSE`}>Website code: MIT</a></li>
+          <li><a href={`${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`}>Words and images: CC BY 4.0</a></li>
+          <li><a href={`${SITE.appRepo}/blob/main/SECURITY.md`}>Security</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="footer-fine">© {year} the OpenTodo contributors. Product names of other apps are used to identify them only. This website (not the app) counts visits with self-hosted Umami: no cookies, no personal data.</p>
+  </div>
+</footer>

@@ -98,4 +98,13 @@ Rollback: revert the merge. The old static files are in history.
 
 ## Open Questions
 
-- Whether to keep Bricolage Grotesque as the display face or use Inter throughout. A design-pass decision in `website-switcher-pages`, and either way self-hosted.
+- ~~Whether to keep Bricolage Grotesque as the display face or use Inter throughout.~~ Settled in `website-switcher-pages` D6: Inter throughout, self-hosted (one 56 KB variable font file, the app's own).
+
+## Implementation notes
+
+- **Astro 7** (7.3.8). `astro preview` now runs as a background daemon, so the browser checks serve `dist/` with `scripts/serve.mjs` instead.
+- **Claim lint outside Astro.** Astro 7 moved remark plugins behind a configurable Markdown processor, so the content-hub claim lint (content-hub D3) runs as `scripts/check-content.mjs` before every build instead of as a remark plugin. It reads the Markdown sources directly, which also gives exact line numbers.
+- **Interim bundle location.** The design moved `docs/` and `assets/shots/` into the interim bundle; they now live in `interim/docs` and `interim/shots`, so the root `docs/` is gone as task 4.3 asks, and all of `interim/` goes when a release is pinned.
+- **Interim pin.** `bundle.json` holds `{ "interim": true }`. It is accepted by production builds (it is what the site serves today), unlike preview and local bundles.
+- **Analytics.** The bundle's docs load `/analytics.js` from the site root, so analytics is a plain script at that path rather than a bundled module.
+- **Effect on visitors.** The home page loads one 56 KB font file from the site instead of three Google Fonts families, about 15 KB of page scripts (analytics included) instead of 34 KB, and responsive AVIF/WebP screenshots instead of 2160 px WebP for every device. The home page HTML grows from 45 KB to about 76 KB uncompressed, because every screenshot carries its responsive sources. A full build takes about a minute the first time (image variants) and a few seconds when the image cache is warm.

@@ -1,0 +1,56 @@
+---
+// A template page (website-content spec "Template gallery"): description, real
+// screenshots in light and dark, import steps and the download.
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import ShotPicture from '../../components/ShotPicture.astro';
+import { templateShots, templateSummary } from '../../lib/templates';
+import { versionTag } from '../../lib/bundle';
+
+export async function getStaticPaths() {
+  return (await getCollection('templates')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const shots = templateShots(entry.id);
+const s = templateSummary(entry);
+const guide = d.guide ? await getEntry('guides', d.guide) : undefined;
+if (d.guide && !guide) throw new Error(`Template ${entry.id} names guide "${d.guide}", which does not exist`);
+---
+<Base title={`${d.title} template`} description={d.summary} ogType="article">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/templates/">Templates</a> / {d.category}</p>
+      <h1>{d.title}</h1>
+      <p class="lede">{d.summary}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href={`/templates/${entry.id}.json`} download={`opentodo-${entry.id}.json`}><Icon name="download" size={18} /> Download the template</a>
+        {guide && <a class="btn btn-secondary" href={`/guides/${guide.id}/`}><Icon name="book-open" size={18} /> Read the guide</a>}
+      </div>
+      <p class="meta" style="margin-top: 0.75rem">{s.projects} {s.projects === 1 ? 'project' : 'projects'}, {s.sections} {s.sections === 1 ? 'section' : 'sections'}, {s.tasks} tasks{s.labels ? `, ${s.labels} ${s.labels === 1 ? 'label' : 'labels'}` : ''}. Checked against OpenTodo {versionTag}.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0">
+    <div class="wrap">
+      <ShotPicture light={shots.light} dark={shots.dark} alt={`The ${d.title} template imported into OpenTodo`} eager />
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="wrap split" style="align-items: start">
+      <div class="prose"><Content /></div>
+      <div class="card">
+        <h2 style="font-size: 1.25rem">Import it in three steps</h2>
+        <ol>
+          <li>Download the template file above.</li>
+          <li>In OpenTodo, open <strong>Settings</strong>, then <strong>Data</strong>, then <strong>Import data</strong>.</li>
+          <li>Choose the file, check the preview, and select <strong>Import</strong>.</li>
+        </ol>
+        <p class="meta">Due dates count from the day the file was published; move them as you like. Importing the same file twice creates nothing new, and an import can be undone. <a href="/docs/import/">Import formats</a></p>
+      </div>
+    </div>
+  </section>
+  <EndCta />
+</Base>

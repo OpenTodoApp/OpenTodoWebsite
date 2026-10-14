@@ -1,0 +1,70 @@
+# Website checks (website-platform design D6) on every pull request and on main.
+name: Website checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Unit tests (bundle scripts, template generator, content rules, checks)
+        run: npm test
+      - name: Build (fetches the pinned bundle, checks content, fails on a page that does not render)
+        run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: astro check
+        run: npm run check
+      - name: Links, emoji icons, third-party scripts
+        run: npm run check:dist
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Accessibility (light and dark, 360 and 1280 px), horizontal scroll, no-JS pass, islands
+        run: npm run test:browser
+      - name: Upload the built site (pull request preview)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist/
+          retention-days: 14
+      - name: Upload the browser report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the production image
+        run: docker build -t opentodo-website .
+      - name: Serve the home page, a docs page and the health check
+        run: |
+          docker run -d --name site -p 8080:80 opentodo-website
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8080/ >/dev/null && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/ | grep -q "Clarity without"
+          curl -fsS http://127.0.0.1:8080/docs/import/ | grep -q "Import formats"
+          curl -fsS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8080/no-such-page/ | grep -q 404
+          sleep 35 && test "$(docker inspect -f '{{.State.Health.Status}}' site)" = healthy

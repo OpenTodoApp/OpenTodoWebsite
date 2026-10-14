@@ -1,0 +1,13 @@
+---
+// One icon from the bundle's sprite (the app's Lucide set), drawn inline in the
+// current text colour. Without `label` it is decorative and hidden from assistive
+// technology. An unknown name fails the build, so no page can fall back to emoji.
+import { icons } from '../lib/bundle';
+
+interface Props { name: string; size?: number; label?: string; class?: string }
+const { name, size = 20, label, class: className } = Astro.props;
+const body = icons[name];
+if (!body) throw new Error(`Icon "${name}" is not in the bundle's icon set (icons/names.json)`);
+const a11y: Record<string, string> = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true', focusable: 'false' };
+---
+<svg class:list={['icon', className]} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={size >= 20 ? 1.75 : 2} stroke-linecap="round" stroke-linejoin="round" data-icon={name} {...a11y} set:html={body} />

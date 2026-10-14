@@ -1,0 +1,236 @@
+{
+  "format": "opentodo-changelog",
+  "version": 1,
+  "releases": [
+    {
+      "version": "0.3.0",
+      "date": "2026-10-12",
+      "summary": "OpenTodo 0.3.0 is about bringing your own AI, if you want one. There is a chat assistant inside the app that answers questions about your tasks and proposes changes you review and undo in one step, with Anthropic, OpenAI, Gemini or a model on your own network. An assistant you already use can now make changes over MCP, and the `ot` command is ready to be driven by coding agents. All of it is off until the owner turns it on; nothing is sent anywhere before that. [Use AI with OpenTodo](docs/ai-and-agents.md) compares the three options. Settings is also split into sections with their own pages, and a project can be shared with a single invite link.",
+      "sections": [
+        {
+          "title": "Upgrade notes",
+          "items": [
+            "**Migrations `0026` to `0029`** (agent tokens and switches; assistant consent and usage; members' own assistant provider; project invite links) are applied automatically at startup. Back up `/data` before upgrading: there are no down-migrations. No new environment variables are required; `OPENTODO_MCP_WRITES` is optional.",
+            "**Image tags.** The release publishes `ghcr.io/pixari/opentodo:0.3.0` and `:0.3` for `linux/amd64` and `linux/arm64` (`:latest` follows `main`). The Coolify template now follows `:0.3`; if you use `:0.2`, change the tag in **Edit Compose file** and click **Deploy**.",
+            "**`ot` scripts:** destructive commands now need `--yes` off a terminal, and refusals exit 5 instead of 1 (see Breaking below).",
+            "**Binary size.** The server binary grows from about 17 MB to about 23 MB, mostly the official Anthropic SDK used by the assistant."
+          ]
+        },
+        {
+          "title": "Breaking",
+          "items": [
+            "**`ot`: destructive commands need `--yes` without a terminal.** `ot rm`, `ot project rm`, `ot token revoke` and `ot auth logout` used to proceed silently when stdout was not a terminal or `--json` was given. They now refuse with exit code 2 (`confirmation_required`) before sending anything. **Migration:** add `--yes` to scripts and cron jobs that delete on purpose, e.g. `ot rm \"$ID\" --yes`. On a terminal without `--json` they still ask. ([CLI](docs/cli.md#migrating-scripts))",
+            "**`ot`: new exit code 5, \"not permitted\".** Refusals for scope, role, a switch, encryption or read-only mode (`insufficient_scope`, `forbidden`, `not_permitted`, `writes_disabled_by_owner`, `writes_disabled_by_user`, `encryption_enabled`, `read_only`) exit 5 instead of 1, so scripts and agents can stop instead of retrying. **Migration:** scripts that test for exactly `1` should also accept `5`; scripts that test for non-zero are unaffected. The op log and the REST API are unchanged."
+          ]
+        },
+        {
+          "title": "Added",
+          "items": [
+            "**Invite to a project with a link.** In a project's **Share** dialog, the owner and admins can create a single-use **invite link** with a role (viewer or editor; admin for the owner), an optional email binding and an expiry from 1 hour to 30 days (default 7 days). The link is shown once; pending links are listed with their role, email, expiry and creator and can be revoked. Opening `/invite/p/<token>` shows who invited you to which project: signed in, you select **Join project**; otherwise you sign in and join, or create an account that joins in the same step. A link creates accounts only when its creator is the server owner or an admin, when open sign-up is on, or when the owner switches on **Members can invite new people with project links** in **Settings → Administration** (off by default); otherwise the page asks the person to get an account first. Links stop working when revoked, used or expired, when the project is deleted, or when their creator is no longer the project's owner or an admin. Links are server-side data, never synced; refused on the demo instance. ([Sharing](docs/sharing.md#invite-with-a-link), [API](docs/api.md#project-invite-links))",
+            "New routes: `GET/POST /api/v1/projects/{id}/invites`, `DELETE /api/v1/projects/{id}/invites/{inviteId}`, `GET /api/v1/project-invites/{token}` (public preview), `POST /api/v1/project-invites/{token}/accept`, `GET/PUT /api/v1/settings/project-invites`; `POST /api/v1/auth/register` accepts `projectInvite`. New error code `project_invite_not_allowed`; audit events `project_invite.created`, `project_invite.revoked`, `project_invite.accepted`. Migration `0029_project_invites.sql` is applied automatically.",
+            "**Your own assistant provider.** When the owner lets members bring their own key, each person can choose Anthropic, OpenAI or Google Gemini, a model and their own key in **Settings → AI → Assistant → Which assistant you use**, with **Test connection**. Members are never offered the compatible endpoint, so they cannot make the server connect to an address of their choosing. The disclosure names the provider actually used (\"from this server to … with your own API key\") and is asked again when it changes. Turning member keys off makes everyone use the owner's provider again; choices are kept for later. Keys stay in `<data>/secrets/assistant.json`, never returned, logged, exported or backed up. ([AI assistant](docs/assistant.md#use-your-own-provider-and-key))",
+            "**Own keys outside the allowance.** Answers on a member's own key are recorded and shown as \"your key\", but neither counted nor stopped by the monthly token allowance unless the owner turns on the new **Count members' own keys toward the monthly limit** (`cap_member_keys`). One answer per person and 8 per server still apply. The owner sees how many people use their own provider and key.",
+            "API (additive): `own_provider`, `own_model` and new status fields on `GET/PUT /api/v1/me/assistant`; `POST /api/v1/me/assistant/test` (signed-in sessions, 5 per 10 minutes); `cap_member_keys` and `own_key_members` on `/api/v1/settings/assistant`; `counted_tokens` and `own_key` on the usage route and `own_key` on the turn's `usage` event. ([API](docs/api.md#in-app-assistant))",
+            "**AI assistant in the app.** A chat panel (<kbd>Shift</kbd>+<kbd>I</kbd> or **Assistant** in the header; a side sheet on wide screens, full screen on phones) that answers questions about your tasks and *proposes* changes: \"move everything overdue to Friday\", \"break this task into steps\". Each proposal is a reviewable list with every change in words; you apply the checked part (at most 50 changes) and undo it in one step. Applied changes are ordinary edits from your device: offline-capable, synced, labelled **Assistant** in history. Providers, each with the owner's or a member's own key: Anthropic through the official Anthropic Go SDK (default `claude-opus-5-5`; `claude-sonnet-5-5` and `claude-haiku-5-5` offered), OpenAI, Google Gemini and any OpenAI-compatible endpoint, including Ollama or LM Studio on your network. Off by default: the owner enables it in **Settings → Assistant** (provider, models, keys, private endpoints, monthly token allowance, member keys, **Test connection**); each person accepts a disclosure naming the provider and the fields sent before their first message, and again when the provider changes. Keys live only in `<data>/secrets/assistant.json`, never returned, logged, exported or backed up. The assistant cannot change sharing, members, settings or tokens, make outbound requests or delete permanently; task text is marked as untrusted. Conversations stay on the device and are deleted at sign-out. Not available for end-to-end encrypted accounts or on the demo instance. Optional per-device auto-apply of up to 3 small, reversible changes, off by default. ([AI assistant](docs/assistant.md), [API](docs/api.md#in-app-assistant), [security](SECURITY.md#in-app-assistant))",
+            "New routes: `GET/PUT /api/v1/settings/assistant`, `POST /api/v1/settings/assistant/test` (owner), `GET/PUT /api/v1/me/assistant`, `GET /api/v1/me/assistant/usage`, and `POST /api/v1/assistant/turn` (signed-in sessions only; streams server-sent events). `/api/v1/sync` accepts the op device prefix `assistant:`; history entries from it carry `device_label: \"Assistant\"`.",
+            "Dependency: `github.com/anthropics/anthropic-sdk-go` (the server binary grows by about 5 MB; see the change's design notes).",
+            "**`ot` for agents and automation** ([CLI](docs/cli.md#using-ot-from-an-agent)): `--json` output is documented with JSON Schemas and `output_version` 1 (`ot version --json`); `ot schema` (or `ot help --json`) prints every command, flag, exit code, error code and output schema, offline; `--dry-run` on every write command resolves references and prints the requests it would send without writing; `--idempotency-key` on `ot add` and `ot project add` makes retries return the same entity; `ot done`/`ot reopen` on a task already in that state report `unchanged` and send nothing, and `ot edit` with unchanged values sends nothing; `--read-only` (or the optional `OPENTODO_READ_ONLY=1`) refuses every write before any request; `ot` refuses writes locally for `read` tokens and outside the allowed routes for `agent` tokens; `ot auth status` shows the token's scope and whether assistant writes are allowed. With `--json`, errors carry an additive `exit` field and stderr gets one `ot:` line; `done`/`reopen`/`rm` add `ref` and `status` to each task.",
+            "**Agent skill file.** `ot skill` prints `SKILL.md`, which teaches an agent to use `ot` safely (agent token, `--json`, dry runs, idempotency keys, exit codes, task text as untrusted data). Each release ships it as `opentodo-agent-skill.zip`.",
+            "**`Idempotency-Key` on `POST /api/v1/{collection}`**: the entity and op ids derive from your account, the collection and the key, so a retried create returns 200 with the stored entity and `Idempotent-Replayed: true`; the same key with other content answers 409 `idempotency_conflict`. Keys never cross accounts and need no storage. ([API](docs/api.md#idempotency-keys))",
+            "**`agent` tokens on REST content routes**: creating tasks, projects, labels and comments, editing tasks, renaming or recolouring projects and trashing the token's own tasks, under the same two switches, limits, `agent.write` audit, history label and encryption rules as the MCP write tools (they run through the same tool registry). Every other REST write still refuses them. ([API](docs/api.md#agent-tokens))",
+            "`GET /api/v1/me` gains an additive `auth` object: `method`, `scope`, `token_id`, `token_name` and, for `agent` tokens, `writes_allowed`/`writes_denied`. Never the secret. ([API](docs/api.md#credential-introspection))",
+            "**AI assistants can make changes, when you allow it.** The MCP endpoint gains ten write tools: `create_tasks`, `update_tasks`, `complete_tasks`, `reopen_tasks`, `move_tasks`, `schedule_tasks`, `create_project`, `create_label`, `add_comment` and `trash_tasks`. They appear only when the owner turns on **AI assistants may make changes**, you turn on **Allow AI assistants to make changes to my tasks** (both off by default, in Settings → AI assistants), and the assistant uses a new **`agent`** token. Full-access and read-only tokens keep read-only tools. Every change goes through the op log, syncs and converges like any edit, shows in history as \"AI assistant (*token name*)\", is recorded in the audit log as `agent.write` (no content), and can be undone. Nothing is ever deleted permanently; `trash_tasks` only accepts tasks the same token created; assistant comments notify no one. Limits: 50 items per call, 30 write calls per minute and 1,000 changed items per day per token. For end-to-end encrypted accounts, tools that would write readable text are not offered (`encryption_enabled`); scheduling, completing and moving still work. ([AI assistants](docs/mcp.md#letting-an-assistant-make-changes))",
+            "`agent` token scope: refused on every REST write like `read`, except the agent content routes above (it cannot create tokens, change settings or sync raw operations). Create one in Settings → AI assistants, Settings → API tokens, or with `ot token create <name> --scope agent`; `ot token list` shows each token's scope.",
+            "`GET/PUT /api/v1/me/agent-access` (your own switch; sessions and full tokens only) and `writes_enabled` on `/api/v1/settings/mcp`. The optional `OPENTODO_MCP_WRITES=true` presets the owner's switch on first start.",
+            "New internal package `internal/agenttools`: one registry of agent tools (definitions, validation, planning, limits, permission gate), to be shared with the planned in-app assistant.",
+            "**Coolify one-click template, ready to submit upstream.** `deploy/coolify/opentodo.yaml` now follows Coolify's current template conventions: `SERVICE_URL_OPENTODO_8080`, the `0.2` image line, a `/data` volume and a `/opentodo healthcheck` health check. It also lists the useful optional variables with their defaults (including `OPENTODO_TRUSTED_PROXIES` and email to task), because Coolify passes a variable from its UI only when the compose file references it. An explicit `OPENTODO_BASE_URL` wins over Coolify's generated URL. `deploy/coolify/upstream/` mirrors Coolify's repository paths and holds a draft docs page, the pull request text and step-by-step submission notes. Until the template is listed in Coolify, paste it as a **Docker Compose** resource. ([Coolify](docs/self-hosting/coolify.md#one-click-template-pending-in-coolifys-service-list))",
+            "`scripts/coolify-template-check.mjs` (in `make check` and CI) fails when the template breaks those conventions, names an `OPENTODO_*` variable the server does not read, lags behind the latest release, or differs from its upstream copy. `make coolify-smoke` starts the image the way Coolify does and checks the health check, the owner setup, closed sign-up, the https base URL and data surviving a redeploy."
+          ]
+        },
+        {
+          "title": "Changed",
+          "items": [
+            "**An invalid `OPENTODO_TRUSTED_PROXIES` entry no longer stops the server.** A typo such as `cloudflar` used to fail startup, so the health check failed and Coolify rolled the deploy back with the cause only in the container log. Now the server starts, ignores the invalid entries (keeping the valid ones; with none valid it behaves as unset, so trust is never widened), logs one error line naming them with a \"did you mean cloudflare?\" hint, and shows the owner a **Server configuration warning** at the top of **Settings** and **Settings → Administration**. Entries may also be separated by spaces. `GET /api/v1/me` gains an additive `config_warnings` array for the owner's session only. Every other invalid variable still stops startup. ([Behind a reverse proxy](docs/self-hosting/docker.md#behind-a-reverse-proxy))",
+            "**Settings has sections.** Instead of one long page, `/settings` lists the sections with a line on what each holds, and each opens on its own page: **Account**, **General**, **Notifications**, **Data**, **Capture**, **Integrations**, **AI** and, for the owner and admins, **Administration** (`/settings/account`, `/settings/general`, …). Wide screens keep the section list beside the content; phones get a back link. Every setting works as before, Help links open the same guides, and `/settings/import` is unchanged. The user guide now names the section, for example **Settings → AI → AI assistants**. The single sign-on link flow returns to `/settings/account`. ([Settings](docs/settings.md))",
+            "MCP read results mark text people wrote: titles, descriptions, names and comment bodies now sit inside an `untrusted_text` object, every result carries a `_notice` telling the assistant to treat that text as data, tasks of shared projects carry `shared: true` and comments `author_is_you`. Label ids are listed as `label_ids` next to the names. The tool definitions themselves are unchanged. ([AI assistants](docs/mcp.md#read-tools))",
+            "`/api/v1/sync` refuses operations from devices whose id starts with `agent:` or `caldav:` (400 `invalid_op`): those ids are reserved for the server's own writers.",
+            "API requests with a token scope this server does not know are refused on every write route (previously only `read` was).",
+            "**Migration `0026`** adds two side tables (`api_token_agent`, `user_agent_access`) and is applied automatically at startup. Rolling back to an older version is safe: `agent` tokens then act as read-only tokens.",
+            "Images built from source by Coolify report `dev+<commit>` instead of `dev` when the application's **Source commit availability** is *Available during build* (the Dockerfile reads `SOURCE_COMMIT`).",
+            "Coolify guide: which resource types roll and which recreate, why plain **Restart** and API deploys keep a cached image, first-visit owner setup, domains and passkeys, Cloudflare (proxy and Tunnel, Browser Cache TTL), and Coolify volume backups."
+          ]
+        },
+        {
+          "title": "Fixed",
+          "items": [
+            "A reminder that became due while a dialog, menu or popover was open took the keyboard focus out of it. It is still announced, but focus now stays where you are.",
+            "Phones could keep running the previous release after an update when a CDN such as Cloudflare sat in front: it cached the service worker script for hours. Service worker scripts are now sent with `Cache-Control: no-store` (and `CDN-Cache-Control: no-store`)."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-11",
+      "summary": "OpenTodo 0.2.0 is about trying it, using it on a phone and running it without fuss. Every visitor to the public demo now gets a private sandbox. The phone layout has been reworked so menus, pickers and dialogs fit small screens. There is a docs website and a Help view inside the app, which works offline. Archived projects can be restored with one click. Updates roll out without a Stop → Deploy. Rate limits work correctly behind trusted proxies and Cloudflare. The app meets WCAG AA contrast in light and dark, and this release includes several security fixes.",
+      "sections": [
+        {
+          "title": "Upgrade notes",
+          "items": [
+            "**From 0.1.0, stop once.** 0.1.0 locked the data directory exclusively, so a 0.2.0 container cannot start beside it. Plain `docker compose pull && docker compose up -d` works as before. With Coolify or another orchestrator that starts the new container first, click **Stop**, then **Deploy** for this one upgrade (otherwise the deploy fails with \"data directory is in use by another opentodo process\" and rolls back). From 0.2.0 on, updates roll without downtime. ([Docker](docs/self-hosting/docker.md#updating), [Coolify](docs/self-hosting/coolify.md#updating))",
+            "**Image tags.** The release publishes `ghcr.io/pixari/opentodo:0.2.0` and `:0.2` for `linux/amd64` and `linux/arm64` (`:latest` follows `main`). The Coolify template in `deploy/coolify/opentodo.yaml` now follows `:0.2`; if you pinned `:0.1`, change it.",
+            "**Migration `0025`** (demo sandbox bookkeeping) is applied automatically at startup. Back up `/data` before upgrading: there are no down-migrations. No new mandatory environment variables; `OPENTODO_TRUSTED_PROXIES`, `OPENTODO_DEMO_MAX_SANDBOXES` and `OPENTODO_DEMO_MAX_DB_MB` are optional.",
+            "**Behind a CDN or second proxy**, set `OPENTODO_TRUSTED_PROXIES` (for example `cloudflare`) so rate limits and the audit log see visitors' addresses. ([Reverse proxy](docs/self-hosting/docker.md#behind-a-reverse-proxy))"
+          ]
+        },
+        {
+          "title": "Added",
+          "items": [
+            "**User documentation**: seventeen task-based guides for people using the app (getting started, installing the app on iOS, Android and desktop, tasks and projects, views, sections and boards, labels and filters, recurring tasks and reminders, time blocking, sharing and comments, notifications, offline and sync, keyboard shortcuts, account security, import and export, trash and history, settings, troubleshooting and FAQ), with light and dark screenshots generated from the demo data (`make docs-screenshots`). Every page in `docs/` has front matter (title, summary, audience, the capabilities it covers, the app screens it explains). ([Docs](docs/README.md))",
+            "**Docs website** at [open-todo.app/docs](https://open-todo.app/docs/), generated from `docs/` by `make docs` into `website/docs/`: grouped by audience, in-browser search over a prebuilt index (nothing typed leaves the browser), light and dark, readable without JavaScript, \"On this page\", previous and next, the version described and \"Edit this page on GitHub\". \"Docs\" is in the website's navigation.",
+            "**Help inside the app**: a Help view with the user guide of the running version, searchable and available offline (a lazily loaded chunk, precached by the service worker; screenshots stay on the website). Open it from the sidebar, Settings, the `?` overlay, `g` then `?`, or `:help <topic>` with Vim keybindings. Settings sections, the share dialog, the Filter view, quick add and the import screen have a Help link that opens the matching section in a side panel (a full-screen sheet on phones) without closing what you were doing.",
+            "**Unarchive projects**: Settings → Projects lists your archived projects, with their parent and open task count, and a **Restore** button that brings one back to the sidebar. Restoring is an ordinary change, so it works offline and syncs to every device; sub-projects stay archived until restored on their own, a project restored by hand is not archived automatically again on that device, and in shared projects only the owner or an admin can restore. Previously only the automatic-archive notice could undo an archive. ([Trash and history](docs/trash-and-history.md#bring-back-an-archived-project))",
+            "`npm run docs:check` (part of `make check` and CI) fails on missing front matter, broken links or anchors, images without alt text, capabilities in `openspec/specs/` that no page covers, help links to unknown sections, a keyboard guide that differs from the app, and stale generated files. The shortcut table moved to `web/src/lib/shortcuts.ts`, shared by the `?` overlay and the keyboard guide. The CI layout job also runs axe-core on the Help view, the help panel and the docs website, and checks the docs website at 360, 390 and 1280 px with and without JavaScript."
+          ]
+        },
+        {
+          "title": "Changed",
+          "items": [
+            "The public demo (`OPENTODO_DEMO=true`) gives every visitor a **private sandbox** instead of one shared account: \"Try the demo\" creates a password-less account with its own copy of the sample data and a non-interactive collaborator, and nobody sees anybody else's changes. Sandboxes are deleted after 2 hours of inactivity, 24 hours after creation and by the nightly reset, which now also runs `VACUUM`. The published demo password is gone; the first start deletes the old shared demo accounts. `auth/status.demo` carries a creation token instead of credentials; new route `POST /api/v1/demo/sandbox`, new error codes `demo_expired`, `demo_limit`, `demo_busy` and `demo_token`; optional `OPENTODO_DEMO_MAX_SANDBOXES` and `OPENTODO_DEMO_MAX_DB_MB`. Migration `0025` adds the sandbox bookkeeping tables. ([Public demo](docs/self-hosting/demo.md))",
+            "Links in comments and notes render with `rel=\"nofollow ugc noopener noreferrer\"` on every instance."
+          ]
+        },
+        {
+          "title": "Security",
+          "items": [
+            "Demo instances bound abuse: sandbox creation needs a single-use, signed, 10-minute token from the sign-in page and a same-origin request, at most 5 new sandboxes per address per hour (addresses are stored only as salted hashes), a live cap with idle eviction and a database size guard; each sandbox may write 600 ops per hour, 5,000 ops and 2 MB of values in total, values are capped at 4 KB (32 KB for notes), and above the database size limit live sandboxes cannot write either. Every demo response carries `X-Robots-Tag: noindex, nofollow` and the demo page declares `noindex`.",
+            "Per-address rate limits (sign-in, passkeys, two-factor, single sign-on, CalDAV, demo sandboxes) and audit-log addresses now use the **last** `X-Forwarded-For` hop, the one the reverse proxy appended, instead of the first entry, which the client controls behind an appending proxy such as Traefik and could change to evade the limits. Run one proxy in front of the server and do not publish its port. ([Reverse proxy](docs/self-hosting/docker.md#behind-a-reverse-proxy))",
+            "Behind a CDN, set the optional `OPENTODO_TRUSTED_PROXIES` (IP addresses, CIDR prefixes and/or `cloudflare`) so the CDN's hop is skipped and visitors are not all counted as the CDN's address. With `cloudflare`, requests from a Cloudflare edge use `CF-Connecting-IP`. ([Reverse proxy](docs/self-hosting/docker.md#behind-a-reverse-proxy))"
+          ]
+        },
+        {
+          "title": "Fixed",
+          "items": [
+            "Phones: every menu, popover, picker and dialog now fits the screen. The notifications panel was cut off on the left; it, the mention picker and the section, project, label and view menus open as bottom sheets below 640 px and next to their button (kept inside the screen) above. Dialogs (rename, share, sign-in confirmation, user administration, voice consent, label and assignee pickers, keyboard help) are full screen on phones with a pinned close button, and all overlays close with Escape or a tap outside and return focus to their button. Touch targets are at least 44 px, row menus are visible without hover on touch screens, long words and URLs wrap, the sidebar scrolls on short screens, and layouts respect the safe areas and the on-screen keyboard. A new CI job opens every screen and overlay at 360, 390 and 768 px in Chromium and WebKit (`make layout-check`). ([mobile-layout](openspec/changes/archive/2026-10-11-mobile-layout/proposal.md))",
+            "**Contrast and accessibility** across the app: secondary text (sidebar section names, counts, dates, descriptions), the \"All\" links, primary buttons (now a darker green, white text at 5.5:1), status and priority colours and dark-mode muted text all meet WCAG AA (4.5:1) in light and dark. Secondary text uses two theme-aware tokens, `text-muted` and `text-faint`. Label and assignee pickers no longer nest buttons inside list options, the priority buttons say which one is selected (`aria-pressed`), and the filter and view result lists are named regions. The layout check now runs axe-core on every screen and overlay in light and dark, not only on the Help view, and fails on serious or critical issues.",
+            "Task and project **History** names people, projects, sections and parent tasks instead of showing their ids, labels fields in words (\"assignee\" rather than `assignee_id`), and no longer lists writes that kept the value, such as the plain-text copy of a note rewritten when the note is upgraded.",
+            "Zero-downtime updates work again: several server processes may now use one data directory, so Coolify's rolling update (new container started before the old one stops) no longer fails with \"data directory is in use by another opentodo process\" and rolls back. Background jobs (reminder push, webhooks, backups, email polling, Trash cleanup, audit pruning, demo reset) run in one process only and move to the new one when the old one stops; maintenance commands still require every server to be stopped. Upgrading from 0.1.0 needs one stop-then-deploy. ([Updating](docs/self-hosting/docker.md#updating))"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-11",
+      "summary": "The first release, and the first feature-complete version: every item on the [roadmap](ROADMAP.md) is implemented. Each feature was planned and built as an OpenSpec change; the archived changes under `openspec/changes/archive/` hold the full proposals, designs and task lists, and `openspec/specs/` the resulting behaviour contracts.",
+      "sections": [
+        {
+          "title": "Upgrade notes",
+          "items": [
+            "**No mandatory configuration.** Every new environment variable is optional and every feature that talks to the outside world is off until configured. The complete list is in the [README](README.md#configuration).",
+            "**Database migrations** `0001` to `0024` are embedded and applied automatically at startup, in order, tracked by `PRAGMA user_version` (numbers `0016`–`0018` and `0020` are unused). Back up `/data` before upgrading an existing instance: there are no down-migrations. Rolling back to a binary older than user administration lets deactivated accounts sign in again.",
+            "**Update the server before clients.** The op schema only grew (new fields and entities, nothing renamed), but an older server rejects sync batches that carry fields it does not know; those ops wait in the device's outbox until the server is upgraded. Older clients keep syncing their personal data and skip ops for entities they do not know.",
+            "**Sizes** (measured for this release, `linux/amd64`): server binary 16,715,938 bytes (15.9 MiB) built with `-trimpath -ldflags=\"-s -w\"`, web app embedded; `ot` CLI about 6.9 MB; initial web bundle 261 KB JS + 10.7 KB CSS gzipped, with the rich-text editor (97 KB), voice recognition (4 KB) and Vim layer (4 KB) loaded on demand; idle memory about 18 MB on a fresh instance. The container image adds the distroless static base (about 2 MB) to the binary. Release assets: server and `ot` binaries for Linux, macOS and Windows (amd64 and arm64), the browser extension zip and `SHA256SUMS`; images `ghcr.io/pixari/opentodo:0.1.0` and `:0.1` for `linux/amd64` and `linux/arm64`."
+          ]
+        },
+        {
+          "title": "Added",
+          "items": [
+            "Go + SQLite server with the React PWA embedded, local-first storage in IndexedDB, field-level last-writer-wins op log, owner setup, sessions, API tokens, REST API that writes through the op log, JSON export, a single distroless container and a Coolify-ready compose file. [Architecture](docs/architecture.md), [sync protocol](docs/sync.md)",
+            "Live sync: a server-sent event stream (`GET /api/v1/sync/events`) wakes other devices as soon as ops are recorded; 30 s polling remains the fallback. [Live updates](docs/sync.md#live-updates), [proxy notes](docs/self-hosting/docker.md#live-updates-through-the-proxy)",
+            "Vim keybindings, opt-in per device and loaded only when enabled.",
+            "Natural-language quick add in English, German, French, Italian, Spanish and Portuguese: dates, times, `#project`, `@label`, `p1`–`p4`, `+30m` estimates, with preview chips; parsed on the device. [Quick add](docs/quick-add.md)",
+            "Voice capture into quick add (`Shift+V`), opt-in per device, using the browser's speech recognition. [Voice](docs/quick-add.md#voice)",
+            "Share target, bookmarklet and a Manifest V3 browser extension for Chromium and Firefox (`make extension`), opening a capture screen at `/share`. [Capture](docs/capture.md)",
+            "Email to task: a personal secret address per account, polled from one operator-configured IMAP mailbox (`OPENTODO_EMAIL_*`). [Email](docs/email.md)",
+            "`ot` command-line client (`cmd/ot`), cross-compiled for Linux, macOS and Windows and attached to releases. [CLI](docs/cli.md)",
+            "Nested projects and subtask trees to any depth, with deterministic, write-free cycle breaking for concurrent moves.",
+            "Sections and a Kanban board per project; new `section` entity and task field `section_id`. [Sections](docs/api.md#sections)",
+            "Manual ordering by drag and drop and `Alt+↑/↓`, one `position` op per move. [Manual order](docs/sync.md#manual-order)",
+            "Labels as a synced entity referenced by id from `task.labels`. [Task labels](docs/sync.md#task-labels)",
+            "Filter query language evaluated on the device, and saved views and dashboards (`view` entity, REST `/api/v1/views`, validated by a Go port of the parser). [Filters](docs/filters.md)",
+            "Rich-text notes with collaborative editing: new task field `notes_doc` (a Yjs document envelope, up to 256 KB) next to `description`, which stays the note's Markdown projection for the API, export, CalDAV, MCP and webhooks. [Mergeable documents](docs/sync.md#mergeable-documents)",
+            "Trash with restore, revision history from the op log, permanent purge (`purges` table, `purged` in sync responses), automatic purge after `OPENTODO_TRASH_RETENTION_DAYS` (default 30) and automatic archiving of finished projects. [Trash and history](docs/api.md#trash-and-history), [Purge](docs/sync.md#purge)",
+            "Duration estimates (task field `estimate_minutes`) and Day/Week time-blocking calendars with drag, resize and full keyboard control.",
+            "Recurring tasks: task fields `recurrence` and `series_id`, one grammar implemented in Go and TypeScript against 180 shared vectors, convergent completion of the same occurrence on two offline devices. [Recurrence](docs/recurrence.md)",
+            "Reminders (`reminder` entity, relative or absolute) with in-app notifications, snooze and dismiss, and web push implemented with the standard library (VAPID, RFC 8291); key pair in `<data>/push_vapid.pem`, `OPENTODO_PUSH=off` to disable. [Reminders](docs/reminders.md)",
+            "Time-zone-fixed due times: optional `tz` key in `due` (IANA zone, only with `time`), resolved by `internal/zoned` and the web app against shared vectors. [Zoned due values](docs/sync.md#zoned-due-values)",
+            "Project sharing with viewer, editor, admin and owner roles: the op log is partitioned into sharing scopes, ops are authorised against the author's membership at receipt and refused ones are reported per op. [Sharing scopes](docs/sync.md#sharing-scopes), [API](docs/api.md#sharing)",
+            "Task assignment (`assignee_id`), the Assigned to me view and in-app notifications (`GET /api/v1/notifications`). [Assignment](docs/api.md#assignment-and-notifications)",
+            "Threaded Markdown comments (`comment` entity) with `@mentions`, and an activity log derived from the op log, per task and per project. [Comments](docs/api.md#comments-and-activity)",
+            "Activity feed across shared projects with unread counts (`project_prefs` entity, personal scope only; `GET /api/v1/activity`). [Activity feed](docs/api.md#activity-feed)",
+            "Invitations: single-use, expiring links in Settings → Members. [Invitations](docs/api.md#invitations)",
+            "User administration: admin role, deactivation, deletion, password reset links, owner transfer, own password change and `opentodo reset-owner-password` on the host. [User administration](docs/api.md#user-administration)",
+            "Data import of the app's own export, CSV and JSON exports of other task managers, with preview, duplicate detection and undo (`OPENTODO_IMPORT_MAX_MB`, default 20). [Import](docs/import.md)",
+            "Scheduled backups to a folder, S3-compatible storage or WebDAV with retention, optional `OTBK1` encryption, `OPENTODO_BACKUP_*` presets and `opentodo restore`; sync responses carry a log `generation` so devices re-send newer edits after a restore. [Backups](docs/backups.md)",
+            "Signed outbound webhooks with a durable queue, retries, delivery log and SSRF protection (`OPENTODO_WEBHOOKS_ALLOW_PRIVATE` preset). [Webhooks](docs/webhooks.md)",
+            "CalDAV two-way sync under `/dav/` with per-device app passwords (`otap_…`), off until the owner enables it (`OPENTODO_CALDAV` preset); new task field `ical_extra` keeps unmapped iCalendar properties. [CalDAV](docs/caldav.md)",
+            "Read-only MCP endpoint at `/mcp` for AI assistants (five tools, `opentodo://` resources), off until the owner enables it (`OPENTODO_MCP` preset). [MCP](docs/mcp.md)",
+            "Passkeys (WebAuthn) when `OPENTODO_BASE_URL` is https; verification in `internal/webauthn`.",
+            "Two-factor authentication (TOTP) with recovery codes, remembered browsers, an owner policy (`none`, `owner`, `all`), step-up re-authentication for sensitive routes and `opentodo mfa-reset` on the host.",
+            "Single sign-on with one OpenID Connect provider (PKCE, JWKS verification with the standard library), optional `OPENTODO_OIDC_*` overrides, account linking and an SSO-only mode with owner break-glass. [SSO](docs/self-hosting/sso.md)",
+            "Audit log of security events with retention, NDJSON export and opt-in client addresses. [What is logged](SECURITY.md#what-is-logged), [API](docs/api.md#audit-log)",
+            "Optional end-to-end encryption of task content per account (Web Crypto, AES-256-GCM, passphrase plus recovery key); routes under `/api/v1/encryption/`. [E2EE](docs/e2ee.md)",
+            "Demo mode for a public demo instance: `OPENTODO_DEMO=true` creates a hidden owner and a shared demo account shown on the sign-in screen (\"Try the demo\"), seeds realistic data through the op log, wipes and reseeds it every night at 03:00 UTC (devices recover through purge markers, sessions stay), shows a banner, and refuses sign-up, account changes, integrations, import and encryption with 403 `demo_restricted`; no outbound requests. [Demo instance](docs/self-hosting/demo.md)"
+          ]
+        },
+        {
+          "title": "Changed",
+          "items": [
+            "Deleting a project only tombstones the project; its tasks keep their `project_id` and come back when the project is restored from the Trash.",
+            "API tokens have a scope: `read` tokens are refused on every write route and on `/api/v1/sync` (`403 insufficient_scope`); existing tokens stay `full`.",
+            "`/api/v1/sync` responses gained additive fields: `rejected`, `memberships`, `purged`, `trashRetentionDays` and `generation`; requests may carry `tzOffset`. Served ops carry `actor`. Older clients ignore them.",
+            "REST collections and the export include projects shared with you (with read-only `role` and `owner_id`), and the export gained `labels`, `views`, `reminders`, `sections`, `comments` and the `encryption` key record. The export format version stays 1.",
+            "`ot` embeds Go's time zone database so zoned due times resolve on hosts without one (Windows, distroless).",
+            "Server dependencies: `github.com/fxamacker/cbor/v2` (passkeys). Web dependencies: `qrcode-generator` (two-factor QR codes), `yjs` and the `prosemirror-*` packages (rich-text notes, lazy-loaded). Everything else uses the standard library and existing packages."
+          ]
+        },
+        {
+          "title": "Fixed",
+          "items": [
+            "Imports no longer drop sections, recurrence and reminders. An own export now round-trips its sections, reminders and saved views with their ids (so section placement, recurring series and reminder links stay intact) and every task field, with recurrence stored canonical; reminders whose time has passed undelivered are imported dismissed so no stale notifications go out. Comments are reported in the preview but not imported (a comment keeps its author), and assignees other than you are dropped with a warning. CSV and the JSON formats of popular commercial task apps map recurrence strings (rule grammar, RRULEs, common spellings, structured objects; anything else is a preview warning), reminders (absolute and minutes before the due time) and sections. The `sections` import option gained `section`, now the default (`label` keeps the old behaviour); the preview counts new sections, recurring tasks and reminders; undo also removes imported sections, reminders and views. [Import](docs/import.md)",
+            "Reminders on tasks in a project in the Trash (or under a sub-project whose ancestor is in the Trash) no longer fire, neither as web push nor in the app. Restoring the project brings them back: a reminder whose time passed while the project was trashed is delivered once, late, like after server downtime. [Reminders](docs/reminders.md#trash)",
+            "`/api/v1/sync` pull pages, including the history replay for a newly joined shared project, are capped at about 4 MB of op values (always at least one op), so a batch of large rich-text notes no longer produces one huge response; `hasMore` asks the device to continue. [Sync](docs/sync.md#paging)",
+            "Purging a task, a project (with its tasks) or emptying the Trash by retention now removes the task's CalDAV resource name in the same transaction; migration `0024` removes rows earlier purges left behind. [CalDAV](docs/caldav.md)",
+            "A large import sent one webhook delivery per task. Imports and their undo now produce one `import.completed` or `import.undone` delivery per subscribed webhook with counts and project ids; ops written by an import no longer emit `task.*`/`project.*` events, so a webhook that wants imports subscribes to the new events. Ordinary writes keep their per-event deliveries. [Webhooks](docs/webhooks.md#imports)",
+            "Opening the app at a different host than `OPENTODO_BASE_URL` made passkeys fail with the browser's \"origin is not authorized for the provided RP ID\"; the app now explains which two hosts differ and what to change, and Settings → Security shows the host passkeys are tied to (also `passkeyDomain` in `GET /api/v1/auth/status`). In `docker-compose.yml` an `OPENTODO_BASE_URL` you set yourself now wins over Coolify's generated `SERVICE_URL_OPENTODO`.",
+            "Dropdown menus (view, section, project and label menus) could open mostly off screen on phones when the header wrapped; they now shift back inside the screen when opened.",
+            "The keyboard-shortcut help could not be scrolled or closed on phones (the panel grew past the screen on iOS Safari). It is now a full-screen sheet on small screens with a pinned close button, the overlay scrolls instead of the panel, and every other dialog overlay scrolls when its content is taller than the screen.",
+            "Clients skip ops for entities they do not know instead of failing the whole batch, so an installed PWA that has not refreshed yet keeps syncing when the server gains a new entity.",
+            "A reference to a deleted, foreign or not-yet-received section or label is displayed as \"No section\" or hidden without writing a repair op, so arrival order can never overwrite a newer edit."
+          ]
+        },
+        {
+          "title": "Security",
+          "items": [
+            "Sign-up is closed after the owner account; new people join by single-use invitation links or, if allowed, single sign-on.",
+            "Sensitive routes (new API tokens, app passwords, invitations, user administration, two-factor and SSO settings, encryption key changes) require a sign-in or re-authentication within ten minutes on cookie sessions (`403 reauth_required`).",
+            "Rate limits on sign-in, registration, passkeys, the second sign-in step, re-authentication, invitation and reset previews, single sign-on, comment creation, admin actions and failed `/mcp` and CalDAV authentications.",
+            "Webhook delivery refuses loopback, private, link-local, metadata and other internal targets unless the owner allows private networks, and never follows redirects.",
+            "CalDAV accepts only app passwords; `/api/v1` refuses them. `/mcp` accepts only bearer tokens and checks `Origin`.",
+            "Credentials, secrets and audit details are kept out of logs and the audit log by an allow-list; secrets for backups and single sign-on live in `<data>/secrets/` (mode 0600), outside the database and backups.",
+            "See [SECURITY.md](SECURITY.md) for the full model."
+          ]
+        },
+        {
+          "title": "Known limitations and verification follow-ups",
+          "items": [
+            "**CalDAV** with real clients: Apple Reminders, Thunderbird and DAVx⁵ (Android tasks apps).",
+            "**Single sign-on** against a real OpenID Connect provider such as Authentik or Keycloak (tested against an in-process provider).",
+            "**Email to task** against real mail providers' IMAP servers (tested against an in-process IMAP server).",
+            "**MCP** with real AI assistant clients.",
+            "**Voice capture** with a real microphone in Chrome and Safari.",
+            "**Web push** on real devices and push services.",
+            "**Passkeys** on real devices and authenticators.",
+            "**Share target** behaviour in Firefox (and other platforms listed in [docs/capture.md](docs/capture.md)).",
+            "**Touch drag and drop** (board, manual ordering, calendar) on real touch devices."
+          ]
+        },
+        {
+          "title": "Migrations",
+          "items": []
+        }
+      ]
+    }
+  ]
+}

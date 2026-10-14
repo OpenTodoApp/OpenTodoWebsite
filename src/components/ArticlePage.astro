@@ -1,0 +1,57 @@
+---
+// Shared page for guides, toolkit pieces and essays: last-reviewed date, the
+// templates the piece uses, its docs sources, and the closing calls to action.
+import { getEntries, render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import EndCta from './EndCta.astro';
+import Icon from './Icon.astro';
+
+type Entry = CollectionEntry<'guides'> | CollectionEntry<'toolkit'> | CollectionEntry<'essays'>;
+interface Props { entry: Entry; section: { href: string; label: string } }
+const { entry, section } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const templates = await getEntries(d.templates.map((id) => ({ collection: 'templates' as const, id })));
+templates.forEach((t, i) => { if (!t) throw new Error(`${entry.collection}/${entry.id} lists template "${d.templates[i]}", which does not exist`); });
+const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={d.title} description={d.summary} ogType="article">
+  <article>
+    <header class="page-head">
+      <div class="wrap narrow">
+        <p class="breadcrumb"><a href={section.href}>{section.label}</a></p>
+        <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
+        <p class="lede">{d.summary}</p>
+        <p class="updated"><Icon name="calendar-check" size={16} /> Last reviewed <time datetime={d.lastReviewed.toISOString().slice(0, 10)}>{reviewed}</time></p>
+      </div>
+    </header>
+    <div class="wrap narrow prose" style="padding-bottom: 3rem"><Content /></div>
+  </article>
+  {templates.length > 0 && (
+    <section class="section section-alt" aria-labelledby="related-templates">
+      <div class="wrap">
+        <h2 id="related-templates" style="font-size: 1.5rem">Templates for this</h2>
+        <div class="grid grid-3">
+          {templates.map((t) => t && (
+            <a class="card" href={`/templates/${t.id}/`}>
+              <span class="card-icon"><Icon name="layout-template" size={22} /></span>
+              <h3>{t.data.title}</h3>
+              <p>{t.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  {d.sources.length > 0 && (
+    <section class="section" style="padding-block: 2.5rem" aria-labelledby="sources">
+      <div class="wrap narrow">
+        <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
+        <ul class="checks">
+          {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+  <EndCta />
+</Base>

@@ -1,0 +1,68 @@
+---
+// One comparison page per entry of the `compare` collection (website-switcher-pages D2, D3).
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CompareTable from '../../components/CompareTable.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import { switchLink } from '../../lib/switch';
+import { versionTag } from '../../lib/bundle';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  return (await getCollection('compare')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const sw = switchLink({ app: d.competitor, importFormat: d.importFormat, switchGuide: d.switchGuide });
+const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={`OpenTodo vs ${d.competitor}`} description={d.summary} ogType="article">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/vs/">Compare</a></p>
+      <h1>OpenTodo vs {d.competitor}</h1>
+      <p class="lede">{d.audience}</p>
+      <p class="updated"><Icon name="calendar-check" size={16} /> Checked on <time datetime={d.checkedOn.toISOString().slice(0, 10)}>{day}</time> against OpenTodo {versionTag}</p>
+      <div class="cta-row" style="margin-top: 1.25rem">
+        <a class="btn btn-primary" href={sw.href} data-switch={sw.named ? d.competitor : 'generic'}><Icon name={sw.named ? 'arrow-right' : 'upload'} size={18} /> {sw.label}</a>
+        <a class="btn btn-secondary" href={SITE.demo}>Try the demo</a>
+      </div>
+      {!sw.named && <p class="meta" style="margin-top: 0.75rem">There is no one-step importer for {d.competitor} in this release yet. Export your tasks as CSV or JSON and the import guide shows how to bring them in.</p>}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap">
+      <div class="prose" style="margin-bottom: 2rem"><Content /></div>
+      <h2>Feature by feature</h2>
+      <CompareTable competitor={d.competitor} rows={d.rows} checkedOn={d.checkedOn} />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Where {d.competitor} is ahead</h2>
+        <p class="lede">If any of these matter most to you, {d.competitor} may be the better choice, and that is fine.</p>
+      </div>
+      <div class="grid grid-3">
+        {d.gaps.map((g) => <div class="card gaps"><h3>{g.title}</h3><p>{g.detail}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What it costs</h2>
+      <div class="versus">
+        <div class="card"><h3>{d.competitor}</h3><p>{d.cost.them}</p></div>
+        <div class="card us"><h3>OpenTodo</h3><p>{d.cost.us}</p></div>
+      </div>
+      <p class="meta" style="margin-top: 1rem">Costs are described in words because prices change. {d.competitor} is named here only to identify it; this page is not affiliated with it.</p>
+    </div>
+  </section>
+
+  <EndCta />
+</Base>
