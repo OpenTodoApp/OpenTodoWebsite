@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Design system · OpenTodo docs</title>
+  <meta name="description" content="The visual language for contributors: principles, design tokens, the bundled typeface, the Storybook workbench and the accessibility and visual-regression checks.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://opentodo.pixari.dev/docs/design-system/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://opentodo.pixari.dev/docs/design-system/">
+  <meta property="og:site_name" content="OpenTodo">
+  <meta property="og:title" content="Design system · OpenTodo docs">
+  <meta property="og:description" content="The visual language for contributors: principles, design tokens, the bundled typeface, the Storybook workbench and the accessibility and visual-regression checks.">
+  <meta property="og:image" content="https://opentodo.pixari.dev/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/docs/docs.css">
+  <script data-cfasync="false">document.documentElement.classList.remove('no-js')</script>
+  <!-- Analytics (Umami, self-hosted, no cookies), as on the rest of the website. Search counts use, never the words typed. -->
+  <script defer data-cfasync="false" src="https://analytics.pixari.dev/script.js" data-website-id="c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92"></script>
+  <script defer data-cfasync="false" src="/analytics.js"></script>
+  <script defer data-cfasync="false" src="/docs/docs.js"></script>
+</head>
+<body class="docs">
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/" aria-label="OpenTodo home"><img src="/assets/favicon.svg" width="26" height="26" alt=""><span>OpenTodo</span></a>
+    <nav class="site-nav" aria-label="Website">
+      <a href="/#features">Features</a>
+      <a href="/#self-host">Self-host</a>
+      <a href="/#tour">Tour</a>
+      <a href="/docs/" aria-current="true">Docs</a>
+    </nav>
+    <a class="gh" href="https://github.com/pixari/opentodo" rel="noopener" aria-label="OpenTodo on GitHub"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
+  </div>
+</header>
+<div class="docs-bar">
+  <details class="docs-menu"><summary>Menu</summary><nav aria-label="Documentation"><a class="side-home" href="/docs/">Docs home</a>
+<div class="side-audience"><p class="side-audience-title">Using OpenTodo</p>
+<p class="side-group">Get started</p>
+<ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/install-app/">Installing the app</a></li></ul>
+<p class="side-group">Guides</p>
+<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/ai-and-agents/">Use AI with OpenTodo</a></li><li><a href="/docs/assistant/">AI assistant</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
+<p class="side-group">Reference</p>
+<ul><li><a href="/docs/quick-add/">Quick add syntax</a></li><li><a href="/docs/filters/">Filter queries</a></li><li><a href="/docs/recurrence/">Recurring task rules</a></li><li><a href="/docs/reminders/">Reminders reference</a></li><li><a href="/docs/capture/">Capturing pages</a></li><li><a href="/docs/import/">Import formats</a></li><li><a href="/docs/e2ee/">End-to-end encryption</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Self-hosting</p>
+<ul><li><a href="/docs/self-hosting/docker/">Running with Docker</a></li><li><a href="/docs/self-hosting/coolify/">Deploying on Coolify</a></li><li><a href="/docs/backups/">Backups</a></li><li><a href="/docs/self-hosting/sso/">Single sign-on</a></li><li><a href="/docs/caldav/">Calendar apps (CalDAV)</a></li><li><a href="/docs/email/">Email to task</a></li><li><a href="/docs/self-hosting/demo/">Public demo instance</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Integrations and internals</p>
+<p class="side-group">Integrations</p>
+<ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
+<p class="side-group">Internals</p>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/" aria-current="page">Design system</a></li></ul>
+</div></nav></details>
+  <form class="docs-search" role="search" action="/docs/" data-search>
+  <label class="sr-only" for="q-bar">Search the docs</label>
+  <input id="q-bar" type="search" name="q" placeholder="Search the docs" autocomplete="off" spellcheck="false" aria-controls="q-bar-results" aria-describedby="q-bar-hint">
+  <kbd class="search-key" aria-hidden="true">/</kbd>
+  <p class="sr-only" id="q-bar-hint">Results appear below as you type. Press the down arrow to reach them.</p>
+  <div class="search-results" id="q-bar-results" hidden></div>
+  <p class="sr-only" aria-live="polite" data-search-status></p>
+</form>
+</div>
+<div class="docs-shell">
+  <aside class="docs-side">
+    <form class="docs-search" role="search" action="/docs/" data-search>
+  <label class="sr-only" for="q-side">Search the docs</label>
+  <input id="q-side" type="search" name="q" placeholder="Search the docs" autocomplete="off" spellcheck="false" aria-controls="q-side-results" aria-describedby="q-side-hint">
+  <kbd class="search-key" aria-hidden="true">/</kbd>
+  <p class="sr-only" id="q-side-hint">Results appear below as you type. Press the down arrow to reach them.</p>
+  <div class="search-results" id="q-side-results" hidden></div>
+  <p class="sr-only" aria-live="polite" data-search-status></p>
+</form>
+    <nav aria-label="Documentation"><a class="side-home" href="/docs/">Docs home</a>
+<div class="side-audience"><p class="side-audience-title">Using OpenTodo</p>
+<p class="side-group">Get started</p>
+<ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/install-app/">Installing the app</a></li></ul>
+<p class="side-group">Guides</p>
+<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/ai-and-agents/">Use AI with OpenTodo</a></li><li><a href="/docs/assistant/">AI assistant</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
+<p class="side-group">Reference</p>
+<ul><li><a href="/docs/quick-add/">Quick add syntax</a></li><li><a href="/docs/filters/">Filter queries</a></li><li><a href="/docs/recurrence/">Recurring task rules</a></li><li><a href="/docs/reminders/">Reminders reference</a></li><li><a href="/docs/capture/">Capturing pages</a></li><li><a href="/docs/import/">Import formats</a></li><li><a href="/docs/e2ee/">End-to-end encryption</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Self-hosting</p>
+<ul><li><a href="/docs/self-hosting/docker/">Running with Docker</a></li><li><a href="/docs/self-hosting/coolify/">Deploying on Coolify</a></li><li><a href="/docs/backups/">Backups</a></li><li><a href="/docs/self-hosting/sso/">Single sign-on</a></li><li><a href="/docs/caldav/">Calendar apps (CalDAV)</a></li><li><a href="/docs/email/">Email to task</a></li><li><a href="/docs/self-hosting/demo/">Public demo instance</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Integrations and internals</p>
+<p class="side-group">Integrations</p>
+<ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
+<p class="side-group">Internals</p>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/" aria-current="page">Design system</a></li></ul>
+</div></nav>
+  </aside>
+  <main id="content" class="docs-main" tabindex="-1">
+    <article class="prose" data-audience="developer">
+      <p class="doc-meta"><span class="crumbs">Integrations and internals <span aria-hidden="true">›</span> Internals</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
+<h1 id="design-system">Design system</h1>
+<p>OpenTodo&#39;s interface is friendly and roomy, in the spirit of TickTick, Todoist and Any.do, and keeps its own identity: the emerald accent, slate neutrals, white cards in light and a slate-950 canvas in dark. Every colour, size, radius, shadow and duration comes from a design token, and every shared building block is developed and checked in a workbench. The contract lives in the <code>design-system</code> OpenSpec capability; this page is the how-to.</p>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#principles">Principles</a></li><li><a href="#tokens">Tokens</a></li><li><a href="#stored-colours">Stored colours</a></li><li><a href="#typeface">Typeface</a></li><li><a href="#the-workbench">The workbench</a><ul><li><a href="#adding-a-story">Adding a story</a></li></ul></li><li><a href="#checks">Checks</a><ul><li><a href="#updating-baselines">Updating baselines</a></li></ul></li></ul></nav></details>
+
+<h2 id="principles">Principles<a class="anchor" href="#principles" aria-label="Link to this section: Principles">#</a></h2>
+<ol>
+<li><strong>Content first.</strong> Chrome is neutral, and colour is reserved for meaning: priority, project and label colours, status.</li>
+<li><strong>Roomy, not sparse.</strong> Generous padding, one idea per row, state before forms.</li>
+<li><strong>One way to do a thing.</strong> Every control comes from a primitive and every value from a token.</li>
+<li><strong>Accessible by construction.</strong> AA contrast, a visible focus ring, 44 px touch targets and reduced motion are enforced by tests, not left to review.</li>
+<li><strong>Calm motion.</strong> Short transitions, nothing bouncing in the way.</li>
+</ol>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th></th>
+<th>Keep (identity)</th>
+<th>Evolve (craft)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Colour</td>
+<td>emerald accent, slate neutrals, white / slate-950</td>
+<td>formal tokens, soft tints, canvas vs card surfaces</td>
+</tr>
+<tr>
+<td>Mood</td>
+<td>calm, honest, a little technical</td>
+<td>roomier and friendlier</td>
+</tr>
+<tr>
+<td>Space</td>
+<td></td>
+<td>4 px grid, 44–48 px rows, 16/24 px section gaps</td>
+</tr>
+<tr>
+<td>Surfaces</td>
+<td></td>
+<td>cards with soft elevation instead of bare sections and thin borders</td>
+</tr>
+<tr>
+<td>Type</td>
+<td></td>
+<td>bundled Inter, 15 px body, clear heading scale</td>
+</tr>
+<tr>
+<td>Delight</td>
+<td></td>
+<td>gentle motion and a satisfying completion state, respecting reduced motion</td>
+</tr>
+</tbody></table></div>
+<h2 id="tokens">Tokens<a class="anchor" href="#tokens" aria-label="Link to this section: Tokens">#</a></h2>
+<p>Tokens are defined once in <code>web/src/index.css</code>:</p>
+<ul>
+<li>Raw values are <code>--ot-*</code> custom properties: light on <code>:root</code>, dark under <code>prefers-color-scheme: dark</code> and again under <code>[data-theme=&quot;dark&quot;]</code>. The two dark blocks must stay identical (a unit test checks it). The app follows the system preference; the workbench sets <code>data-theme</code> to show both themes, also side by side.</li>
+<li><code>@theme inline</code> maps them to Tailwind utilities that resolve per element, so a <code>[data-theme]</code> subtree switches too.</li>
+<li>The <code>dark:</code> variant uses the same two conditions.</li>
+</ul>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Utilities</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Surfaces</td>
+<td><code>bg-canvas</code>, <code>bg-surface</code>, <code>bg-raised</code>, <code>bg-sunken</code></td>
+<td>app background, cards and rows, popovers and dialogs, wells</td>
+</tr>
+<tr>
+<td>Text</td>
+<td><code>text-strong</code>, <code>text-default</code>, <code>text-muted</code>, <code>text-faint</code>, <code>text-accent</code>, <code>text-on-accent</code></td>
+<td>each meets 4.5:1 on every surface it is allowed on</td>
+</tr>
+<tr>
+<td>Borders</td>
+<td><code>border-default</code>, <code>border-input</code></td>
+<td><code>input</code> meets 3:1 for control boundaries</td>
+</tr>
+<tr>
+<td>Accent</td>
+<td><code>bg-accent</code>, <code>bg-accent-hover</code>, <code>bg-accent-soft</code>, <code>text-on-accent-soft</code>, <code>ring-focus</code>, <code>outline-focus</code></td>
+<td>emerald-700; focus ring 2 px with offset</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td><code>border-p1</code> … <code>border-p4</code>, <code>bg-p1-soft</code> … <code>bg-p4-soft</code></td>
+<td>red, orange, blue, slate</td>
+</tr>
+<tr>
+<td>Status</td>
+<td><code>text-success</code>, <code>bg-warning-soft</code>, <code>text-on-danger-soft</code>, …</td>
+<td>success, warning, danger, info, each with a soft step</td>
+</tr>
+<tr>
+<td>Palette</td>
+<td><code>bg-hue-solid</code>, <code>bg-hue-soft</code>, <code>text-hue</code> under <code>data-hue=&quot;&lt;name&gt;&quot;</code></td>
+<td>12 hues for projects and labels</td>
+</tr>
+<tr>
+<td>Type</td>
+<td><code>text-hint</code>, <code>text-meta</code>, <code>text-body</code>, <code>text-h3</code>, <code>text-h2</code>, <code>text-h1</code></td>
+<td>11, 13, 15, 17, 20, 24 px; rem-based</td>
+</tr>
+<tr>
+<td>Radius</td>
+<td><code>rounded-chip</code>, <code>rounded-control</code>, <code>rounded-card</code></td>
+<td>6, 10, 14 px</td>
+</tr>
+<tr>
+<td>Elevation</td>
+<td><code>shadow-1</code>, <code>shadow-2</code>, <code>shadow-3</code></td>
+<td>cards, popovers, dialogs; pair with a border in dark</td>
+</tr>
+<tr>
+<td>Motion</td>
+<td><code>duration-(--duration-ui)</code>, <code>duration-(--duration-emphasis)</code>, <code>ease-calm</code></td>
+<td>120 and 250 ms; reduced motion keeps only colour and opacity fades</td>
+</tr>
+</tbody></table></div>
+<p>Rules for code under <code>web/src/ui/</code>:</p>
+<ul>
+<li>Use token utilities only. A raw palette class (<code>bg-slate-200</code>) or a hex literal fails <code>src/ui/tokens/lint.test.ts</code>. Screens in <code>web/src/app</code> are exempt until their redesign change migrates them.</li>
+<li>Before using a new foreground and background combination, add it to <code>src/ui/tokens/pairs.ts</code>. <code>contrast.test.ts</code> recomputes every pair from <code>index.css</code> in both themes and fails with the pair, theme and ratio.</li>
+</ul>
+<p>The legacy classes <code>.btn-primary</code>, <code>.btn-secondary</code>, <code>.btn-ghost</code>, <code>.btn-danger</code>, <code>.input</code> and <code>.kbd</code> keep their names and draw from the tokens. Use <code>.btn-secondary</code> for bordered neutral buttons.</p>
+<h2 id="stored-colours">Stored colours<a class="anchor" href="#stored-colours" aria-label="Link to this section: Stored colours">#</a></h2>
+<p>Projects, labels and views store a free hex string in their ops. At render time <code>hueFor()</code> in <code>web/src/ui/tokens/palette.ts</code> maps it to a palette hue: an exact canonical hex maps to itself, a grey (OKLCh chroma below 0.06) maps to slate, and anything else maps to the hue with the nearest hue angle. Components render <code>data-hue=&quot;&lt;name&gt;&quot;</code> and use <code>bg-hue-soft text-hue</code>. Rendering never writes the stored value back; a colour picked in the UI stores the hue&#39;s canonical hex (<code>LABEL_PALETTE</code>).</p>
+<h2 id="typeface">Typeface<a class="anchor" href="#typeface" aria-label="Link to this section: Typeface">#</a></h2>
+<p>Inter 4.1 is bundled as <code>web/src/assets/fonts/InterVariable-latin.woff2</code> (54 KB, weight axis only, Latin subset, licence in <code>OFL.txt</code>). It is served from the app&#39;s own origin, hashed by Vite and precached by the service worker; no font is ever requested from another host. The family is named <code>OpenTodo Inter</code>, so a locally installed Inter is never used instead, and <code>font-display: swap</code> shows the system font until it loads.</p>
+<p>To regenerate it (fonttools 4.60.1):</p>
+<pre tabindex="0"><code class="language-sh">python3 -m venv venv &amp;&amp; ./venv/bin/pip install fonttools==4.60.1 brotli==1.1.0
+curl -LO https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip &amp;&amp; unzip Inter-4.1.zip
+./venv/bin/fonttools varLib.instancer InterVariable.ttf opsz=14 -o inter-wght.ttf
+./venv/bin/pyftsubset inter-wght.ttf \
+  --unicodes=&quot;U+0000-00FF,U+0100-017F,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20A0-20CF,U+2122,U+2190-21FF,U+2212,U+2215,U+FEFF,U+FFFD&quot; \
+  --layout-features='kern,liga,calt,ccmp,locl,mark,mkmk,tnum,cv11' \
+  --flavor=woff2 --output-file=InterVariable-latin.woff2</code></pre>
+<p>Keep the <code>unicode-range</code> of the <code>@font-face</code> rule in <code>index.css</code> in step with <code>--unicodes</code>.</p>
+<h2 id="the-workbench">The workbench<a class="anchor" href="#the-workbench" aria-label="Link to this section: The workbench">#</a></h2>
+<p>Storybook is a development tool only: it adds nothing to <code>internal/web/dist</code>, the Go binary or the container image, and a unit test fails if the production build contains Storybook code.</p>
+<ul>
+<li><code>make storybook</code> (or <code>npm run storybook</code> in <code>web/</code>) opens it on <a href="http://localhost:6006" rel="noopener">http://localhost:6006</a>. The toolbar switches the theme (light, dark, side by side) and the frame width (375 or 1280 px).</li>
+<li><code>npm run build-storybook</code> writes the static build to <code>web/storybook-static/</code> (not committed).</li>
+<li><strong>Foundations</strong> shows the colour tokens with their live contrast ratios, the palette, type, spacing, radius, elevation, motion and the legacy classes.</li>
+</ul>
+<h3 id="adding-a-story">Adding a story<a class="anchor" href="#adding-a-story" aria-label="Link to this section: Adding a story">#</a></h3>
+<p>Put a <code>*.stories.tsx</code> file next to the component, in Component Story Format. Stories render with fixture data only, never Dexie or the network. Cover the states that matter (default, disabled, error, long text) and check them in both themes and at 375 px.</p>
+<h2 id="checks">Checks<a class="anchor" href="#checks" aria-label="Link to this section: Checks">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Runs in</th>
+<th>Fails on</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Token contrast, token lint, workbench exclusion</td>
+<td><code>npm test</code>, <code>make check</code></td>
+<td>a pair under its minimum; a raw colour in <code>web/src/ui</code>; Storybook code in the production build</td>
+</tr>
+<tr>
+<td>Accessibility</td>
+<td><code>make ui-check</code>, CI job &quot;UI check&quot;</td>
+<td>any serious or critical axe-core (WCAG 2.2 AA) violation in a story, light or dark</td>
+</tr>
+<tr>
+<td>Visual regression</td>
+<td><code>make ui-check</code>, CI job &quot;UI check&quot;</td>
+<td>a story × theme × width screenshot that differs from its baseline by more than 0.2%</td>
+</tr>
+</tbody></table></div>
+<p><code>make ui-check</code> needs Playwright and <code>@playwright/test</code> 1.56.1 installed globally, as CI does (<code>npm i -g playwright@1.56.1 @playwright/test@1.56.1 &amp;&amp; playwright install chromium</code>). Set <code>PLAYWRIGHT_NODE_PATH</code> to use another install. Failures leave actual, expected and diff images in <code>web/test-results/ui-visual</code>, and CI uploads them as the <code>ui-check-report</code> artifact.</p>
+<h3 id="updating-baselines">Updating baselines<a class="anchor" href="#updating-baselines" aria-label="Link to this section: Updating baselines">#</a></h3>
+<p>Font rendering differs between operating systems, so baselines are only generated inside the pinned Playwright image and stored under <code>web/src/ui/__screenshots__/</code>:</p>
+<ul>
+<li>With Docker: <code>make ui-baselines</code>, then review and commit the changed PNGs.</li>
+<li>Without Docker: run the <strong>UI baselines</strong> workflow on GitHub (Actions → UI baselines → Run workflow), download the <code>ui-baselines</code> artifact and commit its PNGs. For a story that has no baseline yet, the CI &quot;UI check&quot; job also writes one and fails; its <code>ui-check-report</code> artifact contains it under <code>web/src/ui/__screenshots__</code>.</li>
+</ul>
+<p>Update baselines only for intended visual changes, in the same pull request as the change.</p>
+
+      <p class="edit"><a href="https://github.com/pixari/opentodo/edit/main/docs/design-system.md" rel="noopener">Edit this page on GitHub</a></p>
+    </article>
+    <nav class="pager" aria-label="Previous and next page">
+      <a class="prev" rel="prev" href="/docs/sync/"><span>Previous</span>Sync protocol</a>
+      <span></span>
+    </nav>
+  </main>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#principles">Principles</a></li><li><a href="#tokens">Tokens</a></li><li><a href="#stored-colours">Stored colours</a></li><li><a href="#typeface">Typeface</a></li><li><a href="#the-workbench">The workbench</a><ul><li><a href="#adding-a-story">Adding a story</a></li></ul></li><li><a href="#checks">Checks</a><ul><li><a href="#updating-baselines">Updating baselines</a></li></ul></li></ul></nav></aside>
+</div>
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0.</p>
+    <nav aria-label="Footer">
+      <a href="/docs/">Docs home</a>
+      <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
+      <a href="https://github.com/pixari/opentodo/blob/main/CHANGELOG.md" rel="noopener">Changelog</a>
+      <a href="https://github.com/pixari/opentodo/blob/main/SECURITY.md" rel="noopener">Security</a>
+    </nav>
+    <p class="fine">This website (not the app) counts visits and clicks with self-hosted <a href="https://umami.is" rel="noopener">Umami</a>: no cookies, no personal data, and never what you type into search.</p>
+  </div>
+</footer>
+</body>
+</html>
