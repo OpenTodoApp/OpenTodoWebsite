@@ -1,6 +1,6 @@
 ---
 title: Leaving without losing anything
-summary: The best test of a tool is how easy it is to leave. Here is what OpenTodo gives you on the way out, and why we care.
+summary: The best test of a tool is how easy it is to leave. Here is what OpenTodo gives you on the way out, and why I care.
 publishedAt: 2026-10-14
 author: raffaele
 category: ownership
@@ -26,4 +26,4 @@ If you would rather pull your data out programmatically, the [REST API](/docs/ap
 OpenTodo is free software under the AGPL. Even if this project stopped tomorrow, the version you run would keep running, and anyone could continue it.
 
 <!-- no-claim -->
-We would like you to stay because OpenTodo is good, not because leaving is hard.
+I would like you to stay because OpenTodo is good, not because leaving is hard.

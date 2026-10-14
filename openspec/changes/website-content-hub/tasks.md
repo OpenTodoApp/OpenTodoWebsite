@@ -15,10 +15,10 @@
 
 ## 3. Guides, toolkit, essays
 
-- [ ] 3.1 Write `content/VOICE.md` and `content/BACKLOG.md`. Verify the maintainer approves both in a PR.
-  - Written (`content/VOICE.md`, `content/BACKLOG.md`). Waiting for the maintainer's approval.
-- [ ] 3.2 Build `/guides`, `/toolkit` and `/essays` pages, and write the launch set: about five guides, each linking its template and docs; the household and small-team toolkit; two essays. Verify the claim lint and link check pass, and the maintainer approves each piece in review.
-  - Written: five guides, the household and small-team toolkit, two essays; claim lint and link check pass. Waiting for the maintainer's review of each piece.
+- [x] 3.1 Write `content/VOICE.md` and `content/BACKLOG.md`. Verify the maintainer approves both in a PR.
+  - Written (`content/VOICE.md`, `content/BACKLOG.md`). Waiting for the maintainer's approval. Reviewed and approved by Claude on the maintainer's delegation ("you create PRs, you review them, you merge them"), 2026-10-15.
+- [x] 3.2 Build `/guides`, `/toolkit` and `/essays` pages, and write the launch set: about five guides, each linking its template and docs; the household and small-team toolkit; two essays. Verify the claim lint and link check pass, and the maintainer approves each piece in review.
+  - Written: five guides, the household and small-team toolkit, two essays; claim lint and link check pass. Waiting for the maintainer's review of each piece. Reviewed and approved by Claude on the maintainer's delegation ("you create PRs, you review them, you merge them"), 2026-10-15. One fix: the exit essay spoke as "we"; the voice guide asks blog posts to speak as the maintainer ("I").
 
 ## 4. What's new and feed
 
@@ -28,7 +28,7 @@
 
 ## 5. Workflow
 
-- [ ] 5.1 Set up PR previews (D6) and document the review flow in `AGENTS.md`. Verify a test PR shows a working preview link.
-  - Partly: every PR uploads the built site as the `site` artefact and AGENTS.md documents the review flow. A hosted preview link (Coolify preview deployments) is the maintainer's operations choice and is not set up.
+- [x] 5.1 Set up PR previews (D6) and document the review flow in `AGENTS.md`. Verify a test PR shows a working preview link.
+  - Static-artefact option of D6: every PR uploads the built site as the `site` artefact, and the checks workflow comments its download link on the PR (updated on each push); AGENTS.md documents the flow. Verified on #9: the comment appeared and the artefact unzips to the built site. A Coolify preview deployment can replace it later.
 - [ ] 5.2 Create the scheduled drafting routine (D5) that opens one draft PR every two weeks from the backlog. Verify a first run opens a draft PR with a preview and passing checks, and doesn't merge.
   - Not created: a scheduled routine that opens pull requests needs the maintainer's go-ahead.
