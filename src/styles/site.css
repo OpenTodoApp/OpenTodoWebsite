@@ -414,6 +414,7 @@ a.card h3 { color: var(--strong); }
 /* post page */
 .post-head { padding-block: clamp(2.25rem, 1.5rem + 3vw, 4rem) 1.5rem; }
 .post-head .wrap, .post-body .wrap { max-width: 50rem; }
+.post-body { padding-bottom: clamp(2.5rem, 2rem + 2vw, 3.5rem); }
 .post-head h1 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem); margin: 0.5rem 0 0.6rem; }
 .post-head .lede { margin-bottom: 1.25rem; }
 .post-byline { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: center; font-size: 0.9375rem; color: var(--muted); margin: 0; }

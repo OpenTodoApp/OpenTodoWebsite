@@ -73,7 +73,7 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
     </div>
   </article>
   {related.length > 0 && (
-    <section class="section section-alt" aria-labelledby="related-title" style="margin-top: 3rem">
+    <section class="section section-alt" aria-labelledby="related-title">
       <div class="wrap">
         <h2 id="related-title" style="font-size: 1.5rem">More in {CATEGORY_LABELS[d.category]}</h2>
         <div class="post-grid">{related.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
