@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Deploying on Coolify · OpenTodo docs</title>
+  <meta name="description" content="One-click template, compose deployment, environment variables, domains, passkeys, Cloudflare, updates and troubleshooting.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://open-todo.app/docs/self-hosting/coolify/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://open-todo.app/docs/self-hosting/coolify/">
+  <meta property="og:site_name" content="OpenTodo">
+  <meta property="og:title" content="Deploying on Coolify · OpenTodo docs">
+  <meta property="og:description" content="One-click template, compose deployment, environment variables, domains, passkeys, Cloudflare, updates and troubleshooting.">
+  <meta property="og:image" content="https://open-todo.app/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/docs/docs.css">
+  <script data-cfasync="false">document.documentElement.classList.remove('no-js')</script>
+  <!-- Analytics (Umami, self-hosted, no cookies), as on the rest of the website. Search counts use, never the words typed. -->
+  <script defer data-cfasync="false" src="https://analytics.pixari.dev/script.js" data-website-id="c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92"></script>
+  <script defer data-cfasync="false" src="/analytics.js"></script>
+  <script defer data-cfasync="false" src="/docs/docs.js"></script>
+</head>
+<body class="docs">
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/" aria-label="OpenTodo home"><img src="/assets/favicon.svg" width="26" height="26" alt=""><span>OpenTodo</span></a>
+    <nav class="site-nav" aria-label="Website">
+      <a href="/#features">Features</a>
+      <a href="/#self-host">Self-host</a>
+      <a href="/#tour">Tour</a>
+      <a href="/docs/" aria-current="true">Docs</a>
+    </nav>
+    <a class="gh" href="https://github.com/pixari/opentodo" rel="noopener" aria-label="OpenTodo on GitHub"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
+  </div>
+</header>
+<div class="docs-bar">
+  <details class="docs-menu"><summary>Menu</summary><nav aria-label="Documentation"><a class="side-home" href="/docs/">Docs home</a>
+<div class="side-audience"><p class="side-audience-title">Using OpenTodo</p>
+<p class="side-group">Get started</p>
+<ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/install-app/">Installing the app</a></li></ul>
+<p class="side-group">Guides</p>
+<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/ai-and-agents/">Use AI with OpenTodo</a></li><li><a href="/docs/assistant/">AI assistant</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
+<p class="side-group">Reference</p>
+<ul><li><a href="/docs/quick-add/">Quick add syntax</a></li><li><a href="/docs/filters/">Filter queries</a></li><li><a href="/docs/recurrence/">Recurring task rules</a></li><li><a href="/docs/reminders/">Reminders reference</a></li><li><a href="/docs/capture/">Capturing pages</a></li><li><a href="/docs/import/">Import formats</a></li><li><a href="/docs/e2ee/">End-to-end encryption</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Self-hosting</p>
+<ul><li><a href="/docs/self-hosting/docker/">Running with Docker</a></li><li><a href="/docs/self-hosting/coolify/" aria-current="page">Deploying on Coolify</a></li><li><a href="/docs/backups/">Backups</a></li><li><a href="/docs/self-hosting/sso/">Single sign-on</a></li><li><a href="/docs/caldav/">Calendar apps (CalDAV)</a></li><li><a href="/docs/email/">Email to task</a></li><li><a href="/docs/self-hosting/demo/">Public demo instance</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Integrations and internals</p>
+<p class="side-group">Integrations</p>
+<ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
+<p class="side-group">Internals</p>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
+</div></nav></details>
+  <form class="docs-search" role="search" action="/docs/" data-search>
+  <label class="sr-only" for="q-bar">Search the docs</label>
+  <input id="q-bar" type="search" name="q" placeholder="Search the docs" autocomplete="off" spellcheck="false" aria-controls="q-bar-results" aria-describedby="q-bar-hint">
+  <kbd class="search-key" aria-hidden="true">/</kbd>
+  <p class="sr-only" id="q-bar-hint">Results appear below as you type. Press the down arrow to reach them.</p>
+  <div class="search-results" id="q-bar-results" hidden></div>
+  <p class="sr-only" aria-live="polite" data-search-status></p>
+</form>
+</div>
+<div class="docs-shell">
+  <aside class="docs-side">
+    <form class="docs-search" role="search" action="/docs/" data-search>
+  <label class="sr-only" for="q-side">Search the docs</label>
+  <input id="q-side" type="search" name="q" placeholder="Search the docs" autocomplete="off" spellcheck="false" aria-controls="q-side-results" aria-describedby="q-side-hint">
+  <kbd class="search-key" aria-hidden="true">/</kbd>
+  <p class="sr-only" id="q-side-hint">Results appear below as you type. Press the down arrow to reach them.</p>
+  <div class="search-results" id="q-side-results" hidden></div>
+  <p class="sr-only" aria-live="polite" data-search-status></p>
+</form>
+    <nav aria-label="Documentation"><a class="side-home" href="/docs/">Docs home</a>
+<div class="side-audience"><p class="side-audience-title">Using OpenTodo</p>
+<p class="side-group">Get started</p>
+<ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/install-app/">Installing the app</a></li></ul>
+<p class="side-group">Guides</p>
+<ul><li><a href="/docs/tasks-and-projects/">Tasks and projects</a></li><li><a href="/docs/views/">Views</a></li><li><a href="/docs/sections-and-boards/">Sections and boards</a></li><li><a href="/docs/labels-and-filters/">Labels and filters</a></li><li><a href="/docs/recurring-and-reminders/">Recurring tasks and reminders</a></li><li><a href="/docs/time-blocking/">Time blocking</a></li><li><a href="/docs/sharing/">Sharing and comments</a></li><li><a href="/docs/ai-and-agents/">Use AI with OpenTodo</a></li><li><a href="/docs/assistant/">AI assistant</a></li><li><a href="/docs/notifications/">Notifications</a></li><li><a href="/docs/offline-and-sync/">Offline and sync</a></li><li><a href="/docs/keyboard/">Keyboard shortcuts</a></li><li><a href="/docs/account-security/">Account security</a></li><li><a href="/docs/import-export/">Import and export</a></li><li><a href="/docs/trash-and-history/">Trash and history</a></li><li><a href="/docs/settings/">Settings</a></li><li><a href="/docs/troubleshooting/">Troubleshooting and FAQ</a></li></ul>
+<p class="side-group">Reference</p>
+<ul><li><a href="/docs/quick-add/">Quick add syntax</a></li><li><a href="/docs/filters/">Filter queries</a></li><li><a href="/docs/recurrence/">Recurring task rules</a></li><li><a href="/docs/reminders/">Reminders reference</a></li><li><a href="/docs/capture/">Capturing pages</a></li><li><a href="/docs/import/">Import formats</a></li><li><a href="/docs/e2ee/">End-to-end encryption</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Self-hosting</p>
+<ul><li><a href="/docs/self-hosting/docker/">Running with Docker</a></li><li><a href="/docs/self-hosting/coolify/" aria-current="page">Deploying on Coolify</a></li><li><a href="/docs/backups/">Backups</a></li><li><a href="/docs/self-hosting/sso/">Single sign-on</a></li><li><a href="/docs/caldav/">Calendar apps (CalDAV)</a></li><li><a href="/docs/email/">Email to task</a></li><li><a href="/docs/self-hosting/demo/">Public demo instance</a></li></ul>
+</div>
+<div class="side-audience"><p class="side-audience-title">Integrations and internals</p>
+<p class="side-group">Integrations</p>
+<ul><li><a href="/docs/api/">HTTP API</a></li><li><a href="/docs/cli/">Command-line client</a></li><li><a href="/docs/webhooks/">Webhooks</a></li><li><a href="/docs/mcp/">AI assistants (MCP)</a></li></ul>
+<p class="side-group">Internals</p>
+<ul><li><a href="/docs/architecture/">Architecture</a></li><li><a href="/docs/sync/">Sync protocol</a></li><li><a href="/docs/design-system/">Design system</a></li></ul>
+</div></nav>
+  </aside>
+  <main id="content" class="docs-main" tabindex="-1">
+    <article class="prose" data-audience="admin">
+      <p class="doc-meta"><span class="crumbs">Self-hosting</span><span class="version" title="Latest release these docs describe">Version 0.3.0</span></p>
+<h1 id="deploying-opentodo-on-coolify">Deploying OpenTodo on Coolify</h1>
+<p>OpenTodo is built to be a one-click Coolify resource: one service, one volume, no required variables.</p>
+<details class="toc-inline"><summary>On this page</summary><nav aria-label="On this page (inline)"><ul><li><a href="#one-click-template-pending-in-coolifys-service-list">One-click template (pending in Coolify's service list)</a></li><li><a href="#option-a-docker-compose-from-the-repository">Option A: Docker Compose from the repository</a></li><li><a href="#option-b-dockerfile-build-pack">Option B: Dockerfile build pack</a></li><li><a href="#option-c-docker-image">Option C: Docker image</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#first-visit">First visit</a></li><li><a href="#domains">Domains</a></li><li><a href="#adding-people">Adding people</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#updating">Updating</a></li><li><a href="#behind-cloudflare">Behind Cloudflare</a></li><li><a href="#live-updates">Live updates</a></li><li><a href="#troubleshooting">Troubleshooting</a></li></ul></nav></details>
+
+<h2 id="one-click-template-pending-in-coolifys-service-list">One-click template (pending in Coolify&#39;s service list)<a class="anchor" href="#one-click-template-pending-in-coolifys-service-list" aria-label="Link to this section: One-click template (pending in Coolify's service list)">#</a></h2>
+<p><a href="https://github.com/pixari/opentodo/blob/main/deploy/coolify/opentodo.yaml" rel="noopener"><code>deploy/coolify/opentodo.yaml</code></a> is a Coolify service template. It is prepared for Coolify&#39;s built-in service list and pending upstream review; Coolify only lists services whose repository has at least 1,000 GitHub stars, so it may take a while. Until <strong>OpenTodo</strong> shows up under <strong>+ New Resource</strong>, paste the template:</p>
+<ol>
+<li>In your project choose <strong>+ New → Docker Compose</strong> (the option <em>without</em> a Git repository; older Coolify versions call it <strong>Docker Compose Empty</strong>).</li>
+<li>Paste the contents of <code>deploy/coolify/opentodo.yaml</code> and save.</li>
+<li>Open the <code>opentodo</code> service and set <strong>Domains</strong> to the https URL users will open, for example <code>https://todo.example.com</code>. Remove the generated <code>sslip.io</code> domain if you do not use it (see <a href="#domains">Domains</a>).</li>
+<li>Click <strong>Deploy</strong>, then open the domain <strong>right away</strong>: the first visitor creates the owner account (see <a href="#first-visit">First visit</a>).</li>
+</ol>
+<p>The template pulls the <code>0.3</code> image line, so patch releases arrive on the next <strong>Deploy</strong>. It routes the domain to port 8080 (<code>SERVICE_URL_OPENTODO_8080</code>), passes it as <code>OPENTODO_BASE_URL</code>, keeps sign-up closed, stores everything in one named volume and checks health with the binary itself. Its <strong>Environment Variables</strong> tab lists the useful optional settings with their defaults (below). To add any other <code>OPENTODO_*</code> variable, use <strong>Edit Compose file</strong> and add a line such as <code>- OPENTODO_MCP=${OPENTODO_MCP:-}</code>: Coolify passes a variable to the container only when the compose file references it.</p>
+<h2 id="option-a-docker-compose-from-the-repository">Option A: Docker Compose from the repository<a class="anchor" href="#option-a-docker-compose-from-the-repository" aria-label="Link to this section: Option A: Docker Compose from the repository">#</a></h2>
+<ol>
+<li>In your Coolify project choose <strong>+ New Resource → Public Repository</strong> (or your fork via the GitHub app).</li>
+<li>Repository URL: <code>https://github.com/pixari/opentodo</code>, branch <code>main</code>.</li>
+<li><strong>Build pack: Docker Compose</strong>. Leave <em>Base directory</em> as <code>/</code> and <em>Docker Compose location</em> as <code>/docker-compose.yml</code>.</li>
+<li>Coolify reads the compose file and shows the <code>opentodo</code> service. Under <strong>Domains</strong> assign your domain to it, for example <code>https://todo.example.com</code>. The compose file already declares <code>SERVICE_FQDN_OPENTODO_8080</code>, so the proxy targets container port 8080 and HTTPS is provisioned automatically.</li>
+<li>Click <strong>Deploy</strong>. Open the domain and create the owner account.</li>
+</ol>
+<p>What the compose file does for you:</p>
+<ul>
+<li><code>SERVICE_FQDN_OPENTODO_8080</code> tells Coolify which service and internal port receive the domain.</li>
+<li><code>OPENTODO_BASE_URL=${SERVICE_URL_OPENTODO}</code> passes the public https URL to the app so cookies are <code>Secure</code>, cross-site writes are rejected, and passkeys are available (see <a href="#passkeys">Passkeys</a>).</li>
+<li><code>opentodo-data:/data</code> is a named volume Coolify manages; it holds the single SQLite database.</li>
+<li>The health check uses the binary itself, so Coolify shows the service as healthy or unhealthy correctly.</li>
+<li><code>ports:</code> is ignored by Coolify&#39;s proxy routing and only matters for plain Docker.</li>
+</ul>
+<p>By default the compose file pulls the published image <code>ghcr.io/pixari/opentodo:latest</code>, which follows <code>main</code>. Pin a release line instead (<code>ghcr.io/pixari/opentodo:0.3</code>) unless you want unreleased changes. To build from your fork instead, change <code>image:</code> to <code>build: .</code> in the compose file; Coolify will build the multi-stage Dockerfile on the server. A build from source reports version <code>dev</code>; with the Dockerfile build pack, set <strong>Advanced → Source commit availability</strong> to <em>Available during build</em> and it reports <code>dev+&lt;commit&gt;</code>.</p>
+<h2 id="option-b-dockerfile-build-pack">Option B: Dockerfile build pack<a class="anchor" href="#option-b-dockerfile-build-pack" aria-label="Link to this section: Option B: Dockerfile build pack">#</a></h2>
+<p>If you prefer not to use compose:</p>
+<ol>
+<li><strong>+ New Resource → Public Repository</strong>, build pack <strong>Dockerfile</strong>.</li>
+<li><strong>Port</strong>: <code>8080</code>.</li>
+<li><strong>Persistent Storage</strong>: add a volume mounted at <code>/data</code>.</li>
+<li><strong>Environment variables</strong> (optional): <code>OPENTODO_BASE_URL=https://todo.example.com</code>.</li>
+<li>Deploy.</li>
+</ol>
+<h2 id="option-c-docker-image">Option C: Docker image<a class="anchor" href="#option-c-docker-image" aria-label="Link to this section: Option C: Docker image">#</a></h2>
+<p><strong>+ New Resource → Docker Image</strong>, image <code>ghcr.io/pixari/opentodo:latest</code>, port <code>8080</code>, volume at <code>/data</code>.</p>
+<h2 id="environment-variables">Environment variables<a class="anchor" href="#environment-variables" aria-label="Link to this section: Environment variables">#</a></h2>
+<p>None is required. With a Compose resource (the one-click template or Option A), a variable you add in Coolify&#39;s <strong>Environment Variables</strong> tab reaches the container <strong>only if the compose file references it</strong>; anything else is silently ignored. Both compose files reference the variables below (the template the most common ones, <code>docker-compose.yml</code> all of them); add a line with <strong>Edit Compose file</strong> for any other. The complete list is in the <a href="https://github.com/pixari/opentodo/blob/main/README.md#configuration" rel="noopener">README</a>.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>OPENTODO_BASE_URL</code></td>
+<td>set by Coolify</td>
+<td>Public URL. Enables <code>Secure</code> cookies, strict origin checks and, when https, passkeys. Leave empty to use the service&#39;s (first) domain</td>
+</tr>
+<tr>
+<td><code>OPENTODO_TRUSTED_PROXIES</code></td>
+<td>unset</td>
+<td><code>cloudflare</code> when the domain is proxied by Cloudflare (orange cloud); see <a href="#behind-cloudflare">Behind Cloudflare</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_ALLOW_SIGNUP</code></td>
+<td><code>false</code></td>
+<td>Allow anyone to create an account after the owner. Prefer invitations (below)</td>
+</tr>
+<tr>
+<td><code>OPENTODO_SESSION_DAYS</code></td>
+<td><code>90</code></td>
+<td>Session lifetime</td>
+</tr>
+<tr>
+<td><code>OPENTODO_LOG_LEVEL</code></td>
+<td><code>info</code></td>
+<td><code>debug</code> logs every API request</td>
+</tr>
+<tr>
+<td><code>OPENTODO_IMPORT_MAX_MB</code></td>
+<td><code>20</code></td>
+<td>Largest import file (1–200 MB); see <a href="/docs/import/">import</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_TRASH_RETENTION_DAYS</code></td>
+<td><code>30</code></td>
+<td>Days a deleted item stays in the Trash before it is purged for good (0–3650; <code>0</code> never purges automatically). See <a href="/docs/sync/#purge">sync</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_PUSH</code></td>
+<td><code>on</code></td>
+<td><code>off</code> disables web push for reminders (no outbound requests to push services); reminders are still shown in the app. See <a href="/docs/self-hosting/docker/#reminders-and-web-push">docker.md</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_MCP</code></td>
+<td>unset</td>
+<td><code>true</code> presets the AI assistants (MCP) endpoint on first start; afterwards Settings → AI → AI assistants decides. See <a href="/docs/mcp/">mcp</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_WEBHOOKS_ALLOW_PRIVATE</code></td>
+<td>unset</td>
+<td>Presets &quot;allow private network targets&quot; for webhooks on first start; afterwards Settings → Integrations → Webhooks decides. See <a href="/docs/webhooks/#private-network-protection">webhooks</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_CALDAV</code></td>
+<td>unset</td>
+<td><code>true</code> presets the CalDAV endpoint for calendar apps on first start; afterwards Settings → Integrations → Calendar apps decides. See <a href="/docs/caldav/">caldav</a></td>
+</tr>
+<tr>
+<td><code>OPENTODO_EMAIL_*</code></td>
+<td>unset</td>
+<td>Optional <a href="/docs/email/">email to task</a>: <code>ADDRESS</code>, <code>IMAP_HOST</code>, <code>IMAP_USER</code> and <code>IMAP_PASSWORD</code> together (mark the password as a secret, or mount a file and set <code>IMAP_PASSWORD_FILE</code>). Partial settings stop the container at startup with the missing name in the log</td>
+</tr>
+<tr>
+<td><code>OPENTODO_OIDC_*</code></td>
+<td>unset</td>
+<td>Optional <a href="/docs/self-hosting/sso/">single sign-on</a> settings (<code>ISSUER</code>, <code>CLIENT_ID</code>, <code>CLIENT_SECRET</code>, <code>DISPLAY_NAME</code>, <code>SSO_ONLY</code>) that override and lock the fields in Settings → Access policies → Single sign-on</td>
+</tr>
+<tr>
+<td><code>OPENTODO_BACKUP_*</code></td>
+<td>unset</td>
+<td>Optional presets for <a href="/docs/backups/#environment-presets">scheduled backups</a>, applied once; Settings → Backups wins afterwards</td>
+</tr>
+</tbody></table></div>
+<h2 id="passkeys">Passkeys<a class="anchor" href="#passkeys" aria-label="Link to this section: Passkeys">#</a></h2>
+<p>Users can add passkeys in <strong>Settings → Security → Passkeys</strong> once the domain is https, which Coolify provisions when the domain starts with <code>https://</code>. Passkeys are tied to the domain&#39;s host. If you later change the domain assigned to the service, existing passkeys stop working: users sign in with their password and register new ones. Passwords are never disabled by passkeys. Details in <a href="/docs/self-hosting/docker/#passkeys-need-an-https-base-url">Running with Docker</a>.</p>
+<h2 id="first-visit">First visit<a class="anchor" href="#first-visit" aria-label="Link to this section: First visit">#</a></h2>
+<p>A Coolify service is public as soon as it is deployed, and on a server with no accounts the first visitor creates the owner. Open the domain yourself as soon as the deployment finishes. If someone else got there first (the setup screen is gone and you have no account), delete the resource together with its volume and deploy again. A way to pre-create the owner from Coolify&#39;s generated variables is proposed separately (<code>owner-bootstrap</code>).</p>
+<h2 id="domains">Domains<a class="anchor" href="#domains" aria-label="Link to this section: Domains">#</a></h2>
+<p>Coolify gives the app the <strong>first</strong> domain of the service as <code>OPENTODO_BASE_URL</code>; passkeys, invitation links and cookie checks use that host only. Keep one domain on the service, the one users open. If you need two (for example an old and a new name), set <code>OPENTODO_BASE_URL</code> in the environment tab to the one users should use; an explicit value wins over the generated one. After changing the domain, redeploy: the app picks up the new URL, users sign in again on the new host, and passkeys registered under the old host must be added again.</p>
+<h2 id="adding-people">Adding people<a class="anchor" href="#adding-people" aria-label="Link to this section: Adding people">#</a></h2>
+<p>Leave <code>OPENTODO_ALLOW_SIGNUP</code> unset. In the app, open <strong>Settings → Administration → Members</strong>, create an invitation (optionally bound to an email, expiring in 1 hour to 30 days) and send the link. It creates one account and then stops working; pending links can be revoked. Links use <code>OPENTODO_BASE_URL</code>, which the compose file sets from Coolify&#39;s domain. See <a href="https://github.com/pixari/opentodo/blob/main/README.md#adding-people" rel="noopener">Adding people</a>. <strong>Settings → Administration → Users</strong> manages accounts afterwards: admins, deactivation, reset links, deletion and owner transfer. If the owner forgot their password, open the service&#39;s terminal in Coolify and run <code>/opentodo reset-owner-password</code> (see <a href="/docs/self-hosting/docker/#recovering-owner-access">Recovering owner access</a>).</p>
+<h2 id="backups">Backups<a class="anchor" href="#backups" aria-label="Link to this section: Backups">#</a></h2>
+<p>Everything is in the <code>/data</code> volume (one file, <code>opentodo.db</code>, plus its WAL files while running, the web push keys and settings secrets). Turn on scheduled backups in <strong>Settings → Backups</strong>: consistent snapshots to <code>/data/backups</code>, an S3-compatible bucket or a WebDAV share, with retention and optional encryption, restorable with <code>opentodo restore</code> (see <a href="/docs/backups/#restore">docs/backups.md</a>). Coolify&#39;s scheduled volume backups archive the volume with <code>tar</code>; a copy taken while the server writes can catch the database mid-write, so set <strong>Archive behavior</strong> to <em>Stop containers during archive</em> there, or rely on the built-in backups. The in-app <strong>Settings → Data → Download export</strong> gives a portable JSON copy at any time.</p>
+<h2 id="audit-log">Audit log<a class="anchor" href="#audit-log" aria-label="Link to this section: Audit log">#</a></h2>
+<p><strong>Settings → Activity → Audit log</strong> (owner only) lists sign-ins, failed sign-ins, credentials, invitations, user administration, exports, backups and setting changes, with filters and an NDJSON export. It lives in the <code>/data</code> volume with everything else and needs no configuration: retention defaults to 90 days, client addresses are off by default. If you enable address logging, the address is the last hop of Traefik&#39;s <code>X-Forwarded-For</code> header (the one Traefik appended), which Coolify sets for you; do not publish the container port directly, or clients could bypass the proxy and forge that header. Expect roughly 200 bytes per event. Details in <a href="/docs/self-hosting/docker/#audit-log">Running with Docker</a>.</p>
+<h2 id="updating">Updating<a class="anchor" href="#updating" aria-label="Link to this section: Updating">#</a></h2>
+<p>Click <strong>Deploy</strong>. The new version applies database migrations on startup, and your data stays in the volume.</p>
+<ul>
+<li><strong>Pulling.</strong> For a Compose resource (the one-click template or Option A), <strong>Deploy</strong> and <strong>Restart (pull latest)</strong> pull the image again; a plain <strong>Restart</strong> reuses the image already on the server. Deploying a service through Coolify&#39;s API or a webhook (<code>/api/v1/deploy</code>) does not pull either; use <code>/api/v1/services/{uuid}/restart?latest=true</code>. With a moving tag such as <code>0.3</code> or <code>latest</code>, a server that only restarts keeps running the old build. After an update, check the version at the bottom of the sign-in screen or at <code>https://todo.example.com/healthz</code>.</li>
+<li><strong>New release line.</strong> The template follows <code>0.3</code>; when <code>0.4</code> is released, change the tag in <strong>Edit Compose file</strong> and click <strong>Deploy</strong>. Coolify does not change the compose file of an existing service when its template is updated.</li>
+<li><strong>Downtime.</strong> Compose resources are recreated: Coolify stops the old container and starts the new one (<code>docker compose up --force-recreate</code>), a few seconds without service. The Dockerfile and Docker Image build packs (Options B and C) roll: Coolify starts the new container while the old one still serves, waits for its health check, then stops the old one. Both may serve the same volume for those few seconds; background jobs (reminder push, webhooks, backups, email, Trash cleanup) stay with the old container until it stops, then the new one takes them over. Migrations are additive, so the old version keeps working on the upgraded database until it is replaced. The image&#39;s health check reports healthy about 2 seconds after start, so a rolling update waits only a few seconds.</li>
+</ul>
+<p><strong>Upgrading from 0.1.0 to 0.2.0:</strong> 0.1.0 locked the volume exclusively, so its replacement cannot start beside it (&quot;data directory is in use by another opentodo process&quot;, and Coolify rolls back). For this one upgrade, click <strong>Stop</strong>, then <strong>Deploy</strong> (a minute of downtime while the new image starts). From 0.2.0 on, updates roll without stopping. If you pinned the image tag (for example <code>ghcr.io/pixari/opentodo:0.1</code> in <a href="https://github.com/pixari/opentodo/blob/main/deploy/coolify/opentodo.yaml" rel="noopener"><code>deploy/coolify/opentodo.yaml</code></a>), change it to <code>0.2</code> first.</p>
+<h2 id="behind-cloudflare">Behind Cloudflare<a class="anchor" href="#behind-cloudflare" aria-label="Link to this section: Behind Cloudflare">#</a></h2>
+<p>When the domain&#39;s DNS record is proxied by Cloudflare (orange cloud), every request reaches Coolify&#39;s proxy from a Cloudflare address. Set <code>OPENTODO_TRUSTED_PROXIES=cloudflare</code> in the environment tab and redeploy, so rate limits and the audit log see visitors&#39; addresses (from <code>CF-Connecting-IP</code>) instead of one shared Cloudflare address. With a Cloudflare Tunnel instead, requests arrive from the <code>cloudflared</code> container on Coolify&#39;s Docker network; add that network&#39;s range, for example <code>OPENTODO_TRUSTED_PROXIES=10.0.0.0/8</code> (Coolify&#39;s default address pool), and check <strong>Settings → Activity → Audit log</strong> with addresses enabled to confirm it shows your own address. See <a href="/docs/self-hosting/docker/#behind-a-reverse-proxy">Behind a reverse proxy</a>.</p>
+<p>The server sends the service worker with <code>Cache-Control: no-store</code>, so phones pick up a new version on their next visit. Keep Cloudflare&#39;s <strong>Caching → Configuration → Browser Cache TTL</strong> at <em>Respect Existing Headers</em>, and do not add a Cache Rule that caches everything, or Cloudflare may serve an old app shell for hours.</p>
+<h2 id="live-updates">Live updates<a class="anchor" href="#live-updates" aria-label="Link to this section: Live updates">#</a></h2>
+<p>Devices learn about each other&#39;s changes through a long-lived request, <code>GET /api/v1/sync/events</code> (server-sent events). Coolify&#39;s Traefik proxy streams it as is: no labels or settings are needed. The server heartbeats every 25 s, below Traefik&#39;s idle timeouts, and sets no-buffering headers. Use an <code>https://</code> domain so Traefik serves HTTP/2 and the streams of several tabs share one connection.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to this section: Troubleshooting">#</a></h2>
+<ul>
+<li><strong>Update rolled back with &quot;data directory is in use by another opentodo process&quot;</strong>: the running container is 0.1.0, which locked the volume exclusively. Stop the resource, then deploy; from 0.2.0 on, updates roll without stopping.</li>
+<li><strong>&quot;No Available Server&quot; on the domain</strong>: make sure the domain is assigned to the <code>opentodo</code> service with port <code>8080</code> (the compose file does this through <code>SERVICE_FQDN_OPENTODO_8080</code>).</li>
+<li><strong>Status pill shows &quot;Polling&quot; instead of &quot;Live&quot;</strong>: something between the browser and the container is buffering or cutting the event stream. Open <code>https://todo.example.com/api/v1/sync/events?device=test</code> while signed in: you should see <code>: connected</code> at once and <code>: ping</code> every 25 s. With stock Coolify this works out of the box; check any extra proxy, CDN or corporate firewall in front of it (see the proxy notes in <a href="/docs/self-hosting/docker/">docker.md</a>). The app keeps working with 30 s polling in the meantime.</li>
+<li><strong>Sign-in works on desktop but not on the phone</strong>: the domain must be https. Coolify handles this when the domain starts with <code>https://</code>.</li>
+<li><strong>No &quot;Sign in with a passkey&quot; button / 409 <code>passkeys_unavailable</code></strong>: <code>OPENTODO_BASE_URL</code> is missing or not <code>https://</code>. Set it to the URL users open.</li>
+<li><strong>&quot;The origin of the document is not authorized for the provided RP ID&quot; / &quot;Passkeys on this server are set up for X, but this page is open at Y&quot;</strong>: the app is opened at a different host than <code>OPENTODO_BASE_URL</code>. This happens when the service has more than one domain (for example the generated <code>*.sslip.io</code> one and your own) or the domain changed after the first deploy. Keep only the domain users open on the service, or set <code>OPENTODO_BASE_URL=https://your.domain</code> in the environment tab (it wins over Coolify&#39;s generated URL), then redeploy. Passkeys registered under the old host must be added again.</li>
+<li><strong>Cookie rejected / 403 <code>bad_origin</code></strong>: <code>OPENTODO_BASE_URL</code> must match the URL users open, including the scheme.</li>
+<li><strong>Typo in <code>OPENTODO_TRUSTED_PROXIES</code></strong> (for example <code>cloudflar</code>): the server still starts and the deploy succeeds; the invalid entry is ignored and the other entries apply (with none valid, it behaves as if the variable were unset). The owner sees a <strong>Server configuration warning</strong> at the top of <strong>Settings</strong> and <strong>Settings → Administration</strong>, and the container log (<strong>Logs</strong> tab) has an error line <code>OPENTODO_TRUSTED_PROXIES: invalid entries ignored</code> with a hint. Fix the value in the environment tab and redeploy. Before this change such a typo stopped the container, so the health check failed and Coolify rolled the deploy back. See <a href="/docs/self-hosting/docker/#behind-a-reverse-proxy">Behind a reverse proxy</a>.</li>
+<li><strong>Permission denied writing <code>/data</code></strong>: when using a bind mount instead of a named volume, the directory must be writable by uid 65532 (<code>chown 65532:65532 ./data</code>).</li>
+</ul>
+
+      <p class="edit"><a href="https://github.com/pixari/opentodo/edit/main/docs/self-hosting/coolify.md" rel="noopener">Edit this page on GitHub</a></p>
+    </article>
+    <nav class="pager" aria-label="Previous and next page">
+      <a class="prev" rel="prev" href="/docs/self-hosting/docker/"><span>Previous</span>Running with Docker</a>
+      <a class="next" rel="next" href="/docs/backups/"><span>Next</span>Backups</a>
+    </nav>
+  </main>
+  <aside class="docs-toc"><nav aria-label="On this page"><p class="toc-title">On this page</p><ul><li><a href="#one-click-template-pending-in-coolifys-service-list">One-click template (pending in Coolify's service list)</a></li><li><a href="#option-a-docker-compose-from-the-repository">Option A: Docker Compose from the repository</a></li><li><a href="#option-b-dockerfile-build-pack">Option B: Dockerfile build pack</a></li><li><a href="#option-c-docker-image">Option C: Docker image</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#passkeys">Passkeys</a></li><li><a href="#first-visit">First visit</a></li><li><a href="#domains">Domains</a></li><li><a href="#adding-people">Adding people</a></li><li><a href="#backups">Backups</a></li><li><a href="#audit-log">Audit log</a></li><li><a href="#updating">Updating</a></li><li><a href="#behind-cloudflare">Behind Cloudflare</a></li><li><a href="#live-updates">Live updates</a></li><li><a href="#troubleshooting">Troubleshooting</a></li></ul></nav></aside>
+</div>
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>OpenTodo is free software under the <a href="https://github.com/pixari/opentodo/blob/main/LICENSE" rel="noopener">AGPL-3.0</a>. These docs describe version 0.3.0 and the changes on <code>main</code> since then.</p>
+    <nav aria-label="Footer">
+      <a href="/docs/">Docs home</a>
+      <a href="https://github.com/pixari/opentodo" rel="noopener">GitHub</a>
+      <a href="https://github.com/pixari/opentodo/blob/main/CHANGELOG.md" rel="noopener">Changelog</a>
+      <a href="https://github.com/pixari/opentodo/blob/main/SECURITY.md" rel="noopener">Security</a>
+    </nav>
+    <p class="fine">This website (not the app) counts visits and clicks with self-hosted <a href="https://umami.is" rel="noopener">Umami</a>: no cookies, no personal data, and never what you type into search.</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import EndCta from './EndCta.astro';
+import Icon from './Icon.astro';
+interface Item { href: string; title: string; summary: string }
+interface Props { kicker: string; title: string; lede: string; description: string; items: Item[]; icon: string }
+const { kicker, title, lede, description, items, icon } = Astro.props;
+---
+<Base title={kicker} description={description}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">{kicker}</p>
+      <h1>{title}</h1>
+      <p class="lede">{lede}</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap grid grid-3">
+      {items.map((i) => (
+        <a class="card" href={i.href}>
+          <span class="card-icon"><Icon name={icon} size={22} /></span>
+          <h2 style="font-size: 1.2rem">{i.title}</h2>
+          <p>{i.summary}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+  <slot />
+  <EndCta />
+</Base>

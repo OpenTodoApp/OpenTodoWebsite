@@ -65,6 +65,17 @@ The import strip on the home page uses the same logic for all four apps, so no p
 - Screenshot frames are a component: a device or browser frame drawn in CSS from tokens, with a light/dark `<picture>` per screenshot.
 - Icons come only from the sprite.
 
+### D6. Visual direction (design pass, task 1.1)
+
+Recorded for the maintainer's review in the PR:
+
+- **Type:** Inter throughout (the app's typeface), self-hosted. Headings 700 with tight tracking (-0.02 to -0.035 em); the hero headline scales from 2.3 rem at 360 px to 4.25 rem. Body 17 px, line height 1.65. Code in the system monospace stack, so no second font file.
+- **Colour:** only the bundle's `--ot-*` tokens, through a small set of site aliases (`--bg`, `--surface`, `--accent`, `--accent-text`, `--muted`). The accent is the app's emerald; light and dark follow the system preference.
+- **Spacing:** a 16 px side gutter on phones (24 px from 640 px), sections of 3.5 to 6.5 rem, a 74 rem content width, 14 px card radius.
+- **Cards:** surface colour, 1 px border, a soft shadow, a 44 px icon tile in the accent's soft colour with a sprite icon.
+- **Comparison table:** caption with the checked-on date, verdicts as an icon plus a word ("Yes", "Partly", "No"), a docs link under every OpenTodo claim; on phones each row becomes a small card, so the table never scrolls sideways.
+- **Screenshot frame:** a browser frame (three dots and the server address) or a phone frame drawn in CSS from the tokens, around a `<picture>` with AVIF and WebP at five widths and a dark source where the bundle has one.
+
 ## Risks / Trade-offs
 
 - [Comparisons read as attacks or go stale] → Gaps are mandatory in the schema, dates are enforced, and claims are linked to docs. Tone rules live in the voice guide (`website-content-hub`), and until then in review.

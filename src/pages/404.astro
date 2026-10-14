@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+<Base title="Page not found" description="This page does not exist.">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="kicker">404</p>
+      <h1>This page is not here.</h1>
+      <p class="lede">It may have moved, or the link may be wrong. These are good places to continue from.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/"><Icon name="house" size={18} /> Home</a>
+        <a class="btn btn-secondary" href="/docs/"><Icon name="book-open" size={18} /> Docs</a>
+        <a class="btn btn-secondary" href="/vs/">Compare</a>
+      </div>
+      <p style="margin-top: 2rem">OpenTodo keeps your tasks on a server you own, works offline on every device and shares lists with the people you live with. Start with the <a href="/">home page</a>, read the <a href="/guides/">guides</a>, or browse the <a href="/templates/">templates</a>.</p>
+    </div>
+  </section>
+</Base>

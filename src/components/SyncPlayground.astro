@@ -1,0 +1,240 @@
+---
+// Interactive sync playground (island, on /self-host only). Without JavaScript
+// the page shows the same story as text.
+import Icon from './Icon.astro';
+---
+<div class="sync-static card">
+  <h3>What happens in a conflict</h3>
+  <ol>
+    <li>Your laptop and your phone both lose their connection.</li>
+    <li>On the phone you complete "Book flights to Lisbon". On the laptop you rename the same task.</li>
+    <li>Both reconnect. Each device sends its queued changes, one per field, to your server, and receives the other's.</li>
+    <li>Both devices end up with the renamed, completed task. No "pick a version" dialog.</li>
+  </ol>
+  <p class="muted">With JavaScript on, this section is an interactive playground.</p>
+</div>
+
+<div class="sync-live" data-sync>
+  <div class="sync-controls">
+    <button class="btn btn-primary" data-sync-conflict type="button"><Icon name="zap" size={18} /> Play a conflict</button>
+    <button class="btn btn-secondary" data-sync-reset type="button"><Icon name="rotate-ccw" size={18} /> Reset</button>
+    <p class="sync-caption" data-sync-caption aria-live="polite">Switch Wi-Fi off on a device, change something, then switch it back on.</p>
+  </div>
+  <div class="sync-stage" data-sync-stage>
+    <div class="device" data-device="laptop">
+      <div class="device-head">
+        <span class="device-name"><Icon name="laptop" size={18} /> Laptop</span>
+        <span class="status" data-status>Synced</span>
+        <label class="switch"><input type="checkbox" checked data-online /> Wi-Fi</label>
+      </div>
+      <ul class="device-list" data-list aria-label="Tasks on the laptop"></ul>
+    </div>
+    <div class="server" data-server>
+      <Icon name="server" size={40} />
+      <b>Your server</b>
+      <span class="server-log" data-server-log>0 changes</span>
+    </div>
+    <div class="device" data-device="phone">
+      <div class="device-head">
+        <span class="device-name"><Icon name="smartphone" size={18} /> Phone</span>
+        <span class="status" data-status>Synced</span>
+        <label class="switch"><input type="checkbox" checked data-online /> Wi-Fi</label>
+      </div>
+      <ul class="device-list" data-list aria-label="Tasks on the phone"></ul>
+    </div>
+  </div>
+  <p class="meta">Click a title to rename it, click the circle to complete it.</p>
+</div>
+
+<script>
+  // A faithful miniature of OpenTodo's sync: each edit is a change to one field,
+  // ordered by (clock, device). Every copy applies the same last-writer-wins rule,
+  // so they converge whatever order the changes arrive in.
+  type Field = 'title' | 'done';
+  interface Op { id: string; field: Field; v: string | boolean; ts: number; dev: string }
+  interface Cell { v: string | boolean; ts: number; dev: string }
+  type State = Record<string, Record<Field, Cell>>;
+  interface Device {
+    name: string; el: HTMLElement; state: State; outbox: Op[]; cursor: number; online: boolean;
+    chain: Promise<unknown>; pending: number; list: HTMLElement; status: HTMLElement; toggle: HTMLInputElement;
+    rows: Record<string, { li: HTMLElement; btn: HTMLButtonElement; title: HTMLElement }>;
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-sync]');
+  if (root) {
+    const $ = <T extends Element>(s: string, el: ParentNode = root) => el.querySelector<T>(s)!;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stage = $<HTMLElement>('[data-sync-stage]');
+    const serverEl = $<HTMLElement>('[data-server]');
+    const serverLog = $<HTMLElement>('[data-server-log]');
+    const caption = $<HTMLElement>('[data-sync-caption]');
+    const conflictBtn = $<HTMLButtonElement>('[data-sync-conflict]');
+    const resetBtn = $<HTMLButtonElement>('[data-sync-reset]');
+    const ORDER = ['a', 'b', 'c'];
+    const START: Record<string, [string, boolean]> = { a: ['Buy oat milk', false], b: ['Book flights to Lisbon', false], c: ['Renew passport', true] };
+    const FLY = reduced ? 120 : 780;
+    const NAMES: Record<string, string> = { laptop: 'Laptop', phone: 'Phone' };
+    let gen = 0, clock = 0;
+    let server: { state: State; log: Op[] };
+    let devices: Record<string, Device> = {};
+
+    const fresh = (): State => Object.fromEntries(ORDER.map((id) => [id, { title: { v: START[id][0], ts: 0, dev: '' }, done: { v: START[id][1], ts: 0, dev: '' } }]));
+    const wins = (op: Op, cur: Cell) => op.ts > cur.ts || (op.ts === cur.ts && op.dev > cur.dev);
+    const apply = (state: State, op: Op) => {
+      if (!wins(op, state[op.id][op.field])) return false;
+      state[op.id][op.field] = { v: op.v, ts: op.ts, dev: op.dev };
+      return true;
+    };
+
+    function setup() {
+      gen++; clock = 0;
+      stage.querySelectorAll('.op').forEach((o) => o.remove());
+      server = { state: fresh(), log: [] };
+      devices = {};
+      for (const el of stage.querySelectorAll<HTMLElement>('[data-device]')) {
+        const name = el.dataset.device!;
+        const d: Device = devices[name] = {
+          name, el, state: fresh(), outbox: [], cursor: 0, online: true, chain: Promise.resolve(), pending: 0,
+          list: $('[data-list]', el), status: $('[data-status]', el), toggle: $('[data-online]', el), rows: {},
+        };
+        d.toggle.checked = true;
+        d.list.textContent = '';
+        for (const id of ORDER) {
+          const li = document.createElement('li');
+          const btn = document.createElement('button');
+          btn.type = 'button'; btn.className = 'circle';
+          btn.addEventListener('click', () => edit(d, id, 'done', !d.state[id].done.v));
+          const title = document.createElement('span');
+          title.className = 'title'; title.contentEditable = 'true'; title.spellcheck = false;
+          title.setAttribute('role', 'textbox'); title.setAttribute('aria-label', `Title of task ${id.toUpperCase()} on the ${NAMES[name].toLowerCase()}`);
+          title.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); title.blur(); } });
+          title.addEventListener('blur', () => {
+            const v = (title.textContent ?? '').replace(/\s+/g, ' ').trim().slice(0, 60);
+            if (v && v !== d.state[id].title.v) edit(d, id, 'title', v);
+            else title.textContent = String(d.state[id].title.v);
+          });
+          li.append(btn, title);
+          d.list.append(li);
+          d.rows[id] = { li, btn, title };
+        }
+        render(d);
+      }
+      serverLog.textContent = '0 changes';
+    }
+
+    function render(d: Device) {
+      for (const id of ORDER) {
+        const { li, btn, title } = d.rows[id];
+        const s = d.state[id];
+        li.classList.toggle('done', !!s.done.v);
+        btn.setAttribute('aria-label', `${s.done.v ? 'Reopen' : 'Complete'} "${s.title.v}" on the ${NAMES[d.name].toLowerCase()}`);
+        if (document.activeElement !== title) title.textContent = String(s.title.v);
+      }
+      d.el.classList.toggle('offline', !d.online);
+      d.status.classList.toggle('busy', d.online && d.pending > 0);
+      d.status.textContent = !d.online ? (d.outbox.length ? `Offline, ${d.outbox.length} queued` : 'Offline') : d.pending > 0 ? 'Syncing' : 'Synced';
+    }
+
+    const enqueue = (d: Device, fn: (g: number) => Promise<void>) => {
+      const g = gen;
+      d.pending++; render(d);
+      d.chain = d.chain.then(() => (g === gen ? fn(g) : null)).catch(() => {}).finally(() => { if (g !== gen) return; d.pending--; render(d); });
+      return d.chain;
+    };
+    const center = (el: HTMLElement) => {
+      const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect();
+      return [r.left - s.left + r.width / 2, r.top - s.top + r.height / 2];
+    };
+    async function fly(from: HTMLElement, to: HTMLElement, label: string) {
+      const op = document.createElement('span');
+      op.className = 'op'; op.textContent = label; op.setAttribute('aria-hidden', 'true');
+      stage.append(op);
+      const [x0, y0] = center(from), [x1, y1] = center(to);
+      const w = op.offsetWidth / 2, h = op.offsetHeight / 2;
+      op.style.transition = 'none';
+      op.style.transform = `translate(${x0 - w}px, ${y0 - h}px)`;
+      op.getBoundingClientRect();
+      op.style.transition = ''; op.style.transitionDuration = `${FLY}ms`;
+      op.style.transform = `translate(${x1 - w}px, ${y1 - h}px)`;
+      await sleep(FLY);
+      op.style.opacity = '0';
+      setTimeout(() => op.remove(), 200);
+    }
+    const label = (op: Op) => op.field === 'done' ? (op.v ? 'done' : 'reopen') : `rename "${String(op.v).length > 16 ? String(op.v).slice(0, 15) + '...' : op.v}"`;
+
+    function edit(d: Device, id: string, field: Field, v: string | boolean) {
+      const op: Op = { id, field, v, ts: ++clock, dev: d.name };
+      apply(d.state, op); d.outbox.push(op); render(d);
+      if (d.online) push(d);
+    }
+    function push(d: Device) {
+      enqueue(d, async (g) => {
+        while (d.online && d.outbox.length && g === gen) {
+          const op = d.outbox[0];
+          await fly(d.el, serverEl, label(op));
+          if (g !== gen) return;
+          d.outbox.shift(); server.log.push(op); apply(server.state, op);
+          serverLog.textContent = `${server.log.length} change${server.log.length === 1 ? '' : 's'}`;
+          serverEl.classList.remove('ping'); void serverEl.offsetWidth; serverEl.classList.add('ping');
+          render(d);
+          for (const other of Object.values(devices)) if (other !== d) pull(other);
+        }
+      });
+    }
+    function pull(d: Device) {
+      if (!d.online) return;
+      enqueue(d, async (g) => {
+        while (d.online && d.cursor < server.log.length && g === gen) {
+          const op = server.log[d.cursor++];
+          if (op.dev === d.name) continue;
+          await fly(serverEl, d.el, label(op));
+          if (g !== gen) return;
+          if (apply(d.state, op)) {
+            const li = d.rows[op.id].li;
+            li.classList.add('changed'); setTimeout(() => li.classList.remove('changed'), 900);
+          }
+          render(d);
+        }
+      });
+    }
+    function setOnline(d: Device, on: boolean) {
+      d.online = on; d.toggle.checked = on; render(d);
+      if (on) { push(d); pull(d); }
+    }
+    const say = (text: string, good = false) => { caption.textContent = text; caption.classList.toggle('good', good); };
+    const idle = async (g: number) => { await sleep(50); while (g === gen && Object.values(devices).some((d) => d.pending > 0)) await sleep(120); };
+
+    stage.addEventListener('change', (e) => {
+      const box = (e.target as HTMLElement).closest<HTMLInputElement>('[data-online]');
+      if (!box) return;
+      const d = devices[box.closest<HTMLElement>('[data-device]')!.dataset.device!];
+      setOnline(d, box.checked);
+      say(box.checked ? `The ${NAMES[d.name].toLowerCase()} is back online and exchanges its changes.` : 'Offline. Edits apply on the device and wait in a queue.');
+    });
+    conflictBtn.addEventListener('click', async () => {
+      setup();
+      const g = gen, { laptop, phone } = devices;
+      conflictBtn.disabled = true;
+      try {
+        say('Both devices lose their connection.');
+        setOnline(laptop, false); setOnline(phone, false);
+        await sleep(1100); if (g !== gen) return;
+        say('The phone completes "Book flights to Lisbon".');
+        edit(phone, 'b', 'done', true);
+        await sleep(1400); if (g !== gen) return;
+        say('The laptop renames the same task, at the same time.');
+        edit(laptop, 'b', 'title', 'Book flights to Lisbon, window seat');
+        await sleep(1600); if (g !== gen) return;
+        say('Both reconnect and exchange their queued changes.');
+        setOnline(laptop, true); setOnline(phone, true);
+        await idle(g); if (g !== gen) return;
+        say('Converged. Both edits survived: renamed and completed. No "pick a version" dialog.', true);
+      } finally {
+        if (g === gen) conflictBtn.disabled = false;
+      }
+    });
+    resetBtn.addEventListener('click', () => { setup(); conflictBtn.disabled = false; say('Switch Wi-Fi off on a device, change something, then switch it back on.'); });
+    setup();
+  }
+</script>

@@ -1,0 +1,121 @@
+---
+// Home page (website-switcher-pages design D1): outcome first, the live demo,
+// the import strip, five differentiators, the screenshot tour, the household
+// angle and a short teaser that leads to /self-host. No architecture terms above
+// the fold.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import FeatureTour from '../components/FeatureTour.astro';
+import HeroDemo from '../components/HeroDemo.astro';
+import Icon from '../components/Icon.astro';
+import ImportStrip from '../components/ImportStrip.astro';
+import ScreenshotFrame from '../components/ScreenshotFrame.astro';
+import { SITE } from '../lib/site';
+
+const differentiators = [
+  { icon: 'house', title: 'One server, your whole household', text: 'Everyone gets their own account and their own lists, and you share the projects you have in common: groceries, the move, the holiday.', doc: '/docs/sharing/', link: 'Sharing and accounts' },
+  { icon: 'wifi-off', title: 'Really works offline', text: 'Every device keeps a full copy. Add, edit and finish tasks on a plane; everything catches up when you are back online.', doc: '/docs/offline-and-sync/', link: 'Offline and sync' },
+  { icon: 'lock', title: 'End-to-end encryption, if you want it', text: 'Switch it on and your titles, notes and comments are encrypted on your devices. Your server only stores ciphertext.', doc: '/docs/e2ee/', link: 'End-to-end encryption' },
+  { icon: 'sparkles', title: 'Your AI, your key', text: 'An assistant that proposes changes you review first, with the provider and key you choose. Off until you turn it on.', doc: '/docs/ai-and-agents/', link: 'Use AI with OpenTodo' },
+  { icon: 'door-open', title: 'Leave any time', text: 'Export everything as one file whenever you like. Import from a CSV or another app\'s export. No lock-in, no subscription to cancel.', doc: '/docs/import-export/', link: 'Import and export' },
+];
+---
+<Base title="OpenTodo · Clarity without the subscription" bareTitle description="A calm, fast task manager for you and your household, on a server you own. Works offline on every device, shares lists with the people you live with, and costs no subscription.">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow"><Icon name="heart" size={16} /> Free and open source</p>
+        <h1 id="hero-title">Clarity without <span class="accent">the subscription.</span></h1>
+        <p class="lede">One server, your whole household, every device, even offline. A calm, fast task app that stays yours.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
+          <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Self-host in minutes</a>
+          <a class="btn btn-secondary" href="#switch"><Icon name="upload" size={18} /> Switch from your app</a>
+        </div>
+        <p class="hero-note">No account on anyone else's server. No tracking inside the app.</p>
+      </div>
+      <div>
+        <HeroDemo />
+      </div>
+    </div>
+  </section>
+
+  <ImportStrip />
+
+  <section class="section" id="features" aria-labelledby="features-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Why people switch</p>
+        <h2 id="features-title">Everything you like about your task app. <span class="muted">None of the rent.</span></h2>
+      </div>
+      <div class="grid grid-5">
+        {differentiators.map((d) => (
+          <article class="card">
+            <span class="card-icon"><Icon name={d.icon} size={22} /></span>
+            <h3>{d.title}</h3>
+            <p>{d.text}</p>
+            <a class="card-link" href={d.doc}>{d.link} <Icon name="arrow-right" size={16} /></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="tour" aria-labelledby="tour-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">See it</p>
+        <h2 id="tour-title">Real screenshots, not mock-ups.</h2>
+        <p class="lede">Every image is a capture of the released app with demo data. Pick a chapter, then a feature.</p>
+      </div>
+      <FeatureTour />
+    </div>
+  </section>
+
+  <section class="section" id="household" aria-labelledby="household-title">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">For the whole household</p>
+        <h2 id="household-title">Host it once. Everyone gets a polished app.</h2>
+        <p class="lede">The person who likes tinkering sets up one small server. Everyone else just opens the app on their phone and laptop, and it works like the apps they know.</p>
+        <div class="versus">
+          <div class="card">
+            <h3><Icon name="users" size={20} /> A subscription per person</h3>
+            <p>Each person signs up with a company, and the full app usually means a monthly plan per person. Your lists live on the company's servers.</p>
+          </div>
+          <div class="card us">
+            <h3><Icon name="server" size={20} /> One server for everyone</h3>
+            <p>One small server or a Raspberry Pi runs everyone's lists. Invite people with a link, share the projects you have in common, keep the rest private.</p>
+          </div>
+        </div>
+        <p style="margin-top: 1.25rem"><a class="link-arrow" href="/docs/install-app/">Install it on phones and laptops <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+      <div class="phones">
+        <ScreenshotFrame shot="mobile-dark" frame="phone" alt="Today view on a phone in dark mode" />
+        <ScreenshotFrame shot="mobile-detail" frame="phone" alt="Task detail panel on a phone" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="self-host" aria-labelledby="how-title">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">How it works</p>
+        <h2 id="how-title">Edit anywhere. Never pick a version again.</h2>
+        <p class="lede">Change the same task on two devices while offline, and both changes survive when they reconnect. One container, one folder of data, and a server as small as a Raspberry Pi.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/self-host/#sync">See sync in action <Icon name="arrow-right" size={18} /></a>
+          <a class="btn btn-secondary" href="/developers/"><Icon name="braces" size={18} /> For developers</a>
+        </div>
+      </div>
+      <ul class="checks">
+        <li><Icon name="check" size={18} /> Installs on phones and desktops from the browser, no app store needed</li>
+        <li><Icon name="check" size={18} /> Your data in one folder, with scheduled backups</li>
+        <li><Icon name="check" size={18} /> Calendar apps, email, webhooks and a command line</li>
+        <li><Icon name="check" size={18} /> Every feature described in an open specification</li>
+      </ul>
+    </div>
+  </section>
+
+  <EndCta title="Stop renting your to-do list." lede="Try it in the browser now, then run it on your own server tonight." />
+</Base>

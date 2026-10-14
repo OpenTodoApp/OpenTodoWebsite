@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import { templateSummary } from '../../lib/templates';
+
+const entries = (await getCollection('templates')).sort((a, b) => a.data.order - b.data.order);
+const categories = [...new Set(entries.map((e) => e.data.category))];
+---
+<Base title="Templates" description="Ready-made OpenTodo projects you can download and import today: weekly review, GTD, moving house, household chores and more.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Templates</p>
+      <h1>Start with a plan that works.</h1>
+      <p class="lede">Each template is a real project file. Download it, import it in Settings, and it appears on every device, ready to adjust.</p>
+    </div>
+  </section>
+  {categories.map((c) => (
+    <section class="section" style="padding-top: 1rem; padding-bottom: 2rem" aria-labelledby={`cat-${c}`}>
+      <div class="wrap">
+        <h2 id={`cat-${c}`} style="font-size: 1.4rem">{c}</h2>
+        <div class="grid grid-3">
+          {entries.filter((e) => e.data.category === c).map((e) => {
+            const s = templateSummary(e);
+            return (
+              <a class="card" href={`/templates/${e.id}/`}>
+                <span class="card-icon"><Icon name="layout-template" size={22} /></span>
+                <h3>{e.data.title}</h3>
+                <p>{e.data.summary}</p>
+                <p class="meta">{s.tasks} tasks in {s.sections || s.projects} {s.sections ? 'sections' : 'projects'}{s.recurring ? `, ${s.recurring} repeating` : ''}</p>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ))}
+  <EndCta />
+</Base>

@@ -1,0 +1,64 @@
+# Template check (website-content-hub design D2): imports every template into a
+# fresh server of the pinned release and captures its screenshots. On a pull
+# request it fails, naming the template and the import error, when a template
+# does not import cleanly. On main it opens a pull request when screenshots change.
+name: Templates
+
+on:
+  pull_request:
+    paths:
+      - src/content/templates/**
+      - bundle.json
+      - interim/manifest.json
+      - scripts/templates-check.mjs
+      - scripts/lib/template-export.mjs
+  push:
+    branches: [main]
+    paths:
+      - src/content/templates/**
+      - bundle.json
+      - interim/manifest.json
+      - scripts/templates-check.mjs
+      - scripts/lib/template-export.mjs
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Fetch the pinned bundle
+        run: npm run bundle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Start the pinned release on a fresh volume
+        run: |
+          IMAGE=$(node -p "require('./.bundle/manifest.json').image ?? 'ghcr.io/pixari/opentodo:' + require('./.bundle/manifest.json').version")
+          echo "Using $IMAGE"
+          docker run -d --name opentodo -p 8080:8080 "$IMAGE"
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8080/api/v1/auth/status >/dev/null && break; sleep 1; done
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Import every template and capture screenshots
+        run: npm run templates:check
+        env:
+          OPENTODO_URL: http://127.0.0.1:8080
+      - name: Open a pull request with changed screenshots
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/template-screenshots
+          commit-message: Refresh template screenshots against the pinned release
+          title: Refresh template screenshots
+          body: Screenshots captured by the Templates workflow from a fresh server of the pinned release. Review on the PR preview before merging.
+          add-paths: src/assets/template-shots/*

@@ -1,0 +1,166 @@
+/* OpenTodo colour tokens (interim copy).
+   Extracted once from pixari/opentodo web/src/index.css (commit 8b0ab11, design-language tokens).
+   Replaced by tokens/tokens.css of the first real site bundle; do not edit by hand. */
+:root, [data-theme="light"] {
+  --ot-canvas: #f8fafc;
+  --ot-surface: #ffffff;
+  --ot-raised: #ffffff;
+  --ot-sunken: #f1f5f9;
+  --ot-text-strong: #020617;
+  --ot-text: #0f172a;
+  --ot-muted: #526075;
+  --ot-faint: #5f6e82;
+  --ot-border: #e2e8f0;
+  --ot-border-input: #7c8aa0;
+  --ot-accent: #047857;
+  --ot-accent-hover: #065f46;
+  --ot-on-accent: #ffffff;
+  --ot-accent-text: #047857;
+  --ot-accent-soft: #ecfdf5;
+  --ot-accent-soft-text: #065f46;
+  --ot-focus: #059669;
+  --ot-p1: #dc2626;
+  --ot-p2: #ea580c;
+  --ot-p3: #2563eb;
+  --ot-p4: #64748b;
+  --ot-p1-soft: #fef2f2;
+  --ot-p2-soft: #fff7ed;
+  --ot-p3-soft: #eff6ff;
+  --ot-p4-soft: #f8fafc;
+  --ot-success: #047857;
+  --ot-success-soft: #ecfdf5;
+  --ot-success-soft-text: #065f46;
+  --ot-warning: #b45309;
+  --ot-warning-soft: #fffbeb;
+  --ot-warning-soft-text: #92400e;
+  --ot-danger: #dc2626;
+  --ot-danger-soft: #fef2f2;
+  --ot-danger-soft-text: #991b1b;
+  --ot-info: #0369a1;
+  --ot-info-soft: #f0f9ff;
+  --ot-info-soft-text: #075985;
+  --ot-hue-red-solid: #dc2626; --ot-hue-red-soft: #fee2e2; --ot-hue-red-text: #991b1b;
+  --ot-hue-orange-solid: #ea580c; --ot-hue-orange-soft: #ffedd5; --ot-hue-orange-text: #9a3412;
+  --ot-hue-yellow-solid: #d97706; --ot-hue-yellow-soft: #fef3c7; --ot-hue-yellow-text: #92400e;
+  --ot-hue-lime-solid: #4d7c0f; --ot-hue-lime-soft: #ecfccb; --ot-hue-lime-text: #3f6212;
+  --ot-hue-green-solid: #16a34a; --ot-hue-green-soft: #dcfce7; --ot-hue-green-text: #166534;
+  --ot-hue-teal-solid: #0d9488; --ot-hue-teal-soft: #ccfbf1; --ot-hue-teal-text: #115e59;
+  --ot-hue-cyan-solid: #0891b2; --ot-hue-cyan-soft: #cffafe; --ot-hue-cyan-text: #155e75;
+  --ot-hue-blue-solid: #2563eb; --ot-hue-blue-soft: #dbeafe; --ot-hue-blue-text: #1e40af;
+  --ot-hue-indigo-solid: #4f46e5; --ot-hue-indigo-soft: #e0e7ff; --ot-hue-indigo-text: #3730a3;
+  --ot-hue-violet-solid: #7c3aed; --ot-hue-violet-soft: #ede9fe; --ot-hue-violet-text: #5b21b6;
+  --ot-hue-pink-solid: #db2777; --ot-hue-pink-soft: #fce7f3; --ot-hue-pink-text: #9d174d;
+  --ot-hue-slate-solid: #64748b; --ot-hue-slate-soft: #f1f5f9; --ot-hue-slate-text: #334155;
+}
+:root {
+  --duration-ui: 120ms;
+  --duration-emphasis: 250ms;
+  --size-row: 44px;
+}
+@media (pointer: coarse) {
+  :root { --size-row: 48px; }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ot-canvas: #020617;
+    --ot-surface: #0f172a;
+    --ot-raised: #1e293b;
+    --ot-sunken: #020617;
+    --ot-text-strong: #ffffff;
+    --ot-text: #f1f5f9;
+    --ot-muted: #94a3b8;
+    --ot-faint: #8695aa;
+    --ot-border: #1e293b;
+    --ot-border-input: #64748b;
+    --ot-accent: #047857;
+    --ot-accent-hover: #065f46;
+    --ot-on-accent: #ffffff;
+    --ot-accent-text: #34d399;
+    --ot-accent-soft: #022c22;
+    --ot-accent-soft-text: #6ee7b7;
+    --ot-focus: #34d399;
+    --ot-p1: #f87171;
+    --ot-p2: #fb923c;
+    --ot-p3: #60a5fa;
+    --ot-p4: #64748b;
+    --ot-p1-soft: rgb(69 10 10 / 0.4);
+    --ot-p2-soft: rgb(67 20 7 / 0.4);
+    --ot-p3-soft: rgb(23 37 84 / 0.4);
+    --ot-p4-soft: rgb(30 41 59 / 0.4);
+    --ot-success: #34d399;
+    --ot-success-soft: #022c22;
+    --ot-success-soft-text: #6ee7b7;
+    --ot-warning: #fbbf24;
+    --ot-warning-soft: #451a03;
+    --ot-warning-soft-text: #fcd34d;
+    --ot-danger: #f87171;
+    --ot-danger-soft: #450a0a;
+    --ot-danger-soft-text: #fca5a5;
+    --ot-info: #38bdf8;
+    --ot-info-soft: #082f49;
+    --ot-info-soft-text: #7dd3fc;
+    --ot-hue-red-solid: #f87171; --ot-hue-red-soft: #450a0a; --ot-hue-red-text: #fca5a5;
+    --ot-hue-orange-solid: #fb923c; --ot-hue-orange-soft: #431407; --ot-hue-orange-text: #fdba74;
+    --ot-hue-yellow-solid: #fbbf24; --ot-hue-yellow-soft: #451a03; --ot-hue-yellow-text: #fcd34d;
+    --ot-hue-lime-solid: #a3e635; --ot-hue-lime-soft: #1a2e05; --ot-hue-lime-text: #bef264;
+    --ot-hue-green-solid: #4ade80; --ot-hue-green-soft: #052e16; --ot-hue-green-text: #86efac;
+    --ot-hue-teal-solid: #2dd4bf; --ot-hue-teal-soft: #042f2e; --ot-hue-teal-text: #5eead4;
+    --ot-hue-cyan-solid: #22d3ee; --ot-hue-cyan-soft: #083344; --ot-hue-cyan-text: #67e8f9;
+    --ot-hue-blue-solid: #60a5fa; --ot-hue-blue-soft: #172554; --ot-hue-blue-text: #93c5fd;
+    --ot-hue-indigo-solid: #818cf8; --ot-hue-indigo-soft: #1e1b4b; --ot-hue-indigo-text: #a5b4fc;
+    --ot-hue-violet-solid: #a78bfa; --ot-hue-violet-soft: #2e1065; --ot-hue-violet-text: #c4b5fd;
+    --ot-hue-pink-solid: #f472b6; --ot-hue-pink-soft: #500724; --ot-hue-pink-text: #f9a8d4;
+    --ot-hue-slate-solid: #94a3b8; --ot-hue-slate-soft: #1e293b; --ot-hue-slate-text: #cbd5e1;
+  }
+}
+:root[data-theme="dark"], [data-theme="dark"] {
+  --ot-canvas: #020617;
+  --ot-surface: #0f172a;
+  --ot-raised: #1e293b;
+  --ot-sunken: #020617;
+  --ot-text-strong: #ffffff;
+  --ot-text: #f1f5f9;
+  --ot-muted: #94a3b8;
+  --ot-faint: #8695aa;
+  --ot-border: #1e293b;
+  --ot-border-input: #64748b;
+  --ot-accent: #047857;
+  --ot-accent-hover: #065f46;
+  --ot-on-accent: #ffffff;
+  --ot-accent-text: #34d399;
+  --ot-accent-soft: #022c22;
+  --ot-accent-soft-text: #6ee7b7;
+  --ot-focus: #34d399;
+  --ot-p1: #f87171;
+  --ot-p2: #fb923c;
+  --ot-p3: #60a5fa;
+  --ot-p4: #64748b;
+  --ot-p1-soft: rgb(69 10 10 / 0.4);
+  --ot-p2-soft: rgb(67 20 7 / 0.4);
+  --ot-p3-soft: rgb(23 37 84 / 0.4);
+  --ot-p4-soft: rgb(30 41 59 / 0.4);
+  --ot-success: #34d399;
+  --ot-success-soft: #022c22;
+  --ot-success-soft-text: #6ee7b7;
+  --ot-warning: #fbbf24;
+  --ot-warning-soft: #451a03;
+  --ot-warning-soft-text: #fcd34d;
+  --ot-danger: #f87171;
+  --ot-danger-soft: #450a0a;
+  --ot-danger-soft-text: #fca5a5;
+  --ot-info: #38bdf8;
+  --ot-info-soft: #082f49;
+  --ot-info-soft-text: #7dd3fc;
+  --ot-hue-red-solid: #f87171; --ot-hue-red-soft: #450a0a; --ot-hue-red-text: #fca5a5;
+  --ot-hue-orange-solid: #fb923c; --ot-hue-orange-soft: #431407; --ot-hue-orange-text: #fdba74;
+  --ot-hue-yellow-solid: #fbbf24; --ot-hue-yellow-soft: #451a03; --ot-hue-yellow-text: #fcd34d;
+  --ot-hue-lime-solid: #a3e635; --ot-hue-lime-soft: #1a2e05; --ot-hue-lime-text: #bef264;
+  --ot-hue-green-solid: #4ade80; --ot-hue-green-soft: #052e16; --ot-hue-green-text: #86efac;
+  --ot-hue-teal-solid: #2dd4bf; --ot-hue-teal-soft: #042f2e; --ot-hue-teal-text: #5eead4;
+  --ot-hue-cyan-solid: #22d3ee; --ot-hue-cyan-soft: #083344; --ot-hue-cyan-text: #67e8f9;
+  --ot-hue-blue-solid: #60a5fa; --ot-hue-blue-soft: #172554; --ot-hue-blue-text: #93c5fd;
+  --ot-hue-indigo-solid: #818cf8; --ot-hue-indigo-soft: #1e1b4b; --ot-hue-indigo-text: #a5b4fc;
+  --ot-hue-violet-solid: #a78bfa; --ot-hue-violet-soft: #2e1065; --ot-hue-violet-text: #c4b5fd;
+  --ot-hue-pink-solid: #f472b6; --ot-hue-pink-soft: #500724; --ot-hue-pink-text: #f9a8d4;
+  --ot-hue-slate-solid: #94a3b8; --ot-hue-slate-soft: #1e293b; --ot-hue-slate-text: #cbd5e1;
+}

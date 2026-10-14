@@ -1,0 +1,83 @@
+---
+// /developers (website-switcher-pages D4): API, CLI, MCP, webhooks, CalDAV and the open specs.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, specUrl } from '../lib/site';
+
+const tools = [
+  { icon: 'braces', title: 'REST API', text: 'Tokens with full, read-only or agent scope. Writes go through the same sync log as the app, so a task created by a script appears on every device within seconds.', doc: '/docs/api/', link: 'API reference' },
+  { icon: 'terminal', title: 'The ot command line', text: 'A separate static binary for scripts and coding agents: JSON output with schemas, dry runs, idempotency keys and exit codes you can rely on.', doc: '/docs/cli/', link: 'CLI reference' },
+  { icon: 'bot', title: 'MCP for assistants', text: 'Connect the assistant you already use. Read-only by default; changes only when the owner and the person both allow them.', doc: '/docs/mcp/', link: 'MCP endpoint' },
+  { icon: 'webhook', title: 'Webhooks', text: 'Signed events for Home Assistant, n8n or a chat relay, with retries and a delivery log.', doc: '/docs/webhooks/', link: 'Webhooks' },
+  { icon: 'calendar-sync', title: 'CalDAV', text: 'Two-way sync with Apple Reminders, Thunderbird and Android task apps, with a password per device.', doc: '/docs/caldav/', link: 'CalDAV' },
+  { icon: 'git-branch', title: 'How it is built', text: 'A Go server with an embedded database and a web app that keeps a full copy on every device, converging through a log of field-level changes.', doc: '/docs/architecture/', link: 'Architecture' },
+];
+const specs = [
+  ['Capture', [['natural-language-capture', 'Natural-language quick add'], ['cli-client', 'Command-line client'], ['email-capture', 'Email to task'], ['share-capture', 'Share sheet and browser extension'], ['voice-capture', 'Voice capture']]],
+  ['Organise', [['subtasks', 'Subtasks'], ['labels', 'Labels'], ['filter-queries', 'Filter queries'], ['custom-views', 'Saved views and dashboards'], ['sections-and-boards', 'Sections and boards'], ['trash-and-history', 'Trash and history']]],
+  ['Time', [['recurring-tasks', 'Recurring tasks'], ['reminders', 'Reminders'], ['time-blocking', 'Estimates and time blocking']]],
+  ['Collaborate', [['project-sharing', 'Project sharing'], ['task-assignment', 'Assignees'], ['comments', 'Comments'], ['activity-feed', 'Activity feed']]],
+  ['Connect', [['http-api', 'HTTP API'], ['caldav-sync', 'CalDAV'], ['webhooks', 'Webhooks'], ['data-import', 'Import'], ['backups', 'Backups'], ['mcp-server', 'MCP server'], ['in-app-assistant', 'In-app assistant']]],
+  ['Secure', [['passkey-auth', 'Passkeys'], ['oidc-login', 'Single sign-on'], ['mfa', 'Two-factor'], ['audit-log', 'Audit log'], ['end-to-end-encryption', 'End-to-end encryption']]],
+] as const;
+---
+<Base title="OpenTodo for developers" description="REST API, the ot command line, MCP for AI assistants, webhooks, CalDAV and open specifications for every feature.">
+  <section class="page-head">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Developers</p>
+        <h1>Scriptable from day one.</h1>
+        <p class="lede">The API is not an afterthought: the app, the command line, assistants and your scripts all write through the same log, and every change syncs to every device.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/docs/api/"><Icon name="book-open" size={18} /> API docs</a>
+          <a class="btn btn-secondary" href={SITE.appRepo}><Icon name="code" size={18} /> Source on GitHub</a>
+        </div>
+      </div>
+      <pre tabindex="0" aria-label="Example: add a task with curl"><code># add a task from a script
+curl -X POST "$OPENTODO/api/v1/tasks" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '&#123;"title":"Renew passport","priority":1&#125;'
+
+# or with the command line
+ot add "Renew passport" --priority 1 --due tomorrow</code></pre>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1.5rem">
+    <div class="wrap grid grid-3">
+      {tools.map((t) => (
+        <article class="card">
+          <span class="card-icon"><Icon name={t.icon} size={22} /></span>
+          <h2 style="font-size: 1.2rem">{t.title}</h2>
+          <p>{t.text}</p>
+          <a class="card-link" href={t.doc}>{t.link} <Icon name="arrow-right" size={16} /></a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section-alt" id="specs" aria-labelledby="specs-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Open specifications</p>
+        <h2 id="specs-title">Every feature has a spec you can read.</h2>
+        <p class="lede">Each feature started as an OpenSpec change: a proposal, behaviour with testable scenarios, a design and tasks. The specs describe how OpenTodo behaves today.</p>
+      </div>
+      <div class="grid grid-3">
+        {specs.map(([group, items]) => (
+          <div class="card">
+            <h3>{group}</h3>
+            <ul class="checks" style="margin: 0">
+              {items.map(([cap, label]) => <li><Icon name="book-open" size={16} /><a href={specUrl(cap)}>{label}</a></li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p style="margin-top: 1.5rem"><a class="link-arrow" href={`${SITE.appRepo}/tree/main/openspec/specs`}>All specifications <Icon name="arrow-right" size={16} /></a></p>
+    </div>
+  </section>
+
+  <EndCta />
+</Base>

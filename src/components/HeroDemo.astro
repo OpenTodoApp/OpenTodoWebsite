@@ -1,0 +1,180 @@
+---
+// The live demo of the app's Today view (island). The seed tasks are rendered at
+// build time so the demo reads without JavaScript; the script below makes it
+// interactive and loads only on pages that include this component.
+import Icon from './Icon.astro';
+
+const SEED = [
+  { title: 'Get three quotes for the kitchen', proj: ['Home renovation', 'var(--ot-hue-orange-solid)'], prio: 1 },
+  { title: 'Book the dentist for both kids', proj: ['Family', 'var(--ot-hue-violet-solid)'], prio: 2 },
+  { title: 'Reply to Sam about Q4 planning', proj: ['Work', 'var(--ot-hue-blue-solid)'], prio: 3 },
+  { title: 'Water the plants', prio: 4 },
+];
+const PRIO: Record<number, string> = { 1: 'var(--ot-p1)', 2: 'var(--ot-p2)', 3: 'var(--ot-p3)', 4: 'var(--ot-p4)' };
+---
+<div class="demo-window" id="demo" data-demo>
+  <div class="demo-bar">
+    <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+    <span class="demo-url">todo.your-server.com</span>
+    <span class="demo-sync" data-demo-sync><Icon name="check" size={14} /><span>Synced</span></span>
+  </div>
+  <div class="demo-app">
+    <div class="demo-side" aria-hidden="true">
+      <ul>
+        <li><Icon name="inbox" size={16} />Inbox<em>3</em></li>
+        <li class="on"><Icon name="calendar-check" size={16} />Today<em data-demo-count>{SEED.length}</em></li>
+        <li><Icon name="calendar-days" size={16} />Upcoming</li>
+        <li><Icon name="circle-check-big" size={16} />Completed</li>
+      </ul>
+      <p class="label">Projects</p>
+      <ul>
+        <li><i class="pdot" style="--c: var(--ot-hue-orange-solid)"></i>Home renovation</li>
+        <li><i class="pdot" style="--c: var(--ot-hue-violet-solid)"></i>Family</li>
+        <li><i class="pdot" style="--c: var(--ot-hue-blue-solid)"></i>Work</li>
+      </ul>
+    </div>
+    <div class="demo-main">
+      <div class="demo-head"><h2>Today</h2><span data-demo-date></span></div>
+      <form class="demo-add" data-demo-form autocomplete="off">
+        <Icon name="plus" size={18} />
+        <input data-demo-input type="text" placeholder="Add a task for today" aria-label="Add a task to the demo" maxlength="80" />
+        <kbd aria-hidden="true">q</kbd>
+      </form>
+      <ul class="tasks" data-demo-list aria-label="Today's tasks in the demo" aria-live="polite">
+        {SEED.map((t) => (
+          <li class="task" style={`--pc: ${PRIO[t.prio]}`}>
+            <span class="circle" aria-hidden="true"></span>
+            <div class="t-body">
+              <div class="t-title">{t.title}</div>
+              <div class="t-meta">
+                <span class="due">Today</span>
+                {t.proj && <span class="proj"><i class="pdot" style={`--c: ${t.proj[1]}`}></i>{t.proj[0]}</span>}
+                {t.prio < 4 && <span class="prio">P{t.prio}</span>}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="demo-empty" data-demo-empty hidden>All clear. Enjoy your day.</p>
+    </div>
+  </div>
+</div>
+<p class="demo-hint demo-hint-js">This is a live miniature: press <kbd>q</kbd> to add a task, <kbd>j</kbd> and <kbd>k</kbd> to move, <kbd>c</kbd> to complete, or click a circle.</p>
+<p class="demo-hint demo-hint-nojs">A miniature of the Today view. The full app runs in the <a href="https://demo.open-todo.app">online demo</a>.</p>
+
+<script>
+  const PRIO: Record<number, string> = { 1: 'var(--ot-p1)', 2: 'var(--ot-p2)', 3: 'var(--ot-p3)', 4: 'var(--ot-p4)' };
+  interface Task { id: number; title: string; proj?: [string, string]; prio: number; done: boolean }
+  const SEED: Omit<Task, 'id' | 'done'>[] = [
+    { title: 'Get three quotes for the kitchen', proj: ['Home renovation', 'var(--ot-hue-orange-solid)'], prio: 1 },
+    { title: 'Book the dentist for both kids', proj: ['Family', 'var(--ot-hue-violet-solid)'], prio: 2 },
+    { title: 'Reply to Sam about Q4 planning', proj: ['Work', 'var(--ot-hue-blue-solid)'], prio: 3 },
+    { title: 'Water the plants', prio: 4 },
+  ];
+  const root = document.querySelector<HTMLElement>('[data-demo]');
+  if (root) {
+    const $ = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const list = $<HTMLUListElement>('[data-demo-list]');
+    const input = $<HTMLInputElement>('[data-demo-input]');
+    const form = $<HTMLFormElement>('[data-demo-form]');
+    const empty = $<HTMLElement>('[data-demo-empty]');
+    const count = $<HTMLElement>('[data-demo-count]');
+    const sync = $<HTMLElement>('[data-demo-sync]');
+    const syncText = sync.querySelector('span')!;
+    let tasks: Task[] = [];
+    let sel = 0, uid = 0, visible = false, syncTimer = 0;
+    $<HTMLElement>('[data-demo-date]').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+    const seed = () => { tasks = SEED.map((t) => ({ ...t, id: ++uid, done: false })); sel = 0; render(); };
+    const pulse = () => {
+      sync.classList.add('syncing'); syncText.textContent = 'Syncing';
+      clearTimeout(syncTimer);
+      syncTimer = window.setTimeout(() => { sync.classList.remove('syncing'); syncText.textContent = 'Synced'; }, 650);
+    };
+    const markSel = () => list.querySelectorAll('.task').forEach((li, i) => li.classList.toggle('sel', i === sel));
+
+    function render() {
+      list.textContent = '';
+      tasks.forEach((t, i) => {
+        const li = document.createElement('li');
+        li.className = 'task' + (t.done ? ' done' : '') + (i === sel ? ' sel' : '');
+        li.dataset.id = String(t.id);
+        li.style.setProperty('--pc', PRIO[t.prio]);
+        const btn = document.createElement('button');
+        btn.className = 'circle'; btn.type = 'button';
+        btn.setAttribute('aria-label', `Complete "${t.title}"`);
+        btn.addEventListener('click', () => complete(t.id));
+        const body = document.createElement('div'); body.className = 't-body';
+        const title = document.createElement('div'); title.className = 't-title'; title.textContent = t.title;
+        const meta = document.createElement('div'); meta.className = 't-meta';
+        const due = document.createElement('span'); due.className = 'due'; due.textContent = 'Today'; meta.append(due);
+        if (t.proj) {
+          const p = document.createElement('span'); p.className = 'proj';
+          const dot = document.createElement('i'); dot.className = 'pdot'; dot.style.setProperty('--c', t.proj[1]);
+          p.append(dot, t.proj[0]); meta.append(p);
+        }
+        if (t.prio < 4) { const pr = document.createElement('span'); pr.textContent = 'P' + t.prio; meta.append(pr); }
+        body.append(title, meta);
+        li.append(btn, body);
+        li.addEventListener('click', (e) => { if (e.target === btn) return; sel = tasks.findIndex((x) => x.id === t.id); markSel(); });
+        list.append(li);
+      });
+      count.textContent = String(tasks.filter((t) => !t.done).length);
+      empty.hidden = tasks.length > 0;
+    }
+
+    function burst(li: HTMLElement) {
+      if (reduced) return;
+      const b = document.createElement('span'); b.className = 'burst';
+      for (let i = 0; i < 10; i++) {
+        const a = (i / 10) * Math.PI * 2, d = 18 + Math.random() * 10;
+        const dot = document.createElement('i');
+        dot.style.setProperty('--x', `${Math.cos(a) * d}px`); dot.style.setProperty('--y', `${Math.sin(a) * d}px`);
+        dot.style.background = i % 2 ? 'var(--accent)' : getComputedStyle(li).getPropertyValue('--pc');
+        b.append(dot);
+      }
+      li.append(b); setTimeout(() => b.remove(), 700);
+    }
+
+    function complete(id: number) {
+      const t = tasks.find((x) => x.id === id);
+      if (!t || t.done) return;
+      t.done = true;
+      const li = list.querySelector<HTMLElement>(`.task[data-id="${id}"]`)!;
+      li.classList.add('done'); burst(li); pulse();
+      count.textContent = String(tasks.filter((x) => !x.done).length);
+      setTimeout(() => li.classList.add('leaving'), 650);
+      setTimeout(() => {
+        tasks.splice(tasks.indexOf(t), 1);
+        if (sel >= tasks.length) sel = Math.max(0, tasks.length - 1);
+        render();
+        if (!tasks.length) setTimeout(() => { if (!tasks.length) seed(); }, 3500);
+      }, 1050);
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = input.value.trim();
+      if (!title) return;
+      tasks.push({ id: ++uid, title, prio: 4, done: false });
+      sel = tasks.length - 1; input.value = '';
+      render(); pulse();
+    });
+
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.3 }).observe(root);
+    const typing = (el: EventTarget | null) => el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+    document.addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (typing(e.target)) { if (e.key === 'Escape') (e.target as HTMLElement).blur(); return; }
+      if (!visible) return;
+      const k = e.key.toLowerCase(), n = tasks.length;
+      if (k === 'q') { e.preventDefault(); input.focus(); }
+      else if (k === 'j' && n) { sel = (sel + 1) % n; markSel(); }
+      else if (k === 'k' && n) { sel = (sel - 1 + n) % n; markSel(); }
+      else if (k === 'c' && n) complete(tasks[sel].id);
+      else if (/^[1-4]$/.test(k) && n) { tasks[sel].prio = +k; render(); pulse(); }
+    });
+    seed();
+  }
+</script>

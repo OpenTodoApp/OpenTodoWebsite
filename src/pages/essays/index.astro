@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleIndex from '../../components/ArticleIndex.astro';
+const entries = (await getCollection('essays', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order);
+const items = entries.map((e) => ({ href: `/essays/${e.id}/`, title: e.data.title, summary: e.data.summary }));
+---
+<ArticleIndex kicker="Essays" title="On owning your tasks." lede="Short pieces on why your task list should be yours, and what that means in practice." description="Short pieces on why your task list should be yours, and what that means in practice." items={items} icon="feather" />

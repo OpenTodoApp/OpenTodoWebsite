@@ -1,0 +1,77 @@
+---
+// Install methods (island). Without JavaScript every method is shown, one after
+// the other, under its own heading; with it they become tabs with a copy button.
+import { manifest } from '../lib/bundle';
+import { SITE } from '../lib/site';
+
+const image = manifest.image ?? `ghcr.io/pixari/opentodo:${manifest.version}`;
+const port = manifest.facts.port ?? 8080;
+const methods = [
+  {
+    id: 'docker', title: 'Docker',
+    code: `docker run -d --name opentodo -p ${port}:${port} \\\n  -v opentodo-data:/data ${image}\n# then open http://localhost:${port} and create the owner account`,
+    doc: { href: '/docs/self-hosting/docker/', label: 'Docker guide' },
+  },
+  {
+    id: 'coolify', title: 'Coolify',
+    code: `# Coolify: + New Resource, Public Repository\nRepository   ${SITE.appRepo}\nBuild pack   Docker Compose\n# Assign a domain to the opentodo service, deploy,\n# open the domain and create the owner account.`,
+    doc: { href: '/docs/self-hosting/coolify/', label: 'Coolify guide' },
+  },
+  {
+    id: 'compose', title: 'Compose',
+    code: `git clone ${SITE.appRepo}.git\ncd opentodo\ndocker compose up -d\n# data lives in the opentodo-data volume`,
+    doc: { href: '/docs/self-hosting/docker/', label: 'Compose and reverse proxies' },
+  },
+  {
+    id: 'binary', title: 'Binary',
+    code: `# download opentodo-<os>-<arch> from the release, then:\nchmod +x opentodo-linux-amd64 && ./opentodo-linux-amd64\n# serves on :${port}, data in ./data`,
+    doc: { href: `${SITE.appRepo}/releases/tag/${manifest.tag ?? 'v' + manifest.version}`, label: 'Release downloads' },
+  },
+];
+---
+<div class="install-tabs" data-install>
+  <div role="tablist" aria-label="Install method">
+    {methods.map((m, i) => (
+      <button type="button" role="tab" id={`tab-${m.id}`} aria-controls={`panel-${m.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={m.id}>{m.title}</button>
+    ))}
+  </div>
+  {methods.map((m) => (
+    <div class="install-panel" id={`panel-${m.id}`} role="tabpanel" aria-labelledby={`tab-${m.id}`} data-panel={m.id}>
+      <h3>{m.title}</h3>
+      <button class="btn btn-secondary btn-small copy" type="button" data-copy>Copy</button>
+      <pre tabindex="0" aria-label={`${m.title} commands`}><code>{m.code}</code></pre>
+      <p class="meta" style="margin: 0.75rem 0 0"><a href={m.doc.href}>{m.doc.label}</a></p>
+    </div>
+  ))}
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-install]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const select = (tab: HTMLButtonElement, focus = false) => {
+      tabs.forEach((t) => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+      panels.forEach((p) => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        const j = e.key === 'ArrowRight' ? (i + 1) % tabs.length : e.key === 'ArrowLeft' ? (i - 1 + tabs.length) % tabs.length : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : -1;
+        if (j < 0) return;
+        e.preventDefault(); select(tabs[j], true);
+      });
+    });
+    select(tabs[0]);
+    root.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = (btn.parentElement!.querySelector('code')!.textContent ?? '')
+          .split('\n').filter((l) => !l.trim().startsWith('#')).join('\n').trim();
+        try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+        catch { btn.textContent = 'Select and copy'; }
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+      });
+    });
+  }
+</script>

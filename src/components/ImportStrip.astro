@@ -1,0 +1,23 @@
+---
+// The import strip (website-switcher-pages D3): a "Switch from <app>" link only
+// for apps whose named import format is in the pinned release; otherwise one link
+// to the general import guide, with no promise of a one-step switch.
+import Icon from './Icon.astro';
+import { STRIP_APPS, IMPORT_GUIDE, switchLink } from '../lib/switch';
+
+const apps = STRIP_APPS.map((a) => ({ ...a, link: switchLink(a) }));
+const named = apps.filter((a) => a.link.named);
+const generic = apps.filter((a) => !a.link.named);
+const list = (names: string[]) => names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} or ${names.at(-1)}`;
+---
+<section class="import-strip" id="switch" aria-labelledby="switch-title">
+  <div class="wrap import-inner">
+    <p id="switch-title">Coming from {list(STRIP_APPS.map((a) => a.app))}?</p>
+    <ul class="import-apps">
+      {named.map((a) => <li><a class="btn btn-secondary btn-small" href={a.link.href} data-switch={a.app}><Icon name="arrow-right" size={16} />{a.link.label}</a></li>)}
+      {generic.length > 0 && (
+        <li><a class="btn btn-secondary btn-small" href={IMPORT_GUIDE} data-switch="generic"><Icon name="upload" size={16} />Import your tasks from a CSV or JSON export</a></li>
+      )}
+    </ul>
+  </div>
+</section>

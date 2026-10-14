@@ -1,0 +1,39 @@
+{
+  "name": "opentodo-website",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "bundle": "node scripts/fetch-bundle.mjs",
+    "bundle:interim": "node scripts/interim-bundle.mjs",
+    "dev": "npm run bundle && astro dev",
+    "prebuild": "npm run bundle && node scripts/check-content.mjs",
+    "build": "astro build",
+    "check": "astro check",
+    "test": "node --test scripts/test/*.test.mjs",
+    "check:links": "node scripts/checks/links.mjs dist",
+    "check:emoji": "node scripts/checks/emoji.mjs dist",
+    "check:scripts": "node scripts/checks/scripts.mjs dist",
+    "check:dist": "npm run check:links && npm run check:emoji && npm run check:scripts",
+    "test:browser": "playwright test",
+    "templates:check": "node scripts/templates-check.mjs --shots",
+    "serve": "node scripts/serve.mjs 4321"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "astro": "7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.11.0",
+    "@playwright/test": "1.56.1",
+    "@types/node": "22.19.1",
+    "node-html-parser": "7.0.1",
+    "sharp": "0.35.5",
+    "typescript": "5.9.3",
+    "yaml": "2.9.1"
+  }
+}

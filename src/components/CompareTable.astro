@@ -1,0 +1,39 @@
+---
+// Accessible comparison table: a caption with the "checked on" date, header
+// cells for columns and rows, verdicts in words with an icon (never colour
+// alone), and a docs link for every OpenTodo claim. On phones each row becomes a
+// small card, so nothing scrolls sideways.
+import Icon from './Icon.astro';
+
+type Verdict = 'yes' | 'partial' | 'no';
+interface Row { feature: string; them: Verdict; us: Verdict; note?: string; sourceDoc?: string }
+interface Props { competitor: string; rows: Row[]; checkedOn: Date }
+const { competitor, rows, checkedOn } = Astro.props;
+const words: Record<Verdict, { text: string; icon: string }> = {
+  yes: { text: 'Yes', icon: 'check' },
+  partial: { text: 'Partly', icon: 'circle-dashed' },
+  no: { text: 'No', icon: 'minus' },
+};
+const day = checkedOn.toISOString().slice(0, 10);
+const long = checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<div class="table-wrap">
+  <table class="compare-table">
+    <caption>{competitor} and OpenTodo compared feature by feature, checked on <time datetime={day}>{long}</time>.</caption>
+    <thead>
+      <tr><th scope="col">Feature</th><th scope="col">{competitor}</th><th scope="col">OpenTodo</th></tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <th scope="row">{r.feature}{r.note && <span class="note">{r.note}</span>}</th>
+          <td data-label={competitor}><span class:list={['verdict', `verdict-${r.them}`]}><Icon name={words[r.them].icon} size={16} />{words[r.them].text}</span></td>
+          <td data-label="OpenTodo">
+            <span class:list={['verdict', `verdict-${r.us}`]}><Icon name={words[r.us].icon} size={16} />{words[r.us].text}</span>
+            {r.sourceDoc && <><br /><a class="source" href={r.sourceDoc}>How it works<span class="visually-hidden">: {r.feature} in the OpenTodo docs</span></a></>}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
