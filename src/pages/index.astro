@@ -25,17 +25,17 @@ const reasons = [
   { icon: 'house', title: 'One server for everyone at home', text: 'Each person gets their own account and their own lists. Share the shopping list, the move or the holiday with whoever needs it. Nobody pays per person.', doc: '/docs/sharing/', link: 'Sharing and accounts' },
   { icon: 'wifi-off', title: 'Works without a connection', text: 'Your phone keeps a full copy of your tasks. Add and tick things off on the train or on a plane, and it all syncs when you are back online.', doc: '/docs/offline-and-sync/', link: 'Offline and sync' },
   { icon: 'lock', title: 'Encrypted, if you want', text: 'Turn it on and your task titles and notes are encrypted on your devices before they reach the server. Not even the server can read them.', doc: '/docs/e2ee/', link: 'End-to-end encryption' },
-  { icon: 'sparkles', title: 'AI on your terms', text: 'Ask the assistant to tidy up your week, then approve what it suggests before anything changes. It uses the AI provider and key you choose, and it is off until you switch it on.', doc: '/docs/ai-and-agents/', link: 'Use AI with OpenTodo' },
+  { icon: 'keyboard', title: 'Fast from the keyboard', text: 'Add, move and finish tasks without touching the mouse. Type "call the dentist tomorrow 9am #Home" and it becomes a task with a date, a time and a project. There is even a Vim mode.', doc: '/docs/keyboard/', link: 'Keyboard shortcuts' },
   { icon: 'door-open', title: 'Your data comes with you', text: 'Download everything as one file whenever you like. Import from a CSV or another app\'s export. Nothing keeps you here except that it works.', doc: '/docs/import-export/', link: 'Import and export' },
 ];
 ---
-<Base title="OpenTodo · A to-do app that runs on your own server" bareTitle description="OpenTodo is a free, open-source to-do app you run on your own server. Plan your day, set reminders, share lists with your family or team, and work offline on every device. No subscription.">
+<Base title="OpenTodo · A to-do app that runs on your own server" bareTitle description="OpenTodo is a free, open-source to-do app you run on your own server. Plan your day, set reminders, share lists with your family or team, work offline on every device, and add an AI assistant with the model and key you choose. No subscription.">
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow"><Icon name="heart" size={16} /> Free and open source</p>
         <h1 id="hero-title">A to-do app that runs on <span class="accent">your own server.</span></h1>
-        <p class="lede">Plan your day, keep projects in order, set reminders and share lists with your family or your team. Because OpenTodo runs on a small server of your own, there is no monthly plan per person, and your tasks stay with you.</p>
+        <p class="lede">Plan your day, keep projects in order, set reminders and share lists with your family or your team. Because OpenTodo runs on a small server of your own, there is no monthly plan per person, and your tasks stay with you. Add an AI assistant if you want one, with the model and key you choose.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
           <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Install it on your server</a>
@@ -68,6 +68,48 @@ const reasons = [
           </article>
         ))}
       </div>
+    </div>
+  </section>
+
+
+  <section class="section" id="ai" aria-labelledby="ai-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">AI, if you want it</p>
+        <h2 id="ai-title">An assistant that works on your tasks, with a model you choose.</h2>
+        <p class="lede">OpenTodo has no AI of its own and never sends your tasks anywhere by itself. Turn it on, pick the provider and the key, and there are three ways to use it.</p>
+      </div>
+      <div class="split" style="margin-bottom: 2.5rem">
+        <ScreenshotFrame shot="assistant" alt="The assistant panel beside the Inbox proposing to move three overdue tasks to Friday, with Apply all and Discard buttons" />
+        <ul class="checks">
+          <li><Icon name="check" size={18} /> Off until you turn it on. Nothing goes to any provider before the server owner enables it and you accept what is sent where.</li>
+          <li><Icon name="check" size={18} /> Your choice of model: Anthropic, OpenAI, Google Gemini, or a model running on your own network.</li>
+          <li><Icon name="check" size={18} /> In the app you see every change before it happens, and anything an assistant does can be undone from history.</li>
+          <li><Icon name="check" size={18} /> It cannot touch sharing, members, settings, tokens or backups, and it can never delete anything for good.</li>
+          <li><Icon name="check" size={18} /> Task text is treated as data, so a task that says "ignore your instructions" does nothing.</li>
+        </ul>
+      </div>
+      <div class="grid grid-3">
+        <article class="card">
+          <span class="card-icon"><Icon name="sparkles" size={22} /></span>
+          <h3>Ask inside the app</h3>
+          <p>Open the chat panel and ask for "everything overdue moved to Friday" or "this task broken into steps". It proposes the changes, you check them, one step applies them and one step undoes them. On your phone too.</p>
+          <a class="card-link" href="/docs/assistant/">The assistant in the app <Icon name="arrow-right" size={16} /></a>
+        </article>
+        <article class="card">
+          <span class="card-icon"><Icon name="bot" size={22} /></span>
+          <h3>Connect the assistant you already use</h3>
+          <p>Claude Desktop, an IDE or any other MCP client can read your tasks and, when you allow it, add and change them. One token and one entry in your assistant's settings.</p>
+          <a class="card-link" href="/docs/mcp/">AI assistants over MCP <Icon name="arrow-right" size={16} /></a>
+        </article>
+        <article class="card">
+          <span class="card-icon"><Icon name="terminal" size={22} /></span>
+          <h3>Let a coding agent run it</h3>
+          <p>The <code>ot</code> command line is made to be driven by agents and scripts: dry runs, JSON output, and a skill file that teaches an agent to use it safely.</p>
+          <a class="card-link" href="/docs/cli/#using-ot-from-an-agent">Using ot from an agent <Icon name="arrow-right" size={16} /></a>
+        </article>
+      </div>
+      <p style="margin-top: 1.5rem"><a class="link-arrow" href="/docs/ai-and-agents/">Which one to pick, and what each can touch <Icon name="arrow-right" size={16} /></a></p>
     </div>
   </section>
 
