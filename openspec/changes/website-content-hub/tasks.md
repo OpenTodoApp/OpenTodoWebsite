@@ -28,7 +28,7 @@
 
 ## 5. Workflow
 
-- [ ] 5.1 Set up PR previews (D6) and document the review flow in `AGENTS.md`. Verify a test PR shows a working preview link.
-  - Partly: every PR uploads the built site as the `site` artefact and AGENTS.md documents the review flow. A hosted preview link (Coolify preview deployments) is the maintainer's operations choice and is not set up.
+- [x] 5.1 Set up PR previews (D6) and document the review flow in `AGENTS.md`. Verify a test PR shows a working preview link.
+  - Static-artefact option of D6: every PR uploads the built site as the `site` artefact, and the checks workflow comments its download link on the PR (updated on each push); AGENTS.md documents the flow. Verified on #9: the comment appeared and the artefact unzips to the built site. A Coolify preview deployment can replace it later.
 - [ ] 5.2 Create the scheduled drafting routine (D5) that opens one draft PR every two weeks from the backlog. Verify a first run opens a draft PR with a preview and passing checks, and doesn't merge.
   - Not created: a scheduled routine that opens pull requests needs the maintainer's go-ahead.
