@@ -36,5 +36,5 @@ The public website of [OpenTodo](https://github.com/pixari/opentodo), live at ht
 - Agents always open posts as `draft: true`. The maintainer removes `draft` after reviewing the rendered post.
 
 ## Previews and bundle pins
-- A pull request's preview is the `site` artefact of the checks workflow (download, unzip, `npx serve` or `npm run serve`), or a Coolify preview deployment when enabled.
+- A pull request's preview is the `site` artefact of the checks workflow; the workflow comments its download link on the pull request and updates the comment on every push (download, unzip, `npx serve` or `npm run serve`). A Coolify preview deployment can replace it when enabled.
 - To build against an unreleased app: `{ "preview": "<app run id>" }` in `bundle.json` (needs `GITHUB_TOKEN`) or `BUNDLE_DIR=/path npm run build`. Every page then shows a preview banner, and the Docker build refuses it.

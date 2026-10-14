@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: read
+  # The checks job comments the preview link on pull requests (website-content-hub D6).
+  pull-requests: write
 
 concurrency:
   group: checks-${{ github.ref }}
@@ -39,12 +41,25 @@ jobs:
       - name: Accessibility (light and dark, 360 and 1280 px), horizontal scroll, no-JS pass, islands
         run: npm run test:browser
       - name: Upload the built site (pull request preview)
+        id: site
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: site
           path: dist/
           retention-days: 14
+      # D6: the pull request links its preview, so review happens on the rendered site.
+      # One comment per pull request, updated on every push; fork PRs (read-only token) skip it.
+      - name: Link the preview in the pull request
+        if: always() && github.event_name == 'pull_request' && steps.site.outputs.artifact-url != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          URL: ${{ steps.site.outputs.artifact-url }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          body="**Preview:** [download the built site]($URL) for ${GITHUB_SHA::7}, unzip it and run \`npx serve\` in the folder (kept for 14 days)."
+          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --edit-last --body "$body" 2>/dev/null \
+            || gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "$body" || true
       - name: Upload the browser report
         if: failure()
         uses: actions/upload-artifact@v4
