@@ -1,0 +1,47 @@
+schema: spec-driven
+
+# Project context: constraints that must guide every OpenSpec artifact in this
+# repository. Discoverable facts belong in AGENTS.md and README.md.
+context: |
+  This repository is the public website of OpenTodo (https://github.com/pixari/opentodo),
+  an open-source, self-hosted, local-first task manager that replaces subscription
+  task apps such as Todoist, Things and Linear. The website exists to win the people
+  who pay for those apps today, and to serve self-hosters and developers second.
+  Principles every change must respect:
+  - Outcome first: lead with what a person gets (clarity, calm, ownership, no
+    subscription), never with implementation details. Technical depth lives on the
+    self-hosting and developer pages.
+  - Honest: comparisons show where competitors are ahead, carry a "checked on" date,
+    name competitors in text only (no logos), and every claim about OpenTodo links to
+    the documentation that supports it. No invented testimonials or numbers.
+  - Released facts only: version, docs, screenshots, tokens, icons, changelog and the
+    import formats come from the app's site bundle of a release
+    (opentodo-site-bundle-<version>.tar.gz); the website never describes unreleased
+    features as available.
+  - One look with the app: colours, type and icons come from the bundle's tokens and
+    icon set. No emoji or Unicode symbols as icons.
+  - Fast, private, accessible: static output, pages readable without JavaScript, no
+    third-party scripts except the self-hosted analytics, WCAG 2.2 AA in light and
+    dark from 360 px wide.
+  - Content is drafted by agents and approved by the maintainer; nothing is published
+    without review.
+
+rules:
+  proposal:
+    - State what is out of scope and which page or section of the site the change affects
+    - Name any new build dependency and why it is needed
+  specs:
+    - Every requirement about content states how it stays true over time (source, date or bundle field)
+    - Every requirement about a page states its behaviour at phone width and without JavaScript
+  design:
+    - State the effect on build time and on the size of what visitors download
+  tasks:
+    - Each task names the check, command or observable page behaviour that verifies it
+
+operations:
+  apply:
+    guidance:
+      - Run the website checks (build, links, accessibility, emoji-icon scan) before marking the last task done
+  archive:
+    guidance:
+      - Confirm `openspec validate --all --strict` passes after archiving
