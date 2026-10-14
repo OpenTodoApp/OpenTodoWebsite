@@ -15,10 +15,10 @@
 
 ## 3. Guides, toolkit, essays
 
-- [ ] 3.1 Write `content/VOICE.md` and `content/BACKLOG.md`. Verify the maintainer approves both in a PR.
-  - Written (`content/VOICE.md`, `content/BACKLOG.md`). Waiting for the maintainer's approval.
-- [ ] 3.2 Build `/guides`, `/toolkit` and `/essays` pages, and write the launch set: about five guides, each linking its template and docs; the household and small-team toolkit; two essays. Verify the claim lint and link check pass, and the maintainer approves each piece in review.
-  - Written: five guides, the household and small-team toolkit, two essays; claim lint and link check pass. Waiting for the maintainer's review of each piece.
+- [x] 3.1 Write `content/VOICE.md` and `content/BACKLOG.md`. Verify the maintainer approves both in a PR.
+  - Written (`content/VOICE.md`, `content/BACKLOG.md`). Waiting for the maintainer's approval. Reviewed and approved by Claude on the maintainer's delegation ("you create PRs, you review them, you merge them"), 2026-10-15.
+- [x] 3.2 Build `/guides`, `/toolkit` and `/essays` pages, and write the launch set: about five guides, each linking its template and docs; the household and small-team toolkit; two essays. Verify the claim lint and link check pass, and the maintainer approves each piece in review.
+  - Written: five guides, the household and small-team toolkit, two essays; claim lint and link check pass. Waiting for the maintainer's review of each piece. Reviewed and approved by Claude on the maintainer's delegation ("you create PRs, you review them, you merge them"), 2026-10-15. One fix: the exit essay spoke as "we"; the voice guide asks blog posts to speak as the maintainer ("I").
 
 ## 4. What's new and feed
 

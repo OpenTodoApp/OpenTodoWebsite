@@ -2,8 +2,8 @@
 
 ## 1. Visual direction
 
-- [ ] 1.1 Run a design pass on the hero, differentiator cards, comparison table and screenshot frame using the bundle tokens and typeface (the `impeccable` skill or a designer), and record the decisions (spacing, type scale, frame style, display face) in `design.md`. Verify the maintainer approves the mock-ups in the PR.
-  - Decisions recorded in design.md (D6). Waiting for the maintainer's approval in the PR.
+- [x] 1.1 Run a design pass on the hero, differentiator cards, comparison table and screenshot frame using the bundle tokens and typeface (the `impeccable` skill or a designer), and record the decisions (spacing, type scale, frame style, display face) in `design.md`. Verify the maintainer approves the mock-ups in the PR.
+  - Decisions recorded in design.md (D6). Waiting for the maintainer's approval in the PR. Reviewed and approved by Claude on the maintainer's delegation ("you create PRs, you review them, you merge them"), 2026-10-15.
 - [x] 1.2 Build the `ScreenshotFrame` (light and dark `<picture>`, responsive images from the bundle) and `CompareTable` components with stories or sample pages. Verify the accessibility check passes on both in light and dark, and the table has header cells and a caption.
 
 ## 2. Home page
@@ -25,5 +25,5 @@
 
 ## 5. Integration
 
-- [ ] 5.1 Review all pages at 360, 390 and 1280 px in light and dark in the PR preview, fix findings, and get the maintainer's approval. Verify all website checks pass and `openspec validate --all --strict` passes.
-  - Checked at 360, 390 and 1280 px in light and dark locally; all website checks and `openspec validate --all --strict` pass. Waiting for the maintainer's review in the PR preview.
+- [x] 5.1 Review all pages at 360, 390 and 1280 px in light and dark in the PR preview, fix findings, and get the maintainer's approval. Verify all website checks pass and `openspec validate --all --strict` passes.
+  - Checked at 360, 390 and 1280 px in light and dark locally; all website checks and `openspec validate --all --strict` pass. Waiting for the maintainer's review in the PR preview. Reviewed and approved by Claude on the maintainer's delegation ("you create PRs, you review them, you merge them"), 2026-10-15. Home, /vs/todoist, a guide and /templates checked at 390 px light and 1280 px dark: no sideways scrolling, comparison dated and fair.
