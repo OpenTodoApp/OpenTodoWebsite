@@ -128,7 +128,7 @@
 </tr>
 <tr>
 <td>Turn parsing off on this device</td>
-<td>Settings → General → Quick add → <em>Parse natural language in quick add</em>. Quick add then saves the line exactly as typed.</td>
+<td>Settings → Capture → Quick add → <em>Parse natural language in quick add</em>. Quick add then saves the line exactly as typed.</td>
 </tr>
 </tbody></table></div>
 <p>A dismissed chip stays dismissed while you keep typing; it comes back only if you edit that word. Backspace only highlights a chip when that chip&#39;s text ends the line; otherwise Backspace deletes text as usual.</p>
@@ -218,9 +218,9 @@
 </tbody></table></div>
 <p>Words like <code>on</code>, <code>by</code> and <code>due</code> in front of a date are removed with it (<code>Pay bill by Friday</code> → <em>Pay bill</em>). Bare numbers are never times (<code>Buy 3 apples</code> stays as typed): write <code>at 3</code>, <code>3pm</code> or <code>15:00</code>.</p>
 <p>When a line has two dates, the first one counts and the second stays in the title. The same goes for a second time, project, priority or estimate.</p>
-<p><strong>Day/month order.</strong> <code>12/11</code> is 11 December when your first language is US English (<code>en</code>, <code>en-US</code>) and 12 November for every other language, including English outside the US. If one reading is impossible (<code>25/12</code>), the other is used. Dotted dates (<code>12.11.</code>) are always day.month and only used when the order is day/month. Change it under Settings → General → Quick add.</p>
+<p><strong>Day/month order.</strong> <code>12/11</code> is 11 December when your first language is US English (<code>en</code>, <code>en-US</code>) and 12 November for every other language, including English outside the US. If one reading is impossible (<code>25/12</code>), the other is used. Dotted dates (<code>12.11.</code>) are always day.month and only used when the order is day/month. Change it under Settings → Capture → Quick add.</p>
 <h2 id="languages">Languages<a class="anchor" href="#languages" aria-label="Link to this section: Languages">#</a></h2>
-<p>Vocabulary is bundled for <strong>English, German, French, Italian, Spanish and Portuguese</strong>. The active languages are your browser&#39;s preferred languages that are bundled, plus English, which is always on; all of them are matched at the same time. Settings → General → Quick add can override the list on this device. Where two languages read a word differently, the longer phrase wins (Spanish <code>mar</code> alone is Tuesday; <code>mar 3</code> is March 3rd).</p>
+<p>Vocabulary is bundled for <strong>English, German, French, Italian, Spanish and Portuguese</strong>. The active languages are your browser&#39;s preferred languages that are bundled, plus English, which is always on; all of them are matched at the same time. Settings → Capture → Quick add can override the list on this device. Where two languages read a word differently, the longer phrase wins (Spanish <code>mar</code> alone is Tuesday; <code>mar 3</code> is March 3rd).</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead>
 <tr>
@@ -253,7 +253,7 @@
 <h2 id="views-and-defaults">Views and defaults<a class="anchor" href="#views-and-defaults" aria-label="Link to this section: Views and defaults">#</a></h2>
 <p>Quick add still takes the view&#39;s context for anything the line does not set: today in Today, tomorrow in Upcoming, the current project in a project view, the current label in a label view. Anything the line does set wins, so <code>Plan trip next Monday #travel</code> typed in Today goes to <em>Travel</em> on Monday. Labels add up instead: <code>@call</code> typed in the <em>errand</em> label view gives the task both labels, so it stays in the view you added it from.</p>
 <h2 id="voice">Voice<a class="anchor" href="#voice" aria-label="Link to this section: Voice">#</a></h2>
-<p>Quick add can also be dictated. Voice capture is <strong>off by default</strong> and is switched on per device in <strong>Settings → General → Voice capture</strong>; it is not synced, so turning it on for your phone leaves your laptop as it is. Browsers without speech recognition (Firefox, for example) show the switch disabled with an explanation, and quick add has no microphone button there.</p>
+<p>Quick add can also be dictated. Voice capture is <strong>off by default</strong> and is switched on per device in <strong>Settings → Capture → Voice capture</strong>; it is not synced, so turning it on for your phone leaves your laptop as it is. Browsers without speech recognition (Firefox, for example) show the switch disabled with an explanation, and quick add has no microphone button there.</p>
 <p>With voice capture on, press the microphone button in quick add or <code>Shift+V</code> anywhere outside a text field (plain <code>v</code> already toggles list and board in a project). Words appear in the box as they are recognised; when you stop talking, press the button again or press <code>Esc</code>, the final transcript is inserted at the caret and parsed exactly like typed text, chips included. <strong>Nothing is saved until you press Enter</strong>, so you can correct the line by hand first.</p>
 <p>Spoken forms of the tokens are turned into their typed forms first, in the active quick-add languages (English is always on):</p>
 <div class="table-wrap" tabindex="0"><table>

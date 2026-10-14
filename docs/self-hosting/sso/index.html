@@ -118,7 +118,7 @@
 <h2 id="1-set-the-public-url">1. Set the public URL<a class="anchor" href="#1-set-the-public-url" aria-label="Link to this section: 1. Set the public URL">#</a></h2>
 <p>Providers only accept the exact redirect URI you register. Set <code>OPENTODO_BASE_URL</code> to the URL people use, with https:</p>
 <pre tabindex="0"><code class="language-bash">OPENTODO_BASE_URL=https://todo.example.com</code></pre>
-<p>The redirect URI is then <code>https://todo.example.com/api/v1/auth/oidc/callback</code>. <strong>Settings → Administration → Single sign-on</strong> always shows the exact value; without <code>OPENTODO_BASE_URL</code> it is derived from the address in your browser and the panel warns you.</p>
+<p>The redirect URI is then <code>https://todo.example.com/api/v1/auth/oidc/callback</code>. <strong>Settings → Access policies → Single sign-on</strong> always shows the exact value; without <code>OPENTODO_BASE_URL</code> it is derived from the address in your browser and the panel warns you.</p>
 <h2 id="2-create-a-client-at-the-provider">2. Create a client at the provider<a class="anchor" href="#2-create-a-client-at-the-provider" aria-label="Link to this section: 2. Create a client at the provider">#</a></h2>
 <p>Create an OpenID Connect client (&quot;application&quot;, &quot;relying party&quot;):</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -166,7 +166,7 @@
 <li><strong>Zitadel / hosted services</strong>: use a Web application with PKCE and the code flow; the issuer is shown on the application page.</li>
 </ul>
 <h2 id="3-configure-opentodo">3. Configure OpenTodo<a class="anchor" href="#3-configure-opentodo" aria-label="Link to this section: 3. Configure OpenTodo">#</a></h2>
-<p>Open <strong>Settings → Administration → Single sign-on</strong> as the owner:</p>
+<p>Open <strong>Settings → Access policies → Single sign-on</strong> as the owner:</p>
 <ol>
 <li>Enter the <strong>Issuer URL</strong>, <strong>Client ID</strong>, <strong>Client secret</strong> and a <strong>Button label</strong> (for example &quot;Home SSO&quot;).</li>
 <li>Click <strong>Test connection</strong>. OpenTodo fetches the discovery document and shows the sign-in and token hosts. An issuer that is not https, unreachable, or reports a different issuer is refused and nothing changes.</li>
@@ -210,9 +210,9 @@
 <li>An identity is recognised by its issuer and subject (<code>sub</code>), never by email once linked. Changing your email at the provider keeps you on the same OpenTodo account, and a changed email cannot take over another account.</li>
 <li>A first-time identity with a verified email that matches an account is linked to it. An unverified or missing email is refused (<code>oidc_email_unverified</code>) and nothing is created.</li>
 <li>When nothing matches, a <code>member</code> account is created only if <strong>Allow new accounts via SSO</strong> is on or <code>OPENTODO_ALLOW_SIGNUP=true</code>. Otherwise the person sees &quot;There is no account for this identity yet&quot; and you can invite them.</li>
-<li>Accounts created this way have no password. They can add a passkey in Settings.</li>
-<li>Everyone can link or unlink the provider in <strong>Settings → Account → Linked accounts</strong>. Unlinking is refused when it would leave the account with no way to sign in.</li>
-<li>A provider sign-in counts as two-factor: someone with an authenticator app is not asked for a code, because the provider applies its own policy. If the owner requires two-factor for everyone (<strong>Settings → Account → Two-factor</strong>), accounts without an authenticator are still asked to enrol one.</li>
+<li>Accounts created this way have no password. They can add a passkey in <strong>Settings → Security</strong>.</li>
+<li>Everyone can link or unlink the provider in <strong>Settings → Security → Linked accounts</strong>. Unlinking is refused when it would leave the account with no way to sign in.</li>
+<li>A provider sign-in counts as two-factor: someone with an authenticator app is not asked for a code, because the provider applies its own policy. If the owner requires two-factor for everyone (<strong>Settings → Access policies → Two-factor authentication</strong>), accounts without an authenticator are still asked to enrol one.</li>
 </ul>
 <h2 id="sso-only">SSO only<a class="anchor" href="#sso-only" aria-label="Link to this section: SSO only">#</a></h2>
 <p><strong>Require single sign-on</strong> refuses password and passkey sign-in, and password registration, for every account except the owner. Members see only the provider button. API tokens and the <code>ot</code> CLI keep working, because a token is already a delegated credential.</p>

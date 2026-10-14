@@ -122,7 +122,7 @@
 <p>Push notifications deliver reminders even when OpenTodo isn&#39;t open. Each device decides for itself.</p>
 <ol>
 <li>Open <strong>Settings → Notifications</strong> on the device.</li>
-<li>Tick <strong>Enable notifications on this device</strong> and allow notifications when the browser asks.</li>
+<li>Turn on <strong>Enable notifications on this device</strong> and allow notifications when the browser asks.</li>
 <li>Select <strong>Send test notification</strong>. Your server sends a real push to this device, the same way it sends reminders, and a notification appears even while OpenTodo is open.</li>
 </ol>
 <p><picture><source srcset="/docs/images/settings-notifications-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/settings-notifications-light.webp" alt="Settings, Notifications section with the options Enable notifications on this device and Include task titles." width="1180" height="300" loading="lazy" decoding="async"></picture></p>
@@ -166,7 +166,7 @@
 <ul>
 <li><strong>Received on this device</strong>: the push arrived and the notification was handed to your system. Reminders will reach this device while the app is closed. If you still saw no banner, your operating system hid it (see below).</li>
 <li><strong>Accepted, but this device has not reported receiving it</strong>: your server delivered the push to the browser&#39;s push service, but nothing reached this device within a few seconds. Check the operating system&#39;s notification settings for your browser or the app, focus and do-not-disturb modes, and on iPhone and iPad use the installed app. If it arrives late, the result updates to received.</li>
-<li><strong>This device is not subscribed</strong>: nothing was sent. Tick <strong>Enable notifications on this device</strong> first.</li>
+<li><strong>This device is not subscribed</strong>: nothing was sent. Turn on <strong>Enable notifications on this device</strong> first.</li>
 <li><strong>The subscription expired</strong>: the push service no longer accepts it and your server removed it. Select <strong>Enable</strong> to subscribe again.</li>
 <li><strong>The push service rejected the test</strong>: the message shows its answer. Try <strong>Re-enable</strong>; if it keeps failing, the push service may be unreachable from your server.</li>
 </ul>

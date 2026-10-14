@@ -110,11 +110,11 @@
 <h2 id="sign-in-with-a-passkey">Sign in with a passkey<a class="anchor" href="#sign-in-with-a-passkey" aria-label="Link to this section: Sign in with a passkey">#</a></h2>
 <p>A passkey lets you sign in with your fingerprint, face or device PIN instead of typing a password. It can&#39;t be phished or reused on another site, and your password keeps working as a fallback.</p>
 <ol>
-<li>Open <strong>Settings → Account → Security</strong>.</li>
+<li>Open <strong>Settings → Security</strong> and find the <strong>Passkeys</strong> card.</li>
 <li>Select <strong>Add passkey</strong> and give it a name you&#39;ll recognise, like &quot;Work laptop&quot;.</li>
 <li>Confirm with your fingerprint, face or PIN when your device asks.</li>
 </ol>
-<p><picture><source srcset="/docs/images/settings-passkeys-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/settings-passkeys-light.webp" alt="Settings, Security section explaining passkeys, with an Add passkey button." width="1180" height="338" loading="lazy" decoding="async"></picture></p>
+<p><picture><source srcset="/docs/images/settings-passkeys-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/settings-passkeys-light.webp" alt="Settings, Security section with the Passkeys card and an Add passkey button." width="1180" height="338" loading="lazy" decoding="async"></picture></p>
 <p>Next time, choose <strong>Sign in with a passkey</strong> on the sign-in screen, or pick it from the suggestions in the email field.</p>
 <p><picture><source srcset="/docs/images/signin-dark.webp" media="(prefers-color-scheme: dark)"><img src="/docs/images/signin-light.webp" alt="The sign-in screen with email and password fields and a Sign in with a passkey button below." width="560" height="605" loading="lazy" decoding="async"></picture></p>
 <p>Add a passkey on a second device too, so losing one isn&#39;t a problem. You can rename or delete passkeys in the same list. If one is marked as suspicious, OpenTodo noticed something that looks like a copied passkey; delete it if you don&#39;t recognise the device.</p>
@@ -122,7 +122,7 @@
 <h2 id="turn-on-two-factor-authentication">Turn on two-factor authentication<a class="anchor" href="#turn-on-two-factor-authentication" aria-label="Link to this section: Turn on two-factor authentication">#</a></h2>
 <p>With two-factor authentication, signing in takes your password plus a six-digit code from an authenticator app on your phone. Any app that supports time-based codes works.</p>
 <ol>
-<li>Open <strong>Settings → Account → Two-factor authentication</strong> and select <strong>Set up two-factor authentication</strong>.</li>
+<li>Open <strong>Settings → Security → Two-factor authentication</strong> and select <strong>Set up two-factor authentication</strong>.</li>
 <li>Scan the QR code with your authenticator app, or type in the key shown under it.</li>
 <li>Enter the six-digit code the app shows.</li>
 <li>Save the <strong>recovery codes</strong> that appear. They&#39;re shown only once: download them as a text file or write them down and keep them somewhere safe.</li>
@@ -136,10 +136,10 @@
 <p>If you lose both your phone and your recovery codes, the owner of your server can reset your two-factor authentication.</p>
 <p>Your server&#39;s owner can also make two-factor authentication required. If so, you&#39;ll be asked to set it up when you sign in, and you can&#39;t turn it off.</p>
 <h2 id="change-your-password">Change your password<a class="anchor" href="#change-your-password" aria-label="Link to this section: Change your password">#</a></h2>
-<p>Open <strong>Settings → Account → Password</strong>, enter your current password and a new one of at least 10 characters. Changing it signs you out everywhere else; the device you&#39;re on stays signed in.</p>
+<p>Open <strong>Settings → Security</strong>, select <strong>Change password</strong> in the <strong>Password</strong> card, enter your current password and a new one of at least 10 characters. Changing it signs you out everywhere else; the device you&#39;re on stays signed in.</p>
 <p>Forgot it? There&#39;s no self-service reset by email. Ask the owner or an admin of your server for a reset link. If you&#39;re the owner, see <a href="/docs/self-hosting/docker/#recovering-owner-access">recovering owner access</a>.</p>
 <h2 id="check-recent-sign-ins">Check recent sign-ins<a class="anchor" href="#check-recent-sign-ins" aria-label="Link to this section: Check recent sign-ins">#</a></h2>
-<p><strong>Settings → Account → Recent activity</strong> lists sign-ins and token changes on your account from the last 90 days. If you see one you don&#39;t recognise, change your password, revoke your API tokens and tell the owner of your server.</p>
+<p><strong>Settings → Activity → Recent activity</strong> lists sign-ins and token changes on your account from the last 90 days. If you see one you don&#39;t recognise, change your password, revoke your API tokens and tell the owner of your server.</p>
 <h2 id="confirm-its-you">Confirm it&#39;s you<a class="anchor" href="#confirm-its-you" aria-label="Link to this section: Confirm it's you">#</a></h2>
 <p>Some changes, like creating an API token or turning off two-factor authentication, ask for your password or a code again, unless you entered one in the last ten minutes. That keeps someone who finds your unlocked laptop from changing them.</p>
 <h2 id="sign-out">Sign out<a class="anchor" href="#sign-out" aria-label="Link to this section: Sign out">#</a></h2>
@@ -147,7 +147,7 @@
 <h2 id="more-protection">More protection<a class="anchor" href="#more-protection" aria-label="Link to this section: More protection">#</a></h2>
 <ul>
 <li><a href="/docs/e2ee/">End-to-end encryption</a> encrypts your task titles, notes and comments on your devices, so even your server only stores scrambled text.</li>
-<li>If your server uses a company or family login (single sign-on), you can link it under <strong>Settings → Account → Linked accounts</strong> and sign in with it.</li>
+<li>If your server uses a company or family login (single sign-on), you can link it under <strong>Settings → Security → Linked accounts</strong> and sign in with it.</li>
 </ul>
 
       <p class="edit"><a href="https://github.com/pixari/opentodo/edit/main/docs/account-security.md" rel="noopener">Edit this page on GitHub</a></p>
