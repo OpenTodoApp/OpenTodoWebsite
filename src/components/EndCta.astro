@@ -4,7 +4,7 @@
 import Icon from './Icon.astro';
 import { SITE } from '../lib/site';
 interface Props { title?: string; lede?: string }
-const { title = 'Your tasks, on your server.', lede = 'Try the demo in your browser, run it on your own server in minutes, and bring your tasks with you.' } = Astro.props;
+const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in your browser. When you like it, install OpenTodo on your server and import your tasks.' } = Astro.props;
 ---
 <section class="end-cta" aria-labelledby="end-cta-title">
   <div class="wrap">
@@ -13,7 +13,7 @@ const { title = 'Your tasks, on your server.', lede = 'Try the demo in your brow
     <div class="cta-row center">
       <a class="btn btn-primary" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
       <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Self-host</a>
-      <a class="btn btn-secondary" href="/docs/import/"><Icon name="upload" size={18} /> Import your tasks</a>
+      <a class="btn btn-secondary" href="/docs/import/"><Icon name="upload" size={18} /> Bring your tasks over</a>
     </div>
   </div>
 </section>

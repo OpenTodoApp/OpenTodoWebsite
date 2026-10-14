@@ -12,11 +12,11 @@ const list = (names: string[]) => names.length < 2 ? names.join('') : `${names.s
 ---
 <section class="import-strip" id="switch" aria-labelledby="switch-title">
   <div class="wrap import-inner">
-    <p id="switch-title">Coming from {list(STRIP_APPS.map((a) => a.app))}?</p>
+    <p id="switch-title">Using {list(STRIP_APPS.map((a) => a.app))} today? You can bring your tasks with you.</p>
     <ul class="import-apps">
       {named.map((a) => <li><a class="btn btn-secondary btn-small" href={a.link.href} data-switch={a.app}><Icon name="arrow-right" size={16} />{a.link.label}</a></li>)}
       {generic.length > 0 && (
-        <li><a class="btn btn-secondary btn-small" href={IMPORT_GUIDE} data-switch="generic"><Icon name="upload" size={16} />Import your tasks from a CSV or JSON export</a></li>
+        <li><a class="btn btn-secondary btn-small" href={IMPORT_GUIDE} data-switch="generic"><Icon name="upload" size={16} />How to import a CSV or JSON export</a></li>
       )}
     </ul>
   </div>
