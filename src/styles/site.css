@@ -106,6 +106,9 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .nav-menu .menu-panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--bg); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); padding: 0.5rem var(--gutter) 1rem; }
 .nav-menu .nav-link { display: flex; min-height: 48px; font-size: 1.0625rem; }
 .nav-menu .menu-cta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+/* The star button joins the header only where the navigation still fits on one line. */
+.site-header .header-star { display: none !important; }
+@media (min-width: 1180px) { .site-header .header-star { display: inline-flex !important; } }
 @media (min-width: 768px) {
   .nav-desktop { display: block; }
   .nav-menu { display: none; }
