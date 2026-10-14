@@ -64,7 +64,7 @@ jobs:
         run: |
           docker run -d --name site -p 8080:80 opentodo-website
           for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8080/ >/dev/null && break; sleep 1; done
-          curl -fsS http://127.0.0.1:8080/ | grep -q "Clarity without"
+          curl -fsS http://127.0.0.1:8080/ | grep -q 'id="hero-title"'
           curl -fsS http://127.0.0.1:8080/docs/import/ | grep -q "Import formats"
           curl -fsS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8080/no-such-page/ | grep -q 404
           sleep 35 && test "$(docker inspect -f '{{.State.Health.Status}}' site)" = healthy
