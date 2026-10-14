@@ -5,7 +5,6 @@ publishedAt: 2026-10-14
 author: raffaele
 category: releases
 release: 0.3.0
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo 0.3.0 is about bringing your own AI, if you want one. Nothing in this release sends your tasks anywhere unless the person who runs the server turns it on, and every person sees what goes where before their first message.

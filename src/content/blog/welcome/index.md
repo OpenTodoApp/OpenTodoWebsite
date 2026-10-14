@@ -4,7 +4,6 @@ summary: What this blog is for, what you'll find here, and how to follow along.
 publishedAt: 2026-10-14
 author: raffaele
 category: news
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo is a to-do app you run on your own server. Until now, news about it lived in release notes and the odd forum thread, and was gone a week later. This blog is where it goes from now on.

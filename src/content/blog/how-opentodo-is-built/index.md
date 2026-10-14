@@ -4,7 +4,6 @@ summary: Every feature starts as a written specification. AI coding agents imple
 publishedAt: 2026-10-14
 author: raffaele
 category: development
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo is a large app for one maintainer: a Go server, a web app that works offline, sync between devices, sharing, encryption, an API, a command line and more. People often ask how that's possible. The short answer is a process with three parts: write it down first, let agents build from what's written, and check everything.

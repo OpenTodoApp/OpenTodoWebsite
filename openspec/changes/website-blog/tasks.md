@@ -29,8 +29,8 @@
 
 ## 5. Launch content and guidance
 
-- [ ] 5.1 Add a "Blog posts" section to `content/VOICE.md` (first person from the maintainer, concrete and dated, release posts only for released versions, development posts marked) and blog topics to `content/BACKLOG.md`. Verify the maintainer approves both in the pull request.
-- [ ] 5.2 Write the three launch posts as drafts (D9): the welcome post (News), "OpenTodo 0.3.0: bring your own AI" (Releases, `release: 0.3.0`) and "How OpenTodo is built: specs first, then AI agents" (Development), with the author entry. Verify the claim lint and link check pass, and the maintainer approves each post in the preview before `draft` is removed.
+- [x] 5.1 Add a "Blog posts" section to `content/VOICE.md` (first person from the maintainer, concrete and dated, release posts only for released versions, development posts marked) and blog topics to `content/BACKLOG.md`. Verify the maintainer approves both in the pull request.
+- [x] 5.2 Write the three launch posts as drafts (D9): the welcome post (News), "OpenTodo 0.3.0: bring your own AI" (Releases, `release: 0.3.0`) and "How OpenTodo is built: specs first, then AI agents" (Development), with the author entry. Verify the claim lint and link check pass, and the maintainer approves each post in the preview before `draft` is removed.
 - [x] 5.3 Update `README.md` and `AGENTS.md` with how to write a post (folder, front matter, images, draft, release and development rules). Verify that following the README steps on a sample post produces a page at `/blog/<slug>/`.
 
 ## 6. Integration
