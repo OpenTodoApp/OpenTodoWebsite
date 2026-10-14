@@ -89,4 +89,4 @@ Pages ship in one PR per group: home, comparisons, audience pages. The old home 
 
 ## Open Questions
 
-- Final headline wording, settled in review of the home PR, without changing structure or specs.
+- ~~Final headline wording.~~ Settled after the maintainer's first review: the working line "Clarity without the subscription" read as a slogan and never said what the product is. The headline is now "A to-do app that runs on your own server", and the home page opens with a plain list of what the app does (Today and Upcoming, projects, reminders, labels, shared lists, phone and laptop) before the reasons to switch. The rule for all copy: say what it is and what you do with it, in the words a Todoist or Things user would use, before saying why it is better.

@@ -12,27 +12,36 @@ import ImportStrip from '../components/ImportStrip.astro';
 import ScreenshotFrame from '../components/ScreenshotFrame.astro';
 import { SITE } from '../lib/site';
 
-const differentiators = [
-  { icon: 'house', title: 'One server, your whole household', text: 'Everyone gets their own account and their own lists, and you share the projects you have in common: groceries, the move, the holiday.', doc: '/docs/sharing/', link: 'Sharing and accounts' },
-  { icon: 'wifi-off', title: 'Really works offline', text: 'Every device keeps a full copy. Add, edit and finish tasks on a plane; everything catches up when you are back online.', doc: '/docs/offline-and-sync/', link: 'Offline and sync' },
-  { icon: 'lock', title: 'End-to-end encryption, if you want it', text: 'Switch it on and your titles, notes and comments are encrypted on your devices. Your server only stores ciphertext.', doc: '/docs/e2ee/', link: 'End-to-end encryption' },
-  { icon: 'sparkles', title: 'Your AI, your key', text: 'An assistant that proposes changes you review first, with the provider and key you choose. Off until you turn it on.', doc: '/docs/ai-and-agents/', link: 'Use AI with OpenTodo' },
-  { icon: 'door-open', title: 'Leave any time', text: 'Export everything as one file whenever you like. Import from a CSV or another app\'s export. No lock-in, no subscription to cancel.', doc: '/docs/import-export/', link: 'Import and export' },
+// What a Todoist, Things or TickTick user looks for first, in their words.
+const basics = [
+  { icon: 'calendar-check', title: 'Today and Upcoming', text: 'See what is due today, what is overdue, and what the rest of the week looks like.', doc: '/docs/views/' },
+  { icon: 'folder', title: 'Projects, sections and boards', text: 'Group tasks into projects, split them into sections, and switch to a board when you want columns.', doc: '/docs/sections-and-boards/' },
+  { icon: 'alarm-clock', title: 'Reminders and repeating tasks', text: 'Get a notification before something is due. "Every Monday" or "every 2 weeks" just works.', doc: '/docs/recurring-and-reminders/' },
+  { icon: 'tag', title: 'Labels and filters', text: 'Tag tasks with @errand or @call, then save a filter like "due this week and not done" to the sidebar.', doc: '/docs/labels-and-filters/' },
+  { icon: 'users', title: 'Shared lists', text: 'Share a project with your partner or your team, assign tasks, and leave comments on them.', doc: '/docs/sharing/' },
+  { icon: 'monitor-smartphone', title: 'Phone, laptop, offline', text: 'Install it from the browser on iPhone, Android, Mac, Windows or Linux. It keeps working without a connection.', doc: '/docs/install-app/' },
+];
+const reasons = [
+  { icon: 'house', title: 'One server for everyone at home', text: 'Each person gets their own account and their own lists. Share the shopping list, the move or the holiday with whoever needs it. Nobody pays per person.', doc: '/docs/sharing/', link: 'Sharing and accounts' },
+  { icon: 'wifi-off', title: 'Works without a connection', text: 'Your phone keeps a full copy of your tasks. Add and tick things off on the train or on a plane, and it all syncs when you are back online.', doc: '/docs/offline-and-sync/', link: 'Offline and sync' },
+  { icon: 'lock', title: 'Encrypted, if you want', text: 'Turn it on and your task titles and notes are encrypted on your devices before they reach the server. Not even the server can read them.', doc: '/docs/e2ee/', link: 'End-to-end encryption' },
+  { icon: 'sparkles', title: 'AI on your terms', text: 'Ask the assistant to tidy up your week, then approve what it suggests before anything changes. It uses the AI provider and key you choose, and it is off until you switch it on.', doc: '/docs/ai-and-agents/', link: 'Use AI with OpenTodo' },
+  { icon: 'door-open', title: 'Your data comes with you', text: 'Download everything as one file whenever you like. Import from a CSV or another app\'s export. Nothing keeps you here except that it works.', doc: '/docs/import-export/', link: 'Import and export' },
 ];
 ---
-<Base title="OpenTodo · Clarity without the subscription" bareTitle description="A calm, fast task manager for you and your household, on a server you own. Works offline on every device, shares lists with the people you live with, and costs no subscription.">
+<Base title="OpenTodo · A to-do app that runs on your own server" bareTitle description="OpenTodo is a free, open-source to-do app you run on your own server. Plan your day, set reminders, share lists with your family or team, and work offline on every device. No subscription.">
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow"><Icon name="heart" size={16} /> Free and open source</p>
-        <h1 id="hero-title">Clarity without <span class="accent">the subscription.</span></h1>
-        <p class="lede">One server, your whole household, every device, even offline. A calm, fast task app that stays yours.</p>
+        <h1 id="hero-title">A to-do app that runs on <span class="accent">your own server.</span></h1>
+        <p class="lede">Plan your day, keep projects in order, set reminders and share lists with your family or your team. Because OpenTodo runs on a small server of your own, there is no monthly plan per person, and your tasks stay with you.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
-          <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Self-host in minutes</a>
-          <a class="btn btn-secondary" href="#switch"><Icon name="upload" size={18} /> Switch from your app</a>
+          <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Install it on your server</a>
+          <a class="btn btn-secondary" href="#switch"><Icon name="upload" size={18} /> Bring your tasks over</a>
         </div>
-        <p class="hero-note">No account on anyone else's server. No tracking inside the app.</p>
+        <p class="hero-note">Works on your phone and your computer, with or without a connection. The app never sends anything to anyone but your server.</p>
       </div>
       <div>
         <HeroDemo />
@@ -45,11 +54,42 @@ const differentiators = [
   <section class="section" id="features" aria-labelledby="features-title">
     <div class="wrap">
       <div class="section-head">
-        <p class="kicker">Why people switch</p>
-        <h2 id="features-title">Everything you like about your task app. <span class="muted">None of the rent.</span></h2>
+        <p class="kicker">What you get</p>
+        <h2 id="features-title">Everything you use a to-do app for.</h2>
+        <p class="lede">If you are coming from Todoist, Things or TickTick, the things you rely on every day are here.</p>
+      </div>
+      <div class="grid grid-3">
+        {basics.map((b) => (
+          <article class="card">
+            <span class="card-icon"><Icon name={b.icon} size={22} /></span>
+            <h3>{b.title}</h3>
+            <p>{b.text}</p>
+            <a class="card-link" href={b.doc}>How it works <Icon name="arrow-right" size={16} /></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="tour" aria-labelledby="tour-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">The app</p>
+        <h2 id="tour-title">See what it looks like.</h2>
+        <p class="lede">These are screenshots of the real app, taken from the current release with example data. Pick a topic, then a feature.</p>
+      </div>
+      <FeatureTour />
+    </div>
+  </section>
+
+  <section class="section" id="why" aria-labelledby="why-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Why people move their lists here</p>
+        <h2 id="why-title">What you get from running it yourself.</h2>
       </div>
       <div class="grid grid-5">
-        {differentiators.map((d) => (
+        {reasons.map((d) => (
           <article class="card">
             <span class="card-icon"><Icon name={d.icon} size={22} /></span>
             <h3>{d.title}</h3>
@@ -61,34 +101,23 @@ const differentiators = [
     </div>
   </section>
 
-  <section class="section section-alt" id="tour" aria-labelledby="tour-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">See it</p>
-        <h2 id="tour-title">Real screenshots, not mock-ups.</h2>
-        <p class="lede">Every image is a capture of the released app with demo data. Pick a chapter, then a feature.</p>
-      </div>
-      <FeatureTour />
-    </div>
-  </section>
-
-  <section class="section" id="household" aria-labelledby="household-title">
+  <section class="section section-alt" id="household" aria-labelledby="household-title">
     <div class="wrap split">
       <div>
-        <p class="kicker">For the whole household</p>
-        <h2 id="household-title">Host it once. Everyone gets a polished app.</h2>
-        <p class="lede">The person who likes tinkering sets up one small server. Everyone else just opens the app on their phone and laptop, and it works like the apps they know.</p>
+        <p class="kicker">For families and small teams</p>
+        <h2 id="household-title">One person sets it up. Everyone else just uses the app.</h2>
+        <p class="lede">Whoever at home does not mind a bit of setup installs OpenTodo on a small server, a cheap VPS or a Raspberry Pi. Everyone else opens the app on their phone or laptop and uses it like any other to-do app.</p>
         <div class="versus">
           <div class="card">
-            <h3><Icon name="users" size={20} /> A subscription per person</h3>
-            <p>Each person signs up with a company, and the full app usually means a monthly plan per person. Your lists live on the company's servers.</p>
+            <h3><Icon name="users" size={20} /> With a subscription app</h3>
+            <p>Everyone signs up with the company. The full app usually costs a monthly fee per person, and your lists live on the company's servers.</p>
           </div>
           <div class="card us">
-            <h3><Icon name="server" size={20} /> One server for everyone</h3>
-            <p>One small server or a Raspberry Pi runs everyone's lists. Invite people with a link, share the projects you have in common, keep the rest private.</p>
+            <h3><Icon name="server" size={20} /> With OpenTodo</h3>
+            <p>Everyone has an account on your server. Invite people with a link, share the lists you have in common, keep the rest private. The only cost is the server.</p>
           </div>
         </div>
-        <p style="margin-top: 1.25rem"><a class="link-arrow" href="/docs/install-app/">Install it on phones and laptops <Icon name="arrow-right" size={16} /></a></p>
+        <p style="margin-top: 1.25rem"><a class="link-arrow" href="/docs/install-app/">How to install it on phones and laptops <Icon name="arrow-right" size={16} /></a></p>
       </div>
       <div class="phones">
         <ScreenshotFrame shot="mobile-dark" frame="phone" alt="Today view on a phone in dark mode" />
@@ -97,25 +126,25 @@ const differentiators = [
     </div>
   </section>
 
-  <section class="section section-alt" id="self-host" aria-labelledby="how-title">
+  <section class="section" id="self-host" aria-labelledby="how-title">
     <div class="wrap split">
       <div>
         <p class="kicker">How it works</p>
-        <h2 id="how-title">Edit anywhere. Never pick a version again.</h2>
-        <p class="lede">Change the same task on two devices while offline, and both changes survive when they reconnect. One container, one folder of data, and a server as small as a Raspberry Pi.</p>
+        <h2 id="how-title">Edit the same task on your phone and your laptop, and both changes stick.</h2>
+        <p class="lede">Each of your devices keeps a copy of your tasks and swaps its changes with the others through your server. There is no "which version do you want to keep?" dialog. The whole thing is one container and one folder of data.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="/self-host/#sync">See sync in action <Icon name="arrow-right" size={18} /></a>
           <a class="btn btn-secondary" href="/developers/"><Icon name="braces" size={18} /> For developers</a>
         </div>
       </div>
       <ul class="checks">
-        <li><Icon name="check" size={18} /> Installs on phones and desktops from the browser, no app store needed</li>
-        <li><Icon name="check" size={18} /> Your data in one folder, with scheduled backups</li>
-        <li><Icon name="check" size={18} /> Calendar apps, email, webhooks and a command line</li>
-        <li><Icon name="check" size={18} /> Every feature described in an open specification</li>
+        <li><Icon name="check" size={18} /> Installs on phones and computers straight from the browser, no app store involved</li>
+        <li><Icon name="check" size={18} /> Your data is one folder on your server, with scheduled backups</li>
+        <li><Icon name="check" size={18} /> Connects to calendar apps, email, webhooks and a command line</li>
+        <li><Icon name="check" size={18} /> Every feature is written down in an open specification you can read</li>
       </ul>
     </div>
   </section>
 
-  <EndCta title="Stop renting your to-do list." lede="Try it in the browser now, then run it on your own server tonight." />
+  <EndCta title="Try it first, then make it yours." lede="The demo runs in your browser with nothing to install. When you like it, put it on your own server and bring your tasks over." />
 </Base>

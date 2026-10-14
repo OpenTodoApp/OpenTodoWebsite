@@ -28,5 +28,5 @@ test('the Compare link works from the phone menu without JavaScript', async ({ p
   await page.locator('details.nav-menu > summary').click();
   await page.locator('details.nav-menu nav').getByRole('link', { name: 'Compare', exact: true }).click();
   await expect(page).toHaveURL(/\/vs\/$/);
-  await expect(page.locator('h1')).toHaveText('Honest comparisons.');
+  await expect(page.locator('h1')).toHaveText('How OpenTodo compares.');
 });
