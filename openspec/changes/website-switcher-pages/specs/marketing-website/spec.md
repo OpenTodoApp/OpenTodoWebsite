@@ -7,24 +7,21 @@ Defines what the public OpenTodo website must say and do to win people who use c
 ## ADDED Requirements
 
 ### Requirement: Outcome-first home page
-The home page SHALL open with the outcome for people who use a task app, not with implementation details. Above the first screenful it SHALL show a headline, a one-sentence promise, the live demo of the app, and calls to action to try the demo, self-host and import. Below, it SHALL present the differentiators (one server for a whole household, full offline use, optional end-to-end encryption, assistants with the user's own model key, leaving at any time), real screenshots and a short teaser that links to the self-hosting page. Architecture terms SHALL NOT appear above the fold.
+The home page SHALL open with the outcome for people who use a task app, not with implementation details. Above the first screenful it SHALL show a headline, a one-sentence promise and calls to action to try the demo, self-host and import, with the live demo of the app directly below. Architecture terms SHALL NOT appear above the fold.
 
 #### Scenario: A Todoist user lands on the home page
 - **WHEN** a visitor opens the home page on a 390 px wide phone
 - **THEN** the first screenful shows the headline, the promise and the calls to action, and the live demo is reachable by scrolling once, without any mention of op logs, clocks or SQLite
+
+### Requirement: Differentiators and proof on the home page
+Below the hero, the home page SHALL present the differentiators (one server for a whole household, full offline use, optional end-to-end encryption, assistants with the user's own model key, leaving at any time), real screenshots, and a short teaser that links to the self-hosting page.
 
 #### Scenario: Technical detail is one click away
 - **WHEN** a visitor wants to know how sync works
 - **THEN** a link from the home page leads to the self-hosting page with the interactive sync demo
 
 ### Requirement: Honest comparison pages
-The site SHALL have one comparison page each for Todoist, Things and Linear. Each SHALL contain:
-- a feature table with rows where the competitor is ahead, not only rows where OpenTodo is ahead
-- the date the comparison was last checked
-- the cost difference stated in words without exact prices that can go stale
-- a link to the matching switch guide
-
-Competitor names SHALL appear as text only, without their logos or visual identity. Every claim about OpenTodo SHALL link to the documentation page that supports it.
+The site SHALL have one comparison page each for Todoist, Things and Linear. Each SHALL contain a feature table with rows where the competitor is ahead as well as rows where OpenTodo is ahead, the date the comparison was last checked, the cost difference in words without exact prices, and a link to the matching switch guide.
 
 #### Scenario: A gap is shown
 - **WHEN** a visitor reads the Things comparison
@@ -33,6 +30,13 @@ Competitor names SHALL appear as text only, without their logos or visual identi
 #### Scenario: Stale comparison
 - **WHEN** a comparison page's "checked on" date is older than six months at build time
 - **THEN** the website check reports the page as stale
+
+### Requirement: Comparisons are fair and sourced
+Competitor names SHALL appear as text only, without their logos or visual identity, and every claim about OpenTodo on a comparison page SHALL link to the documentation page of the pinned release that supports it.
+
+#### Scenario: Unsourced claim
+- **WHEN** a comparison row claims an OpenTodo feature without a documentation link
+- **THEN** the build fails and names the page and the row
 
 ### Requirement: Switch calls to action follow the importers
 A "Switch from <app>" call to action SHALL appear only for apps whose named import format is released in the version the site describes, and SHALL lead to that app's switch guide. For other apps the site SHALL link to the general import guide instead and SHALL NOT promise a one-step switch.
