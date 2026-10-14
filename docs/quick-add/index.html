@@ -185,7 +185,7 @@
 </tr>
 <tr>
 <td><code>next Monday</code></td>
-<td>same as the bare weekday, unless that day is still in the current Monday–Sunday week; then the one a week later. On Friday 9 Oct, <code>next Wed</code> is 14 Oct and <code>next Sat</code> is 17 Oct (not tomorrow).</td>
+<td>same as the bare weekday, unless that day is still in the current week; then the one a week later. Weeks start on your first day of the week (Monday unless you change it). On Friday 9 Oct, <code>next Wed</code> is 14 Oct and <code>next Sat</code> is 17 Oct (not tomorrow).</td>
 </tr>
 <tr>
 <td><code>in 3 days</code>, <code>in 2 weeks</code>, <code>in a month</code></td>
@@ -193,7 +193,7 @@
 </tr>
 <tr>
 <td><code>next week</code>, <code>next month</code></td>
-<td>Monday of next week; the 1st of next month</td>
+<td>the first day of next week (Monday unless you start your week on Sunday or Saturday); the 1st of next month</td>
 </tr>
 <tr>
 <td><code>3 Feb</code>, <code>Feb 3</code>, <code>3rd of February</code>, <code>December 25th 2027</code></td>
@@ -218,7 +218,8 @@
 </tbody></table></div>
 <p>Words like <code>on</code>, <code>by</code> and <code>due</code> in front of a date are removed with it (<code>Pay bill by Friday</code> → <em>Pay bill</em>). Bare numbers are never times (<code>Buy 3 apples</code> stays as typed): write <code>at 3</code>, <code>3pm</code> or <code>15:00</code>.</p>
 <p>When a line has two dates, the first one counts and the second stays in the title. The same goes for a second time, project, priority or estimate.</p>
-<p><strong>Day/month order.</strong> <code>12/11</code> is 11 December when your first language is US English (<code>en</code>, <code>en-US</code>) and 12 November for every other language, including English outside the US. If one reading is impossible (<code>25/12</code>), the other is used. Dotted dates (<code>12.11.</code>) are always day.month and only used when the order is day/month. Change it under Settings → Capture → Quick add.</p>
+<p><strong>Day/month order.</strong> While <strong>Numeric dates like 12/11</strong> is on <strong>Automatic</strong>, the order follows your date format in <strong>Settings → Preferences → Date and time</strong>: day-month reads <code>12/11</code> as 12 November, month-day as 11 December. With the date format on System or ISO, it follows your language instead: 11 December when your first language is US English (<code>en</code>, <code>en-US</code>) and 12 November for every other language, including English outside the US. The Automatic option says which one decided. Choosing day/month or month/day under <strong>Settings → Capture → Quick add</strong> fixes the order on this device and wins over your date format. If one reading is impossible (<code>25/12</code>), the other is used. Dotted dates (<code>12.11.</code>) are always day.month and only used when the order is day/month.</p>
+<p><strong>First day of the week.</strong> <code>next week</code> and <code>next &lt;weekday&gt;</code> use the first day of the week you chose in <strong>Settings → Preferences → Date and time</strong>, so they give the same result on all your devices.</p>
 <h2 id="languages">Languages<a class="anchor" href="#languages" aria-label="Link to this section: Languages">#</a></h2>
 <p>Vocabulary is bundled for <strong>English, German, French, Italian, Spanish and Portuguese</strong>. The active languages are your browser&#39;s preferred languages that are bundled, plus English, which is always on; all of them are matched at the same time. Settings → Capture → Quick add can override the list on this device. Where two languages read a word differently, the longer phrase wins (Spanish <code>mar</code> alone is Tuesday; <code>mar 3</code> is March 3rd).</p>
 <div class="table-wrap" tabindex="0"><table>
