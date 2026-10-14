@@ -131,7 +131,38 @@
     }
   }
 }</code></pre>
-<p>Menus differ between assistants; look for &quot;add custom connector&quot;, &quot;remote MCP server&quot; or &quot;HTTP server&quot;. Clients that only speak stdio need a bridge that forwards to an HTTP endpoint with a header; OpenTodo does not ship one yet.</p>
+<p>Menus differ between assistants; look for &quot;add custom connector&quot;, &quot;remote MCP server&quot; or &quot;HTTP server&quot;.</p>
+<p>Clients that only speak stdio can launch the bundled CLI bridge. Create a
+read-only token, store it with <code>ot auth set-token</code>, then configure the client to
+run <code>ot mcp</code> using the stored profile:</p>
+<pre tabindex="0"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;opentodo&quot;: {
+      &quot;command&quot;: &quot;ot&quot;,
+      &quot;args&quot;: [&quot;mcp&quot;]
+    }
+  }
+}</code></pre>
+<p>If the client cannot use the stored profile, pass the server and read-only token
+through its environment instead:</p>
+<pre tabindex="0"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;opentodo&quot;: {
+      &quot;command&quot;: &quot;ot&quot;,
+      &quot;args&quot;: [&quot;mcp&quot;],
+      &quot;env&quot;: {
+        &quot;OPENTODO_URL&quot;: &quot;https://todo.example.com&quot;,
+        &quot;OPENTODO_TOKEN&quot;: &quot;ot_…&quot;
+      }
+    }
+  }
+}</code></pre>
+<p>The bridge reads newline-delimited JSON-RPC from stdin, forwards each message to
+<code>/mcp</code>, and writes only JSON-RPC responses to stdout. It refuses a full-access
+token by default so an assistant is not accidentally given write credentials;
+<code>--allow-full-token</code> is available for an intentional exception. Global read-only
+mode (<code>--read-only</code> or <code>OPENTODO_READ_ONLY=1</code>) always requires a read-only token
+and cannot be weakened by that exception.</p>
 <p>To try the endpoint by hand:</p>
 <pre tabindex="0"><code class="language-bash">curl -sS https://todo.example.com/mcp \
   -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Content-Type: application/json' \
