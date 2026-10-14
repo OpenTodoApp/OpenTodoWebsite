@@ -160,7 +160,9 @@ through its environment instead:</p>
 <p>The bridge reads newline-delimited JSON-RPC from stdin, forwards each message to
 <code>/mcp</code>, and writes only JSON-RPC responses to stdout. It refuses a full-access
 token by default so an assistant is not accidentally given write credentials;
-<code>--allow-full-token</code> is available for an intentional exception.</p>
+<code>--allow-full-token</code> is available for an intentional exception. Global read-only
+mode (<code>--read-only</code> or <code>OPENTODO_READ_ONLY=1</code>) always requires a read-only token
+and cannot be weakened by that exception.</p>
 <p>To try the endpoint by hand:</p>
 <pre tabindex="0"><code class="language-bash">curl -sS https://todo.example.com/mcp \
   -H &quot;Authorization: Bearer $TOKEN&quot; -H 'Content-Type: application/json' \
