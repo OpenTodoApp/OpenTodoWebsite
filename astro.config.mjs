@@ -84,12 +84,18 @@ function docsUrls() {
 export default defineConfig({
   site: 'https://open-todo.app',
   output: 'static',
+  // The site is English; a few pages exist in the other languages the app's quick add speaks (website-languages D1).
+  i18n: { defaultLocale: 'en', locales: ['en', 'de', 'fr', 'it', 'es', 'pt'], routing: { prefixDefaultLocale: false } },
   trailingSlash: 'ignore',
   build: { format: 'directory' },
   integrations: [
     bundleDocs(),
     // Preview builds are noindex, so they get no sitemap entries beyond the structure.
-    sitemap({ customPages: docsUrls(), filter: (page) => !page.endsWith('/404/') && !page.endsWith('/404.html') }),
+    sitemap({
+      customPages: docsUrls(),
+      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/404.html'),
+      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', it: 'it', es: 'es', pt: 'pt' } },
+    }),
     socialCards(),
   ],
   // Code in posts is highlighted at build time (website-blog D4): inline colours for

@@ -3,7 +3,12 @@ import { SITE } from '../lib/site';
 import CoffeeButton from './CoffeeButton.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
+import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
+interface Props { lang?: keyof typeof LANGS }
+const { lang = DEFAULT_LANG } = Astro.props;
 const blog = (await publishedPosts()).length > 0;
+// This page in every language when it is translated; otherwise each language's home page (website-languages D4).
+const languages = alternatesFor(Astro.url.pathname) ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -62,6 +67,11 @@ const year = new Date().getFullYear();
         </ul>
       </nav>
     </div>
+    <nav class="footer-langs" aria-label="Languages">
+      <ul>
+        {languages.map((l) => <li><a href={l.href} hreflang={l.hreflang} lang={l.hreflang} aria-current={l.lang === lang ? 'page' : undefined}>{l.name}</a></li>)}
+      </ul>
+    </nav>
     <p class="footer-fine">© {year} the OpenTodo contributors. Product names of other apps are used to identify them only. This website (not the app) counts visits with self-hosted Umami: no cookies, no personal data.</p>
   </div>
 </footer>

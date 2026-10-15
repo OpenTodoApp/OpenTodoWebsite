@@ -9,6 +9,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { bundle } from '../lib/bundle';
 import { SITE } from '../lib/site';
 import { ogPathFor } from '../../scripts/lib/og.mjs';
+import { DEFAULT_LANG, LANGS, alternatesFor } from '../i18n/index.mjs';
 
 interface Props {
   title: string;
@@ -18,8 +19,12 @@ interface Props {
   ogType?: 'website' | 'article';
   /** Social preview image (a site path or URL, 1200x630); defaults to the site image. */
   image?: string;
+  /** The page's language (website-languages); English unless a translated page says otherwise. */
+  lang?: keyof typeof LANGS;
 }
-const { title, description, bareTitle = false, ogType = 'website', image } = Astro.props;
+const { title, description, bareTitle = false, ogType = 'website', image, lang = DEFAULT_LANG } = Astro.props;
+// Pages that exist in every language point at each other (hreflang), English being the default.
+const alternates = alternatesFor(Astro.url.pathname);
 // Every page gets its own social card (website-seo D2), drawn after the build from this
 // page's title and description; a page may pass its own image (a post's cover) instead.
 const ogImage = image ? new URL(image, SITE.url).href : `${SITE.url}${ogPathFor(Astro.url.pathname)}`;
@@ -27,7 +32,7 @@ const fullTitle = bareTitle ? title : `${title} · OpenTodo`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 ---
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang={lang} class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -46,7 +51,9 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={image ? description : `${fullTitle}: ${description}`} />
-    <meta property="og:locale" content="en_GB" />
+    <meta property="og:locale" content={LANGS[lang].og} />
+    {alternates && alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={new URL(a.href, SITE.url).href} />)}
+    {alternates && <link rel="alternate" hreflang="x-default" href={new URL(alternates[0].href, SITE.url).href} />}
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
@@ -66,10 +73,19 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
       </div>
     )}
     <SiteHeader />
+    {alternates && lang !== DEFAULT_LANG && (
+      <nav class="lang-bar" aria-label="Languages">
+        <div class="wrap">
+          <ul>
+            {alternates.map((a) => <li><a href={a.href} hreflang={a.hreflang} lang={a.hreflang} aria-current={a.lang === lang ? 'page' : undefined}>{a.name}</a></li>)}
+          </ul>
+        </div>
+      </nav>
+    )}
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <SiteFooter />
+    <SiteFooter lang={lang} />
     <!-- Custom events on top of Umami's page views. Served at /analytics.js because the bundle's docs load it from there too. -->
     <script is:inline src="/analytics.js" defer data-cfasync="false"></script>
   </body>
