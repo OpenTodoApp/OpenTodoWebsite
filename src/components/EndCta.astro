@@ -2,6 +2,7 @@
 // The calls to action every content page ends with (website-content spec
 // "Content navigation"): try the demo, self-host, import.
 import Icon from './Icon.astro';
+import CoffeeButton from './CoffeeButton.astro';
 import { SITE } from '../lib/site';
 interface Props { title?: string; lede?: string }
 const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in your browser. When you like it, install OpenTodo on your server and import your tasks.' } = Astro.props;
@@ -15,6 +16,9 @@ const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in 
       <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Self-host</a>
       <a class="btn btn-secondary" href="/docs/import/"><Icon name="upload" size={18} /> Bring your tasks over</a>
     </div>
-    <p class="meta" style="margin-top: 1.25rem"><a href={SITE.appRepo} data-star>OpenTodo is free and open source. If you like it, a star on GitHub helps other people find it.</a></p>
+    <div class="support">
+      <p class="meta">OpenTodo is free and open source, with no paid tier. If it helps you, <a href={SITE.appRepo} data-star>a star on GitHub</a> helps other people find it, and a coffee helps keep it going.</p>
+      <CoffeeButton />
+    </div>
   </div>
 </section>
