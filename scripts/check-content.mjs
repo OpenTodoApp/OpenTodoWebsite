@@ -40,6 +40,7 @@ for (const a of TEMPLATE_AUDIENCES) pages.add(`/templates/for/${slugify(a)}/`);
 for (const l of TEMPLATE_LAYOUTS) pages.add(`/templates/layout/${l}/`);
 for (const t of TOPICS) pages.add(`/topics/${t.slug}/`);
 pages.add('/topics/'); pages.add('/guides/quiz/');
+for (const p of ['/capture/', '/accessibility/', '/status/']) pages.add(p);
 const route = { compare: 'vs', howto: 'how-to' };
 for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);
