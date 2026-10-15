@@ -4,6 +4,7 @@ summary: Thirty minutes every Friday that keep your task list trustworthy, with 
 lastReviewed: 2026-10-14
 sources: [/docs/recurrence/, /docs/filters/, /docs/views/, /docs/time-blocking/]
 templates: [weekly-review]
+tags: [habits, task-management]
 order: 1
 ---
 A task list only helps when you trust it. The weekly review is the habit that earns that trust: once a week you empty every inbox, look at what happened, and decide what matters next. It takes about thirty minutes.

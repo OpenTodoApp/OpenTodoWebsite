@@ -4,6 +4,7 @@ summary: Capture anywhere, then empty the Inbox daily with four decisions, so no
 lastReviewed: 2026-10-14
 sources: [/docs/capture/, /docs/quick-add/, /docs/email/, /docs/keyboard/]
 templates: [gtd-setup]
+tags: [task-management, procrastination]
 order: 5
 ---
 <!-- no-claim -->

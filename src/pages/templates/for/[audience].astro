@@ -1,0 +1,37 @@
+---
+// /templates/for/<audience> (website-templates-and-methods D1): the gallery for one audience.
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import EndCta from '../../../components/EndCta.astro';
+import TemplateFilters from '../../../components/TemplateFilters.astro';
+import TemplateGrid from '../../../components/TemplateGrid.astro';
+import { TEMPLATE_AUDIENCES, slugify } from '../../../content/schemas.mjs';
+
+export function getStaticPaths() {
+  return TEMPLATE_AUDIENCES.filter((a) => a !== 'Everyone').map((a) => ({ params: { audience: slugify(a) }, props: { audience: a } }));
+}
+const { audience } = Astro.props as { audience: string };
+const all = (await getCollection('templates')).sort((a, b) => a.data.order - b.data.order);
+// "Everyone" templates fit every audience, so they follow the audience's own.
+const entries = [...all.filter((e) => e.data.audience === audience), ...all.filter((e) => e.data.audience === 'Everyone')];
+const blurb: Record<string, string> = {
+  Households: 'Shared lists for the people you live with: chores, meals, the move, the house.',
+  Professionals: 'For your own work: a trusted system, a new role, the week ahead.',
+  Students: 'Study rhythms, revision and deadlines on a calendar you can actually see.',
+  Teams: 'Boards and shared projects for a team of five, without a plan per seat.',
+};
+---
+<Base title={`Templates for ${audience.toLowerCase()}`} description={`OpenTodo templates for ${audience.toLowerCase()}: ${blurb[audience]}`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/templates/">Templates</a></p>
+      <h1>Templates for {audience.toLowerCase()}.</h1>
+      <p class="lede">{blurb[audience]} Templates for everyone are listed after.</p>
+      <TemplateFilters audience={audience} />
+    </div>
+  </section>
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap"><TemplateGrid entries={entries} headingLevel={2} /></div>
+  </section>
+  <EndCta />
+</Base>

@@ -2,7 +2,18 @@
 title: Study plan
 summary: Weekly study blocks, revision and exam dates for a course or certification.
 category: Personal
-lastReviewed: 2026-10-14
+audience: Students
+layout: calendar
+tags: [time-management, focus]
+howToUse:
+  - "Import the file; the study blocks repeat on fixed days and already carry estimates."
+  - "Open the Week calendar to see the blocks in place, and drag them to the hours that suit you."
+  - "Milestones are dated from the import day; set the exam date and move them back from it."
+makeItYours:
+  - "One project per subject, with the same sections, keeps revision honest."
+  - "Shorten the blocks if you work better in short bursts; the Pomodoro guide shows how."
+  - "Add a `@revise` label and a saved view for the last two weeks."
+lastReviewed: 2026-10-15
 sources: [/docs/time-blocking/, /docs/recurrence/]
 order: 10
 labels:

@@ -6,6 +6,7 @@ sources: [/docs/recurring-and-reminders/, /docs/notifications/]
 group: Every day
 minutes: 1
 shot: reminders
+tags: [habits]
 order: 12
 related: [reminders-on-your-phone, make-a-task-repeat]
 ---

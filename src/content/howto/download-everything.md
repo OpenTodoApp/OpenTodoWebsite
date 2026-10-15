@@ -5,6 +5,7 @@ lastReviewed: 2026-10-15
 sources: [/docs/import-export/, /docs/import/]
 group: Every day
 minutes: 1
+tags: [ownership]
 order: 16
 related: [restore-from-the-trash, turn-on-backups]
 ---

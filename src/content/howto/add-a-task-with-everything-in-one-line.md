@@ -6,6 +6,7 @@ sources: [/docs/quick-add/, /docs/tasks-and-projects/]
 group: Every day
 minutes: 2
 shot: quick-add
+tags: [task-management]
 order: 10
 related: [make-a-task-repeat, set-a-reminder]
 ---

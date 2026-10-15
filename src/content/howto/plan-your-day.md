@@ -6,6 +6,7 @@ sources: [/docs/views/, /docs/time-blocking/]
 group: Every day
 minutes: 5
 shot: week
+tags: [time-management]
 order: 13
 related: [save-a-filter-as-a-view, add-a-task-with-everything-in-one-line]
 ---

@@ -2,7 +2,18 @@
 title: Weekly review
 summary: A thirty-minute Friday ritual that empties your inboxes, looks back at the week and plans the next one.
 category: Method
-lastReviewed: 2026-10-14
+audience: Everyone
+layout: list
+tags: [habits, task-management]
+howToUse:
+  - "Import the file; the review repeats every Friday with small estimates, about thirty minutes in all."
+  - "Save a view `@review & due <= today` and pin it: on Friday it is your checklist."
+  - "Work through the three sections in order: get clear, look back, look ahead."
+makeItYours:
+  - "Move it to the day your week actually ends."
+  - "Add your own inboxes to the first section: a notebook, a chat app, a desk drawer."
+  - "Cut anything that does not earn its minutes after a month."
+lastReviewed: 2026-10-15
 sources: [/docs/recurrence/, /docs/filters/, /docs/views/]
 guide: weekly-review
 order: 1

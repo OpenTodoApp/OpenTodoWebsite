@@ -1,40 +1,40 @@
 ---
+// /templates (website-templates-and-methods D1): filters by audience and layout
+// (static pages), then the gallery by category.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EndCta from '../../components/EndCta.astro';
-import Icon from '../../components/Icon.astro';
-import { templateSummary } from '../../lib/templates';
-
+import TemplateFilters from '../../components/TemplateFilters.astro';
+import TemplateGrid from '../../components/TemplateGrid.astro';
 const entries = (await getCollection('templates')).sort((a, b) => a.data.order - b.data.order);
 const categories = [...new Set(entries.map((e) => e.data.category))];
 ---
-<Base title="Templates" description="Ready-made OpenTodo projects you can download and import today: weekly review, GTD, moving house, household chores and more.">
+<Base title="Templates" description="Ready-made OpenTodo projects you can download and import today: weekly review, GTD, moving house, household chores and more, as lists, boards and calendars.">
   <section class="page-head">
     <div class="wrap">
       <p class="kicker">Templates</p>
       <h1>Ready-made lists you can import.</h1>
-      <p class="lede">A weekly review, a GTD setup, a house move, the household chores. Download one, import it in Settings, and the project appears on all your devices, ready to change as you like.</p>
+      <p class="lede">A weekly review, a GTD setup, a house move, the household chores. Download one, import it in Settings, and the project appears on all your devices, ready to change as you like. Each page shows the tasks before you download, and says how to make the template yours.</p>
+      <TemplateFilters />
     </div>
   </section>
   {categories.map((c) => (
     <section class="section" style="padding-top: 1rem; padding-bottom: 2rem" aria-labelledby={`cat-${c}`}>
       <div class="wrap">
         <h2 id={`cat-${c}`} style="font-size: 1.4rem">{c}</h2>
-        <div class="grid grid-3">
-          {entries.filter((e) => e.data.category === c).map((e) => {
-            const s = templateSummary(e);
-            return (
-              <a class="card" href={`/templates/${e.id}/`}>
-                <span class="card-icon"><Icon name="layout-template" size={22} /></span>
-                <h3>{e.data.title}</h3>
-                <p>{e.data.summary}</p>
-                <p class="meta">{s.tasks} tasks in {s.sections || s.projects} {s.sections ? 'sections' : 'projects'}{s.recurring ? `, ${s.recurring} repeating` : ''}</p>
-              </a>
-            );
-          })}
-        </div>
+        <TemplateGrid entries={entries.filter((e) => e.data.category === c)} />
       </div>
     </section>
   ))}
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2 style="font-size: 1.5rem">Not sure which to start with?</h2>
+      <div class="cta-row">
+        <a class="btn btn-secondary" href="/guides/quiz/">Take the two-question quiz</a>
+        <a class="btn btn-secondary" href="/guides/">Read the method guides</a>
+        <a class="btn btn-secondary" href="/topics/">Browse by topic</a>
+      </div>
+    </div>
+  </section>
   <EndCta />
 </Base>

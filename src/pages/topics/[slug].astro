@@ -1,0 +1,76 @@
+---
+// /topics/<slug> (website-templates-and-methods D5): guides, templates, how-tos
+// and posts that carry the topic's tags.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import TemplateGrid from '../../components/TemplateGrid.astro';
+import { publishedPosts } from '../../lib/blog';
+import { TOPICS } from '../../lib/topics.mjs';
+
+export function getStaticPaths() {
+  return TOPICS.map((t) => ({ params: { slug: t.slug }, props: { topic: t } }));
+}
+const { topic } = Astro.props as { topic: (typeof TOPICS)[number] };
+const has = (tags: string[] | undefined) => (tags ?? []).some((t) => topic.tags.includes(t));
+const guides = (await getCollection('guides', (e) => !e.data.draft && has(e.data.tags))).sort((a, b) => a.data.order - b.data.order);
+const templates = (await getCollection('templates', (e) => has(e.data.tags))).sort((a, b) => a.data.order - b.data.order);
+const howtos = (await getCollection('howto', (e) => !e.data.draft && has(e.data.tags))).sort((a, b) => a.data.order - b.data.order);
+const toolkit = (await getCollection('toolkit', (e) => !e.data.draft && has(e.data.tags))).sort((a, b) => a.data.order - b.data.order);
+const posts = (await publishedPosts()).filter((p) => has(p.data.tags) || (topic.slug === 'owning-your-data' && p.data.category === 'ownership')).slice(0, 3);
+const sections = [guides.length && 'guides', templates.length && 'templates', howtos.length && 'how-tos', toolkit.length && 'toolkit', posts.length && 'posts'].filter(Boolean) as string[];
+---
+<Base title={topic.title} description={`${topic.lede} Guides, templates, how-tos and posts on ${topic.title.toLowerCase()}.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/topics/">Topics</a></p>
+      <h1>{topic.title}</h1>
+      <p class="lede">{topic.lede}</p>
+      <ul class="jump">{sections.map((s) => <li><a href={`#${s}`}>{s[0].toUpperCase() + s.slice(1)}</a></li>)}</ul>
+    </div>
+  </section>
+
+  {guides.length > 0 && (
+    <section class="section" id="guides" style="padding-top: 1rem; padding-bottom: 2rem" aria-labelledby="t-guides">
+      <div class="wrap">
+        <h2 id="t-guides" style="font-size: 1.4rem">Guides</h2>
+        <ul class="grid grid-3 plain">{guides.map((e) => <li><a class="card" href={`/guides/${e.id}/`}><span class="card-icon"><Icon name="compass" size={22} /></span><h3>{e.data.title}</h3><p>{e.data.summary}</p></a></li>)}</ul>
+      </div>
+    </section>
+  )}
+  {templates.length > 0 && (
+    <section class="section section-alt" id="templates" style="padding-top: 2rem; padding-bottom: 2rem" aria-labelledby="t-templates">
+      <div class="wrap">
+        <h2 id="t-templates" style="font-size: 1.4rem">Templates</h2>
+        <TemplateGrid entries={templates} />
+      </div>
+    </section>
+  )}
+  {howtos.length > 0 && (
+    <section class="section" id="how-tos" style="padding-top: 2rem; padding-bottom: 2rem" aria-labelledby="t-howtos">
+      <div class="wrap">
+        <h2 id="t-howtos" style="font-size: 1.4rem">How-tos</h2>
+        <ul class="grid grid-3 plain">{howtos.map((e) => <li><a class="card" href={`/how-to/${e.id}/`}><span class="card-icon"><Icon name="list-checks" size={22} /></span><h3>{e.data.title}</h3><p>{e.data.summary}</p></a></li>)}</ul>
+      </div>
+    </section>
+  )}
+  {toolkit.length > 0 && (
+    <section class="section section-alt" id="toolkit" style="padding-top: 2rem; padding-bottom: 2rem" aria-labelledby="t-toolkit">
+      <div class="wrap">
+        <h2 id="t-toolkit" style="font-size: 1.4rem">Toolkit</h2>
+        <ul class="grid grid-3 plain">{toolkit.map((e) => <li><a class="card" href={`/toolkit/${e.id}/`}><span class="card-icon"><Icon name="life-buoy" size={22} /></span><h3>{e.data.title}</h3><p>{e.data.summary}</p></a></li>)}</ul>
+      </div>
+    </section>
+  )}
+  {posts.length > 0 && (
+    <section class="section" id="posts" style="padding-top: 2rem; padding-bottom: 2rem" aria-labelledby="t-posts">
+      <div class="wrap">
+        <h2 id="t-posts" style="font-size: 1.4rem">From the blog</h2>
+        <div class="post-grid">{posts.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
+      </div>
+    </section>
+  )}
+  <EndCta />
+</Base>

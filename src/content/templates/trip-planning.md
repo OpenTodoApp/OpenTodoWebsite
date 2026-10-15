@@ -2,7 +2,18 @@
 title: Trip planning
 summary: Bookings, documents and a packing list with subtasks, for a holiday or a work trip.
 category: Personal
-lastReviewed: 2026-10-14
+audience: Everyone
+layout: list
+tags: [task-management]
+howToUse:
+  - "Import the file; the three sections are book, documents and pack."
+  - "Add a reminder to the passport task if the trip is far away."
+  - "Tick the packing subtasks off on your phone while you pack."
+makeItYours:
+  - "Copy the packing list into a \"Standard packing\" project and reuse it for every trip."
+  - "Share the project with your travel companions and split the bookings."
+  - "Add the dates: flights, check-in, the day the insurance must be sorted."
+lastReviewed: 2026-10-15
 sources: [/docs/tasks-and-projects/, /docs/reminders/]
 order: 4
 labels:

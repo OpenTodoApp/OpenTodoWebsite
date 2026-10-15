@@ -1,0 +1,69 @@
+---
+// /guides/quiz/<a1>/ shows the second question; /guides/quiz/<a1>/<a2>/ the result.
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import EndCta from '../../../components/EndCta.astro';
+import Icon from '../../../components/Icon.astro';
+import { isLeaf, paths, trail } from '../../../lib/quiz';
+
+export function getStaticPaths() {
+  return paths().map((p) => ({ params: { answers: p.answers.join('/') }, props: { answers: p.answers, node: p.node } }));
+}
+const { answers, node } = Astro.props as { answers: string[]; node: ReturnType<typeof paths>[number]['node'] };
+const labels = trail(answers);
+const guide = isLeaf(node) ? await getEntry('guides', node.guide) : undefined;
+if (isLeaf(node) && !guide) throw new Error(`quiz result names guide "${node.guide}", which does not exist`);
+const template = isLeaf(node) && node.template ? await getEntry('templates', node.template) : undefined;
+if (isLeaf(node) && node.template && !template) throw new Error(`quiz result names template "${node.template}", which does not exist`);
+const also = isLeaf(node) && node.also ? await getEntry('guides', node.also) : undefined;
+const howtos = isLeaf(node) ? (await getCollection('howto')).filter((h) => guide!.data.tags.some((t) => (h.data.tags ?? []).includes(t))).slice(0, 3) : [];
+---
+<Base title={isLeaf(node) ? `Try ${node.method}` : 'Which method fits you?'} description={isLeaf(node) ? `${node.method}: ${node.why}` : 'Two questions, one way of working to try this week.'}>
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="breadcrumb"><a href="/guides/">Guides</a> / <a href="/guides/quiz/">Which method fits you?</a></p>
+      <p class="quiz-trail">{labels.map((l, i) => <span>{i > 0 && ' · '}{l}</span>)}</p>
+      {isLeaf(node) ? (
+        <>
+          <p class="kicker">Try this week</p>
+          <h1>{node.method}</h1>
+          <p class="lede">{node.why}</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href={`/guides/${guide!.id}/`}><Icon name="book-open" size={18} /> Read the guide</a>
+            {template && <a class="btn btn-secondary" href={`/templates/${template.id}/`}><Icon name="download" size={18} /> {template.data.title} template</a>}
+            <a class="btn btn-secondary" href="/guides/quiz/">Start again</a>
+          </div>
+        </>
+      ) : (
+        <>
+          <p class="kicker">Question 2 of 2</p>
+          <h1>{node.question}</h1>
+          <p class="lede">You said: {labels[0]?.toLowerCase()}. One more answer and you get a method to try for a week, with the guide that explains it and a template that sets it up in OpenTodo. There is no wrong choice; every result links an alternative, and you can come back to this question at any time.</p>
+          <ul class="quiz-options">
+            {node.options.map((o) => <li><a class="card" href={`/guides/quiz/${[...answers, o.slug].join('/')}/`}>{o.label} <Icon name="arrow-right" size={18} /></a></li>)}
+          </ul>
+          <p class="meta" style="margin-top: 1.5rem"><a href="/guides/quiz/">Back to the first question</a></p>
+        </>
+      )}
+    </div>
+  </section>
+
+  {isLeaf(node) && (
+    <section class="section section-alt">
+      <div class="wrap">
+        <div class="grid grid-3">
+          <a class="card" href={`/guides/${guide!.id}/`}><span class="card-icon"><Icon name="compass" size={22} /></span><h2 style="font-size: 1.2rem">{guide!.data.title}</h2><p>{guide!.data.summary}</p></a>
+          {template && <a class="card" href={`/templates/${template.id}/`}><span class="card-icon"><Icon name="layout-template" size={22} /></span><h2 style="font-size: 1.2rem">{template.data.title}</h2><p>{template.data.summary}</p></a>}
+          {also && <a class="card" href={`/guides/${also.id}/`}><span class="card-icon"><Icon name="compass" size={22} /></span><h2 style="font-size: 1.2rem">Also worth a look: {also.data.title}</h2><p>{also.data.summary}</p></a>}
+        </div>
+        {howtos.length > 0 && (
+          <>
+            <h2 style="font-size: 1.4rem; margin-top: 2.5rem">How-tos that go with it</h2>
+            <ul class="grid grid-3 plain">{howtos.map((h) => <li><a class="card" href={`/how-to/${h.id}/`}><span class="card-icon"><Icon name="list-checks" size={22} /></span><h3>{h.data.title}</h3><p>{h.data.summary}</p></a></li>)}</ul>
+          </>
+        )}
+      </div>
+    </section>
+  )}
+  {isLeaf(node) && <EndCta title="Try it in the demo first." lede="Import the template into the demo, follow the guide for a week, and move it to your own server when it sticks." />}
+</Base>

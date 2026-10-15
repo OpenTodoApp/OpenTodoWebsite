@@ -1,7 +1,7 @@
 // Content rules that fail the build (website-platform 2.3, switcher-pages 3.2, content-hub 1.1).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { HOWTO_GROUPS, articleSchema, compareSchema, howtoSchema, switchSchema, templateSchema } from '../../src/content/schemas.mjs';
+import { CONTENT_TAGS, HOWTO_GROUPS, articleSchema, compareSchema, howtoSchema, switchSchema, templateSchema } from '../../src/content/schemas.mjs';
 
 const today = () => new Date('2026-10-14T12:00:00Z');
 const docExists = (h) => h.startsWith('/docs/real/');
@@ -65,7 +65,7 @@ test('a guide without lastReviewed fails; one 13 months old is stale', () => {
 
 test('templates refuse undeclared labels and bad due offsets', () => {
   const ts = templateSchema({ docExists, today });
-  const t = { title: 't', summary: 's', category: 'Home', lastReviewed: daysAgo(1), sources: ['/docs/real/x/'], labels: [{ name: 'a' }],
+  const t = { title: 't', summary: 's', category: 'Home', lastReviewed: daysAgo(1), sources: ['/docs/real/x/'], labels: [{ name: 'a' }], howToUse: ['import it'], makeItYours: ['rename it'],
     projects: [{ name: 'P', tasks: [{ title: 'x', labels: ['b'] }, { title: 'y', due: 'tomorrow' }] }] };
   const m = messages(ts.safeParse(t));
   assert.ok(m.some((x) => x.includes('label "b" is not declared')));
@@ -125,4 +125,27 @@ test('a switch page needs a fresh checkedOn, three terms and honest drops', () =
   assert.ok(messages(ss.safeParse({ ...ok, terms: ok.terms.slice(0, 2) })).some((m) => m.includes('at least three terms')));
   assert.ok(messages(ss.safeParse({ ...ok, drops: [] })).some((m) => m.includes('drops')));
   assert.ok(messages(ss.safeParse({ ...ok, sources: ['/docs/nope/'] })).some((m) => m.includes('not a page of the pinned bundle')));
+});
+
+test('templates carry audience, layout, usage notes and known tags', () => {
+  const ts = templateSchema({ docExists, today });
+  const t = { title: 't', summary: 's', category: 'Home', lastReviewed: daysAgo(1), sources: ['/docs/real/x/'], howToUse: ['import it'], makeItYours: ['rename it'],
+    projects: [{ name: 'P', tasks: [{ title: 'x' }] }] };
+  const ok = ts.safeParse(t);
+  assert.equal(ok.success, true);
+  assert.equal(ok.data.audience, 'Everyone');
+  assert.equal(ok.data.layout, 'list');
+  assert.equal(ok.data.author, 'raffaele');
+  assert.ok(messages(ts.safeParse({ ...t, howToUse: [] })).some((m) => m.includes('howToUse')));
+  assert.ok(messages(ts.safeParse({ ...t, layout: 'gantt' })).some((m) => m.includes('"layout" must be one of')));
+  assert.ok(messages(ts.safeParse({ ...t, audience: 'Robots' })).some((m) => m.includes('"audience" must be one of')));
+  assert.ok(messages(ts.safeParse({ ...t, tags: ['nope'] })).some((m) => m.includes('"tags" must be among')));
+  assert.equal(ts.safeParse({ ...t, tags: [CONTENT_TAGS[0]] }).success, true);
+});
+
+test('guides accept known tags only', () => {
+  const g = { title: 't', summary: 's', lastReviewed: daysAgo(30), sources: ['/docs/real/x/'] };
+  assert.deepEqual(as.safeParse(g).data.tags, []);
+  assert.equal(as.safeParse({ ...g, tags: ['focus', 'habits'] }).success, true);
+  assert.ok(messages(as.safeParse({ ...g, tags: ['Focus'] })).some((m) => m.includes('"tags" must be among')));
 });

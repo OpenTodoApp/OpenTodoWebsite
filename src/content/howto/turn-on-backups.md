@@ -7,6 +7,7 @@ group: Run the server
 audience: operator
 minutes: 5
 shot: settings-backups
+tags: [ownership]
 order: 51
 related: [update-the-server, invite-people-to-your-server]
 ---

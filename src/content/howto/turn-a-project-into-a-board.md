@@ -6,6 +6,7 @@ sources: [/docs/sections-and-boards/]
 group: Every day
 minutes: 3
 shot: board
+tags: [teamwork, task-management]
 order: 15
 related: [share-a-project, plan-your-day]
 ---

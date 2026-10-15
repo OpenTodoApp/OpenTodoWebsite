@@ -5,6 +5,7 @@ lastReviewed: 2026-10-15
 sources: [/docs/sharing/]
 group: Together
 minutes: 2
+tags: [teamwork]
 order: 31
 related: [share-a-project, invite-link-does-not-work]
 ---

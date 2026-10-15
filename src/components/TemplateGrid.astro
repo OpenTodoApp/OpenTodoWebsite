@@ -1,0 +1,30 @@
+---
+// Template cards with their layout and audience (website-templates-and-methods D1).
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { templateSummary } from '../lib/templates';
+
+interface Props { entries: CollectionEntry<'templates'>[]; headingLevel?: 2 | 3 }
+const { entries, headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+const layoutIcon: Record<string, string> = { list: 'list', board: 'kanban', calendar: 'calendar-days' };
+---
+<ul class="grid grid-3 plain">
+  {entries.map((e) => {
+    const s = templateSummary(e);
+    return (
+      <li>
+        <a class="card" href={`/templates/${e.id}/`}>
+          <span class="card-icon"><Icon name={layoutIcon[e.data.layout]} size={22} /></span>
+          <H style={headingLevel === 2 ? 'font-size: 1.2rem' : undefined}>{e.data.title}</H>
+          <p>{e.data.summary}</p>
+          <ul class="tag-row" aria-label="Layout and audience">
+            <li class="tag">{e.data.layout === 'list' ? 'List' : e.data.layout === 'board' ? 'Board' : 'Calendar'}</li>
+            <li class="tag">For {e.data.audience.toLowerCase()}</li>
+          </ul>
+          <p class="meta">{s.tasks} tasks in {s.sections || s.projects} {s.sections ? 'sections' : 'projects'}{s.recurring ? `, ${s.recurring} repeating` : ''}</p>
+        </a>
+      </li>
+    );
+  })}
+</ul>

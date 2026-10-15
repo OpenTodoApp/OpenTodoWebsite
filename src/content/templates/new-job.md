@@ -2,7 +2,18 @@
 title: First 90 days in a new job
 summary: A plan for your first three months, split into learn, contribute and lead.
 category: Work
-lastReviewed: 2026-10-14
+audience: Professionals
+layout: list
+tags: [goals, time-management]
+howToUse:
+  - "Import the file; the three sections cover learning, contributing and leading over three months."
+  - "Give the first week's tasks a time on the Week calendar so they do not slip."
+  - "Complete the subtasks as you go; the parent shows your progress."
+makeItYours:
+  - "Replace the placeholder names with your actual team and systems."
+  - "Add the questions you want answered by day 30, 60 and 90 as subtasks."
+  - "Keep it private, or share a copy of the first section with your manager."
+lastReviewed: 2026-10-15
 sources: [/docs/tasks-and-projects/, /docs/time-blocking/]
 order: 8
 labels:

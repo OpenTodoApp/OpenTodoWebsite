@@ -2,7 +2,18 @@
 title: Home maintenance
 summary: The yearly and seasonal jobs every home needs, repeating so you never have to remember them.
 category: Home
-lastReviewed: 2026-10-14
+audience: Households
+layout: list
+tags: [habits]
+howToUse:
+  - "Import the file; every task repeats at its own interval, from monthly to yearly."
+  - "Open the ones that need booking a tradesperson and add a reminder a week ahead."
+  - "Complete a task when it is done and the next occurrence appears."
+makeItYours:
+  - "Delete what your home does not have (no chimney, no garden) and add what it does."
+  - "Adjust intervals to your climate: gutters more often under trees, less in a flat."
+  - "Share it with whoever else looks after the house."
+lastReviewed: 2026-10-15
 sources: [/docs/recurrence/, /docs/reminders/]
 order: 9
 labels:

@@ -8,7 +8,8 @@ import { parse as parseYaml } from 'yaml';
 import { ROOT, docExistsIn, resolveBundle } from './lib/bundle.mjs';
 import { lint } from './lib/claim-lint.mjs';
 import { isPublished } from '../src/lib/blog-core.mjs';
-import { BLOG_CATEGORIES } from '../src/content/schemas.mjs';
+import { BLOG_CATEGORIES, CONTENT_TAGS, TEMPLATE_AUDIENCES, TEMPLATE_LAYOUTS, slugify } from '../src/content/schemas.mjs';
+import { TOPICS } from '../src/lib/topics.mjs';
 
 const COLLECTIONS = ['guides', 'toolkit', 'templates', 'howto', 'switch'];
 const contentDir = path.join(ROOT, 'src/content');
@@ -33,6 +34,12 @@ const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir, { withFileTypes:
 
 const pages = new Set(['/', '/about/', '/cost/', '/help/', '/faq/', '/install/', '/vs/', '/self-host/', '/developers/', '/templates/', '/guides/', '/toolkit/', '/how-to/', '/switch/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
 for (const p of ['iphone-ipad', 'android', 'windows', 'mac', 'linux', 'chromeos']) pages.add(`/install/${p}/`);
+// Methods catalogue, quiz and topics (website-templates-and-methods): filter pages and topics are static routes.
+for (const t of CONTENT_TAGS) pages.add(`/guides/tag/${t}/`);
+for (const a of TEMPLATE_AUDIENCES) pages.add(`/templates/for/${slugify(a)}/`);
+for (const l of TEMPLATE_LAYOUTS) pages.add(`/templates/layout/${l}/`);
+for (const t of TOPICS) pages.add(`/topics/${t.slug}/`);
+pages.add('/topics/'); pages.add('/guides/quiz/');
 const route = { compare: 'vs', howto: 'how-to' };
 for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);

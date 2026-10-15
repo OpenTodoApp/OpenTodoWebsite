@@ -6,6 +6,7 @@ sources: [/docs/labels-and-filters/, /docs/views/, /docs/filters/]
 group: Every day
 minutes: 3
 shot: filter
+tags: [task-management, prioritisation]
 order: 14
 related: [plan-your-day, add-a-task-with-everything-in-one-line]
 ---
