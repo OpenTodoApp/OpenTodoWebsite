@@ -3,7 +3,12 @@ import { SITE } from '../lib/site';
 import CoffeeButton from './CoffeeButton.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
+import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
+interface Props { lang?: keyof typeof LANGS }
+const { lang = DEFAULT_LANG } = Astro.props;
 const blog = (await publishedPosts()).length > 0;
+// This page in every language when it is translated; otherwise each language's home page (website-languages D4).
+const languages = alternatesFor(Astro.url.pathname) ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -30,6 +35,9 @@ const year = new Date().getFullYear();
           <li><a href="/faq/">FAQ</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/guides/quiz/">Which method fits you?</a></li>
+          <li><a href="/capture/">Browser extension and share sheet</a></li>
+          <li><a href="/playground/">Try quick add and filters</a></li>
+          <li><a href="/self-host/plan/">Plan your server</a></li>
           <li><a href="/self-host/">Self-host</a></li>
           <li><a href="/developers/">Developers</a></li>
           <li><a href="/whats-new/">What's new</a></li>
@@ -40,6 +48,8 @@ const year = new Date().getFullYear();
         <h2>Project</h2>
         <ul>
           <li><a href="/about/">About and trust</a></li>
+          <li><a href="/status/">Demo status</a></li>
+          <li><a href="/accessibility/">Accessibility</a></li>
           <li><a href={SITE.appRepo}>App on GitHub</a></li>
           <li><a href={`${SITE.appRepo}/tree/main/openspec/specs`}>App specifications</a></li>
           <li><a href={SITE.siteRepo}>This website on GitHub</a></li>
@@ -57,6 +67,11 @@ const year = new Date().getFullYear();
         </ul>
       </nav>
     </div>
+    <nav class="footer-langs" aria-label="Languages">
+      <ul>
+        {languages.map((l) => <li><a href={l.href} hreflang={l.hreflang} lang={l.hreflang} aria-current={l.lang === lang ? 'page' : undefined}>{l.name}</a></li>)}
+      </ul>
+    </nav>
     <p class="footer-fine">© {year} the OpenTodo contributors. Product names of other apps are used to identify them only. This website (not the app) counts visits with self-hosted Umami: no cookies, no personal data.</p>
   </div>
 </footer>

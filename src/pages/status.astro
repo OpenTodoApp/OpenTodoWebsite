@@ -1,0 +1,68 @@
+---
+// /status (website-trust-pages D3): what the public demo is, how it resets, and
+// where to see whether it is up right now. Static: no script polls anything.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { versionTag } from '../lib/bundle';
+import { SITE } from '../lib/site';
+---
+<Base title="Demo status" description="How the public OpenTodo demo works: private sandboxes, the nightly reset, what is switched off, and where to check that it is up right now.">
+  <section class="page-head">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Status</p>
+        <h1>The demo, and whether it is up.</h1>
+        <p class="lede">The public demo at <a href={SITE.demo}>demo.open-todo.app</a> is a real OpenTodo server in demo mode: every visitor gets a private sandbox with sample data, and nothing in it is kept. This page says how it behaves and where to look when it does not answer. <a href="/docs/self-hosting/demo/">How the demo works</a></p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={`${SITE.demo}/healthz`}><Icon name="gauge" size={18} /> Check it now: the demo's health endpoint</a>
+          <a class="btn btn-secondary" href={SITE.demo}>Open the demo</a>
+        </div>
+        <p class="meta" style="margin-top: 0.75rem">The health endpoint answers with <code>{'{"status":"ok","version":"…"}'}</code> when the server is running, and names the version it runs. <a href="/docs/self-hosting/docker/#health">Health</a></p>
+      </div>
+      <dl class="facts" aria-label="Demo facts">
+        <div><dt>Sandbox lifetime</dt><dd>2 hours without activity, 24 hours at most</dd></div>
+        <div><dt>Full reset</dt><dd>Every day at 03:00 UTC</dd></div>
+        <div><dt>This site describes</dt><dd>OpenTodo {versionTag}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="grid grid-3">
+        <article class="card">
+          <span class="card-icon"><Icon name="history" size={22} /></span>
+          <h2 style="font-size: 1.2rem">Expiry and the nightly reset</h2>
+          <p>A sandbox is deleted after two hours without activity, a day after it was created at the latest, and every day at 03:00 UTC the server deletes every sandbox and compacts its database. An open tab learns on its next request and offers a new sandbox.</p>
+          <a class="card-link" href="/docs/self-hosting/demo/#expiry-and-the-nightly-reset">Expiry and the nightly reset <Icon name="arrow-right" size={16} /></a>
+        </article>
+        <article class="card">
+          <span class="card-icon"><Icon name="eye-off" size={22} /></span>
+          <h2 style="font-size: 1.2rem">What is switched off</h2>
+          <p>Features that could be abused on a public server are disabled in demo mode: sign-up and invitations, user administration, password changes and reset links, single sign-on, and the owner-only settings. Nobody can sign in as the owner.</p>
+          <a class="card-link" href="/docs/self-hosting/demo/">Demo mode <Icon name="arrow-right" size={16} /></a>
+        </article>
+        <article class="card">
+          <span class="card-icon"><Icon name="lock" size={22} /></span>
+          <h2 style="font-size: 1.2rem">Private to you</h2>
+          <p>Each sandbox is its own account with its own copy of the sample data. Nobody sees anybody else's sandbox, membership changes are refused, and there is no share link or public page. Still, do not store anything personal there.</p>
+          <a class="card-link" href="/docs/self-hosting/demo/">Isolation <Icon name="arrow-right" size={16} /></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="down-title">
+    <div class="wrap narrow prose">
+      <h2 id="down-title">If the demo does not answer</h2>
+      <ul>
+        <li><strong>"Your demo sandbox has expired":</strong> that is the two-hour limit or the nightly reset, not an outage. Select <strong>Start a new sandbox</strong>. <a href="/docs/troubleshooting/#the-demo-says-my-sandbox-expired">In the troubleshooting page</a></li>
+        <li><strong>The page does not load at all:</strong> open the <a href={`${SITE.demo}/healthz`}>health endpoint</a>. If it does not answer either, the demo is down or being updated; it comes back on its own after an update, usually within minutes. If it stays down, <a href={`${SITE.appRepo}/issues`}>tell us in an issue</a>.</li>
+        <li><strong>The demo looks different from the screenshots:</strong> it may run a newer or older version than the one this site describes. The health endpoint names its version; this site describes {versionTag}. <a href="/whats-new/">What changed between releases</a></li>
+      </ul>
+      <p class="meta">This page is static and makes no request on your behalf. Your own server has the same health endpoint, which orchestrators use for their checks. <a href="/docs/self-hosting/docker/#health">Health</a></p>
+    </div>
+  </section>
+  <EndCta title="Rather have your own?" lede="Your own server keeps your data, resets never, and takes about twenty minutes to set up." />
+</Base>

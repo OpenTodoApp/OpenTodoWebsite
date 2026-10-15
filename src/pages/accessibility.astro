@@ -1,0 +1,57 @@
+---
+// /accessibility (website-trust-pages D2): what this website commits to, how it is
+// checked, what is not covered, and how to report a problem. Dates and figures
+// come from the repository's own checks, not from memory.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { versionTag } from '../lib/bundle';
+import { SITE } from '../lib/site';
+
+const reviewed = '2026-10-15';
+const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title="Accessibility statement" description="How open-todo.app meets WCAG 2.2 AA in light and dark from 360 px wide, what is checked on every change, what is not covered, and how to report a problem.">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="kicker">Accessibility</p>
+      <h1>This website is built to be used by everyone.</h1>
+      <p class="lede">We aim for WCAG 2.2 level AA on every page of open-todo.app, in light and dark, from 360 px wide, with or without JavaScript. This statement says how that is checked, what it does not cover, and how to tell us when something is wrong. Last reviewed on {day(reviewed)}.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap narrow prose">
+      <h2>What we commit to</h2>
+      <ul>
+        <li>Every page reads and navigates without JavaScript. Menus are native disclosure elements; the interactive miniatures on the home and self-hosting pages have a readable fallback.</li>
+        <li>Light and dark follow your system preference, and both meet the contrast requirements of level AA.</li>
+        <li>Pages work from 360 px wide without horizontal scrolling, and every control is at least 44 px tall.</li>
+        <li>Icons come from one line-icon set and are decorative; the text next to them carries the meaning. No emoji are used as icons.</li>
+        <li>Screenshots have text alternatives, and the templates' screenshots describe what the template creates.</li>
+        <li>Pages are written in plain British English, one idea per paragraph.</li>
+      </ul>
+
+      <h2>How it is checked</h2>
+      <p>On every change, before it can be merged, an automated audit runs over every page of this site in light and dark at 360 and 1280 px wide, using the axe-core engine, and fails on any serious or critical issue. The same run checks that no page scrolls sideways at 360 or 768 px, that every page reads and its menus open with JavaScript disabled, and that the interactive parts still work. Keyboard operation of menus and the quiz is covered by those tests; screen-reader behaviour is reviewed by hand when a page is designed. The checks are in the open: <a href={`${SITE.siteRepo}/tree/main/tests`}>the test suite</a>.</p>
+
+      <h2>What this statement does not cover</h2>
+      <ul>
+        <li><strong>The documentation under <code>/docs/</code></strong> is produced by the app project and served here as shipped for OpenTodo {versionTag}. It is not part of this site's automated audit. Problems with it are reported to the app project (below) and fixed there.</li>
+        <li><strong>The app itself</strong> (the demo and your own server) is a separate project with its own design system and checks. <a href="/docs/design-system/">Its design system</a> describes the colours, type and motion it uses.</li>
+        <li><strong>Automated checks miss things</strong> that only a person notices: reading order in unusual layouts, the usefulness of a text alternative, cognitive load. We review those by hand but cannot promise they are perfect.</li>
+      </ul>
+
+      <h2>Known limitations</h2>
+      <ul>
+        <li>Social preview images carry the page title as text in the image; the same text is in the page's metadata as an alternative.</li>
+        <li>The term tables on the switch pages scroll sideways on narrow screens inside their own region, which is reachable by keyboard.</li>
+      </ul>
+
+      <h2>Tell us</h2>
+      <p>If something on this site is hard or impossible for you to use, please <a href={`${SITE.siteRepo}/issues/new`}>open an issue on the website's repository</a> and say which page, which browser and assistive technology, and what happened. For the documentation or the app, use <a href={`${SITE.appRepo}/issues/new`}>the app's issue tracker</a>. We read every report, and a fix to this site ships with the next deploy.</p>
+      <p class="meta"><Icon name="calendar-check" size={16} /> This statement is reviewed with every change to the site's layout, and at least once a year.</p>
+    </div>
+  </section>
+  <EndCta />
+</Base>

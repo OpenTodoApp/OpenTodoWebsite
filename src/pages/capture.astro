@@ -1,0 +1,93 @@
+---
+// /capture (website-trust-pages D1): the browser extension, the share sheet and
+// the bookmarklet, restated from /docs/capture/ of the pinned release.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
+
+const ways = [
+  { icon: 'smartphone', title: 'The share sheet on your phone', text: 'Install the app, and OpenTodo appears in the share menu of other apps. Share a link or some text and it lands in the capture screen on your own server, ready to become a task. Works offline once the app has been opened online.', doc: '/docs/capture/#share-sheet-installed-app', docLabel: 'Share sheet' },
+  { icon: 'globe', title: 'The browser extension', text: 'A toolbar button, a context-menu entry and a keyboard shortcut (Alt+Shift+O by default) for Chrome, Edge, Brave, Vivaldi and Firefox 121 or later. Each opens the capture screen with the current tab\'s address, title and selection.', doc: '/docs/capture/#browser-extension', docLabel: 'Browser extension' },
+  { icon: 'link', title: 'The bookmarklet', text: 'One button for the bookmarks bar of any desktop browser, generated for your server in Settings → Capture. Click it on any page and a small popup proposes the task, prefilled with the page\'s address, title and your selection.', doc: '/docs/capture/#bookmarklet', docLabel: 'Bookmarklet' },
+];
+const platforms = [
+  ['Android (Chrome, Edge, Samsung Internet)', 'Share from any app → OpenTodo, once the app is installed.'],
+  ['Windows and ChromeOS (Chrome, Edge)', 'Share from apps that use the system share dialog; the extension and bookmarklet in the browser.'],
+  ['macOS (Chrome, Edge)', 'Support for receiving shares varies by version; the bookmarklet or the extension work everywhere.'],
+  ['iPhone and iPad (any browser)', 'Safari does not offer web apps in its share sheet; use the bookmarklet in Safari.'],
+  ['Firefox (all platforms)', 'Firefox does not install web apps as share targets; use the extension or the bookmarklet.'],
+];
+---
+<Base title="Save any page as a task" description="Three ways to capture a page into OpenTodo: the share sheet on your phone, a browser extension for Chrome, Edge, Brave, Vivaldi and Firefox, and a bookmarklet for any desktop browser. All open the capture screen on your own server.">
+  <section class="page-head">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Capture</p>
+        <h1>Save any page as a task, from your phone or your browser.</h1>
+        <p class="lede">Many tasks start as "deal with this page later". OpenTodo can receive a page from three places, and all of them open the same capture screen on your own server: the title becomes the task (and is a normal quick-add line, so <code>tomorrow #work p1</code> works in it), the selected text and the link become the description, and nothing is saved until you press Enter. <a href="/docs/capture/">Capturing pages</a></p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={`${SITE.appRepo}/releases`}><Icon name="download" size={18} /> Get the extension from a release</a>
+          <a class="btn btn-secondary" href="/install/"><Icon name="smartphone" size={18} /> Install the app for the share sheet</a>
+        </div>
+      </div>
+      <div class="card">
+        <h2 style="font-size: 1.2rem">What the capture screen proposes</h2>
+        <ul class="checks" style="margin: 0">
+          <li><Icon name="check" size={18} /> <strong>Title:</strong> the page title, or the link's host name</li>
+          <li><Icon name="check" size={18} /> <strong>Description:</strong> the selected or shared text, then the link</li>
+          <li><Icon name="check" size={18} /> <strong>Project:</strong> the Inbox by default, or any project you pick</li>
+        </ul>
+        <p class="meta" style="margin-top: 0.75rem">Saving creates an ordinary task on the device first and syncs it like any other, so it works with no network and reaches your other devices when the network returns. <a href="/docs/capture/">How it works</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="grid grid-3">
+        {ways.map((w) => (
+          <article class="card">
+            <span class="card-icon"><Icon name={w.icon} size={22} /></span>
+            <h2 style="font-size: 1.2rem">{w.title}</h2>
+            <p>{w.text}</p>
+            <a class="card-link" href={w.doc}>{w.docLabel} <Icon name="arrow-right" size={16} /></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="ext-title">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <p class="kicker">The browser extension</p>
+        <h2 id="ext-title">Small on purpose, and not in the stores yet</h2>
+        <p class="lede">The extension stores only your server's address. It holds no token or password, has no host permissions and no content scripts, and makes no network requests itself: the only traffic is the capture popup you open, which loads your own server. <a href="/docs/capture/#browser-extension">Privacy and permissions</a></p>
+        <p>It is not published in the browser stores yet, so it installs as an unpacked extension from a release download. A signed Firefox build is a release task. <a href="/docs/capture/#browser-extension">In the docs</a></p>
+      </div>
+      <div>
+        <h3>Install it</h3>
+        <ol class="steps">
+          <li>Download <code>opentodo-browser-extension.zip</code> from a <a href={`${SITE.appRepo}/releases`}>release</a> and unzip it. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
+          <li><strong>Chromium browsers:</strong> open <code>chrome://extensions</code>, turn on Developer mode, choose <strong>Load unpacked</strong> and pick the unzipped folder. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
+          <li><strong>Firefox:</strong> open <code>about:debugging#/runtime/this-firefox</code>, choose <strong>Load Temporary Add-on…</strong> and pick <code>manifest.json</code> from the folder. Temporary add-ons are removed when Firefox restarts. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
+          <li>On first use it asks for your server's address, saves it, and continues the capture you started. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="platform-title">
+    <div class="wrap narrow">
+      <h2 id="platform-title">The share sheet, by platform</h2>
+      <p class="lede">The browser adds OpenTodo to the share menu once the app is installed. Support differs by platform: <a href="/docs/capture/#share-sheet-installed-app">share sheet in the docs</a>.</p>
+      <dl class="fine-list">
+        {platforms.map(([p, t]) => <div><dt>{p}</dt><dd>{t}</dd></div>)}
+      </dl>
+      <p class="meta" style="margin-top: 1rem">Files and images cannot be shared yet; the app is offered for text and links only. A shared link is kept only when it starts with http or https, and the capture screen never opens it. <a href="/docs/capture/#limits-and-safety">Limits and safety</a></p>
+    </div>
+  </section>
+
+  <EndCta title="Try it in the demo." lede="Open the demo on your phone, add it to the home screen, and share a page into it. The sandbox is private and deleted after two hours." />
+</Base>

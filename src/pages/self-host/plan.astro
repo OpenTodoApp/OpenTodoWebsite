@@ -1,0 +1,36 @@
+---
+// /self-host/plan (website-playgrounds-and-tools D3): answer a few questions,
+// get the checklist, the compose file and the proxy snippet.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import ServerPlanner from '../../components/ServerPlanner.astro';
+import { versionTag } from '../../lib/bundle';
+---
+<Base title="Plan your server" description="Answer a few questions and get a checklist, a docker-compose.yml and a reverse-proxy snippet for your own OpenTodo server, built from the self-hosting docs. Nothing you type leaves your browser.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/self-host/">Self-host</a></p>
+      <p class="kicker">Plan your server</p>
+      <h1>Say where it will run. Get the file to run it.</h1>
+      <p class="lede">Pick where OpenTodo will live, how your phones reach it, who uses it and where backups go. You get an honest "is that enough?", a checklist in order, a <code>docker-compose.yml</code> with the variables already named, and the proxy snippet. Everything comes from the <a href="/docs/self-hosting/docker/">self-hosting docs</a> of OpenTodo {versionTag} and runs in your browser; nothing is stored or sent.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap">
+      <p class="meta planner-nojs" style="margin-bottom: 1rem"><Icon name="circle-help" size={16} /> Without JavaScript the planner shows the most common setup: a small rented server behind a proxy with HTTPS and daily backups. Every choice is also described in the docs linked from each step.</p>
+      <ServerPlanner />
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2 style="font-size: 1.5rem">Never run a server before?</h2>
+      <div class="cta-row">
+        <a class="btn btn-secondary" href="/toolkit/your-first-server/">Your first server, explained</a>
+        <a class="btn btn-secondary" href="/toolkit/raspberry-pi/">Running it on a Raspberry Pi</a>
+        <a class="btn btn-secondary" href="/toolkit/keeping-your-server-healthy/">Keeping it healthy</a>
+      </div>
+    </div>
+  </section>
+  <EndCta title="Try it before you run it." lede="The demo needs nothing. When you like it, the file above starts your own server in a few minutes." />
+</Base>

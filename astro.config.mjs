@@ -1,7 +1,9 @@
 // @ts-check
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import { assertDeployable, resolveBundle } from './scripts/lib/bundle.mjs';
 
 const bundle = resolveBundle();
@@ -44,12 +46,58 @@ function bundleDocs() {
   };
 }
 
+/**
+ * Social preview cards (website-seo D2): after the build, one PNG per page from
+ * its title and description, rendered by scripts/og.mjs in its own process so the
+ * bundled Inter files are picked up by fontconfig on every machine.
+ */
+/** @returns {import('astro').AstroIntegration} */
+function socialCards() {
+  return {
+    name: 'opentodo:social-cards',
+    hooks: {
+      'astro:build:done': ({ dir }) => {
+        const out = new URL(dir).pathname;
+        const r = spawnSync(process.execPath, [path.join(process.cwd(), 'scripts/og.mjs'), out], { stdio: 'inherit' });
+        if (r.status !== 0) throw new Error('social cards: scripts/og.mjs failed');
+      },
+    },
+  };
+}
+
+/** The docs come from the bundle, outside Astro's routes, so the sitemap lists them explicitly (website-seo D1). */
+function docsUrls() {
+  const docs = path.join(bundle.dir, 'docs');
+  /** @type {string[]} */
+  const out = [];
+  /** @param {string} d @param {string} rel */
+  const walk = (d, rel) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(path.join(d, e.name), `${rel}${e.name}/`);
+      else if (e.name === 'index.html') out.push(`https://open-todo.app/docs/${rel}`);
+    }
+  };
+  if (fs.existsSync(docs)) walk(docs, '');
+  return out.sort();
+}
+
 export default defineConfig({
   site: 'https://open-todo.app',
   output: 'static',
+  // The site is English; a few pages exist in the other languages the app's quick add speaks (website-languages D1).
+  i18n: { defaultLocale: 'en', locales: ['en', 'de', 'fr', 'it', 'es', 'pt'], routing: { prefixDefaultLocale: false } },
   trailingSlash: 'ignore',
   build: { format: 'directory' },
-  integrations: [bundleDocs()],
+  integrations: [
+    bundleDocs(),
+    // Preview builds are noindex, so they get no sitemap entries beyond the structure.
+    sitemap({
+      customPages: docsUrls(),
+      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/404.html'),
+      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', it: 'it', es: 'es', pt: 'pt' } },
+    }),
+    socialCards(),
+  ],
   // Code in posts is highlighted at build time (website-blog D4): inline colours for
   // both themes, switched by the visitor's colour-scheme preference in site.css.
   markdown: { shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false } },

@@ -8,6 +8,8 @@ import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import ShotPicture from '../../components/ShotPicture.astro';
 import TemplateGrid from '../../components/TemplateGrid.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { SITE } from '../../lib/site';
 import { templateShots, templateSummary } from '../../lib/templates';
 import { versionTag } from '../../lib/bundle';
 import { TAG_LABELS } from '../../content/schemas.mjs';
@@ -37,6 +39,10 @@ type Task = { title: string; subtasks?: Task[]; recurrence?: string; estimate?: 
 const meta = (t: Task) => [t.recurrence && `repeats ${t.recurrence}`, t.estimate && `${t.estimate} min`, t.priority && t.priority < 4 && `P${t.priority}`, ...(t.labels ?? []).map((l) => `@${l}`)].filter(Boolean).join(' · ');
 ---
 <Base title={`${d.title} template`} description={d.summary} ogType="article">
+  <JsonLd slot="head" data={[
+    { '@type': 'Dataset', name: `${d.title} template for OpenTodo`, description: d.summary, url: `${SITE.url}/templates/${entry.id}/`, license: `${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`, creator: { '@type': 'Person', name: author.name, url: author.url }, distribution: { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: `${SITE.url}${download}` } },
+    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Templates', item: `${SITE.url}/templates/` }, { '@type': 'ListItem', position: 2, name: d.title, item: `${SITE.url}/templates/${entry.id}/` }] },
+  ]} />
   <section class="page-head">
     <div class="wrap">
       <p class="breadcrumb"><a href="/templates/">Templates</a> / {d.category}</p>

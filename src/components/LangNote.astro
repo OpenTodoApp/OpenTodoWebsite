@@ -1,0 +1,11 @@
+---
+// The honesty line on a translated page (website-languages D3): this page is in
+// the visitor's language; the rest of the site, the docs and the app are in English.
+import Icon from './Icon.astro';
+import { DICT } from '../i18n/dict.mjs';
+interface Props { lang: keyof typeof DICT }
+const { lang } = Astro.props;
+---
+<div class="wrap" style="margin-top: 1rem">
+  <p class="lang-note" role="note"><Icon name="globe" size={16} /> <span>{DICT[lang].common.langNote}</span></p>
+</div>
