@@ -1,0 +1,134 @@
+---
+// /help (website-help-and-howtos D1): entry points by audience, phrased as tasks.
+// Static, anchors instead of tabs, so it reads and links without JavaScript.
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
+
+// Every how-to link here must exist; the link check catches a typo in dist.
+const howtos = new Set((await getCollection('howto', (e) => !e.data.draft)).map((e) => e.id));
+const ht = (slug: string) => { if (!howtos.has(slug)) throw new Error(`help page links how-to "${slug}", which does not exist`); return `/how-to/${slug}/`; };
+
+const groups = [
+  {
+    id: 'use', icon: 'list-checks', title: 'I use the app', lede: 'You have an account on a server, or you are about to. These are the things people ask first.',
+    items: [
+      { q: 'get started in five minutes', href: '/docs/getting-started/' },
+      { q: 'install it on my phone or computer', href: '/install/' },
+      { q: 'get reminders on my phone when the app is closed', href: ht('reminders-on-your-phone') },
+      { q: 'add a task with a date, a project and a label in one line', href: ht('add-a-task-with-everything-in-one-line') },
+      { q: 'make a task repeat', href: ht('make-a-task-repeat') },
+      { q: 'set a reminder', href: ht('set-a-reminder') },
+      { q: 'plan my day with Today and the calendar', href: ht('plan-your-day') },
+      { q: 'save a filter as a view in the sidebar', href: ht('save-a-filter-as-a-view') },
+      { q: 'turn a project into a board', href: ht('turn-a-project-into-a-board') },
+      { q: 'share a list with my partner or my team', href: ht('share-a-project') },
+      { q: 'invite someone who has no account yet', href: ht('invite-someone-with-a-link') },
+      { q: 'bring my tasks over from Todoist, Things, TickTick or Linear', href: '/switch/' },
+      { q: 'download everything I have', href: ht('download-everything') },
+      { q: 'restore something I deleted', href: ht('restore-from-the-trash') },
+      { q: 'secure my account with a passkey or two-factor', href: ht('add-a-passkey') },
+      { q: 'use an AI assistant with my tasks', href: '/docs/ai-and-agents/' },
+      { q: 'learn the keyboard shortcuts', href: '/docs/keyboard/' },
+    ],
+  },
+  {
+    id: 'run', icon: 'server', title: 'I run the server', lede: 'One container, one folder of data. For the person who installs it and keeps it running.',
+    items: [
+      { q: 'understand what running a server involves, never having done it', href: '/toolkit/your-first-server/' },
+      { q: 'install it with Docker', href: '/docs/self-hosting/docker/' },
+      { q: 'install it on Coolify with automatic HTTPS', href: '/docs/self-hosting/coolify/' },
+      { q: 'run it on a Raspberry Pi', href: '/toolkit/raspberry-pi/' },
+      { q: 'invite people to my server', href: ht('invite-people-to-your-server') },
+      { q: 'turn on scheduled backups', href: ht('turn-on-backups') },
+      { q: 'update to a new release', href: ht('update-the-server') },
+      { q: 'restore a backup', href: '/docs/backups/#restore' },
+      { q: 'recover the owner password', href: ht('recover-the-owner-password') },
+      { q: 'keep the server healthy month after month', href: '/toolkit/keeping-your-server-healthy/' },
+      { q: 'set it up for my household', href: '/toolkit/household/' },
+      { q: 'set it up for a small team', href: '/toolkit/small-team/' },
+      { q: 'connect single sign-on', href: '/docs/self-hosting/sso/' },
+      { q: 'turn on email to task', href: '/docs/email/' },
+      { q: 'run a public demo instance', href: '/docs/self-hosting/demo/' },
+    ],
+  },
+  {
+    id: 'build', icon: 'braces', title: 'I build on it', lede: 'Scripts, assistants and other tools write to the same place the app does.',
+    items: [
+      { q: 'add a task from a script with the REST API', href: '/docs/api/' },
+      { q: 'use the ot command line', href: '/docs/cli/' },
+      { q: 'let an AI assistant read or change my tasks over MCP', href: '/docs/mcp/' },
+      { q: 'get a webhook when something changes', href: '/docs/webhooks/' },
+      { q: 'see my tasks in a calendar app over CalDAV', href: '/docs/caldav/' },
+      { q: 'understand how sync works', href: '/docs/sync/' },
+      { q: 'read the architecture', href: '/docs/architecture/' },
+      { q: 'read the specification of a feature', href: '/developers/#specs' },
+    ],
+  },
+];
+const fixes = [
+  { q: 'Reminders do not arrive on my iPhone', href: ht('reminders-not-arriving-on-iphone') },
+  { q: 'Changes do not show up on my other device', href: ht('changes-not-showing-on-another-device') },
+  { q: 'I cannot sign in', href: ht('cannot-sign-in') },
+  { q: 'An invite link does not work', href: ht('invite-link-does-not-work') },
+  { q: 'The app looks out of date', href: ht('app-looks-out-of-date') },
+  { q: 'A task seems to be missing', href: ht('find-a-missing-task') },
+  { q: 'Everything else', href: '/docs/troubleshooting/' },
+];
+---
+<Base title="Help" description="Find how to do something in OpenTodo: how-tos by task, install pages per device, switch guides, troubleshooting, the FAQ and the docs, for people who use the app, run the server or build on it.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Help</p>
+      <h1>What do you want to do?</h1>
+      <p class="lede">Pick your situation, then the task. Each line leads to a short how-to or to the docs page that answers it. The docs also have a <a href="/docs/">search box</a>, and every guide is inside the app under Help in the sidebar.</p>
+      <ul class="jump">
+        {groups.map((g) => <li><a href={`#${g.id}`}>{g.title}</a></li>)}
+        <li><a href="#fix">Something is wrong</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+      </ul>
+    </div>
+  </section>
+
+  {groups.map((g) => (
+    <section class="section help-group" id={g.id} aria-labelledby={`${g.id}-title`} style="padding-top: 1.5rem; padding-bottom: 2rem">
+      <div class="wrap split" style="align-items: start">
+        <div>
+          <span class="card-icon"><Icon name={g.icon} size={22} /></span>
+          <h2 id={`${g.id}-title`}>{g.title}</h2>
+          <p class="lede">{g.lede}</p>
+        </div>
+        <ul class="wants">
+          {g.items.map((i) => <li><a href={i.href}><span class="meta">I want to</span> {i.q} <Icon name="arrow-right" size={16} /></a></li>)}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <section class="section section-alt" id="fix" aria-labelledby="fix-title">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <span class="card-icon"><Icon name="life-buoy" size={22} /></span>
+        <h2 id="fix-title">Something is wrong</h2>
+        <p class="lede">The problems people actually hit, each with the things to check in order. If none of these fits, the person who runs your server can look at its logs, or you can <a href={`${SITE.appRepo}/issues`}>open an issue</a>.</p>
+      </div>
+      <ul class="wants">
+        {fixes.map((i) => <li><a href={i.href}>{i.q} <Icon name="arrow-right" size={16} /></a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="more-title">
+    <div class="wrap">
+      <h2 id="more-title" style="font-size: 1.5rem">More ways in</h2>
+      <ul class="grid grid-3 plain">
+        <li><a class="card" href="/how-to/"><span class="card-icon"><Icon name="list-checks" size={22} /></span><h3>All how-tos</h3><p>Every how-to, grouped by what you are doing.</p></a></li>
+        <li><a class="card" href="/guides/"><span class="card-icon"><Icon name="compass" size={22} /></span><h3>Guides</h3><p>Ways of working: GTD, the weekly review, time blocking, with templates.</p></a></li>
+        <li><a class="card" href="/docs/"><span class="card-icon"><Icon name="book-open" size={22} /></span><h3>The docs</h3><p>Every feature in full, with search, for the current release.</p></a></li>
+      </ul>
+    </div>
+  </section>
+  <EndCta />
+</Base>

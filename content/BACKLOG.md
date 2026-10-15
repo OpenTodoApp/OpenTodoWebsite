@@ -8,7 +8,6 @@ The next pieces, top first. Each names its audience, the template it ships with 
 | 2 | A shared shopping list that actually works | guide | households | Meal planning | /docs/sharing/, /docs/install-app/ |
 | 3 | Planning a wedding as a couple | template + guide | households | Wedding (new) | /docs/sharing/, /docs/sections-and-boards/ |
 | 4 | Getting your inbox to zero with email to task | guide | professionals | GTD setup | /docs/email/, /docs/capture/ |
-| 5 | Running OpenTodo on a Raspberry Pi | toolkit | self-hosters | (none) | /docs/self-hosting/docker/, /docs/backups/ |
 | 6 | Sprint-free planning for a team of five | guide | small teams | Product launch | /docs/sections-and-boards/, /docs/views/ |
 | 7 | Using your own AI model with your tasks | guide | privacy-minded | (none) | /docs/ai-and-agents/, /docs/assistant/ |
 | 8 | Renovation project | template | households | Renovation (new) | /docs/tasks-and-projects/, /docs/reminders/ |

@@ -1,0 +1,80 @@
+---
+// One switch page per app (website-help-and-howtos D4): export steps, the import
+// path of the pinned release, what comes across, the term map, the first week.
+// The one-step path appears only when the bundle ships the named importer.
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import { canImport, docExists, versionTag } from '../../lib/bundle';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  return (await getCollection('switch')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const guide = `/docs/switch/${entry.id}/`;
+const oneStep = canImport(d.importFormat) && docExists(guide);
+const compare = d.compare ? await getEntry('compare', d.compare) : undefined;
+if (d.compare && !compare) throw new Error(`switch/${entry.id} names comparison "${d.compare}", which does not exist`);
+const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={d.title} description={d.summary} ogType="article">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="breadcrumb"><a href="/switch/">Moving from another app</a></p>
+      <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
+      <p class="lede">{d.summary}</p>
+      <p class="updated"><Icon name="calendar-check" size={16} /> {d.app}'s export checked on <time datetime={d.checkedOn.toISOString().slice(0, 10)}>{day}</time>; the import path is that of OpenTodo {versionTag}</p>
+      <div class="cta-row" style="margin-top: 1.25rem">
+        {oneStep
+          ? <a class="btn btn-primary" href={guide} data-switch={d.app}><Icon name="arrow-right" size={18} /> Switch from {d.app} in one step</a>
+          : <a class="btn btn-primary" href="#before-you-start"><Icon name="arrow-down" size={18} /> How it works, step by step</a>}
+        <a class="btn btn-secondary" href={SITE.demo}>Try the demo first</a>
+        {compare && <a class="btn btn-secondary" href={`/vs/${compare.id}/`}>OpenTodo vs {d.app}</a>}
+      </div>
+      {!oneStep && <p class="meta" style="margin-top: 0.75rem">There is no one-step importer for {d.app} in this release. The path below uses a file, with a <a href="/docs/import-export/">preview before anything is written</a>, and it can be undone.</p>}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap narrow">
+      <div class="versus" style="margin-bottom: 2rem">
+        <div class="card us">
+          <h3><Icon name="check" size={20} /> What comes across</h3>
+          <ul class="plain-list">{d.keeps.map((k) => <li>{k}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3><Icon name="x" size={20} /> What does not</h3>
+          <ul class="plain-list">{d.drops.map((k) => <li>{k}</li>)}</ul>
+        </div>
+      </div>
+      <div class="prose howto-body"><Content /></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="terms-title">
+    <div class="wrap narrow">
+      <h2 id="terms-title">{d.app} words, OpenTodo words</h2>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="terms-title">
+        <table class="terms">
+          <caption class="visually-hidden">How {d.app}'s terms map to OpenTodo's</caption>
+          <thead><tr><th scope="col">In {d.app}</th><th scope="col">In OpenTodo</th><th scope="col">Note</th></tr></thead>
+          <tbody>{d.terms.map((t) => <tr><td>{t.them}</td><td>{t.us}</td><td>{t.note ?? ''}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="meta" style="margin-top: 1rem">{d.app} is named only to identify it; this page is not affiliated with it. The <a href="/switch/#glossary">glossary</a> maps the words of all four apps.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-block: 2.5rem" aria-labelledby="sources">
+    <div class="wrap narrow">
+      <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
+      <ul class="checks">{d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}</ul>
+    </div>
+  </section>
+
+  <EndCta title="Bring your tasks over at your own pace." lede="Import into the demo first if you like: the sandbox is private and deleted after two hours. Then do it for real on your server." />
+</Base>

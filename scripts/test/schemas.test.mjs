@@ -1,7 +1,7 @@
 // Content rules that fail the build (website-platform 2.3, switcher-pages 3.2, content-hub 1.1).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { articleSchema, compareSchema, templateSchema } from '../../src/content/schemas.mjs';
+import { HOWTO_GROUPS, articleSchema, compareSchema, howtoSchema, switchSchema, templateSchema } from '../../src/content/schemas.mjs';
 
 const today = () => new Date('2026-10-14T12:00:00Z');
 const docExists = (h) => h.startsWith('/docs/real/');
@@ -104,4 +104,25 @@ test('blog: unknown category and reserved slugs are refused', () => {
   assert.ok(messages(bs.safeParse(post({ category: 'misc' }))).some((m) => m.startsWith('category:')));
   assert.match(blogSlugProblem('page'), /collides/);
   assert.equal(blogSlugProblem('hello-world'), null);
+});
+
+test('a how-to needs a known group; shot and minutes are optional', () => {
+  const hs = howtoSchema({ docExists, today });
+  const ok = { title: 't', summary: 's', lastReviewed: daysAgo(3), sources: ['/docs/real/x/'], group: HOWTO_GROUPS[0] };
+  assert.equal(hs.safeParse(ok).success, true);
+  assert.equal(hs.safeParse(ok).data.audience, 'user');
+  assert.ok(messages(hs.safeParse({ ...ok, group: 'Misc' })).some((m) => m.includes('"group" must be one of')));
+  assert.equal(hs.safeParse({ ...ok, shot: 'today', minutes: 5 }).success, true);
+  assert.ok(messages(hs.safeParse({ ...ok, minutes: 0 })).length > 0);
+});
+
+test('a switch page needs a fresh checkedOn, three terms and honest drops', () => {
+  const ss = switchSchema({ docExists, today });
+  const ok = { app: 'Acme', title: 't', summary: 's', checkedOn: daysAgo(10), sources: ['/docs/real/import/'], importFormat: 'acme-csv',
+    terms: [{ them: 'a', us: 'b' }, { them: 'c', us: 'd' }, { them: 'e', us: 'f', note: 'n' }], keeps: ['titles'], drops: ['comments'] };
+  assert.equal(ss.safeParse(ok).success, true);
+  assert.ok(messages(ss.safeParse({ ...ok, checkedOn: daysAgo(200) })).some((m) => m.includes('stale')));
+  assert.ok(messages(ss.safeParse({ ...ok, terms: ok.terms.slice(0, 2) })).some((m) => m.includes('at least three terms')));
+  assert.ok(messages(ss.safeParse({ ...ok, drops: [] })).some((m) => m.includes('drops')));
+  assert.ok(messages(ss.safeParse({ ...ok, sources: ['/docs/nope/'] })).some((m) => m.includes('not a page of the pinned bundle')));
 });

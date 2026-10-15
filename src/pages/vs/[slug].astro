@@ -16,6 +16,8 @@ const { entry } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
 const sw = switchLink({ app: d.competitor, importFormat: d.importFormat, switchGuide: d.switchGuide });
+// The switch page for this app, when one exists (website-help-and-howtos D4).
+const switchPage = (await getCollection('switch')).find((e) => e.data.compare === entry.id);
 const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title={`OpenTodo vs ${d.competitor}`} description={d.summary} ogType="article">
@@ -30,6 +32,7 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
         <a class="btn btn-secondary" href={SITE.demo}>Try the demo</a>
       </div>
       {!sw.named && <p class="meta" style="margin-top: 0.75rem">There is no one-step importer for {d.competitor} in this release yet. Export your tasks as CSV or JSON and the import guide shows how to bring them in.</p>}
+      {switchPage && <p class="meta" style="margin-top: 0.5rem"><a class="link-arrow" href={`/switch/${switchPage.id}/`}>Moving from {d.competitor}: what to export, what comes across, and the words that differ <Icon name="arrow-right" size={16} /></a></p>}
     </div>
   </section>
 

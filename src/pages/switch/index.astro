@@ -1,0 +1,85 @@
+---
+// /switch (website-help-and-howtos D4): one card per app and the glossary.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import { canImport } from '../../lib/bundle';
+
+const entries = (await getCollection('switch')).sort((a, b) => a.data.order - b.data.order);
+const apps = entries.map((e) => e.data.app);
+// Rows: the OpenTodo word first, then each app's word in the entries' order ('' when the app has no equivalent).
+const glossary: { us: string; them: string[]; note?: string }[] = [
+  { us: 'Task', them: ['Task', 'To-do', 'Task', 'Issue'] },
+  { us: 'Project', them: ['Project', 'Project', 'List', 'Project'] },
+  { us: 'Sub-project', them: ['Sub-project', 'Area (holds projects)', 'Folder', 'Team'], note: 'Projects nest in OpenTodo; an Area or a Folder becomes a parent project.' },
+  { us: 'Section (and a board column)', them: ['Section', 'Heading', 'Section (column in Kanban)', 'Status / column'] },
+  { us: 'Label', them: ['Label', 'Tag', 'Tag', 'Label'], note: 'Labels are personal in OpenTodo, even on shared projects.' },
+  { us: 'Priority P1 to P4', them: ['P1 to P4', 'Flagged / no flags', 'High, Medium, Low, None', 'Urgent, High, Medium, Low'], note: '1 is the highest in OpenTodo; 4 is the default.' },
+  { us: 'Due date (and a time)', them: ['Due date', 'Deadline', 'Due date', 'Due date'] },
+  { us: 'No equivalent yet', them: ['', 'When (start date), Someday', 'Start date', ''], note: 'Start dates and a Someday list are on the roadmap, not in this release.' },
+  { us: 'Repeat rule', them: ['Recurring due date', 'Repeat', 'Repeat', ''] },
+  { us: 'Reminder', them: ['Reminder', 'Reminder', 'Reminder', ''] },
+  { us: 'Estimate', them: ['Duration', '', 'Pomodoro / duration', 'Estimate'] },
+  { us: 'Saved view', them: ['Filter', '', 'Filter', 'Custom view'] },
+  { us: 'Dashboard', them: ['', '', '', 'Dashboard'] },
+  { us: 'Subtask', them: ['Sub-task', 'Checklist item', 'Subtask / checklist', 'Sub-issue'] },
+  { us: 'Shared project with roles', them: ['Shared project', 'Shared list (Things Cloud)', 'Shared list', 'Team'] },
+  { us: 'Assignee', them: ['Assignee', '', 'Assignee', 'Assignee'] },
+  { us: 'Comment', them: ['Comment', '', 'Comment', 'Comment'] },
+  { us: 'Inbox', them: ['Inbox', 'Inbox', 'Inbox', 'Triage'] },
+  { us: 'Today and Upcoming', them: ['Today, Upcoming', 'Today, Upcoming', 'Today, Next 7 days', 'My issues'] },
+  { us: 'Completed', them: ['Completed tasks', 'Logbook', 'Completed', 'Done'] },
+  { us: 'Trash', them: ['', 'Trash', 'Trash', 'Canceled / archived'] },
+];
+---
+<Base title="Moving from another app" description="How to move your tasks from Todoist, Things, TickTick or Linear to OpenTodo: what to export, how it imports, what comes across, and a glossary of each app's words.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Moving from another app</p>
+      <h1>Bring your tasks with you.</h1>
+      <p class="lede">One page per app: how to get your tasks out, how they come into OpenTodo with the importers of the current release, and what does not come across, said plainly. Every import shows a <a href="/docs/import-export/">preview before anything is written</a>, and can be undone.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap">
+      <ul class="grid grid-2 plain">
+        {entries.map((e) => (
+          <li><a class="card" href={`/switch/${e.id}/`}>
+            <span class="card-icon"><Icon name="door-open" size={22} /></span>
+            <h2 style="font-size: 1.3rem">Moving from {e.data.app}</h2>
+            <p>{e.data.summary}</p>
+            <p class="meta">{canImport(e.data.importFormat) ? 'One-step importer in this release.' : 'By file in this release: CSV or JSON, with a preview.'}</p>
+          </a></li>
+        ))}
+      </ul>
+      <p class="meta" style="margin-top: 1.5rem">Another app? OpenTodo imports any CSV with a title column and several common JSON shapes. <a href="/docs/import/">Import formats</a></p>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="glossary" aria-labelledby="glossary-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Glossary</p>
+        <h2 id="glossary-title">The same things, by their names in each app.</h2>
+        <p class="lede">If you know one of these apps, this is what OpenTodo calls the things you already use. Where a row says "no equivalent yet", it is not in this release.</p>
+      </div>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="glossary-title">
+        <table class="terms">
+          <caption class="visually-hidden">Glossary of task-app terms and their OpenTodo equivalents</caption>
+          <thead><tr><th scope="col">OpenTodo</th>{apps.map((a) => <th scope="col">{a}</th>)}</tr></thead>
+          <tbody>
+            {glossary.map((r) => (
+              <tr>
+                <th scope="row">{r.us}{r.note && <span class="meta" style="display: block; font-weight: 400">{r.note}</span>}</th>
+                {r.them.map((t) => <td>{t || <span class="meta">·</span>}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="meta" style="margin-top: 1rem">Other apps are named only to identify them, and their words were checked on the dates shown on each switch page. The OpenTodo column follows the <a href="/docs/tasks-and-projects/">tasks and projects</a>, <a href="/docs/views/">views</a> and <a href="/docs/sharing/">sharing</a> docs.</p>
+    </div>
+  </section>
+  <EndCta />
+</Base>

@@ -81,6 +81,46 @@ export function articleSchema({ docExists, today = () => new Date(), needsSource
   });
 }
 
+/** Groups of the how-to collection (website-help-and-howtos D2), in the order the index shows them. */
+export const HOWTO_GROUPS = ['Get started', 'Every day', 'Phone and notifications', 'Together', 'Fix it', 'Run the server'];
+
+/**
+ * A how-to: one task, numbered steps, sourced like a guide. `shot` names a
+ * screenshot of the bundle (checked by the page, since the manifest is not
+ * available here); `minutes` is how long the task takes.
+ */
+export function howtoSchema({ docExists, today = () => new Date() }) {
+  return articleSchema({ docExists, today }).extend({
+    group: z.enum(HOWTO_GROUPS, { error: () => `"group" must be one of ${HOWTO_GROUPS.join(', ')}` }),
+    audience: z.enum(['user', 'operator']).default('user'),
+    shot: z.string().min(1).optional(),
+    minutes: z.number().int().positive().max(120).optional(),
+    related: z.array(z.string()).default([]),
+  });
+}
+
+/**
+ * A switch page (website-help-and-howtos D4): how to leave a named app for
+ * OpenTodo with the importers of the pinned release. Facts about the other app
+ * carry a "checked on" date like a comparison; every OpenTodo statement in the
+ * body links to the docs (claim lint).
+ */
+export function switchSchema({ docExists, today = () => new Date() }) {
+  return z.object({
+    app: z.string().min(1),
+    title: z.string().min(1),
+    summary: z.string().min(1),
+    checkedOn: freshDate('checkedOn', COMPARE_MAX_AGE_DAYS, today),
+    sources: z.array(docPath(docExists)).min(1),
+    importFormat: z.string().min(1),
+    compare: z.string().optional(),
+    terms: z.array(z.object({ them: z.string().min(1), us: z.string().min(1), note: z.string().optional() })).min(3, { message: 'a switch page maps at least three terms' }),
+    keeps: z.array(z.string().min(1)).min(1),
+    drops: z.array(z.string().min(1)).min(1, { message: 'say honestly what does not come across ("drops")' }),
+    order: z.number().default(0),
+  });
+}
+
 /** A relative due offset: +0d (today), +2d, +1w, +1m. */
 export const DUE_OFFSET = /^\+(\d+)([dwm])$/;
 

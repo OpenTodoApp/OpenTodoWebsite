@@ -1,0 +1,71 @@
+---
+// /faq (website-help-and-howtos D5): the questions a visitor asks before deciding,
+// each answered in words and linked to the docs or site page that supports it.
+// <details open> so every answer reads without JavaScript.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import { manifest, versionTag } from '../lib/bundle';
+import { SITE } from '../lib/site';
+
+const licence = manifest.facts.license ?? 'AGPL-3.0';
+---
+<Base title="Frequently asked questions" description="Is OpenTodo free? Is there a hosted version? Do reminders reach an iPhone? Does it work offline? Can I leave? The questions people ask before they switch, answered plainly.">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="kicker">FAQ</p>
+      <h1>The questions people ask before they switch.</h1>
+      <p class="lede">Short answers, each with a link to the page that backs it up. Everything here describes OpenTodo {versionTag}.</p>
+    </div>
+  </section>
+
+  <section class="section faq" style="padding-top: 0">
+    <div class="wrap narrow">
+      <details open id="free">
+        <summary><h2>Is OpenTodo really free?</h2></summary>
+        <p>Yes. All of it, for everyone on your server, for good. There is no plan, no trial, no free tier with limits and no paid feature. OpenTodo is free software under the {licence} licence, which also means nobody can later turn it into a subscription. What you provide is a server to run it on. <a href="/cost/">What it costs, in words</a> · <a href="/about/#licence">The licence in plain words</a></p>
+      </details>
+      <details open id="hosted">
+        <summary><h2>Is there a hosted version I can sign up for?</h2></summary>
+        <p>No. OpenTodo is not offered as a hosted service. You try it in the demo, you join a server someone you know runs, or you run one yourself. <a href="/#get-it">The three ways in</a></p>
+      </details>
+      <details open id="try">
+        <summary><h2>Do I need a server just to try it?</h2></summary>
+        <p>No. The demo runs in your browser with nothing to install. You get a private sandbox with sample projects that nobody else can see; it is deleted after two hours without activity and every night, so do not keep anything personal there. <a href={SITE.demo}>Open the demo</a> · <a href="/docs/self-hosting/demo/">How the demo works</a></p>
+      </details>
+      <details open id="alone">
+        <summary><h2>Can I use it alone, without anyone else?</h2></summary>
+        <p>Yes, but it still needs a server to sign in and sync, because every device keeps a copy of your tasks and the server keeps them in step. The server can be small: a single container on a Raspberry Pi, a machine already at home, or the cheapest rented server. <a href="/docs/troubleshooting/#can-i-use-opentodo-on-my-own-without-a-server">Using it on your own</a> · <a href="/toolkit/your-first-server/">Your first server</a></p>
+      </details>
+      <details open id="family">
+        <summary><h2>Does everyone in my family need their own account?</h2></summary>
+        <p>Yes, and each account is free. Each person has their own private tasks, and projects can be shared between them with a role per person: viewer, editor or admin. The owner invites people with a link; OpenTodo never emails anyone. <a href="/docs/sharing/">Sharing and comments</a> · <a href="/toolkit/household/">Set it up for your household</a></p>
+      </details>
+      <details open id="iphone">
+        <summary><h2>Will reminders reach my iPhone?</h2></summary>
+        <p>Yes, on iOS 16.4 or later, as long as you install the app on the home screen and open it from there; reminders while the app is closed do not work in a Safari tab. Turn on notifications in the app's settings and send a test to see it arrive. <a href="/install/iphone-ipad/">Install on iPhone and iPad</a> · <a href="/docs/notifications/#on-iphone-and-ipad">Notifications on iPhone</a></p>
+      </details>
+      <details open id="appstore">
+        <summary><h2>Is there an app in the app stores?</h2></summary>
+        <p>No. OpenTodo is a web app you install from your server's address, and it then behaves like any other app: its own icon, its own window, offline use, reminders. Updates arrive by themselves when your server is updated. <a href="/install/">Install the app</a> · <a href="/docs/troubleshooting/#is-there-an-app-in-the-app-stores">In the docs</a></p>
+      </details>
+      <details open id="offline">
+        <summary><h2>Does it work without internet?</h2></summary>
+        <p>Yes. Each device keeps a full copy of your tasks. You can add, edit and complete tasks on a plane, and the changes are sent when you are back online. When two devices change the same task, each field keeps the change made last, so there is no "which version do you want?" dialog. <a href="/docs/offline-and-sync/">Offline and sync</a></p>
+      </details>
+      <details open id="leave">
+        <summary><h2>Can I leave, and take my tasks with me?</h2></summary>
+        <p>Yes, at any time. Every person can download all their data as one plain JSON file, including completed tasks, and import it on another OpenTodo server. The server owner can also take the whole data folder. Nothing keeps you here except that it works. <a href="/docs/import-export/">Import and export</a></p>
+      </details>
+      <details open id="maintainer">
+        <summary><h2>What happens if the maintainer stops?</h2></summary>
+        <p>Your server keeps running: nothing in OpenTodo depends on a service of ours. The code, the container images and the specification of every feature are public under a licence that cannot be withdrawn, so anyone can carry on, and your data is always one export away. <a href="/about/">About and trust</a></p>
+      </details>
+      <details open id="switch">
+        <summary><h2>Can I bring my tasks over from Todoist, Things, TickTick or Linear?</h2></summary>
+        <p>Yes, with a file. OpenTodo imports CSV files and the JSON exports of other task apps, shows a preview before writing anything, and an import can be undone. Each app has its own page here with the export steps and what comes across. <a href="/switch/">Moving from another app</a></p>
+      </details>
+    </div>
+  </section>
+
+  <EndCta title="Something else?" lede="The troubleshooting page covers the problems people actually hit, and the help page lists the rest." />
+</Base>
