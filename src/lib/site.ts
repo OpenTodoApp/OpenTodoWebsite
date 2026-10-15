@@ -5,6 +5,8 @@ export const SITE = {
   demo: 'https://demo.open-todo.app',
   appRepo: 'https://github.com/pixari/opentodo',
   siteRepo: 'https://github.com/pixari/OpenTodoWebsite',
+  // Optional support for the maintainer; nothing in the app is behind it.
+  coffee: 'https://buymeacoffee.com/pixari',
   analytics: { src: 'https://analytics.pixari.dev/script.js', websiteId: 'c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92' },
 };
 
