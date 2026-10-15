@@ -1,6 +1,6 @@
 ---
 // Main navigation (website-platform spec "Shared layout and navigation",
-// website-first-visit D4). From 768 px: flat links plus one Learn <details>
+// website-first-visit D4, website-help-and-howtos D7). From 768 px: flat links plus one Learn <details>
 // menu for the guidance content. Below 768 px: one <details> menu with the
 // same links in two groups. Both open without JavaScript.
 import { getCollection } from 'astro:content';
@@ -25,7 +25,9 @@ const product: Link[] = [
 const learn: Link[] = content
   ? [
       { href: '/guides/', label: 'Guides', match: '/guides/' },
+      { href: '/how-to/', label: 'How-tos', match: '/how-to/' },
       { href: '/templates/', label: 'Templates', match: '/templates/' },
+      { href: '/switch/', label: 'Switch', match: '/switch/' },
       { href: '/toolkit/', label: 'Toolkit', match: '/toolkit/' },
       ...(blog ? [{ href: '/blog/', label: 'Blog', match: '/blog/' }] : []),
       { href: '/whats-new/', label: "What's new", match: '/whats-new/' },
@@ -34,6 +36,7 @@ const learn: Link[] = content
 const run: Link[] = [
   { href: '/self-host/', label: 'Self-host', match: '/self-host/' },
   { href: '/developers/', label: 'Developers', match: '/developers/' },
+  { href: '/help/', label: 'Help', match: '/help/' },
   { href: '/docs/', label: 'Docs', match: null },
 ];
 const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefined);

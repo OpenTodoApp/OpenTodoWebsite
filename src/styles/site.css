@@ -378,6 +378,41 @@ a.card h3 { color: var(--strong); }
 .fine-list dt { font-weight: 600; color: var(--strong); }
 .fine-list dd { margin: 0.15rem 0 0; color: var(--muted); }
 
+/* ------------------------------------------- help, how-tos, install, switch, FAQ */
+.plain, .plain-list { list-style: none; padding: 0; margin: 0; }
+.plain-list li { padding: 0.3rem 0; border-top: 1px solid var(--border); color: var(--text); }
+.plain-list li:first-child { border-top: 0; }
+.jump { list-style: none; padding: 0; margin: 1.25rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.jump a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 0.85rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--strong); text-decoration: none; font-weight: 600; font-size: 0.9375rem; }
+.jump a:hover { border-color: var(--ot-border-input); }
+.wants { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.25rem; }
+.wants a { display: flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); color: var(--strong); text-decoration: none; font-weight: 500; }
+.wants a .meta { font-weight: 400; }
+.wants a .icon { margin-left: auto; color: var(--accent-text); flex: 0 0 auto; }
+.wants a:hover { background: var(--sunken); }
+.help-group + .help-group { border-top: 1px solid var(--border); }
+.howto-body ol { counter-reset: step; list-style: none; padding: 0; }
+.howto-body ol > li { counter-increment: step; position: relative; padding-left: 2.6rem; margin: 0.75rem 0; }
+.howto-body ol > li::before { content: counter(step); position: absolute; left: 0; top: 0.05em; width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-soft-text); font-weight: 700; font-size: 0.9375rem; }
+.howto-body ol ol > li::before { background: var(--sunken); color: var(--text); }
+.steps { counter-reset: step; list-style: none; padding: 0; }
+.steps > li { counter-increment: step; position: relative; padding-left: 2.6rem; margin: 0.75rem 0; }
+.steps > li::before { content: counter(step); position: absolute; left: 0; top: 0.05em; width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-soft-text); font-weight: 700; font-size: 0.9375rem; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.terms { border-collapse: collapse; width: 100%; font-size: 0.9375rem; }
+.terms th, .terms td { border-top: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+.terms thead th { border-top: 0; color: var(--muted); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.terms tbody th { font-weight: 600; color: var(--strong); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.faq details { border-top: 1px solid var(--border); padding: 1rem 0; }
+.faq details:last-child { border-bottom: 1px solid var(--border); }
+.faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ''; margin-left: auto; width: 0.6rem; height: 0.6rem; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); flex: 0 0 auto; transition: transform 120ms; }
+.faq details[open] summary::after { transform: rotate(-135deg); }
+.faq summary h2 { font-size: 1.2rem; margin: 0; }
+.faq details p { margin: 0.75rem 0 0; color: var(--text); }
+
 /* ------------------------------------------------------------ end CTA */
 .end-cta { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); text-align: center; background: var(--surface); border-top: 1px solid var(--border); }
 .end-cta h2 { margin-bottom: 0.5rem; }
@@ -491,7 +526,7 @@ a.card h3 { color: var(--strong); }
    demo button returns from 1024 px; every page offers the demo in its content. */
 @media (min-width: 768px) and (max-width: 1023px) {
   .nav-desktop ul { gap: 0; }
-  .nav-link { padding-inline: 0.5rem; font-size: 0.9375rem; }
+  .nav-link { padding-inline: 0.4rem; font-size: 0.9375rem; }
   .site-header .header-cta { display: none !important; }
 }
 

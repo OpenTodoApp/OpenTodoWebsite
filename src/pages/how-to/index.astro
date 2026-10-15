@@ -1,0 +1,55 @@
+---
+// /how-to (website-help-and-howtos D2): every how-to, grouped in the fixed order.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import { HOWTO_GROUPS } from '../../content/schemas.mjs';
+
+const entries = (await getCollection('howto', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+const groups = HOWTO_GROUPS.map((g) => ({ name: g, id: g.toLowerCase().replace(/[^a-z]+/g, '-'), items: entries.filter((e) => e.data.group === g) })).filter((g) => g.items.length > 0);
+const blurb: Record<string, string> = {
+  'Get started': 'Your first ten minutes, from signing in to the first task.',
+  'Every day': 'The things you do all the time, with the fastest way to do them.',
+  'Phone and notifications': 'The app on your phone, and reminders that arrive.',
+  'Together': 'Sharing lists, inviting people, assigning and commenting.',
+  'Fix it': 'When something does not work, in the order to check.',
+  'Run the server': 'For the person who runs it: updates, backups, people, recovery.',
+};
+---
+<Base title="How-tos" description="Short, numbered how-tos for one task each: add a task, set a reminder, share a list, get reminders on your phone, fix sync, back up your server. Every step links to the docs.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">How-tos</p>
+      <h1>One task, a few steps, done.</h1>
+      <p class="lede">Each page does one thing, in numbered steps, with what you need first and what to check if it does not work. Every step links to the documentation of the current release.</p>
+      <ul class="jump">
+        {groups.map((g) => <li><a href={`#${g.id}`}>{g.name}</a></li>)}
+      </ul>
+    </div>
+  </section>
+  {groups.map((g) => (
+    <section class="section" style="padding-top: 1rem; padding-bottom: 2rem" aria-labelledby={`g-${g.id}`} id={g.id}>
+      <div class="wrap">
+        <h2 id={`g-${g.id}`} style="font-size: 1.4rem">{g.name}</h2>
+        <p class="meta" style="margin-bottom: 1rem">{blurb[g.name]}</p>
+        <ul class="grid grid-3 plain">
+          {g.items.map((e) => (
+            <li><a class="card" href={`/how-to/${e.id}/`}><span class="card-icon"><Icon name={g.name === 'Fix it' ? 'life-buoy' : 'list-checks'} size={22} /></span><h3>{e.data.title}</h3><p>{e.data.summary}</p>{e.data.minutes && <p class="meta">About {e.data.minutes} min</p>}</a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2 style="font-size: 1.5rem">Looking for something else?</h2>
+      <div class="cta-row">
+        <a class="btn btn-secondary" href="/help/">The help page, by audience</a>
+        <a class="btn btn-secondary" href="/docs/troubleshooting/">Troubleshooting in the docs</a>
+        <a class="btn btn-secondary" href="/guides/">Guides to ways of working</a>
+      </div>
+    </div>
+  </section>
+  <EndCta />
+</Base>

@@ -1,0 +1,68 @@
+---
+// One how-to (website-help-and-howtos D2): one task, numbered steps, an optional
+// bundle screenshot, the docs it relies on, and the next how-tos of its group.
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
+import { manifest } from '../../lib/bundle';
+
+export async function getStaticPaths() {
+  return (await getCollection('howto', (e) => !e.data.draft)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+if (d.shot && !manifest.shots[d.shot]) throw new Error(`how-to "${entry.id}" names screenshot "${d.shot}", which is not in the bundle manifest`);
+const all = (await getCollection('howto', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order);
+const related = all.filter((e) => d.related.includes(e.id));
+const siblings = all.filter((e) => e.data.group === d.group && e.id !== entry.id && !d.related.includes(e.id)).slice(0, 3);
+const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={d.title} description={d.summary} ogType="article">
+  <article>
+    <header class="page-head">
+      <div class="wrap narrow">
+        <p class="breadcrumb"><a href="/how-to/">How-tos</a> / {d.group}</p>
+        <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
+        <p class="lede">{d.summary}</p>
+        <p class="updated">
+          {d.minutes && <><Icon name="clock" size={16} /> About {d.minutes} {d.minutes === 1 ? 'minute' : 'minutes'} · </>}
+          {d.audience === 'operator' ? 'For the person who runs the server' : 'For everyone who uses the app'} · Last reviewed <time datetime={d.lastReviewed.toISOString().slice(0, 10)}>{reviewed}</time>
+        </p>
+      </div>
+    </header>
+    {d.shot && (
+      <div class="wrap narrow" style="margin-bottom: 2rem">
+        <ScreenshotFrame shot={d.shot} alt={`OpenTodo: ${d.title}`} eager />
+      </div>
+    )}
+    <div class="wrap narrow prose howto-body" style="padding-bottom: 3rem"><Content /></div>
+  </article>
+
+  {(related.length > 0 || siblings.length > 0) && (
+    <section class="section section-alt" aria-labelledby="next-title">
+      <div class="wrap">
+        <h2 id="next-title" style="font-size: 1.5rem">{related.length > 0 ? 'Related how-tos' : `More in ${d.group}`}</h2>
+        <ul class="grid grid-3 plain">
+          {[...related, ...siblings].slice(0, 3).map((e) => (
+            <li><a class="card" href={`/how-to/${e.id}/`}><span class="card-icon"><Icon name="list-checks" size={22} /></span><h3>{e.data.title}</h3><p>{e.data.summary}</p></a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="section" style="padding-block: 2.5rem" aria-labelledby="sources">
+    <div class="wrap narrow">
+      <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
+      <ul class="checks">
+        {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}
+      </ul>
+      <p class="meta">The docs are also inside the app: select Help at the bottom of the sidebar. <a href="/docs/getting-started/#help-inside-the-app">Help inside the app</a></p>
+    </div>
+  </section>
+
+  <EndCta />
+</Base>

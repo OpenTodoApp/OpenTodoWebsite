@@ -1,0 +1,61 @@
+---
+// One install page per platform (website-help-and-howtos D3): steps, reminders,
+// sharing into the app and the missing-install-option note, each line with its
+// docs link.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import { INSTALL_DOC, NO_INSTALL_DOC, PLATFORMS, type Platform } from '../../lib/install';
+
+export function getStaticPaths() {
+  return PLATFORMS.map((p) => ({ params: { platform: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Platform };
+const others = PLATFORMS.filter((o) => o.slug !== p.slug);
+---
+<Base title={`Install OpenTodo on ${p.name}`} description={`How to install OpenTodo on ${p.name} from the browser, get reminders there and save pages into it. No app store involved.`} ogType="article">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="breadcrumb"><a href="/install/">Install the app</a></p>
+      <h1>Install OpenTodo on {p.name}</h1>
+      <p class="lede">OpenTodo is a web app you install from your server's address, in {p.browser}. There is no app store involved. Once installed it has its own icon, opens in its own window, starts without a connection, and updates by itself when your server is updated. <a href={INSTALL_DOC}>Installing the app</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap narrow prose">
+      <h2>Before you start</h2>
+      <p>Sign in to your OpenTodo address in the browser once. Installing needs a secure address, one that starts with <code>https://</code>. If the browser offers no install option at all, ask whoever runs your server to set that up; the <a href={NO_INSTALL_DOC}>troubleshooting page</a> says what they need to do.</p>
+
+      <h2>Install it</h2>
+      <ol class="steps">
+        {p.steps.map((s) => <li>{s}</li>)}
+      </ol>
+      <p>{p.after} <a href={p.source}>Steps in the docs</a></p>
+
+      <h2>Get reminders on this device</h2>
+      <p>{p.reminders.text} <a href={p.reminders.doc}>Notifications</a></p>
+
+      <h2>Save a page as a task</h2>
+      <p>{p.share.text} <a href={p.share.doc}>Capturing pages</a></p>
+
+      <h2>Offline, updates and removing it</h2>
+      <p>The installed app keeps a full copy of your tasks on the device, so you can add and complete tasks without a connection and it syncs when you are back online. <a href="/docs/install-app/#keep-using-it-offline">Keep using it offline</a></p>
+      <p>When your server is updated, the app fetches the new version in the background and switches to it on its own. If something still looks old, close the app completely and open it again. <a href="/docs/install-app/#updates">Updates</a></p>
+      <p>Remove it the way you remove any app on that device. Your tasks stay on your server. Signing out from Settings → Account clears the copy on that device, after uploading any change that has not reached the server yet. <a href="/docs/install-app/#remove-it">Remove it</a></p>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="other-title">
+    <div class="wrap">
+      <h2 id="other-title" style="font-size: 1.5rem">Your other devices</h2>
+      <ul class="grid grid-3 plain">
+        {others.map((o) => (
+          <li><a class="card" href={`/install/${o.slug}/`}><span class="card-icon"><Icon name={o.icon} size={22} /></span><h3>{o.name}</h3><p>{o.short}</p></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <EndCta title="Not on a server yet?" lede="Try the demo in your browser first. When you like it, run it on a server you already have." />
+</Base>

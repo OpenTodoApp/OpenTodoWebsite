@@ -10,7 +10,7 @@ import { lint } from './lib/claim-lint.mjs';
 import { isPublished } from '../src/lib/blog-core.mjs';
 import { BLOG_CATEGORIES } from '../src/content/schemas.mjs';
 
-const COLLECTIONS = ['guides', 'toolkit', 'templates'];
+const COLLECTIONS = ['guides', 'toolkit', 'templates', 'howto', 'switch'];
 const contentDir = path.join(ROOT, 'src/content');
 const bundle = resolveBundle();
 const slugs = (c) => fs.existsSync(path.join(contentDir, c)) ? fs.readdirSync(path.join(contentDir, c)).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)) : [];
@@ -31,8 +31,10 @@ const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir, { withFileTypes:
     return { slug: e.name, file, text, inDevelopment: fm.inDevelopment === true, live };
   });
 
-const pages = new Set(['/', '/about/', '/cost/', '/vs/', '/self-host/', '/developers/', '/templates/', '/guides/', '/toolkit/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
-for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${c === 'compare' ? 'vs' : c}/${s}/`);
+const pages = new Set(['/', '/about/', '/cost/', '/help/', '/faq/', '/install/', '/vs/', '/self-host/', '/developers/', '/templates/', '/guides/', '/toolkit/', '/how-to/', '/switch/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
+for (const p of ['iphone-ipad', 'android', 'windows', 'mac', 'linux', 'chromeos']) pages.add(`/install/${p}/`);
+const route = { compare: 'vs', howto: 'how-to' };
+for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);
 for (const c of BLOG_CATEGORIES) pages.add(`/blog/category/${c}/`);
 for (const p of posts) if (p.live) pages.add(`/blog/${p.slug}/`);

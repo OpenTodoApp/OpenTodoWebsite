@@ -3,7 +3,7 @@ import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docExists, releases } from './lib/bundle';
 import authors from './content/authors.json';
-import { articleSchema, blogSchema, blogSlugProblem, compareSchema, templateSchema } from './content/schemas.mjs';
+import { articleSchema, blogSchema, blogSlugProblem, compareSchema, howtoSchema, switchSchema, templateSchema } from './content/schemas.mjs';
 
 const md = (base: string) => glob({ pattern: '**/[^_]*.md', base: `./src/content/${base}` });
 
@@ -27,6 +27,8 @@ export const collections = {
   templates: defineCollection({ loader: md('templates'), schema: templateSchema({ docExists }) }),
   guides: defineCollection({ loader: md('guides'), schema: articleSchema({ docExists }) }),
   toolkit: defineCollection({ loader: md('toolkit'), schema: articleSchema({ docExists }) }),
+  howto: defineCollection({ loader: md('howto'), schema: howtoSchema({ docExists }) }),
+  switch: defineCollection({ loader: md('switch'), schema: switchSchema({ docExists }) }),
   authors: defineCollection({
     loader: file('src/content/authors.json'),
     schema: z.object({ name: z.string().min(1), bio: z.string().min(1), url: z.url() }),
