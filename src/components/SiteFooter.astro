@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../lib/site';
+import CoffeeButton from './CoffeeButton.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
 const blog = (await publishedPosts()).length > 0;
@@ -11,6 +12,7 @@ const year = new Date().getFullYear();
       <div>
         <a class="brand" href="/"><img src="/assets/favicon.svg" width="24" height="24" alt="" /><span>OpenTodo</span></a>
         <p>An open-source task manager you host yourself. This site describes OpenTodo {versionTag}, the latest release.</p>
+        <p class="footer-coffee"><CoffeeButton small /></p>
       </div>
       <nav aria-label="Product">
         <h2>Product</h2>
@@ -30,7 +32,6 @@ const year = new Date().getFullYear();
         <h2>Source</h2>
         <ul>
           <li><a href={SITE.appRepo}>App on GitHub</a></li>
-          <li><a href={SITE.coffee}>Buy me a coffee</a></li>
           <li><a href={`${SITE.appRepo}/tree/main/openspec/specs`}>App specifications</a></li>
           <li><a href={SITE.siteRepo}>This website on GitHub</a></li>
           <li><a href={`${SITE.siteRepo}/tree/main/openspec`}>Website specifications</a></li>
