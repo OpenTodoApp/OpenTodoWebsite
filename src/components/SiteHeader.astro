@@ -1,6 +1,8 @@
 ---
-// Main navigation (website-platform spec "Shared layout and navigation"). Below
-// 768 px it collapses into a <details> menu, so it opens without JavaScript.
+// Main navigation (website-platform spec "Shared layout and navigation",
+// website-first-visit D4). From 768 px: flat links plus one Learn <details>
+// menu for the guidance content. Below 768 px: one <details> menu with the
+// same links in two groups. Both open without JavaScript.
 import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 import { SITE } from '../lib/site';
@@ -14,16 +16,28 @@ const content = (await published('templates')) && (await published('guides'));
 // Blog appears once a post is published (website-blog spec "Blog in navigation").
 const blog = (await publishedPosts()).length > 0;
 
-const links = [
+interface Link { href: string; label: string; match: string | null }
+const product: Link[] = [
   { href: '/#features', label: 'Features', match: null },
   { href: '/vs/', label: 'Compare', match: '/vs/' },
-  ...(content ? [{ href: '/templates/', label: 'Templates', match: '/templates/' }, { href: '/guides/', label: 'Guides', match: '/guides/' }] : []),
-  ...(blog ? [{ href: '/blog/', label: 'Blog', match: '/blog/' }] : []),
+  { href: '/cost/', label: 'What it costs', match: '/cost/' },
+];
+const learn: Link[] = content
+  ? [
+      { href: '/guides/', label: 'Guides', match: '/guides/' },
+      { href: '/templates/', label: 'Templates', match: '/templates/' },
+      { href: '/toolkit/', label: 'Toolkit', match: '/toolkit/' },
+      ...(blog ? [{ href: '/blog/', label: 'Blog', match: '/blog/' }] : []),
+      { href: '/whats-new/', label: "What's new", match: '/whats-new/' },
+    ]
+  : [];
+const run: Link[] = [
   { href: '/self-host/', label: 'Self-host', match: '/self-host/' },
   { href: '/developers/', label: 'Developers', match: '/developers/' },
   { href: '/docs/', label: 'Docs', match: null },
 ];
 const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefined);
+const inLearn = learn.some((l) => current(l.match));
 ---
 <header class="site-header">
   <div class="wrap header-inner">
@@ -33,7 +47,18 @@ const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefi
     </a>
     <nav class="nav-desktop" aria-label="Main">
       <ul>
-        {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+        {product.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+        {learn.length > 0 && (
+          <li>
+            <details class="nav-group">
+              <summary class="nav-link" aria-current={inLearn ? 'page' : undefined}>Learn <Icon name="chevron-down" size={16} /></summary>
+              <ul class="nav-group-panel">
+                {learn.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+              </ul>
+            </details>
+          </li>
+        )}
+        {run.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
       </ul>
     </nav>
     <a class="btn btn-secondary btn-small header-cta header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /> Star on GitHub</a>
@@ -42,9 +67,18 @@ const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefi
       <summary><Icon name="menu" size={18} /> Menu</summary>
       <div class="menu-panel">
         <nav aria-label="Main">
+          <p class="menu-group">Product</p>
           <ul>
-            {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+            {[...product, ...run].map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
           </ul>
+          {learn.length > 0 && (
+            <>
+              <p class="menu-group">Learn</p>
+              <ul>
+                {learn.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+              </ul>
+            </>
+          )}
         </nav>
         <div class="menu-cta">
           <a class="btn btn-primary" href={SITE.demo}>Try the demo</a>

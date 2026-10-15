@@ -110,6 +110,16 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .site-header .header-star { display: none !important; }
 .site-header .header-cta { white-space: nowrap; }
 @media (min-width: 1360px) { .site-header .header-star { display: inline-flex !important; } }
+/* The Learn menu in the desktop navigation (website-first-visit D4): a <details>, so it opens by click, Enter or Space without a script. */
+.nav-group { position: relative; }
+.nav-group > summary { list-style: none; cursor: pointer; }
+.nav-group > summary::-webkit-details-marker { display: none; }
+.nav-group > summary .icon { transition: transform 120ms; }
+.nav-group[open] > summary { background: var(--sunken); }
+.nav-group[open] > summary .icon { transform: rotate(180deg); }
+.nav-group-panel { position: absolute; top: calc(100% + 0.35rem); left: 0; min-width: 12rem; display: grid !important; gap: 0.1rem; padding: 0.4rem !important; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); z-index: 60; }
+.nav-group-panel .nav-link { display: flex; width: 100%; }
+.menu-group { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0.75rem 0 0.25rem; padding-left: 0.7rem; }
 @media (min-width: 768px) {
   .nav-desktop { display: block; }
   .nav-menu { display: none; }
@@ -264,7 +274,7 @@ a.card h3 { color: var(--strong); }
 .demo-side ul { list-style: none; margin: 0 0 0.75rem; padding: 0; }
 .demo-side li { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.5rem; border-radius: 6px; color: var(--text); font-size: 0.875rem; }
 .demo-side li.on { background: var(--accent-soft); color: var(--accent-soft-text); font-weight: 600; }
-.demo-side li em { margin-left: auto; font-style: normal; color: var(--muted); font-size: 0.8125rem; }
+.demo-side li .count { margin-left: auto; color: var(--muted); font-size: 0.8125rem; }
 .demo-side .label { font-size: 0.75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; padding: 0 0.5rem; margin: 0.25rem 0; }
 .pdot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; }
 .demo-main { padding: 1rem 1.1rem; }
@@ -356,6 +366,17 @@ a.card h3 { color: var(--strong); }
 .page-head .lede { margin-bottom: 1.25rem; }
 .breadcrumb { font-size: 0.9375rem; margin-bottom: 1rem; }
 .breadcrumb a { color: var(--muted); }
+
+/* ---------------------------------------------- ways to get it (home) */
+.paths { list-style: none; padding: 0; margin: 0; counter-reset: path; }
+.paths .card { display: flex; flex-direction: column; }
+.paths .card .btn { align-self: flex-start; margin-top: auto; }
+.path-when { font-size: 0.875rem; font-weight: 600; color: var(--accent-text); margin-bottom: 0.25rem; }
+.paths .card .path-when { color: var(--accent-text); }
+.paths .card > p:nth-of-type(2) { flex: 0 0 auto; }
+.fine-list { display: grid; gap: 1rem; }
+.fine-list dt { font-weight: 600; color: var(--strong); }
+.fine-list dd { margin: 0.15rem 0 0; color: var(--muted); }
 
 /* ------------------------------------------------------------ end CTA */
 .end-cta { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); text-align: center; background: var(--surface); border-top: 1px solid var(--border); }

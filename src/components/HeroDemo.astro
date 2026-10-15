@@ -21,8 +21,8 @@ const PRIO: Record<number, string> = { 1: 'var(--ot-p1)', 2: 'var(--ot-p2)', 3: 
   <div class="demo-app">
     <div class="demo-side" aria-hidden="true">
       <ul>
-        <li><Icon name="inbox" size={16} />Inbox<em>3</em></li>
-        <li class="on"><Icon name="calendar-check" size={16} />Today<em data-demo-count>{SEED.length}</em></li>
+        <li><Icon name="inbox" size={16} />Inbox<span class="count">3</span></li>
+        <li class="on"><Icon name="calendar-check" size={16} />Today<span class="count" data-demo-count>{SEED.length}</span></li>
         <li><Icon name="calendar-days" size={16} />Upcoming</li>
         <li><Icon name="circle-check-big" size={16} />Completed</li>
       </ul>
