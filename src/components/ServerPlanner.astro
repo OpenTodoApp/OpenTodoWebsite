@@ -1,0 +1,177 @@
+---
+// Server planner (website-playgrounds-and-tools D3): answer a few questions, get
+// the checklist, a docker-compose.yml and the proxy snippet, built from the
+// self-hosting docs of the pinned release. Everything runs in the browser and
+// nothing is stored or sent. Without JavaScript the default compose file and the
+// checklist for the most common setup are shown.
+import Icon from './Icon.astro';
+import { manifest } from '../lib/bundle';
+
+const line = manifest.version.split('.').slice(0, 2).join('.');
+const image = `ghcr.io/pixari/opentodo:${line}`;
+const defaultCompose = `services:
+  opentodo:
+    image: ${image}
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - OPENTODO_BASE_URL=https://todo.example.com
+    volumes:
+      - opentodo-data:/data
+
+volumes:
+  opentodo-data:
+`;
+---
+<div class="planner" data-planner data-image={image}>
+  <form class="planner-form" data-planner-form>
+    <fieldset>
+      <legend>Where will it run?</legend>
+      <label><input type="radio" name="home" value="vps" checked /> A small rented server (VPS)</label>
+      <label><input type="radio" name="home" value="home" /> A machine at home (NAS, mini PC, old laptop)</label>
+      <label><input type="radio" name="home" value="pi" /> A Raspberry Pi</label>
+      <label><input type="radio" name="home" value="coolify" /> A server with Coolify</label>
+    </fieldset>
+    <fieldset>
+      <legend>How do phones reach it?</legend>
+      <label><input type="radio" name="reach" value="proxy" checked /> From anywhere, with a domain and HTTPS (a reverse proxy such as Caddy)</label>
+      <label><input type="radio" name="reach" value="cloudflare" /> Through Cloudflare's proxy (orange cloud) in front of my own proxy</label>
+      <label><input type="radio" name="reach" value="lan" /> Only at home, on the local network (no HTTPS yet)</label>
+    </fieldset>
+    <fieldset>
+      <legend>Who uses it?</legend>
+      <label>People <input type="number" name="people" min="1" max="200" value="3" /></label>
+      <label><input type="checkbox" name="invite" checked /> I will invite them myself (sign-up stays closed)</label>
+    </fieldset>
+    <fieldset>
+      <legend>Backups, from the first day</legend>
+      <label><input type="radio" name="backup" value="s3" checked /> To S3-compatible storage</label>
+      <label><input type="radio" name="backup" value="webdav" /> To WebDAV (Nextcloud, a NAS)</label>
+      <label><input type="radio" name="backup" value="local" /> To a folder on the server (same disk; protects against mistakes only)</label>
+      <label><input type="radio" name="backup" value="later" /> I will set them up in Settings later</label>
+    </fieldset>
+    <fieldset>
+      <legend>Optional features to switch on at first start</legend>
+      <label><input type="checkbox" name="caldav" /> Calendar apps (CalDAV)</label>
+      <label><input type="checkbox" name="mcp" /> AI assistants over MCP (read-only until a user allows changes)</label>
+      <label><input type="checkbox" name="sso" /> Single sign-on with my OpenID Connect provider</label>
+      <label><input type="checkbox" name="email" /> Email to task from a mailbox I own</label>
+      <label><input type="checkbox" name="nopush" /> No outbound push at all (reminders only inside the app)</label>
+    </fieldset>
+    <fieldset>
+      <legend>Your address</legend>
+      <label>Domain <input type="text" name="domain" value="todo.example.com" autocomplete="off" spellcheck="false" /></label>
+    </fieldset>
+  </form>
+
+  <div class="planner-out">
+    <h3 data-planner-verdict>Enough server? Yes.</h3>
+    <p class="meta" data-planner-footprint>OpenTodo idles at about {manifest.facts.idleMemoryMB} MB of memory; the image is about {manifest.facts.imageMB} MB; {manifest.facts.minimumServer} is plenty. <a href="/docs/self-hosting/docker/#resource-usage">Resource usage</a></p>
+    <h3>Your checklist</h3>
+    <ol class="steps" data-planner-steps>
+      <li>Create the data folder and start the container with the compose file below. <a href="/docs/self-hosting/docker/#docker-compose">Docker Compose</a></li>
+      <li>Put a reverse proxy with HTTPS in front and set the base URL to the public address. <a href="/docs/self-hosting/docker/#behind-a-reverse-proxy">Behind a reverse proxy</a></li>
+      <li>Open the address: the first visitor creates the owner account, and sign-up closes. <a href="/docs/getting-started/#set-up-your-own-server">Set up your own server</a></li>
+      <li>Turn on backups in Settings → Backups, test the destination, run one. <a href="/docs/backups/#quick-start">Backups</a></li>
+      <li>Invite people from Settings → Administration → Members, one link each. <a href="/docs/sharing/#invite-someone-new">Invite someone new</a></li>
+    </ol>
+    <div class="planner-file">
+      <div class="planner-file-head"><span><Icon name="file-json" size={16} /> <code data-planner-filename>docker-compose.yml</code></span><button type="button" class="btn btn-secondary btn-small" data-planner-copy hidden>Copy</button></div>
+      <pre tabindex="0" data-planner-compose aria-label="Generated docker-compose.yml"><code>{defaultCompose}</code></pre>
+    </div>
+    <div class="planner-file" data-planner-proxy-wrap>
+      <div class="planner-file-head"><span><Icon name="server" size={16} /> <code>Caddyfile</code></span></div>
+      <pre tabindex="0" data-planner-proxy aria-label="Reverse proxy snippet"><code>{`todo.example.com {\n    reverse_proxy opentodo:8080\n}\n`}</code></pre>
+    </div>
+    <p class="meta" data-planner-notes>Secrets are shown as placeholders; prefer the <code>_FILE</code> variants and Docker secrets for passwords. Nothing you type here leaves your browser. The variables and their meaning are in the <a href="/docs/self-hosting/coolify/#environment-variables">environment table</a>.</p>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-planner]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-planner-form]')!;
+    const image = root.dataset.image!;
+    const verdict = root.querySelector<HTMLElement>('[data-planner-verdict]')!;
+    const steps = root.querySelector<HTMLOListElement>('[data-planner-steps]')!;
+    const compose = root.querySelector<HTMLElement>('[data-planner-compose]')!;
+    const proxyWrap = root.querySelector<HTMLElement>('[data-planner-proxy-wrap]')!;
+    const proxy = root.querySelector<HTMLElement>('[data-planner-proxy]')!;
+    const filename = root.querySelector<HTMLElement>('[data-planner-filename]')!;
+    const copy = root.querySelector<HTMLButtonElement>('[data-planner-copy]')!;
+    const li = (html: string) => { const el = document.createElement('li'); el.innerHTML = html; return el; };
+    const doc = (href: string, label: string) => `<a href="${href}">${label}</a>`;
+
+    const render = () => {
+      const f = new FormData(form);
+      const home = String(f.get('home')); const reach = String(f.get('reach')); const backup = String(f.get('backup'));
+      const domain = String(f.get('domain') || 'todo.example.com').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '') || 'todo.example.com';
+      const people = Math.max(1, parseInt(String(f.get('people') || '1'), 10) || 1);
+      const on = (k: string) => f.get(k) !== null;
+      const https = reach !== 'lan';
+      const base = https ? `https://${domain}` : `http://${domain === 'todo.example.com' ? '192.168.1.20' : domain}:8080`;
+
+      // Verdict, from the docs' footprint: any of these homes is plenty.
+      verdict.textContent = home === 'pi' ? 'Enough server? Yes, a Raspberry Pi 3 or later with a 64-bit system.' : home === 'home' ? 'Enough server? Yes, anything that stays on.' : home === 'coolify' ? 'Enough server? Yes, the smallest plan your provider offers.' : 'Enough server? Yes, the smallest plan your provider offers (1 vCPU, 512 MB).';
+
+      // Environment.
+      const env: string[] = [`OPENTODO_BASE_URL=${base}`];
+      if (reach === 'cloudflare') env.push('OPENTODO_TRUSTED_PROXIES=cloudflare');
+      if (!on('invite')) env.push('OPENTODO_ALLOW_SIGNUP=true');
+      if (on('caldav')) env.push('OPENTODO_CALDAV=true');
+      if (on('mcp')) env.push('OPENTODO_MCP=true');
+      if (on('nopush')) env.push('OPENTODO_PUSH=off');
+      if (on('sso')) env.push('OPENTODO_OIDC_ISSUER=https://id.example.com', 'OPENTODO_OIDC_CLIENT_ID=opentodo', 'OPENTODO_OIDC_CLIENT_SECRET=change-me', 'OPENTODO_OIDC_DISPLAY_NAME=Company login');
+      if (on('email')) env.push(`OPENTODO_EMAIL_ADDRESS=tasks@${domain.replace(/^todo\./, '')}`, 'OPENTODO_EMAIL_IMAP_HOST=imap.example.com', `OPENTODO_EMAIL_IMAP_USER=tasks@${domain.replace(/^todo\./, '')}`, 'OPENTODO_EMAIL_IMAP_PASSWORD_FILE=/run/secrets/imap_password');
+      if (backup === 's3') env.push('OPENTODO_BACKUP_DESTINATION=s3', 'OPENTODO_BACKUP_S3_ENDPOINT=https://s3.eu-central-1.amazonaws.com', 'OPENTODO_BACKUP_S3_REGION=eu-central-1', 'OPENTODO_BACKUP_S3_BUCKET=my-opentodo-backups', 'OPENTODO_BACKUP_S3_PREFIX=opentodo', 'OPENTODO_BACKUP_S3_ACCESS_KEY=change-me', 'OPENTODO_BACKUP_S3_SECRET_KEY=change-me', 'OPENTODO_BACKUP_SCHEDULE=daily', 'OPENTODO_BACKUP_TIME=03:00', 'OPENTODO_BACKUP_KEEP=7');
+      if (backup === 'webdav') env.push('OPENTODO_BACKUP_DESTINATION=webdav', 'OPENTODO_BACKUP_WEBDAV_URL=https://cloud.example.com/remote.php/dav/files/me/opentodo/', 'OPENTODO_BACKUP_WEBDAV_USERNAME=me', 'OPENTODO_BACKUP_WEBDAV_PASSWORD=change-me', 'OPENTODO_BACKUP_SCHEDULE=daily', 'OPENTODO_BACKUP_TIME=03:00', 'OPENTODO_BACKUP_KEEP=7');
+      if (backup === 'local') env.push('OPENTODO_BACKUP_DESTINATION=local', 'OPENTODO_BACKUP_SCHEDULE=daily', 'OPENTODO_BACKUP_TIME=03:00', 'OPENTODO_BACKUP_KEEP=7');
+
+      const volumes = home === 'pi' ? ['./data:/data'] : ['opentodo-data:/data'];
+      if (backup === 'local' && home !== 'coolify') volumes.push('/mnt/backups/opentodo:/data/backups');
+      const ports = reach === 'lan' || home === 'coolify' ? ['8080:8080'] : [];
+      const secrets = on('email') ? `\nsecrets:\n  imap_password:\n    file: ./imap_password.txt\n` : '';
+      const text = `services:
+  opentodo:
+    image: ${image}
+    restart: unless-stopped${ports.length ? `\n    ports:\n${ports.map((p) => `      - "${p}"`).join('\n')}` : ''}
+    environment:
+${env.map((e) => `      - ${e}`).join('\n')}
+    volumes:
+${volumes.map((v) => `      - ${v}`).join('\n')}${on('email') ? '\n    secrets:\n      - imap_password' : ''}
+${home === 'pi' ? '' : '\nvolumes:\n  opentodo-data:\n'}${secrets}`;
+      compose.textContent = text;
+      filename.textContent = home === 'coolify' ? 'docker-compose.yml (paste into Coolify)' : 'docker-compose.yml';
+
+      // Proxy snippet.
+      if (reach === 'lan' || home === 'coolify') { proxyWrap.hidden = true; }
+      else { proxyWrap.hidden = false; proxy.textContent = `${domain} {\n    reverse_proxy opentodo:8080\n}\n`; }
+
+      // Checklist.
+      const s: string[] = [];
+      if (home === 'pi') s.push(`Create the data folder and hand it to the container's user: <code>mkdir -p ./data &amp;&amp; sudo chown 65532:65532 ./data</code>. ${doc('/docs/self-hosting/docker/#bind-mounts', 'Bind mounts')}`);
+      if (home === 'coolify') s.push(`In Coolify choose + New → Docker Compose, paste the file below, set Domains to <code>https://${domain}</code> and Deploy; Coolify provides HTTPS. ${doc('/docs/self-hosting/coolify/', 'Deploying on Coolify')}`);
+      else s.push(`Save the compose file and run <code>docker compose up -d</code>. ${doc('/docs/self-hosting/docker/#docker-compose', 'Docker Compose')}`);
+      if (reach === 'proxy') s.push(`Point <code>${domain}</code> at the server and run Caddy (or Traefik, nginx) with the snippet below: it terminates HTTPS, and the container port stays unpublished. ${doc('/docs/self-hosting/docker/#behind-a-reverse-proxy', 'Behind a reverse proxy')}`);
+      if (reach === 'cloudflare') s.push(`Keep your own proxy in front of the container and set the trusted proxies to <code>cloudflare</code>, so visitors are told apart by their real address. ${doc('/docs/self-hosting/docker/#behind-a-reverse-proxy', 'Behind a reverse proxy')}`);
+      if (reach === 'lan') s.push(`On the local network only, the app works over plain HTTP, but installing it on phones, push reminders and passkeys need an <code>https://</code> address; add a proxy with HTTPS (or a private network such as Tailscale) when you want those. ${doc('/docs/self-hosting/docker/#passkeys-need-an-https-base-url', 'Passkeys need an https base URL')}`);
+      s.push(`Open <code>${base}</code>: the first visitor creates the owner account, and sign-up closes. ${doc('/docs/getting-started/#set-up-your-own-server', 'Set up your own server')}`);
+      if (backup === 'later') s.push(`Before anyone relies on it, turn on backups in Settings → Backups to storage that is not on the same disk. ${doc('/docs/backups/#quick-start', 'Backups')}`);
+      else s.push(`The backup preset above seeds Settings → Backups on the first start; replace the placeholders, then Test destination and Back up now. ${doc('/docs/backups/#environment-presets', 'Environment presets')}`);
+      if (on('sso')) s.push(`Register OpenTodo with your identity provider and fill in the issuer, client id and secret; the fields are locked in Settings while the variables are set. ${doc('/docs/self-hosting/sso/', 'Single sign-on')}`);
+      if (on('email')) s.push(`Create the mailbox, put its password in <code>imap_password.txt</code>, and set the address people forward to. ${doc('/docs/email/', 'Email to task')}`);
+      if (on('caldav')) s.push(`Calendar apps connect with an app password per device; make sure the proxy passes WebDAV methods and the Authorization header. ${doc('/docs/caldav/', 'Calendar apps')}`);
+      if (on('mcp')) s.push(`Assistants connect with an API token; writes stay off until the owner and the user allow them. ${doc('/docs/mcp/', 'AI assistants (MCP)')}`);
+      s.push(people > 1 ? `Invite the other ${people - 1} ${people === 2 ? 'person' : 'people'} from Settings → Administration → Members, one single-use link each. ${doc('/docs/sharing/#invite-someone-new', 'Invite someone new')}` : `Install the app on your phone from the browser and send yourself a test notification. ${doc('/docs/install-app/', 'Installing the app')}`);
+      steps.replaceChildren(...s.map(li));
+    };
+
+    form.addEventListener('input', render);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    copy.hidden = !navigator.clipboard;
+    copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(compose.textContent ?? ''); copy.textContent = 'Copied'; setTimeout(() => (copy.textContent = 'Copy'), 1500); } catch { copy.textContent = 'Select and copy'; } });
+    root.classList.add('is-live');
+    render();
+  }
+</script>

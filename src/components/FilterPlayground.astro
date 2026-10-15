@@ -1,0 +1,147 @@
+---
+// Filter playground (website-playgrounds-and-tools D2): type a query, see which
+// of a sample list of tasks match. A miniature of the filter language following
+// /docs/filters/; the app's own filter is the reference. The sample list is
+// rendered at build time, so the page reads without JavaScript.
+import Icon from './Icon.astro';
+
+// Due offsets in days from today; sample projects, labels, priorities.
+export const SAMPLE = [
+  { title: 'Call the plumber about the leak', project: 'Home', labels: ['call', 'waiting'], priority: 1, due: -1 },
+  { title: 'Renew passport', project: null, labels: ['errand'], priority: 2, due: -3 },
+  { title: 'Get three quotes for the kitchen', project: 'Home', labels: ['call'], priority: 1, due: 0 },
+  { title: 'Review pull request #42', project: 'Work', labels: ['deep-work'], priority: 2, due: 0 },
+  { title: 'Write release notes for v1.0', project: 'Work › Q4 launch', labels: ['deep-work'], priority: 2, due: 1 },
+  { title: 'Pick up groceries', project: null, labels: ['errand'], priority: 4, due: 0 },
+  { title: 'Status page', project: 'Work › Q4 launch', labels: [], priority: 3, due: 4 },
+  { title: 'Water the plants', project: null, labels: [], priority: 4, due: 2 },
+  { title: 'Book the dentist for both kids', project: 'Family', labels: ['call'], priority: 2, due: 6 },
+  { title: 'Plan the trip to Lisbon', project: 'Travel', labels: [], priority: 3, due: null },
+  { title: 'Read the sync design doc', project: 'Work', labels: ['deep-work', 'someday'], priority: 4, due: null },
+  { title: 'Invoice the client', project: 'Work', labels: ['waiting'], priority: 1, due: 9 },
+  { title: 'Return the library books', project: null, labels: ['errand'], priority: 3, due: 12, completed: true },
+  { title: 'Fix the squeaky door', project: 'Home', labels: [], priority: 4, due: null, completed: true },
+];
+const EXAMPLES = ['@call & due <= 7 days', 'overdue & no project', '(@call | @errand) & due <= 7 days', '##Work & !completed', 'p1 | p2', 'search: kitchen', '@waiting & !#Work', 'completed'];
+const today = new Date();
+const label = (d: number | null) => d === null ? 'no date' : d === 0 ? 'today' : d === 1 ? 'tomorrow' : d < 0 ? `${-d} day${d === -1 ? '' : 's'} overdue` : new Date(today.getFullYear(), today.getMonth(), today.getDate() + d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+const open = SAMPLE.filter((t) => !t.completed);
+---
+<div class="play" data-fp>
+  <label class="play-label" for="fp-input">Type a filter query</label>
+  <div class="play-input">
+    <Icon name="filter" size={18} />
+    <input id="fp-input" data-fp-input type="text" value={EXAMPLES[0]} maxlength="120" autocomplete="off" spellcheck="false" />
+  </div>
+  <p class="play-result" data-fp-status aria-live="polite"><span class="meta">Without JavaScript this shows the whole sample list; with it, the matching tasks.</span></p>
+  <div class="play-examples">
+    <span class="meta">Try:</span>
+    {EXAMPLES.map((e) => <button type="button" class="tag" data-fp-example={e}>{e}</button>)}
+  </div>
+  <ul class="tasks play-tasks" data-fp-list aria-label="Sample tasks">
+    {SAMPLE.map((t, i) => (
+      <li class="task" data-fp-task={i} style={`--pc: var(--ot-p${t.priority})`} data-done={t.completed ? '1' : undefined}>
+        <span class="circle" aria-hidden="true"></span>
+        <div class="t-body">
+          <div class="t-title">{t.title}</div>
+          <div class="t-meta">
+            <span class={t.due !== null && t.due < 0 ? 'due overdue' : 'due'}>{label(t.due)}</span>
+            {t.project && <span class="proj">{t.project}</span>}
+            {t.labels.map((l) => <span class="lbl">@{l}</span>)}
+            {t.priority < 4 && <span class="prio">P{t.priority}</span>}
+            {t.completed && <span class="meta">completed</span>}
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <p class="meta play-note">{open.length} open and {SAMPLE.length - open.length} completed sample tasks. A miniature of the <a href="/docs/filters/">filter language</a>: <code>@label</code>, <code>#project</code>, <code>##project</code> (with sub-projects), <code>p1</code> to <code>p4</code>, <code>today</code>, <code>tomorrow</code>, <code>overdue</code>, <code>no date</code>, <code>no project</code>, <code>due &lt;= 7 days</code>, <code>due before friday</code>, <code>search: word</code>, <code>completed</code>, joined with <code>&amp;</code>, <code>|</code>, <code>!</code> and brackets. The app runs the real thing over your own tasks, offline.</p>
+</div>
+
+<script define:vars={{ SAMPLE }}>
+  // Tokeniser and recursive-descent parser for the filter grammar (docs/filters), over SAMPLE.
+  const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const dueDate = (t) => (t.due === null ? null : new Date(today.getFullYear(), today.getMonth(), today.getDate() + t.due));
+  const ident = (s) => s.toLowerCase();
+
+  function tokenize(q) {
+    const out = []; let i = 0;
+    while (i < q.length) {
+      const c = q[i];
+      if (/\s/.test(c)) { i++; continue; }
+      if ('&|!()'.includes(c)) { out.push({ t: c }); i++; continue; }
+      if (c === '"') { const j = q.indexOf('"', i + 1); if (j < 0) throw new Error('unclosed quote'); out.push({ t: 'word', v: q.slice(i + 1, j) }); i = j + 1; continue; }
+      if (q.startsWith('search:', i)) { i += 7; while (q[i] === ' ') i++; let j = i; if (q[i] === '"') { j = q.indexOf('"', i + 1); out.push({ t: 'search', v: q.slice(i + 1, j) }); i = j + 1; } else { while (j < q.length && !/[\s&|()]/.test(q[j])) j++; out.push({ t: 'search', v: q.slice(i, j) }); i = j; } continue; }
+      let j = i; while (j < q.length && !/[\s&|!()]/.test(q[j])) j++;
+      out.push({ t: 'word', v: q.slice(i, j) }); i = j;
+    }
+    return out;
+  }
+
+  function parseQuery(q) {
+    const toks = tokenize(q); let p = 0;
+    const peek = () => toks[p]; const next = () => toks[p++];
+    const expect = (t) => { const x = next(); if (!x || x.t !== t) throw new Error(`expected ${t}`); };
+    function or() { let left = and(); while (peek() && peek().t === '|') { next(); const right = and(); const l = left; left = (t) => l(t) || right(t); } return left; }
+    function and() { let left = not(); while (peek() && (peek().t === '&' || (peek().t === 'word' || peek().t === 'search' || peek().t === '(' || peek().t === '!'))) { if (peek().t === '&') { next(); if (!peek() || peek().t === ')' || peek().t === '|') throw new Error('a term is missing after "&"'); } const right = not(); const l = left; left = (t) => l(t) && right(t); } return left; }
+    function not() { if (peek() && peek().t === '!') { next(); const inner = not(); return (t) => !inner(t); } return atom(); }
+    function atom() {
+      const x = next(); if (!x) throw new Error('unexpected end of query');
+      if (x.t === '(') { const inner = or(); expect(')'); return inner; }
+      if (x.t === 'search') { const v = ident(x.v); return (t) => ident(t.title).includes(v); }
+      if (x.t !== 'word') throw new Error(`unexpected ${x.t}`);
+      const w = x.v; const lw = ident(w);
+      if (w.startsWith('##')) { const n = ident(w.slice(2)); return (t) => !!t.project && (ident(t.project) === n || ident(t.project).startsWith(n + ' ›')); }
+      if (w.startsWith('#')) { const n = ident(w.slice(1)); return (t) => !!t.project && (ident(t.project) === n || ident(t.project).split(' › ').pop() === n); }
+      if (w.startsWith('@')) { const n = ident(w.slice(1)); return (t) => t.labels.map(ident).includes(n); }
+      if (/^p[1-4]$/.test(lw)) { const n = parseInt(lw[1], 10); return (t) => t.priority === n; }
+      if (lw === 'today') return (t) => t.due === 0;
+      if (lw === 'tomorrow') return (t) => t.due === 1;
+      if (lw === 'overdue') return (t) => t.due !== null && t.due < 0;
+      if (lw === 'completed') return (t) => !!t.completed;
+      if (lw === 'open') return (t) => !t.completed;
+      if (lw === 'no') { const y = next(); if (!y || y.t !== 'word') throw new Error('"no" needs date or project'); const k = ident(y.v); if (k === 'date') return (t) => t.due === null; if (k === 'project') return (t) => !t.project; if (k === 'labels' || k === 'label') return (t) => t.labels.length === 0; throw new Error(`unknown "no ${k}"`); }
+      if (lw === 'due') {
+        const op = next(); if (!op || op.t !== 'word') throw new Error('"due" needs a comparison');
+        const o = ident(op.v); const val = next(); if (!val || val.t !== 'word') throw new Error('"due" needs a value');
+        let limit;
+        const m = /^(\d+)$/.exec(val.v);
+        if (m && peek() && peek().t === 'word' && /^days?$/i.test(peek().v)) { next(); limit = new Date(today); limit.setDate(limit.getDate() + parseInt(m[1], 10)); }
+        else if (ident(val.v) === 'today') limit = new Date(today);
+        else if (ident(val.v) === 'tomorrow') { limit = new Date(today); limit.setDate(limit.getDate() + 1); }
+        else if (DAYS.some((d) => d.startsWith(ident(val.v).slice(0, 3)))) { const idx = DAYS.findIndex((d) => d.startsWith(ident(val.v).slice(0, 3))); limit = new Date(today); let diff = (idx - limit.getDay() + 7) % 7; if (diff === 0) diff = 7; limit.setDate(limit.getDate() + diff); }
+        else if (/^\d{4}-\d{2}-\d{2}$/.test(val.v)) limit = new Date(val.v + 'T00:00:00');
+        else throw new Error(`cannot read the date "${val.v}"`);
+        const cmp = { '<=': (d) => d <= limit, '<': (d) => d < limit, '>=': (d) => d >= limit, '>': (d) => d > limit, '=': (d) => d.getTime() === limit.getTime(), before: (d) => d < limit, after: (d) => d > limit }[o];
+        if (!cmp) throw new Error(`unknown comparison "${op.v}"`);
+        return (t) => { const d = dueDate(t); return d !== null && cmp(d); };
+      }
+      throw new Error(`I do not know "${w}"`);
+    }
+    const fn = or(); if (p < toks.length) throw new Error('unexpected text after the query');
+    return fn;
+  }
+
+  const root = document.querySelector('[data-fp]');
+  if (root) {
+    const input = root.querySelector('[data-fp-input]');
+    const status = root.querySelector('[data-fp-status]');
+    const items = [...root.querySelectorAll('[data-fp-task]')];
+    const render = () => {
+      const q = input.value.trim();
+      let fn; let err = '';
+      try { fn = q ? parseQuery(q) : () => true; } catch (e) { err = e.message; }
+      if (err) { status.innerHTML = ''; const s = document.createElement('span'); s.className = 'play-error'; s.textContent = `Not a query yet: ${err}. The previous results stay.`; status.append(s); return; }
+      // Completed tasks are included only when the query mentions them, as in the app.
+      const mentions = /\bcompleted\b/i.test(q);
+      let n = 0;
+      items.forEach((li) => { const t = SAMPLE[parseInt(li.dataset.fpTask, 10)]; const ok = fn(t) && (mentions || !t.completed); li.hidden = !ok; if (ok) n++; });
+      status.innerHTML = ''; const b = document.createElement('strong'); b.textContent = `${n} of ${SAMPLE.length} sample tasks match`; status.append(b);
+    };
+    input.addEventListener('input', render);
+    root.querySelectorAll('[data-fp-example]').forEach((b) => b.addEventListener('click', () => { input.value = b.dataset.fpExample; render(); input.focus(); }));
+    root.classList.add('is-live');
+    render();
+  }
+</script>

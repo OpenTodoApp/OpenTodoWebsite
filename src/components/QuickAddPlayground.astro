@@ -1,0 +1,149 @@
+---
+// Quick-add playground (website-playgrounds-and-tools D1): type a line, see the
+// chips. A miniature of the app's parser following /docs/quick-add/ (English
+// vocabulary); the app's own parser is the reference. Reads without JavaScript:
+// the examples below are rendered at build time.
+import Icon from './Icon.astro';
+
+const EXAMPLES: { line: string; chips: string[]; title: string }[] = [
+  { line: 'Meeting with Sarah next Wed at 3pm #work @call p1 +30m', chips: ['next Wednesday 15:00', '#Work', '@call', 'P1', '30 min'], title: 'Meeting with Sarah' },
+  { line: 'Pay rent by friday', chips: ['Friday'], title: 'Pay rent' },
+  { line: 'Watch "Next Friday" tomorrow', chips: ['tomorrow'], title: 'Watch Next Friday' },
+  { line: 'Buy 3 apples', chips: [], title: 'Buy 3 apples' },
+];
+---
+<div class="play" data-qa>
+  <label class="play-label" for="qa-input">Type a task the way you would in the app</label>
+  <div class="play-input">
+    <Icon name="plus" size={18} />
+    <input id="qa-input" data-qa-input type="text" value={EXAMPLES[0].line} maxlength="120" autocomplete="off" spellcheck="false" />
+  </div>
+  <ul class="chips" data-qa-chips aria-live="polite" aria-label="What was understood">
+    {EXAMPLES[0].chips.map((c) => <li class="chip">{c}</li>)}
+  </ul>
+  <p class="play-result" data-qa-title><span class="meta">Title that will be saved:</span> <strong>{EXAMPLES[0].title}</strong></p>
+  <div class="play-examples">
+    <span class="meta">Try:</span>
+    {EXAMPLES.map((e) => <button type="button" class="tag" data-qa-example={e.line}>{e.line}</button>)}
+  </div>
+  <table class="play-table play-nojs">
+    <caption class="visually-hidden">Examples of quick-add lines and what they create</caption>
+    <thead><tr><th scope="col">You type</th><th scope="col">Understood</th><th scope="col">Title</th></tr></thead>
+    <tbody>{EXAMPLES.map((e) => <tr><td><code>{e.line}</code></td><td>{e.chips.join(', ') || 'nothing special'}</td><td>{e.title}</td></tr>)}</tbody>
+  </table>
+  <p class="meta play-note">A miniature in English that follows the <a href="/docs/quick-add/">quick add reference</a>: dates and times, <code>#project</code> (Work, Home, Errands and Travel exist here), <code>@label</code>, <code>p1</code> to <code>p4</code>, <code>+30m</code>, and double quotes to keep text literal. The app also reads German, French, Italian, Spanish and Portuguese, and knows your real projects.</p>
+</div>
+
+<script>
+  // A small, honest subset of the app's quick-add grammar (docs/quick-add).
+  const PROJECTS = ['Work', 'Home', 'Errands', 'Travel'];
+  const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+  const fmtDate = (d: Date) => d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  interface Parsed { title: string; chips: string[] }
+
+  function parse(line: string, now = new Date()): Parsed {
+    const chips: string[] = [];
+    // 1. Quoted text is never interpreted; the quotes are removed from the title.
+    const literals: string[] = [];
+    let s = line.replace(/"([^"]*)"/g, (_, t) => { literals.push(t); return `\u0000${literals.length - 1}\u0000`; });
+    // 2. Tokens.
+    s = s.replace(/(^|\s)#([\p{L}\p{N}_-]+)/u, (m, sp, name) => {
+      const n = name.toLowerCase().replace(/[-_]/g, '');
+      const exact = PROJECTS.find((p) => p.toLowerCase() === n);
+      const prefix = PROJECTS.filter((p) => p.toLowerCase().startsWith(n));
+      const hit = exact ?? (prefix.length === 1 ? prefix[0] : undefined);
+      if (!hit) return m;
+      chips.push(`#${hit}`);
+      return sp;
+    });
+    s = s.replace(/(^|\s)@([\p{L}\p{N}_-]+)/gu, (_, sp, name) => { chips.push(`@${name.toLowerCase()}`); return sp; });
+    s = s.replace(/(^|\s)[pP]([1-4])(?=\s|$)/, (_, sp, n) => { chips.push(`P${n}`); return sp; });
+    s = s.replace(/(^|\s)\+(\d+(?:[.,]\d+)?)(h|min|m)?(?:(\d+)m?)?(?=\s|$)/, (_, sp, n, unit, extra) => {
+      let minutes = unit === 'h' ? Math.round(parseFloat(n.replace(',', '.')) * 60) + (extra ? parseInt(extra, 10) : 0) : parseInt(n, 10);
+      if (minutes < 1 || minutes > 10080) return _;
+      chips.push(minutes >= 60 ? `${Math.floor(minutes / 60)} h${minutes % 60 ? ` ${minutes % 60} min` : ''}` : `${minutes} min`);
+      return sp;
+    });
+    // 3. Dates and times (the first one counts).
+    let date: Date | undefined;
+    let time: string | undefined;
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const take = (re: RegExp, fn: (m: RegExpMatchArray) => void) => {
+      const m = s.match(re);
+      if (!m) return false;
+      fn(m);
+      s = s.replace(re, ' ');
+      return true;
+    };
+    const lead = '(?:\\b(?:on|by|due)\\s+)?';
+    if (!date) take(new RegExp(`${lead}\\b(today|tonight|tomorrow|day after tomorrow)\\b`, 'i'), (m) => {
+      const w = m[1].toLowerCase(); date = new Date(today); if (w === 'tomorrow') date.setDate(date.getDate() + 1); if (w === 'day after tomorrow') date.setDate(date.getDate() + 2);
+    });
+    if (!date) take(new RegExp(`${lead}\\b(next\\s+|this\\s+)?(sun|mon|tue|wed|thu|fri|sat)[a-z]*\\.?\\b`, 'i'), (m) => {
+      const idx = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].indexOf(m[2].toLowerCase());
+      const d = new Date(today); let diff = (idx - d.getDay() + 7) % 7; if (diff === 0) diff = 7;
+      // "next": the one a week later when that day is still in the current week (weeks start on Monday).
+      if ((m[1] ?? '').trim().toLowerCase() === 'next') { const dow = (d.getDay() + 6) % 7; const target = (idx + 6) % 7; if (target > dow) diff += 7; }
+      d.setDate(d.getDate() + diff); date = d;
+    });
+    if (!date) take(/\bin\s+(\d+|a|an)\s+(day|week|month)s?\b/i, (m) => {
+      const n = /\d/.test(m[1]) ? parseInt(m[1], 10) : 1; const d = new Date(today);
+      if (m[2].toLowerCase() === 'day') d.setDate(d.getDate() + n); else if (m[2].toLowerCase() === 'week') d.setDate(d.getDate() + 7 * n); else d.setMonth(d.getMonth() + n);
+      date = d;
+    });
+    if (!date) take(/\bnext\s+(week|month)\b/i, (m) => {
+      const d = new Date(today);
+      if (m[1].toLowerCase() === 'week') { d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); } else { d.setMonth(d.getMonth() + 1, 1); }
+      date = d;
+    });
+    if (!date) take(new RegExp(`${lead}\\b(\\d{1,2})(?:st|nd|rd|th)?(?:\\s+of)?\\s+(${MONTHS.map((x) => x.slice(0, 3)).join('|')})[a-z]*\\.?(?:\\s+(\\d{4}))?\\b`, 'i'), (m) => {
+      const month = MONTHS.findIndex((x) => x.startsWith(m[2].toLowerCase().slice(0, 3))); const d = new Date(m[3] ? parseInt(m[3], 10) : today.getFullYear(), month, parseInt(m[1], 10));
+      if (!m[3] && d < today) d.setFullYear(d.getFullYear() + 1); date = d;
+    });
+    if (!date) take(new RegExp(`${lead}\\b(${MONTHS.map((x) => x.slice(0, 3)).join('|')})[a-z]*\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(\\d{4}))?\\b`, 'i'), (m) => {
+      const month = MONTHS.findIndex((x) => x.startsWith(m[1].toLowerCase().slice(0, 3))); const d = new Date(m[3] ? parseInt(m[3], 10) : today.getFullYear(), month, parseInt(m[2], 10));
+      if (!m[3] && d < today) d.setFullYear(d.getFullYear() + 1); date = d;
+    });
+    if (!date) take(/\b(\d{4})-(\d{2})-(\d{2})\b/, (m) => { date = new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10)); });
+    if (!date) take(/\b(\d{1,2})[\/.](\d{1,2})(?:[\/.](\d{4}))?\b/, (m) => {
+      // Day/month, as for English outside the US (docs: day/month order).
+      const d = new Date(m[3] ? parseInt(m[3], 10) : today.getFullYear(), parseInt(m[2], 10) - 1, parseInt(m[1], 10));
+      if (!m[3] && d < today) d.setFullYear(d.getFullYear() + 1); date = d;
+    });
+    take(/\b(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i, (m) => {
+      let h = parseInt(m[1], 10) % 12; if (m[3].toLowerCase() === 'pm') h += 12; time = `${pad(h)}:${m[2] ?? '00'}`;
+    });
+    if (!time) take(/\b(?:at\s+)(\d{1,2})(?::(\d{2}))?\b/i, (m) => { time = `${pad(parseInt(m[1], 10))}:${m[2] ?? '00'}`; });
+    if (!time) take(/\b(\d{1,2}):(\d{2})\b/, (m) => { time = `${pad(parseInt(m[1], 10))}:${m[2]}`; });
+    if (!time) take(/\b(noon|midnight)\b/i, (m) => { time = m[1].toLowerCase() === 'noon' ? '12:00' : '00:00'; });
+    if (!time) take(/\bin\s+(\d+)\s+hours?\b/i, (m) => { const d = new Date(now.getTime() + parseInt(m[1], 10) * 3600e3); time = `${pad(d.getHours())}:${pad(d.getMinutes())}`; if (d.getDate() !== now.getDate()) date = new Date(d.getFullYear(), d.getMonth(), d.getDate()); });
+    if (time && !date) date = today; // a time on its own means today
+    if (date) chips.unshift(time ? `${fmtDate(date)} ${time}` : fmtDate(date));
+    // 4. Restore literals, tidy the title.
+    const title = s.replace(/\u0000(\d+)\u0000/g, (_, i) => literals[parseInt(i, 10)]).replace(/\s+/g, ' ').trim();
+    return { title, chips };
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-qa]');
+  if (root) {
+    const input = root.querySelector<HTMLInputElement>('[data-qa-input]')!;
+    const chips = root.querySelector<HTMLUListElement>('[data-qa-chips]')!;
+    const title = root.querySelector<HTMLElement>('[data-qa-title]')!;
+    const render = () => {
+      const r = parse(input.value);
+      chips.replaceChildren(...r.chips.map((c) => { const li = document.createElement('li'); li.className = 'chip'; li.textContent = c; return li; }));
+      if (r.chips.length === 0) { const li = document.createElement('li'); li.className = 'chip chip-muted'; li.textContent = 'nothing special: the whole line is the title'; chips.append(li); }
+      title.innerHTML = '';
+      const m = document.createElement('span'); m.className = 'meta'; m.textContent = 'Title that will be saved: ';
+      const b = document.createElement('strong'); b.textContent = r.title || '(nothing yet)';
+      title.append(m, b);
+    };
+    input.addEventListener('input', render);
+    root.querySelectorAll<HTMLButtonElement>('[data-qa-example]').forEach((b) => b.addEventListener('click', () => { input.value = b.dataset.qaExample ?? ''; render(); input.focus(); }));
+    root.classList.add('is-live');
+    render();
+  }
+</script>

@@ -1,0 +1,55 @@
+---
+// /playground (website-playgrounds-and-tools D1, D2): quick add and filters to
+// try in the browser, miniatures of the app's own features.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import FilterPlayground from '../components/FilterPlayground.astro';
+import Icon from '../components/Icon.astro';
+import QuickAddPlayground from '../components/QuickAddPlayground.astro';
+---
+<Base title="Try quick add and filters" description="Type a task the way you would in OpenTodo and see what it understands; type a filter query and see which tasks match. Two miniatures of the app's own features, in your browser, nothing to install.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Playground</p>
+      <h1>Try the two things people ask about first.</h1>
+      <p class="lede">Quick add turns one typed line into a task with a date, a project, labels, a priority and an estimate. Filters turn a short query into a live list. Both run in your browser here, as miniatures of the real features; the demo runs the real thing. <a href="/docs/quick-add/">Quick add syntax</a> · <a href="/docs/filters/">Filter queries</a></p>
+      <ul class="jump"><li><a href="#quick-add">Quick add</a></li><li><a href="#filters">Filters</a></li></ul>
+    </div>
+  </section>
+
+  <section class="section" id="quick-add" aria-labelledby="qa-title" style="padding-top: 1rem">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <p class="kicker">Quick add</p>
+        <h2 id="qa-title">One line, everything set.</h2>
+        <p class="lede">Dates in everyday words, <code>#project</code>, <code>@label</code>, a priority from <code>p1</code> to <code>p4</code> and an estimate like <code>+30m</code>. Chips show what was understood before you press Enter, and a word taken by mistake can be dismissed. <a href="/docs/quick-add/#preview-chips">Preview chips</a></p>
+        <ul class="checks">
+          <li><Icon name="check" size={18} /> Six languages in the app: English, German, French, Italian, Spanish and Portuguese, all at once. <a href="/docs/quick-add/#languages">Languages</a></li>
+          <li><Icon name="check" size={18} /> Text in double quotes is never interpreted. <a href="/docs/quick-add/#preview-chips">Preview chips</a></li>
+          <li><Icon name="check" size={18} /> Repeat rules are set in the task panel, not typed here. <a href="/docs/recurring-and-reminders/#make-a-task-repeat">Make a task repeat</a></li>
+        </ul>
+        <p><a class="link-arrow" href="/how-to/add-a-task-with-everything-in-one-line/">The how-to <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+      <QuickAddPlayground />
+    </div>
+  </section>
+
+  <section class="section section-alt" id="filters" aria-labelledby="fp-title">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <p class="kicker">Filters</p>
+        <h2 id="fp-title">Ask a question, pin the answer.</h2>
+        <p class="lede">A query combines small pieces with <code>&amp;</code>, <code>|</code> and <code>!</code>. When the results are useful, press <kbd>s</kbd> in the app and the query becomes a saved view in the sidebar, with a live count, on all your devices. <a href="/docs/labels-and-filters/#save-a-filter-as-a-view">Save a filter as a view</a></p>
+        <ul class="checks">
+          <li><Icon name="check" size={18} /> Filters run on your device: instant, and they work offline. <a href="/docs/labels-and-filters/#tips">Tips</a></li>
+          <li><Icon name="check" size={18} /> Up to six saved views side by side make a dashboard. <a href="/docs/views/#build-a-dashboard">Build a dashboard</a></li>
+          <li><Icon name="check" size={18} /> Ten worked examples live in the reference. <a href="/docs/filters/#examples">Examples</a></li>
+        </ul>
+        <p><a class="link-arrow" href="/how-to/save-a-filter-as-a-view/">The how-to <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+      <FilterPlayground />
+    </div>
+  </section>
+
+  <EndCta title="The real thing is one click away." lede="The demo runs the actual parser and the actual filters over sample data, with nothing to install and nothing kept." />
+</Base>

@@ -39,6 +39,9 @@ Coolify is a free program that turns a rented server into a place you deploy thi
 
 If you already run Docker somewhere, the plain Docker path is three commands. [Docker Compose](/docs/self-hosting/docker/#docker-compose)
 
+<!-- no-claim -->
+Not sure which of these fits? [Plan your server](/self-host/plan/) asks four questions and gives you the checklist and the compose file for your answers.
+
 ## What a month looks like
 
 - **Updates:** when a release comes out, pull the new image and restart; the database updates itself. A few minutes, every few weeks. [Update the server](/how-to/update-the-server/)
