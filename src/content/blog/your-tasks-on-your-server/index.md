@@ -4,6 +4,7 @@ summary: Your task list is a record of your life. It deserves the same care as y
 publishedAt: 2026-10-14
 author: raffaele
 category: ownership
+tags: [ownership]
 ---
 <!-- no-claim -->
 A task list looks harmless: groceries, a phone call, a deadline. Over a few years it becomes something else. It records the move you planned, the doctor's appointments, the project that failed, the promises you made to people. It is one of the most personal datasets you own.

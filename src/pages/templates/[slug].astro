@@ -1,13 +1,17 @@
 ---
-// A template page (website-content spec "Template gallery"): description, real
-// screenshots in light and dark, import steps and the download.
+// A template page (website-content spec "Template gallery", website-templates-and-methods
+// D2): description, screenshot, what is inside (rendered from the template itself),
+// how to use it, how to make it yours, import steps, byline, similar templates.
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import ShotPicture from '../../components/ShotPicture.astro';
+import TemplateGrid from '../../components/TemplateGrid.astro';
 import { templateShots, templateSummary } from '../../lib/templates';
 import { versionTag } from '../../lib/bundle';
+import { TAG_LABELS } from '../../content/schemas.mjs';
+import authors from '../../content/authors.json';
 
 export async function getStaticPaths() {
   return (await getCollection('templates')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -19,6 +23,18 @@ const shots = templateShots(entry.id);
 const s = templateSummary(entry);
 const guide = d.guide ? await getEntry('guides', d.guide) : undefined;
 if (d.guide && !guide) throw new Error(`Template ${entry.id} names guide "${d.guide}", which does not exist`);
+const author = (authors as Record<string, { name: string; bio: string; url: string }>)[d.author];
+if (!author) throw new Error(`Template ${entry.id} names author "${d.author}", which is not in src/content/authors.json`);
+const all = (await getCollection('templates')).filter((e) => e.id !== entry.id);
+// Similar: same audience or category, then anything sharing a tag.
+const similar = [
+  ...all.filter((e) => e.data.audience === d.audience || e.data.category === d.category),
+  ...all.filter((e) => e.data.tags.some((t) => d.tags.includes(t))),
+].filter((e, i, arr) => arr.indexOf(e) === i).slice(0, 3);
+const download = `/templates/${entry.id}.json`;
+const layoutLabel = d.layout === 'list' ? 'List' : d.layout === 'board' ? 'Board' : 'Calendar';
+type Task = { title: string; subtasks?: Task[]; recurrence?: string; estimate?: number; labels?: string[]; priority?: number; due?: string };
+const meta = (t: Task) => [t.recurrence && `repeats ${t.recurrence}`, t.estimate && `${t.estimate} min`, t.priority && t.priority < 4 && `P${t.priority}`, ...(t.labels ?? []).map((l) => `@${l}`)].filter(Boolean).join(' · ');
 ---
 <Base title={`${d.title} template`} description={d.summary} ogType="article">
   <section class="page-head">
@@ -26,31 +42,84 @@ if (d.guide && !guide) throw new Error(`Template ${entry.id} names guide "${d.gu
       <p class="breadcrumb"><a href="/templates/">Templates</a> / {d.category}</p>
       <h1>{d.title}</h1>
       <p class="lede">{d.summary}</p>
+      <ul class="tag-row" aria-label="Layout, audience and topics">
+        <li class="tag">{layoutLabel}</li>
+        <li class="tag">For {d.audience.toLowerCase()}</li>
+        {d.tags.map((t) => <li class="tag">{TAG_LABELS[t as keyof typeof TAG_LABELS]}</li>)}
+      </ul>
       <div class="cta-row">
-        <a class="btn btn-primary" href={`/templates/${entry.id}.json`} download={`opentodo-${entry.id}.json`}><Icon name="download" size={18} /> Download the template</a>
+        <a class="btn btn-primary" href={download} download={`opentodo-${entry.id}.json`}><Icon name="download" size={18} /> Download the template</a>
         {guide && <a class="btn btn-secondary" href={`/guides/${guide.id}/`}><Icon name="book-open" size={18} /> Read the guide</a>}
+        <a class="btn btn-secondary" href="#inside"><Icon name="arrow-down" size={18} /> See what is inside</a>
       </div>
       <p class="meta" style="margin-top: 0.75rem">{s.projects} {s.projects === 1 ? 'project' : 'projects'}, {s.sections} {s.sections === 1 ? 'section' : 'sections'}, {s.tasks} tasks{s.labels ? `, ${s.labels} ${s.labels === 1 ? 'label' : 'labels'}` : ''}. Checked against OpenTodo {versionTag}.</p>
     </div>
   </section>
+
   <section class="section" style="padding-top: 0">
     <div class="wrap">
       <ShotPicture light={shots.light} dark={shots.dark} alt={`The ${d.title} template imported into OpenTodo`} eager />
     </div>
   </section>
+
   <section class="section section-alt">
     <div class="wrap split" style="align-items: start">
-      <div class="prose"><Content /></div>
-      <div class="card">
-        <h2 style="font-size: 1.25rem">Import it in three steps</h2>
-        <ol>
-          <li>Download the template file above.</li>
-          <li>In OpenTodo, open <strong>Settings</strong>, then <strong>Data</strong>, then <strong>Import data</strong>.</li>
-          <li>Choose the file, check the preview, and select <strong>Import</strong>.</li>
-        </ol>
-        <p class="meta">Due dates count from the day the file was published; move them as you like. Importing the same file twice creates nothing new, and an import can be undone. <a href="/docs/import/">Import formats</a></p>
+      <div>
+        <h2>About this template</h2>
+        <div class="prose"><Content /></div>
+        <h2 style="margin-top: 2rem">How to use it</h2>
+        <ol class="steps">{d.howToUse.map((x) => <li>{x}</li>)}</ol>
+        <h2 style="margin-top: 2rem">Make it yours</h2>
+        <ul class="checks">{d.makeItYours.map((x) => <li><Icon name="pencil" size={16} />{x}</li>)}</ul>
+        <p class="byline"><span class="avatar" aria-hidden="true">{author.name.split(' ').map((w) => w[0]).join('').slice(0, 2)}</span><span>Template by <a href={author.url}>{author.name}</a>. {author.bio}</span></p>
+      </div>
+      <div>
+        <div class="card">
+          <h2 style="font-size: 1.25rem">Import it in three steps</h2>
+          <ol>
+            <li>Download the template file.</li>
+            <li>In OpenTodo, open <strong>Settings</strong>, then <strong>Data</strong>, then <strong>Import data</strong>.</li>
+            <li>Choose the file, check the preview, and select <strong>Import</strong>.</li>
+          </ol>
+          <p class="meta">Due dates count from the day the file was published; move them as you like. Importing the same file twice creates nothing new, and an import can be undone. <a href="/docs/import/">Import formats</a></p>
+          <p class="meta" style="margin-top: 0.75rem">Want to try it without touching your own lists? Import it into <a href="https://demo.open-todo.app">the demo</a>: the sandbox is private and deleted after two hours. <a href="/docs/self-hosting/demo/">About the demo</a></p>
+        </div>
       </div>
     </div>
   </section>
+
+  <section class="section" id="inside" aria-labelledby="inside-title">
+    <div class="wrap narrow">
+      <h2 id="inside-title">What is inside</h2>
+      <p class="lede">Every project, section and task the file creates, as the import will show them. Dates are relative to the day you import.</p>
+      <ul class="tree">
+        {d.projects.map((p) => (
+          <li>
+            <div class="tree-head"><Icon name="folder" size={16} /> {p.name}</div>
+            {p.tasks.length > 0 && <ul>{p.tasks.map((t) => <li><span class="dot"></span><span>{t.title}{meta(t) && <span class="t-meta">{meta(t)}</span>}{t.subtasks && t.subtasks.length > 0 && <ul>{t.subtasks.map((st: Task) => <li><span class="dot"></span>{st.title}</li>)}</ul>}</span></li>)}</ul>}
+            {p.sections.map((sec) => (
+              <>
+                <div class="tree-head" style="background: var(--bg); font-weight: 500; color: var(--muted)"><Icon name="corner-down-right" size={14} /> {sec.name}</div>
+                <ul>{sec.tasks.map((t) => <li><span class="dot"></span><span>{t.title}{meta(t) && <span class="t-meta">{meta(t)}</span>}{t.subtasks && t.subtasks.length > 0 && <ul>{t.subtasks.map((st: Task) => <li><span class="dot"></span>{st.title}</li>)}</ul>}</span></li>)}</ul>
+              </>
+            ))}
+          </li>
+        ))}
+      </ul>
+      {d.labels.length > 0 && <p class="meta" style="margin-top: 1rem">Labels created: {d.labels.map((l) => `@${l.name}`).join(', ')}. <a href="/docs/labels-and-filters/">Labels and filters</a></p>}
+      <div class="cta-row" style="margin-top: 1.5rem">
+        <a class="btn btn-primary" href={download} download={`opentodo-${entry.id}.json`}><Icon name="download" size={18} /> Download the template</a>
+      </div>
+    </div>
+  </section>
+
+  {similar.length > 0 && (
+    <section class="section section-alt" aria-labelledby="similar-title">
+      <div class="wrap">
+        <h2 id="similar-title" style="font-size: 1.5rem">Similar templates</h2>
+        <TemplateGrid entries={similar} />
+      </div>
+    </section>
+  )}
   <EndCta />
 </Base>

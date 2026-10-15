@@ -6,6 +6,7 @@ sources: [/docs/trash-and-history/]
 group: Every day
 minutes: 1
 shot: trash
+tags: [ownership]
 order: 17
 related: [find-a-missing-task, download-everything]
 ---

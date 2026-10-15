@@ -2,7 +2,18 @@
 title: Household chores
 summary: Daily, weekly and monthly chores on repeat, ready to share and assign in a household.
 category: Home
-lastReviewed: 2026-10-14
+audience: Households
+layout: list
+tags: [habits, teamwork]
+howToUse:
+  - "Import the file, then share the project with everyone at home as editors."
+  - "Assign each chore to a person, or leave it open for whoever gets there first."
+  - "Tick a chore off and its next occurrence appears on its schedule."
+makeItYours:
+  - "Change the days: your bins may go out on Tuesday, not Thursday."
+  - "Split the project into sections by room or by person and show it as a board."
+  - "Add labels like `@10min` so a short gap can be filled from the list."
+lastReviewed: 2026-10-15
 sources: [/docs/recurrence/, /docs/sharing/]
 order: 6
 labels:

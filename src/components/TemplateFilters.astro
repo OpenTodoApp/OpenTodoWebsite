@@ -1,0 +1,23 @@
+---
+// The gallery's filter rows (website-templates-and-methods D1): links to static
+// pages per audience and per layout, so filtering needs no script.
+import { TEMPLATE_AUDIENCES, TEMPLATE_LAYOUTS, slugify } from '../content/schemas.mjs';
+interface Props { audience?: string; layout?: string }
+const { audience, layout } = Astro.props;
+const cur = (on: boolean) => (on ? 'page' : undefined);
+---
+<nav class="filters" aria-label="Filter templates">
+  <div>
+    <span class="meta">For</span>
+    <ul class="jump">
+      <li><a href="/templates/" aria-current={cur(!audience && !layout)}>Everyone</a></li>
+      {TEMPLATE_AUDIENCES.filter((a) => a !== 'Everyone').map((a) => <li><a href={`/templates/for/${slugify(a)}/`} aria-current={cur(audience === a)}>{a}</a></li>)}
+    </ul>
+  </div>
+  <div>
+    <span class="meta">Layout</span>
+    <ul class="jump">
+      {TEMPLATE_LAYOUTS.map((l) => <li><a href={`/templates/layout/${l}/`} aria-current={cur(layout === l)}>{l === 'list' ? 'List' : l === 'board' ? 'Board' : 'Calendar'}</a></li>)}
+    </ul>
+  </div>
+</nav>

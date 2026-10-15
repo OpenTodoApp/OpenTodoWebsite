@@ -4,6 +4,7 @@ summary: Give tasks an estimate and a time, and the Day and Week calendars show 
 lastReviewed: 2026-10-14
 sources: [/docs/time-blocking/, /docs/quick-add/, /docs/views/]
 templates: [study-plan, product-launch]
+tags: [time-management, focus]
 order: 3
 ---
 <!-- no-claim -->

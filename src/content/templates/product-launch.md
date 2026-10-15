@@ -2,7 +2,18 @@
 title: Product launch
 summary: A small team's launch plan on a board, from final checks to the announcement and the week after.
 category: Work
-lastReviewed: 2026-10-14
+audience: Teams
+layout: board
+tags: [teamwork, time-management]
+howToUse:
+  - "Import the file, share the project with your team as editors, and show it as a board."
+  - "Assign the tasks and give each an estimate; the Week calendar then shows whether the plan fits the days you have."
+  - "Move cards across Backlog, This week, Launch day and Week after as the launch approaches."
+makeItYours:
+  - "Rename the sections to your own stages, or add a \"Blocked\" column."
+  - "Save a view `#Launch & due <= 7 days` for the stand-up."
+  - "Add a label per workstream (`@marketing`, `@engineering`) and filter the board by it."
+lastReviewed: 2026-10-15
 sources: [/docs/sections-and-boards/, /docs/sharing/, /docs/time-blocking/]
 order: 5
 labels:

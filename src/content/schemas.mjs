@@ -68,6 +68,14 @@ export function compareSchema({ docExists, today = () => new Date() }) {
 }
 const rank = (v) => ({ no: 0, partial: 1, yes: 2 })[v];
 
+/**
+ * Tags shared by guides, templates, how-tos and posts (website-templates-and-methods
+ * D3, D5): the methods catalogue filters by them and the topic pages collect by them.
+ */
+export const CONTENT_TAGS = ['focus', 'procrastination', 'prioritisation', 'time-management', 'task-management', 'teamwork', 'habits', 'goals', 'ownership'];
+export const TAG_LABELS = { focus: 'Focus', procrastination: 'Procrastination', prioritisation: 'Prioritisation', 'time-management': 'Time management', 'task-management': 'Task management', teamwork: 'Teamwork', habits: 'Habits', goals: 'Goals', ownership: 'Ownership' };
+const tags = () => z.array(z.enum(CONTENT_TAGS, { error: () => `"tags" must be among ${CONTENT_TAGS.join(', ')}` })).default([]);
+
 /** Shared by guides and toolkit pieces. */
 export function articleSchema({ docExists, today = () => new Date(), needsSources = true }) {
   return z.object({
@@ -76,10 +84,16 @@ export function articleSchema({ docExists, today = () => new Date(), needsSource
     lastReviewed: freshDate('lastReviewed', CONTENT_MAX_AGE_DAYS, today),
     sources: needsSources ? z.array(docPath(docExists)).min(1) : z.array(docPath(docExists)).default([]),
     templates: z.array(z.string()).default([]),
+    tags: tags(),
     order: z.number().default(0),
     draft: z.boolean().default(false),
   });
 }
+
+/** Audiences and layouts of the template gallery's filters (website-templates-and-methods D1). */
+export const TEMPLATE_AUDIENCES = ['Everyone', 'Households', 'Professionals', 'Students', 'Teams'];
+export const TEMPLATE_LAYOUTS = ['list', 'board', 'calendar'];
+export const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 /** Groups of the how-to collection (website-help-and-howtos D2), in the order the index shows them. */
 export const HOWTO_GROUPS = ['Get started', 'Every day', 'Phone and notifications', 'Together', 'Fix it', 'Run the server'];
@@ -148,6 +162,12 @@ export function templateSchema({ docExists, today = () => new Date() }) {
     title: z.string().min(1),
     summary: z.string().min(1),
     category: z.enum(['Personal', 'Home', 'Work', 'Method']),
+    audience: z.enum(TEMPLATE_AUDIENCES, { error: () => `"audience" must be one of ${TEMPLATE_AUDIENCES.join(', ')}` }).default('Everyone'),
+    layout: z.enum(TEMPLATE_LAYOUTS, { error: () => `"layout" must be one of ${TEMPLATE_LAYOUTS.join(', ')}` }).default('list'),
+    howToUse: z.array(z.string().min(1)).min(1, { message: 'a template says how to use it ("howToUse", at least one step)' }),
+    makeItYours: z.array(z.string().min(1)).min(1, { message: 'a template says how to adapt it ("makeItYours", at least one idea)' }),
+    author: z.string().min(1).default('raffaele'),
+    tags: tags(),
     lastReviewed: freshDate('lastReviewed', CONTENT_MAX_AGE_DAYS, today),
     sources: z.array(docPath(docExists)).min(1),
     guide: z.string().optional(),
@@ -198,6 +218,7 @@ export function blogSchema({ releaseExists, image = () => z.string(), author = z
     release: version('release').optional(),
     inDevelopment: z.boolean().default(false),
     shippedIn: version('shippedIn').optional(),
+    tags: tags(),
     draft: z.boolean().default(false),
   }).superRefine((d, ctx) => {
     if (d.cover && !d.coverAlt) ctx.addIssue({ code: 'custom', path: ['coverAlt'], message: 'a cover image needs "coverAlt" (its text alternative)' });

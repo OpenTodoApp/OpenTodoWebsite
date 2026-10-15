@@ -4,6 +4,7 @@ summary: Contexts as labels, lists as saved views and a weekly review, so the GT
 lastReviewed: 2026-10-14
 sources: [/docs/labels-and-filters/, /docs/filters/, /docs/views/, /docs/quick-add/]
 templates: [gtd-setup, weekly-review]
+tags: [task-management, prioritisation]
 order: 2
 ---
 <!-- no-claim -->

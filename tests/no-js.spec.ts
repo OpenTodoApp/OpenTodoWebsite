@@ -5,7 +5,7 @@ import { sitePages } from './pages';
 
 // Blog joins the menu once a post is published (website-blog spec).
 // The Learn group lists the guidance content once it is published (website-first-visit D4).
-const LEARN = fs.existsSync('dist/guides/index.html') && fs.existsSync('dist/templates/index.html') ? ['Guides', 'How-tos', 'Templates', 'Switch', 'Toolkit', "What's new"] : [];
+const LEARN = fs.existsSync('dist/guides/index.html') && fs.existsSync('dist/templates/index.html') ? ['Guides', 'How-tos', 'Templates', 'Switch', 'Topics', 'Toolkit', "What's new"] : [];
 const MENU = ['Features', 'Compare', 'What it costs', 'Self-host', 'Developers', 'Help', 'Docs', ...LEARN, ...(fs.existsSync('dist/blog/index.html') ? ['Blog'] : [])];
 
 test.use({ javaScriptEnabled: false, viewport: { width: 360, height: 800 } });

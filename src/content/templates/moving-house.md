@@ -2,7 +2,18 @@
 title: Moving house
 summary: Everything from notice periods to the last box, in sections you can share with everyone who is moving.
 category: Home
-lastReviewed: 2026-10-14
+audience: Households
+layout: board
+tags: [teamwork, task-management]
+howToUse:
+  - "Import the file, then share the project with everyone who is moving."
+  - "Due dates count from the day you import; set the moving day and move the rest to match."
+  - "Switch the project to a board to see the stages side by side."
+makeItYours:
+  - "Delete the tasks that do not apply (no pets, no car) and add the ones that do."
+  - "Assign the admin tasks to one person and the packing to everyone."
+  - "Add a label `@call` for the tasks that need a phone call during office hours."
+lastReviewed: 2026-10-15
 sources: [/docs/sharing/, /docs/sections-and-boards/]
 order: 3
 labels:

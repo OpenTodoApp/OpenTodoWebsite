@@ -2,7 +2,18 @@
 title: Getting Things Done setup
 summary: Contexts, a waiting-for list and a someday list, ready for the GTD method in a few minutes.
 category: Method
-lastReviewed: 2026-10-14
+audience: Professionals
+layout: list
+tags: [task-management, prioritisation]
+howToUse:
+  - "Import the file; it creates the labels, the GTD project and its sections."
+  - "Save the views the guide suggests, such as `@phone & !@waiting`, and pin them to the sidebar."
+  - "Every Friday, the review task asks you to check each project for a next action."
+makeItYours:
+  - "Rename the contexts to the places you actually work: `@office`, `@workshop`, `@town`."
+  - "Delete the sections you do not use; a smaller system is one you keep."
+  - "Give the review task a time that fits your week."
+lastReviewed: 2026-10-15
 sources: [/docs/labels-and-filters/, /docs/filters/, /docs/views/]
 guide: getting-things-done
 order: 2

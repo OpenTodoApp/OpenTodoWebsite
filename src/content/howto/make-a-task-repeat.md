@@ -5,6 +5,7 @@ lastReviewed: 2026-10-15
 sources: [/docs/recurring-and-reminders/, /docs/recurrence/]
 group: Every day
 minutes: 1
+tags: [habits]
 order: 11
 related: [set-a-reminder, add-a-task-with-everything-in-one-line]
 ---

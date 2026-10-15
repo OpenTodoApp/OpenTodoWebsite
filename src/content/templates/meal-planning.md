@@ -2,7 +2,18 @@
 title: Meal planning
 summary: A weekly rhythm for choosing meals, writing the shopping list and prepping ahead.
 category: Home
-lastReviewed: 2026-10-14
+audience: Households
+layout: list
+tags: [habits, teamwork]
+howToUse:
+  - "Import the file; the Sunday rhythm repeats every week: choose, write the list, shop, prep."
+  - "Share the project so whoever is in the shop sees the list live."
+  - "Add this week's groceries as subtasks of the shopping task and tick them off in the aisle."
+makeItYours:
+  - "Move the planning day to whenever your week starts."
+  - "Add a section per weekday with the dish as the task title, so the plan is visible on the phone."
+  - "Keep a \"Staples\" section of things you always need and copy from it."
+lastReviewed: 2026-10-15
 sources: [/docs/recurrence/, /docs/sharing/]
 order: 7
 labels:

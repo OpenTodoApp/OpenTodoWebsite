@@ -4,6 +4,7 @@ summary: Sort tasks by urgent and important using priorities, due dates and four
 lastReviewed: 2026-10-14
 sources: [/docs/filters/, /docs/views/]
 templates: [weekly-review]
+tags: [prioritisation]
 order: 4
 ---
 <!-- no-claim -->

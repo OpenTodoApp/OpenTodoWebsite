@@ -1,0 +1,35 @@
+---
+// /templates/layout/<layout> (website-templates-and-methods D1): the gallery for one layout.
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import EndCta from '../../../components/EndCta.astro';
+import TemplateFilters from '../../../components/TemplateFilters.astro';
+import TemplateGrid from '../../../components/TemplateGrid.astro';
+import { TEMPLATE_LAYOUTS } from '../../../content/schemas.mjs';
+
+export function getStaticPaths() {
+  return TEMPLATE_LAYOUTS.map((l) => ({ params: { layout: l } }));
+}
+const layout = Astro.params.layout as string;
+const entries = (await getCollection('templates')).filter((e) => e.data.layout === layout).sort((a, b) => a.data.order - b.data.order);
+const info: Record<string, { title: string; lede: string; doc: string; docLabel: string }> = {
+  list: { title: 'Templates that work as a list', lede: 'Sections with headings, tasks in order, subtasks where the details go. The default view of every project.', doc: '/docs/tasks-and-projects/', docLabel: 'Tasks and projects' },
+  board: { title: 'Templates that work as a board', lede: 'Sections as columns you drag cards between, for stages and hand-overs. Press v in any project to switch.', doc: '/docs/sections-and-boards/', docLabel: 'Sections and boards' },
+  calendar: { title: 'Templates that work on the calendar', lede: 'Tasks with times and estimates that show as blocks on the Day and Week views, so you can see whether the plan fits.', doc: '/docs/time-blocking/', docLabel: 'Time blocking' },
+};
+const i = info[layout];
+---
+<Base title={i.title} description={`${i.lede} Download and import in Settings.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/templates/">Templates</a></p>
+      <h1>{i.title}.</h1>
+      <p class="lede">{i.lede} <a href={i.doc}>{i.docLabel}</a></p>
+      <TemplateFilters layout={layout} />
+    </div>
+  </section>
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap"><TemplateGrid entries={entries} headingLevel={2} /></div>
+  </section>
+  <EndCta />
+</Base>

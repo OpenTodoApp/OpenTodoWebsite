@@ -6,6 +6,7 @@ sources: [/docs/sharing/]
 group: Together
 minutes: 2
 shot: share
+tags: [teamwork]
 order: 30
 related: [invite-someone-with-a-link, turn-a-project-into-a-board]
 ---
