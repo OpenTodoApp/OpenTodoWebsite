@@ -6,6 +6,9 @@ import Base from '../../layouts/Base.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { SITE } from '../../lib/site';
+import authors from '../../content/authors.json';
 import { manifest } from '../../lib/bundle';
 
 export async function getStaticPaths() {
@@ -21,6 +24,10 @@ const siblings = all.filter((e) => e.data.group === d.group && e.id !== entry.id
 const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title={d.title} description={d.summary} ogType="article">
+  <JsonLd slot="head" data={[
+    { '@type': 'TechArticle', headline: d.title, description: d.summary, dateModified: d.lastReviewed.toISOString().slice(0, 10), inLanguage: 'en', author: { '@type': 'Person', name: authors.raffaele.name, url: authors.raffaele.url }, publisher: { '@type': 'Organization', name: 'OpenTodo', url: SITE.url }, mainEntityOfPage: `${SITE.url}/how-to/${entry.id}/`, about: 'OpenTodo' },
+    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Help', item: `${SITE.url}/help/` }, { '@type': 'ListItem', position: 2, name: 'How-tos', item: `${SITE.url}/how-to/` }, { '@type': 'ListItem', position: 3, name: d.title, item: `${SITE.url}/how-to/${entry.id}/` }] },
+  ]} />
   <article>
     <header class="page-head">
       <div class="wrap narrow">

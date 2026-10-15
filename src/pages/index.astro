@@ -13,6 +13,8 @@ import ScreenshotFrame from '../components/ScreenshotFrame.astro';
 import { SITE } from '../lib/site';
 import PostCard from '../components/blog/PostCard.astro';
 import { publishedPosts } from '../lib/blog';
+import JsonLd from '../components/JsonLd.astro';
+import { manifest, versionTag } from '../lib/bundle';
 
 // The three latest posts (website-blog D7); the section is left out when there are none.
 const latestPosts = (await publishedPosts()).slice(0, 3);
@@ -42,6 +44,10 @@ const reasons = [
 ];
 ---
 <Base title="OpenTodo · A to-do app that runs on your own server" bareTitle description="OpenTodo is a free, open-source to-do app you run on your own server. Plan your day, set reminders, share lists with your family or team, work offline on every device, and add an AI assistant with the model and key you choose. No subscription.">
+  <JsonLd slot="head" data={[
+    { '@type': 'WebSite', name: 'OpenTodo', url: SITE.url, inLanguage: 'en' },
+    { '@type': 'SoftwareApplication', name: 'OpenTodo', url: SITE.url, applicationCategory: 'ProductivityApplication', operatingSystem: 'Web, iOS, Android, Windows, macOS, Linux (self-hosted server: Docker on linux/amd64 and linux/arm64)', softwareVersion: manifest.version, license: `${SITE.appRepo}/blob/main/LICENSE`, isAccessibleForFree: true, downloadUrl: SITE.appRepo, installUrl: `${SITE.url}/self-host/`, softwareHelp: `${SITE.url}/help/`, releaseNotes: `${SITE.url}/whats-new/${manifest.version}/`, description: `Free, open-source, self-hosted task manager ${versionTag}: tasks, projects, reminders, sharing, offline on every device.` },
+  ]} />
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div>

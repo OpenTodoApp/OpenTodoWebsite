@@ -8,6 +8,8 @@ import Icon from '../../components/Icon.astro';
 import CoverImage from '../../components/blog/CoverImage.astro';
 import DevNotice from '../../components/blog/DevNotice.astro';
 import PostCard from '../../components/blog/PostCard.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { SITE } from '../../lib/site';
 import { CATEGORY_LABELS, authorOf, categoryUrl, formatDate, isoDate, publishedPosts, readingMinutes, relatedPosts, type Post } from '../../lib/blog';
 
 export async function getStaticPaths() {
@@ -24,6 +26,7 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
 ---
 <Base title={d.title} description={d.summary} ogType="article" image={og}>
   <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
+  <JsonLd slot="head" data={{ '@type': 'BlogPosting', headline: d.title, description: d.summary, datePublished: isoDate(d.publishedAt), ...(d.updatedAt && { dateModified: isoDate(d.updatedAt) }), inLanguage: 'en', author: { '@type': 'Person', name: author.name, url: author.url }, publisher: { '@type': 'Organization', name: 'OpenTodo', url: SITE.url }, mainEntityOfPage: `${SITE.url}/blog/${post.id}/`, ...(og && { image: new URL(og, SITE.url).href }), articleSection: CATEGORY_LABELS[d.category] }} />
   <article>
     <header class="post-head">
       <div class="wrap">

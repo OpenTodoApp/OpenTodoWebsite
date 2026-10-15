@@ -14,7 +14,7 @@ The public website of [OpenTodo](https://github.com/pixari/opentodo), live at ht
 - `src/layouts/Base.astro`: header, navigation (a `<details>` menu below 768 px), footer, preview banner, analytics.
 - `src/components/`: `Icon`, `ScreenshotFrame`, `CompareTable`, `EndCta`, and the islands `HeroDemo`, `FeatureTour`, `SyncPlayground`, `InstallTabs` (each ships its script only to pages that use it, and reads without JavaScript).
 - `src/content/`: collections (`compare`, `templates`, `guides`, `toolkit`, `blog`, plus `authors.json`); schemas and freshness rules in `src/content/schemas.mjs`.
-- `scripts/`: `fetch-bundle.mjs`, `interim-bundle.mjs`, `check-content.mjs` (claim lint), `templates-check.mjs`, `checks/` (links, emoji, scripts), `serve.mjs`.
+- `scripts/`: `fetch-bundle.mjs`, `interim-bundle.mjs`, `check-content.mjs` (claim lint), `templates-check.mjs`, `og.mjs` (social cards per page, fonts in `og/fonts/`), `checks/` (links, emoji, scripts), `serve.mjs`.
 - `interim/`: the stand-in bundle until the app publishes real ones; delete it when `bundle.json` pins a release.
 
 ## Commands

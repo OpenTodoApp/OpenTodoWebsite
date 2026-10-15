@@ -1,0 +1,10 @@
+---
+// Structured data (website-seo D3): one JSON-LD block, inline, so it loads no
+// script from anywhere. Pass a schema.org object; @context is added here.
+interface Props { data: Record<string, unknown> | Record<string, unknown>[] }
+const { data } = Astro.props;
+const body = Array.isArray(data) ? data.map((d) => ({ '@context': 'https://schema.org', ...d })) : { '@context': 'https://schema.org', ...data };
+// </script> inside a string would end the block early; escape it.
+const json = JSON.stringify(body).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" set:html={json} />
