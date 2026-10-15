@@ -27,13 +27,14 @@
   };
 
   const sectionOf = (el) => {
-    const s = el.closest("section[id], header, footer, section.hero, section.final");
+    const s = el.closest("section[id], header, footer, section.hero, section.final, section.end-cta");
     if (!s) return "page";
     if (s.id) return s.id;
     if (s.matches("header")) return "nav";
     if (s.matches("footer")) return "footer";
     if (s.classList.contains("hero")) return "hero";
     if (s.classList.contains("final")) return "final";
+    if (s.classList.contains("end-cta")) return "end-cta";
     return "page";
   };
   const label = (el) => (el.getAttribute("aria-label") || el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 60);
@@ -51,6 +52,7 @@
     }
     if (url.hostname.endsWith("open-todo.app")) return "open-todo";
     if (url.hostname.endsWith("pixari.dev")) return "pixari";
+    if (url.hostname.endsWith("buymeacoffee.com")) return "coffee";
     return "other";
   };
 
@@ -85,6 +87,7 @@
         return;
       }
       if (a.hasAttribute("data-star")) { send("cta-star", { section }); return; }
+      if (a.hasAttribute("data-coffee")) { send("cta-coffee", { section, page: location.pathname.slice(0, 120) }); return; }
       const target = targetOf(url);
       const data = { target, section, label: label(a), path: (url.hostname + url.pathname).slice(0, 120) };
       if (target === "demo") send("cta-demo", data);
