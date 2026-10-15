@@ -31,7 +31,7 @@ const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir, { withFileTypes:
     return { slug: e.name, file, text, inDevelopment: fm.inDevelopment === true, live };
   });
 
-const pages = new Set(['/', '/vs/', '/self-host/', '/developers/', '/templates/', '/guides/', '/toolkit/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
+const pages = new Set(['/', '/about/', '/cost/', '/vs/', '/self-host/', '/developers/', '/templates/', '/guides/', '/toolkit/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
 for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${c === 'compare' ? 'vs' : c}/${s}/`);
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);
 for (const c of BLOG_CATEGORIES) pages.add(`/blog/category/${c}/`);

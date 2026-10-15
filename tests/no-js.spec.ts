@@ -4,7 +4,9 @@ import fs from 'node:fs';
 import { sitePages } from './pages';
 
 // Blog joins the menu once a post is published (website-blog spec).
-const MENU = ['Features', 'Compare', 'Self-host', 'Developers', 'Docs', ...(fs.existsSync('dist/blog/index.html') ? ['Blog'] : [])];
+// The Learn group lists the guidance content once it is published (website-first-visit D4).
+const LEARN = fs.existsSync('dist/guides/index.html') && fs.existsSync('dist/templates/index.html') ? ['Guides', 'Templates', 'Toolkit', "What's new"] : [];
+const MENU = ['Features', 'Compare', 'What it costs', 'Self-host', 'Developers', 'Docs', ...LEARN, ...(fs.existsSync('dist/blog/index.html') ? ['Blog'] : [])];
 
 test.use({ javaScriptEnabled: false, viewport: { width: 360, height: 800 } });
 
@@ -26,6 +28,18 @@ for (const url of sitePages()) {
     expect(hrefs.filter((h) => !h || h === '#'), 'links without a target').toEqual([]);
   });
 }
+
+test('the Learn menu opens and works at 1280 px without JavaScript', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+  const group = page.locator('.nav-desktop details.nav-group');
+  await group.locator('> summary').focus();
+  await page.keyboard.press('Enter');
+  const guides = group.getByRole('link', { name: 'Guides', exact: true });
+  await expect(guides).toBeVisible();
+  await guides.click();
+  await expect(page).toHaveURL(/\/guides\/$/);
+});
 
 test('the Compare link works from the phone menu without JavaScript', async ({ page }) => {
   await page.goto('/vs/todoist/');

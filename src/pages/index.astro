@@ -26,6 +26,13 @@ const basics = [
   { icon: 'users', title: 'Shared lists', text: 'Share a project with your partner or your team, assign tasks, and leave comments on them.', doc: '/docs/sharing/' },
   { icon: 'monitor-smartphone', title: 'Phone, laptop, offline', text: 'Install it from the browser on iPhone, Android, Mac, Windows or Linux. It keeps working without a connection.', doc: '/docs/install-app/' },
 ];
+// The three real ways to get OpenTodo (website-first-visit D1). The demo
+// sandbox lifetime is as /docs/self-hosting/demo/ states it for the pinned release.
+const paths = [
+  { icon: 'sparkles', when: 'I want to see it first', title: 'Try the demo', text: 'Opens in your browser with nothing to install. You get a private sandbox with sample projects that nobody else can see; it is deleted after two hours without activity.', effort: 'Two minutes. Nothing to install.', href: SITE.demo, cta: 'Open the demo', primary: true, more: { href: '/docs/self-hosting/demo/', label: 'What the demo keeps and for how long' } },
+  { icon: 'users-round', when: 'Someone I know runs a server', title: 'Join with the link you were sent', text: 'Open the invitation link, choose a name and password, and you are in. Then install the app on your phone and laptop straight from the browser, no app store involved.', effort: 'Five minutes. No setup on your side.', href: '/docs/getting-started/', cta: 'How to join', primary: false, more: { href: '/docs/install-app/', label: 'Install it on your phone and computer' } },
+  { icon: 'server', when: 'I will run it myself', title: 'Run it on your own server', text: 'One container, one folder of data, no database server to set up. A small VPS, a Raspberry Pi or a machine already at home is enough, and the only cost is that server.', effort: 'About twenty minutes the first time.', href: '/self-host/', cta: 'Install it', primary: false, more: { href: '/cost/', label: 'What it costs, in words' } },
+];
 const reasons = [
   { icon: 'house', title: 'One server for everyone at home', text: 'Each person gets their own account and their own lists. Share the shopping list, the move or the holiday with whoever needs it. Nobody pays per person.', doc: '/docs/sharing/', link: 'Sharing and accounts' },
   { icon: 'wifi-off', title: 'Works without a connection', text: 'Your phone keeps a full copy of your tasks. Add and tick things off on the train or on a plane, and it all syncs when you are back online.', doc: '/docs/offline-and-sync/', link: 'Offline and sync' },
@@ -52,6 +59,29 @@ const reasons = [
       <div>
         <HeroDemo />
       </div>
+    </div>
+  </section>
+
+  <section class="section get-it" id="get-it" aria-labelledby="get-it-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">How do I get it?</p>
+        <h2 id="get-it-title">Three ways in. Pick the one that fits you.</h2>
+        <p class="lede">OpenTodo is not offered as a hosted service, so there is no account to sign up for here. You try it in the demo, you join a server someone you know runs, or you run one yourself.</p>
+      </div>
+      <ol class="grid grid-3 paths">
+        {paths.map((p) => (
+          <li class="card">
+            <span class="card-icon"><Icon name={p.icon} size={22} /></span>
+            <p class="path-when">{p.when}</p>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+            <p class="meta">{p.effort}</p>
+            <a class={p.primary ? 'btn btn-primary' : 'btn btn-secondary'} href={p.href}>{p.cta} <Icon name="arrow-right" size={16} /></a>
+            {p.more && <p class="meta" style="margin-top: 0.75rem"><a href={p.more.href}>{p.more.label}</a></p>}
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
