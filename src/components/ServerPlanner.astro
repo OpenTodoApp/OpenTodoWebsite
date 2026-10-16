@@ -9,6 +9,14 @@ import { manifest } from '../lib/bundle';
 
 const line = manifest.version.split('.').slice(0, 2).join('.');
 const image = `ghcr.io/pixari/opentodo:${line}`;
+// Only the footprint facts the pinned bundle carries are shown (nothing is invented).
+const f = manifest.facts;
+const footprint = [
+  f.idleMemoryMB && `OpenTodo idles at about ${f.idleMemoryMB} MB of memory`,
+  f.imageMB ? `the image is about ${f.imageMB} MB` : f.binaryMB && `the server binary is about ${Math.round(f.binaryMB)} MB`,
+  f.minimumServer && `${f.minimumServer} is plenty`,
+].filter(Boolean) as string[];
+const footprintText = footprint.length ? `${footprint.join('; ')}.`.replace(/^./, (c) => c.toUpperCase()) : '';
 const defaultCompose = `services:
   opentodo:
     image: ${image}
@@ -67,7 +75,7 @@ volumes:
 
   <div class="planner-out">
     <h3 data-planner-verdict>Enough server? Yes.</h3>
-    <p class="meta" data-planner-footprint>OpenTodo idles at about {manifest.facts.idleMemoryMB} MB of memory; the image is about {manifest.facts.imageMB} MB; {manifest.facts.minimumServer} is plenty. <a href="/docs/self-hosting/docker/#resource-usage">Resource usage</a></p>
+    <p class="meta" data-planner-footprint>{footprintText} <a href="/docs/self-hosting/docker/#resource-usage">Resource usage</a></p>
     <h3>Your checklist</h3>
     <ol class="steps" data-planner-steps>
       <li>Create the data folder and start the container with the compose file below. <a href="/docs/self-hosting/docker/#docker-compose">Docker Compose</a></li>

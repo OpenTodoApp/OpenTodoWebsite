@@ -9,11 +9,19 @@ import { manifest, versionTag } from '../lib/bundle';
 
 const f = manifest.facts;
 const licence = f.license ?? 'AGPL-3.0';
+// Only the facts the pinned bundle carries are shown (nothing is invented).
 const facts = [
-  f.imageMB && { label: 'Container image', value: `about ${f.imageMB} MB` },
+  f.imageMB ? { label: 'Container image', value: `about ${f.imageMB} MB` } : f.binaryMB && { label: 'Server binary', value: `about ${Math.round(f.binaryMB)} MB` },
   f.idleMemoryMB && { label: 'Memory when idle', value: `about ${f.idleMemoryMB} MB` },
   f.minimumServer && { label: 'Enough server', value: f.minimumServer },
+  f.database && { label: 'Database', value: `one ${f.database} file` },
+  f.architectures && { label: 'Runs on', value: f.architectures.map((a) => a.replace('linux/', '')).join(' and ') },
 ].filter(Boolean) as { label: string; value: string }[];
+const footprint = [
+  f.minimumServer && `${f.minimumServer[0].toUpperCase()}${f.minimumServer.slice(1)} is plenty`,
+  f.idleMemoryMB && `it idles at about ${f.idleMemoryMB} MB of memory`,
+].filter(Boolean);
+const footprintText = footprint.length ? `${footprint.join(', and ').replace(/^./, (c) => c.toUpperCase())}.` : '';
 
 const homes = [
   { icon: 'house', title: 'A machine already at home', text: 'A NAS, an old laptop or a mini PC that is on anyway. It costs you nothing more than it does today, and your tasks never leave the house. Your phone reaches it from outside through the usual ways people reach home servers.' },
@@ -56,7 +64,7 @@ const homes = [
       <div class="section-head">
         <p class="kicker">The server</p>
         <h2 id="server-title">Where it can live</h2>
-        <p class="lede">OpenTodo is <a href="/docs/self-hosting/docker/">one container with one folder of data</a>, no database server beside it. {f.minimumServer && `${f.minimumServer[0].toUpperCase()}${f.minimumServer.slice(1)} is plenty, and it idles at about ${f.idleMemoryMB} MB of memory.`} The three usual homes, cheapest first:</p>
+        <p class="lede">OpenTodo is <a href="/docs/self-hosting/docker/">one container with one folder of data</a>, no database server beside it. {footprintText && `${footprintText} `}The three usual homes, cheapest first:</p>
       </div>
       <div class="grid grid-3">
         {homes.map((h) => (

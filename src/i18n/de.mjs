@@ -77,7 +77,7 @@ export default {
     kicker: 'Was es kostet',
     h1: 'OpenTodo ist kostenlos. Ganz, für alle, für immer.',
     lede: 'Kein Tarif, keine Testphase, keine Gratisstufe mit Grenzen, kein Preis pro Person, keine bezahlten Funktionen, für eine Person oder einen ganzen Haushalt. Es ist freie Software unter der Lizenz {licence}, was auch heißt, dass niemand später ein Abo daraus machen kann. Das Einzige, was es von dir braucht, ist ein Server, auf dem es läuft, und diese Seite sagt in Worten, was dieser Server kostet und wer die Arbeit macht.',
-    facts: { image: 'Container-Image', memory: 'Speicher im Leerlauf', server: 'Reicht als Server', figures: 'Zahlen für OpenTodo {version}, aus der' , guide: 'Anleitung zum Selbsthosten' },
+    facts: { image: 'Container-Image', binary: 'Server-Programm', memory: 'Speicher im Leerlauf', server: 'Reicht als Server', figures: 'Zahlen für OpenTodo {version}, aus der' , guide: 'Anleitung zum Selbsthosten' },
     software: {
       h2: 'Die Software: kostenlos, für eine Person oder hundert',
       lede: 'Jede Funktion steckt in der einen kostenlosen Version: Teilen, Erinnerungen, Boards, Filter, Kalender, Backups, Single Sign-on, Verschlüsselung, die API. Nichts wird durch eine Zahlung freigeschaltet, und jede Person auf deinem Server bekommt kostenlos ein eigenes Konto.',
@@ -86,7 +86,9 @@ export default {
     server: {
       kicker: 'Der Server',
       h2: 'Wo er leben kann',
-      lede: 'OpenTodo ist ein Container mit einem Datenordner, ohne Datenbankserver daneben. {minimum} reicht völlig, und im Leerlauf braucht es etwa {memory} MB Speicher. Die drei üblichen Orte, der günstigste zuerst:',
+      lede: 'OpenTodo ist ein Container mit einem Datenordner, ohne Datenbankserver daneben.',
+      footprint: '{minimum} reicht völlig, und im Leerlauf braucht es etwa {memory} MB Speicher.',
+      homesIntro: 'Die drei üblichen Orte, der günstigste zuerst:',
       homes: [
         { title: 'Ein Rechner, der zu Hause schon läuft', text: 'Ein NAS, ein alter Laptop oder ein Mini-PC, der sowieso an ist. Kostet dich nicht mehr als heute, und deine Aufgaben verlassen das Haus nie. Von unterwegs erreicht dein Handy ihn auf den üblichen Wegen für Heimserver.' },
         { title: 'Ein Raspberry Pi', text: 'Eine einmalige Anschaffung, dann ein paar Watt Strom. OpenTodo gibt es für seinen Prozessor, also läuft es dort wie überall.' },

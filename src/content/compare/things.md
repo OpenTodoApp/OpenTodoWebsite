@@ -5,7 +5,7 @@ summary: Things is a beautifully crafted personal task manager for Apple devices
 checkedOn: 2026-10-14
 audience: For people who love Things' calm but need Android, Windows or the web, or want to share lists with their household.
 order: 2
-importFormat: things-json
+importFormat: things-db
 switchGuide: /docs/switch/things/
 cost:
   them: A one-time purchase per Apple platform (Mac, iPhone and iPad are bought separately), with free sync. No subscription.

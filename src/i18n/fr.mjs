@@ -77,7 +77,7 @@ export default {
     kicker: 'Ce que ça coûte',
     h1: 'OpenTodo est gratuit. Entièrement, pour tout le monde, pour de bon.',
     lede: 'Pas de forfait, pas d\'essai, pas de version gratuite limitée, pas de prix par personne, pas de fonctionnalité payante, pour une personne ou toute une maisonnée. C\'est un logiciel libre sous licence {licence}, ce qui veut aussi dire que personne ne pourra en faire un abonnement plus tard. La seule chose qu\'il vous demande est un serveur pour tourner, et cette page dit en mots ce que coûte ce serveur et qui fait le travail.',
-    facts: { image: 'Image du conteneur', memory: 'Mémoire au repos', server: 'Serveur suffisant', figures: 'Chiffres pour OpenTodo {version}, tirés du', guide: 'guide d\'auto-hébergement' },
+    facts: { image: 'Image du conteneur', binary: 'Binaire du serveur', memory: 'Mémoire au repos', server: 'Serveur suffisant', figures: 'Chiffres pour OpenTodo {version}, tirés du', guide: 'guide d\'auto-hébergement' },
     software: {
       h2: 'Le logiciel : gratuit, pour une personne ou pour cent',
       lede: 'Chaque fonctionnalité est dans l\'unique version gratuite : partage, rappels, tableaux, filtres, calendrier, sauvegardes, authentification unique, chiffrement, l\'API. Rien ne se débloque contre paiement, et chaque personne sur votre serveur a son propre compte sans frais.',
@@ -86,7 +86,9 @@ export default {
     server: {
       kicker: 'Le serveur',
       h2: 'Où il peut vivre',
-      lede: 'OpenTodo est un conteneur avec un dossier de données, sans serveur de base de données à côté. {minimum} suffit largement, et il consomme au repos environ {memory} Mo de mémoire. Les trois foyers habituels, du moins cher au plus cher :',
+      lede: 'OpenTodo est un conteneur avec un dossier de données, sans serveur de base de données à côté.',
+      footprint: '{minimum} suffit largement, et il consomme au repos environ {memory} Mo de mémoire.',
+      homesIntro: 'Les trois foyers habituels, du moins cher au plus cher :',
       homes: [
         { title: 'Une machine déjà allumée chez vous', text: 'Un NAS, un vieil ordinateur portable ou un mini PC qui tourne de toute façon. Ça ne vous coûte rien de plus qu\'aujourd\'hui, et vos tâches ne quittent jamais la maison. Votre téléphone l\'atteint de l\'extérieur par les moyens habituels des serveurs domestiques.' },
         { title: 'Un Raspberry Pi', text: 'Un achat unique, puis quelques watts d\'électricité. OpenTodo est publié pour son processeur, il y tourne donc comme ailleurs.' },

@@ -8,7 +8,6 @@ import { docExistsIn, normalizeChangelog, normalizeManifest, resolveBundle } fro
 export interface Shot { file: string; width?: number; height?: number }
 export interface Manifest {
   layout: 1;
-  interim?: boolean;
   version: string;
   tag?: string;
   releasedAt?: string;
@@ -38,8 +37,8 @@ export const docExists = (href: string): boolean => docExistsIn(bundle.dir, href
 
 /** Inner SVG markup of each icon in the bundle's sprite, by name. */
 export const icons: Record<string, string> = Object.fromEntries(
-  // The published sprite names symbols "icon-<name>"; the interim one used "<name>".
-  [...read('icons/icons.svg').matchAll(/<symbol id="(?:icon-)?([^"]+)"[^>]*>([\s\S]*?)<\/symbol>/g)].map((m) => [m[1], m[2]]),
+  // The bundle's sprite names its symbols "icon-<name>".
+  [...read('icons/icons.svg').matchAll(/<symbol id="icon-([^"]+)"[^>]*>([\s\S]*?)<\/symbol>/g)].map((m) => [m[1], m[2]]),
 );
 
 /** Whether the pinned release can import the named format (e.g. "todoist-csv"). */

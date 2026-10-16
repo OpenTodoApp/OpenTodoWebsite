@@ -3,7 +3,6 @@
 //
 //   { "version": "v0.4.0" }   release asset opentodo-site-bundle-v0.4.0.tar.gz, checked against SHA256SUMS
 //   { "preview": "<run id>" } bundle artefact of an app CI run on main (needs GITHUB_TOKEN); pages say "preview"
-//   { "interim": true }       assembled from interim/ by interim-bundle.mjs (until the app ships bundles)
 //
 // BUNDLE_DIR=/path skips the download and uses that folder as a preview.
 // SITE_ENV=production (set by the Dockerfile) refuses preview and local bundles.
@@ -14,7 +13,6 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { ROOT, SOURCE_FILE, assertDeployable, layoutProblems, readPin } from './lib/bundle.mjs';
-import { buildInterim } from './interim-bundle.mjs';
 
 const REPO = 'pixari/opentodo';
 
@@ -108,10 +106,7 @@ export async function main({ env = process.env, pinFile = path.join(ROOT, 'bundl
   const pin = readPin(pinFile);
   if (pin.preview) assertDeployable({ preview: true, label: `preview from app run ${pin.preview}` }, env);
   let source;
-  if (pin.interim) {
-    const m = buildInterim(out);
-    return { kind: 'interim', version: m.version, label: `interim bundle (v${m.version})` };
-  } else if (pin.version) {
+  if (pin.version) {
     const have = path.join(out, SOURCE_FILE);
     const cached = fs.existsSync(have) && JSON.parse(fs.readFileSync(have, 'utf8'));
     if (cached && cached.kind === 'release' && cached.version === pin.version && !layoutProblems(out).length) return cached;

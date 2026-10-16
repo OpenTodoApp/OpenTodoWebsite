@@ -9,7 +9,6 @@ on:
     paths:
       - src/content/templates/**
       - bundle.json
-      - interim/manifest.json
       - scripts/templates-check.mjs
       - scripts/lib/template-export.mjs
   push:
@@ -17,7 +16,6 @@ on:
     paths:
       - src/content/templates/**
       - bundle.json
-      - interim/manifest.json
       - scripts/templates-check.mjs
       - scripts/lib/template-export.mjs
   workflow_dispatch:
@@ -43,7 +41,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Start the pinned release on a fresh volume
         run: |
-          IMAGE=$(node -p "require('./.bundle/manifest.json').image ?? 'ghcr.io/pixari/opentodo:' + require('./.bundle/manifest.json').version")
+          # The manifest's version carries the tag's "v" (v0.5.0); the image tags do not (0.5.0).
+          IMAGE=$(node -p "const m = require('./.bundle/manifest.json'); m.image ?? 'ghcr.io/pixari/opentodo:' + String(m.version).replace(/^v/, '')")
           echo "Using $IMAGE"
           docker run -d --name opentodo -p 8080:8080 "$IMAGE"
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8080/api/v1/auth/status >/dev/null && break; sleep 1; done

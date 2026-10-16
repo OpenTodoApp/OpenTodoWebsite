@@ -77,7 +77,7 @@ export default {
     kicker: 'Quanto costa',
     h1: 'OpenTodo è gratuito. Tutto, per tutti, per sempre.',
     lede: 'Nessun piano, nessuna prova, nessun livello gratuito con limiti, nessun prezzo a persona, nessuna funzione a pagamento, per una persona o per tutta la famiglia. È software libero con licenza {licence}, il che significa anche che nessuno potrà trasformarlo in un abbonamento più avanti. L\'unica cosa che ti chiede è un server su cui girare, e questa pagina dice a parole quanto costa quel server e chi fa il lavoro.',
-    facts: { image: 'Immagine del container', memory: 'Memoria a riposo', server: 'Server sufficiente', figures: 'Dati per OpenTodo {version}, dalla', guide: 'guida al self-hosting' },
+    facts: { image: 'Immagine del container', binary: 'Binario del server', memory: 'Memoria a riposo', server: 'Server sufficiente', figures: 'Dati per OpenTodo {version}, dalla', guide: 'guida al self-hosting' },
     software: {
       h2: 'Il software: gratuito, per una persona o per cento',
       lede: 'Ogni funzione è nell\'unica versione gratuita: condivisione, promemoria, bacheche, filtri, calendario, backup, single sign-on, cifratura, l\'API. Niente si sblocca pagando, e ogni persona sul tuo server ha il suo account senza costi.',
@@ -86,7 +86,9 @@ export default {
     server: {
       kicker: 'Il server',
       h2: 'Dove può vivere',
-      lede: 'OpenTodo è un container con una cartella di dati, senza un database server accanto. {minimum} basta e avanza, e a riposo usa circa {memory} MB di memoria. Le tre case abituali, dalla più economica:',
+      lede: 'OpenTodo è un container con una cartella di dati, senza un database server accanto.',
+      footprint: '{minimum} basta e avanza, e a riposo usa circa {memory} MB di memoria.',
+      homesIntro: 'Le tre case abituali, dalla più economica:',
       homes: [
         { title: 'Una macchina già accesa a casa', text: 'Un NAS, un vecchio portatile o un mini PC acceso comunque. Non ti costa più di oggi, e le tue attività non lasciano mai casa. Da fuori il telefono lo raggiunge nei modi consueti dei server domestici.' },
         { title: 'Un Raspberry Pi', text: 'Un acquisto una tantum, poi qualche watt di corrente. OpenTodo è pubblicato per il suo processore, quindi lì gira come ovunque.' },

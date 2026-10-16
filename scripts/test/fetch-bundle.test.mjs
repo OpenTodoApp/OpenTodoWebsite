@@ -21,7 +21,7 @@ function makeBundle(version) {
   fs.writeFileSync(path.join(dir, 'icons/icons.svg'), '<svg></svg>');
   fs.writeFileSync(path.join(dir, 'icons/names.json'), '[]');
   fs.writeFileSync(path.join(dir, 'changelog.json'), '{"releases":[]}');
-  fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify({ layout: 1, version: version.slice(1), importFormats: ['csv'], facts: {}, shots: {} }));
+  fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify({ schema: 1, layout: 1, version, date: '2026-10-16', importFormats: ['csv'], facts: {}, screenshots: [] }));
   const tarball = path.join(tmp, `opentodo-site-bundle-${version}.tar.gz`);
   execFileSync('tar', ['-czf', tarball, '-C', dir, '.']);
   return fs.readFileSync(tarball);
@@ -85,7 +85,8 @@ test('a local folder outside production is accepted as a preview', async () => {
 });
 
 test('bundle.json must hold exactly one pin', async () => {
-  await assert.rejects(main({ env: {}, pinFile: pin({ version: 'v1', interim: true }), out: outDir() }), /exactly one/);
+  await assert.rejects(main({ env: {}, pinFile: pin({ version: 'v1', preview: '2' }), out: outDir() }), /exactly one/);
+  await assert.rejects(main({ env: {}, pinFile: pin({}), out: outDir() }), /exactly one/);
 });
 
 // website-release-bundle 1.1: the app's published format converts to the page shapes.
@@ -106,12 +107,6 @@ test('the published manifest converts to the shape the pages use', async () => {
   assert.deepEqual(m.exportFormat, { format: 'opentodo-export', version: 1 });
   assert.deepEqual(m.facts, { binaryMB: 22.8, port: 8080 });
   assert.equal(m.facts.imageMB, undefined, 'no image size is invented');
-});
-
-test('the interim manifest passes through unchanged', async () => {
-  const { normalizeManifest } = await import('../lib/bundle.mjs');
-  const interim = { layout: 1, version: '0.3.0', shots: { a: { file: 'a.webp', width: 1, height: 1 } }, facts: {}, importFormats: [] };
-  assert.equal(normalizeManifest(interim), interim);
 });
 
 test('the published changelog keeps released versions only, with sections as a list', async () => {

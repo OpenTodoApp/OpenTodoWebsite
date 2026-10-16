@@ -77,7 +77,7 @@ export default {
     kicker: 'Lo que cuesta',
     h1: 'OpenTodo es gratis. Todo, para todos, para siempre.',
     lede: 'Sin plan, sin prueba, sin nivel gratuito con límites, sin precio por persona, sin funciones de pago, para una persona o para toda la casa. Es software libre bajo la licencia {licence}, lo que también significa que nadie puede convertirlo en una suscripción más adelante. Lo único que te pide es un servidor en el que correr, y esta página dice en palabras lo que cuesta ese servidor y quién hace el trabajo.',
-    facts: { image: 'Imagen del contenedor', memory: 'Memoria en reposo', server: 'Servidor suficiente', figures: 'Cifras para OpenTodo {version}, de la', guide: 'guía de autoalojamiento' },
+    facts: { image: 'Imagen del contenedor', binary: 'Binario del servidor', memory: 'Memoria en reposo', server: 'Servidor suficiente', figures: 'Cifras para OpenTodo {version}, de la', guide: 'guía de autoalojamiento' },
     software: {
       h2: 'El software: gratis, para una persona o para cien',
       lede: 'Todas las funciones están en la única versión gratuita: compartir, recordatorios, tableros, filtros, calendario, copias de seguridad, inicio de sesión único, cifrado, la API. Nada se desbloquea pagando, y cada persona de tu servidor tiene su propia cuenta sin coste.',
@@ -86,7 +86,9 @@ export default {
     server: {
       kicker: 'El servidor',
       h2: 'Dónde puede vivir',
-      lede: 'OpenTodo es un contenedor con una carpeta de datos, sin servidor de base de datos al lado. {minimum} sobra, y en reposo usa unos {memory} MB de memoria. Los tres hogares habituales, del más barato al más caro:',
+      lede: 'OpenTodo es un contenedor con una carpeta de datos, sin servidor de base de datos al lado.',
+      footprint: '{minimum} sobra, y en reposo usa unos {memory} MB de memoria.',
+      homesIntro: 'Los tres hogares habituales, del más barato al más caro:',
       homes: [
         { title: 'Una máquina que ya tienes encendida en casa', text: 'Un NAS, un portátil viejo o un mini PC que está encendido de todos modos. No te cuesta más que hoy, y tus tareas nunca salen de casa. Desde fuera, tu teléfono llega a él por las vías habituales de los servidores domésticos.' },
         { title: 'Una Raspberry Pi', text: 'Una compra única y luego unos pocos vatios de electricidad. OpenTodo se publica para su procesador, así que ahí corre como en cualquier sitio.' },
