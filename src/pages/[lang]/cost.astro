@@ -17,12 +17,15 @@ const t = DICT[lang];
 const k = t.cost;
 const c = t.common;
 const f = manifest.facts;
-const vars = { licence: f.license ?? 'AGPL-3.0', version: versionTag, minimum: f.minimumServer ? `${f.minimumServer[0].toUpperCase()}${f.minimumServer.slice(1)}` : 'A small server', memory: String(f.idleMemoryMB ?? ''), demo: SITE.demo };
+const vars = { licence: f.license ?? 'AGPL-3.0', version: versionTag, minimum: f.minimumServer ? `${f.minimumServer[0].toUpperCase()}${f.minimumServer.slice(1)}` : '', memory: String(f.idleMemoryMB ?? ''), demo: SITE.demo };
+// Only the facts the pinned bundle carries are shown (nothing is invented); the
+// footprint sentence needs both of its figures.
 const facts = [
-  f.imageMB && { label: k.facts.image, value: `~ ${f.imageMB} MB` },
+  f.imageMB ? { label: k.facts.image, value: `~ ${f.imageMB} MB` } : f.binaryMB && { label: k.facts.binary, value: `~ ${Math.round(f.binaryMB)} MB` },
   f.idleMemoryMB && { label: k.facts.memory, value: `~ ${f.idleMemoryMB} MB` },
   f.minimumServer && { label: k.facts.server, value: f.minimumServer },
 ].filter(Boolean) as { label: string; value: string }[];
+const footprint = f.minimumServer && f.idleMemoryMB ? fill(k.server.footprint, vars) : '';
 const homeIcons = ['house', 'package', 'server'];
 ---
 <Base title={k.title} description={k.description} lang={lang}>
@@ -60,7 +63,7 @@ const homeIcons = ['house', 'package', 'server'];
       <div class="section-head">
         <p class="kicker">{k.server.kicker}</p>
         <h2 id="server-title">{k.server.h2}</h2>
-        <p class="lede">{fill(k.server.lede, vars)} <a href="/docs/self-hosting/docker/">Docker</a></p>
+        <p class="lede">{k.server.lede} {footprint && `${footprint} `}{k.server.homesIntro} <a href="/docs/self-hosting/docker/">Docker</a></p>
       </div>
       <div class="grid grid-3">
         {k.server.homes.map((h, i) => (

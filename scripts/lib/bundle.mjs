@@ -24,17 +24,16 @@ export function layoutProblems(dir) {
   if (!missing.includes('manifest.json')) {
     const m = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'));
     if (m.layout !== 1) missing.push(`manifest.json layout 1 (found ${JSON.stringify(m.layout)})`);
-    for (const key of ['version', 'importFormats', 'facts']) if (!(key in m)) missing.push(`manifest.json "${key}"`);
-    if (!('screenshots' in m) && !('shots' in m)) missing.push('manifest.json "screenshots"');
+    for (const key of ['version', 'importFormats', 'facts', 'screenshots']) if (!(key in m)) missing.push(`manifest.json "${key}"`);
   }
   return missing;
 }
 
-/** The pin recorded in bundle.json: { version } | { preview } | { interim: true }. */
+/** The pin recorded in bundle.json: { version } | { preview }. */
 export function readPin(file = path.join(ROOT, 'bundle.json')) {
   const pin = JSON.parse(fs.readFileSync(file, 'utf8'));
-  const kinds = ['version', 'preview', 'interim'].filter((k) => pin[k]);
-  if (kinds.length !== 1) throw new Error(`${path.basename(file)} must hold exactly one of "version", "preview" or "interim" (found ${JSON.stringify(pin)})`);
+  const kinds = ['version', 'preview'].filter((k) => pin[k]);
+  if (kinds.length !== 1) throw new Error(`${path.basename(file)} must hold exactly one of "version" or "preview" (found ${JSON.stringify(pin)})`);
   return pin;
 }
 
@@ -56,7 +55,7 @@ export function resolveBundle(env = process.env) {
   return { dir, ...source, preview: source.kind === 'preview' || source.kind === 'local' };
 }
 
-/** Production builds (the Docker image) refuse anything that is not a release, except the recorded interim pin. */
+/** Production builds (the Docker image) refuse anything that is not a release. */
 export function assertDeployable(bundle, env = process.env) {
   if (env.SITE_ENV !== 'production') return;
   if (bundle.preview) {
@@ -79,10 +78,9 @@ const IMAGE = 'ghcr.io/pixari/opentodo';
 /**
  * The manifest in the shape the pages use (website-release-bundle D1, D2). The
  * app's published manifest (schema 1: "v"-prefixed version, date, screenshots,
- * facts) is converted; the interim manifest (with "shots") passes through.
+ * facts) is converted.
  */
 export function normalizeManifest(raw) {
-  if (raw.shots) return raw;
   const version = String(raw.version).replace(/^v/, '');
   const names = (raw.screenshots ?? []).map((p) => path.basename(p).replace(/\.[^.]+$/, ''));
   const files = Object.fromEntries((raw.screenshots ?? []).map((p, i) => [names[i], { file: path.basename(p) }]));

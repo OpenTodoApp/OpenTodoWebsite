@@ -17,7 +17,8 @@ export function inline(md: string): string {
   const code: string[] = [];
   let s = md.replace(/`([^`]+)`/g, (_, c) => `\u0000${code.push(c) - 1}\u0000`);
   s = escape(s).replace(/&lt;kbd&gt;(.*?)&lt;\/kbd&gt;/g, '<kbd>$1</kbd>');
-  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, text, href) => `<a href="${linkTarget(href.replace(/&amp;/g, '&'))}">${text}</a>`);
+  // Link text holds no brackets, so a literal "[" (as in <kbd>[</kbd>) never opens a link.
+  s = s.replace(/\[([^\[\]]+)\]\(([^)\s]+)\)/g, (_, text, href) => `<a href="${linkTarget(href.replace(/&amp;/g, '&'))}">${text}</a>`);
   s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*])\*([^*\s][^*]*?)\*/g, '$1<em>$2</em>');
   return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${escape(code[Number(i)])}</code>`);
 }

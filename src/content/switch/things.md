@@ -4,7 +4,7 @@ title: Moving from Things
 summary: Things has no CSV export, so the path is copy and paste into a spreadsheet, then an import with a preview. Titles, notes, projects, headings, tags and deadlines come across; start dates and Someday do not exist here yet.
 checkedOn: 2026-10-15
 sources: [/docs/import/, /docs/import-export/, /docs/tasks-and-projects/, /docs/views/]
-importFormat: things-json
+importFormat: things-db
 compare: things
 order: 2
 keeps:

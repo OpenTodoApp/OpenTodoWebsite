@@ -77,7 +77,7 @@ export default {
     kicker: 'O que custa',
     h1: 'O OpenTodo é gratuito. Todo, para todos, para sempre.',
     lede: 'Sem plano, sem período de teste, sem nível gratuito com limites, sem preço por pessoa, sem funcionalidades pagas, para uma pessoa ou para a casa inteira. É software livre sob a licença {licence}, o que também significa que ninguém o pode transformar numa subscrição mais tarde. A única coisa que te pede é um servidor onde correr, e esta página diz por palavras o que custa esse servidor e quem faz o trabalho.',
-    facts: { image: 'Imagem do contentor', memory: 'Memória em repouso', server: 'Servidor que chega', figures: 'Valores para o OpenTodo {version}, do', guide: 'guia de self-hosting' },
+    facts: { image: 'Imagem do contentor', binary: 'Binário do servidor', memory: 'Memória em repouso', server: 'Servidor que chega', figures: 'Valores para o OpenTodo {version}, do', guide: 'guia de self-hosting' },
     software: {
       h2: 'O software: gratuito, para uma pessoa ou para cem',
       lede: 'Todas as funcionalidades estão na única versão gratuita: partilha, lembretes, quadros, filtros, calendário, cópias de segurança, início de sessão único, cifragem, a API. Nada se desbloqueia com um pagamento, e cada pessoa no teu servidor tem a sua conta sem custos.',
@@ -86,7 +86,9 @@ export default {
     server: {
       kicker: 'O servidor',
       h2: 'Onde pode viver',
-      lede: 'O OpenTodo é um contentor com uma pasta de dados, sem servidor de base de dados ao lado. {minimum} chega e sobra, e em repouso usa cerca de {memory} MB de memória. As três casas habituais, da mais barata para a mais cara:',
+      lede: 'O OpenTodo é um contentor com uma pasta de dados, sem servidor de base de dados ao lado.',
+      footprint: '{minimum} chega e sobra, e em repouso usa cerca de {memory} MB de memória.',
+      homesIntro: 'As três casas habituais, da mais barata para a mais cara:',
       homes: [
         { title: 'Uma máquina já ligada em casa', text: 'Um NAS, um portátil velho ou um mini PC que está ligado de qualquer maneira. Não te custa mais do que hoje, e as tuas tarefas nunca saem de casa. De fora, o telemóvel chega-lhe pelas vias habituais dos servidores domésticos.' },
         { title: 'Um Raspberry Pi', text: 'Uma compra única e depois uns poucos watts de eletricidade. O OpenTodo é publicado para o processador dele, por isso corre lá como em qualquer lado.' },

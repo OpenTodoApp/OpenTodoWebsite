@@ -8,7 +8,6 @@
   },
   "scripts": {
     "bundle": "node scripts/fetch-bundle.mjs",
-    "bundle:interim": "node scripts/interim-bundle.mjs",
     "dev": "npm run bundle && astro dev",
     "prebuild": "npm run bundle && node scripts/check-content.mjs",
     "build": "astro build",

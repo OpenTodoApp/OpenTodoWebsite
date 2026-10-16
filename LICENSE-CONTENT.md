@@ -14,7 +14,7 @@ Not covered by this licence:
 - The website's source code (HTML, CSS, JavaScript, build configuration), which is under
   the MIT licence in `LICENSE`.
 - The documentation served under `/docs/` (and the app screenshots), which come from the
-  OpenTodo app's site bundle (until then from `interim/`) and follow the app's licence
+  OpenTodo app's site bundle and follow the app's licence
   (AGPL-3.0).
 - Third-party names and trademarks (for example the names of other task apps mentioned
   in comparisons), which belong to their owners and are used only to identify them.

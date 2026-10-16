@@ -9,7 +9,6 @@ on:
     paths:
       - src/content/templates/**
       - bundle.json
-      - interim/manifest.json
       - scripts/templates-check.mjs
       - scripts/lib/template-export.mjs
   push:
@@ -17,7 +16,6 @@ on:
     paths:
       - src/content/templates/**
       - bundle.json
-      - interim/manifest.json
       - scripts/templates-check.mjs
       - scripts/lib/template-export.mjs
   workflow_dispatch:

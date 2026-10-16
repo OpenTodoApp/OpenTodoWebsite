@@ -7,4 +7,5 @@
 
 ## 2. After the app releases v0.4.0 (separate pull request)
 
-- [ ] 2.1 Pin `{ "version": "v0.4.0" }` in `bundle.json`, delete `interim/` and `scripts/interim-bundle.mjs`, and update README and AGENTS.md. Verify all checks and `openspec validate --all --strict` pass and the Docker build accepts the pin.
+- [x] 2.1 Pin `{ "version": "v0.4.0" }` in `bundle.json`, delete `interim/` and `scripts/interim-bundle.mjs`, and update README and AGENTS.md. Verify all checks and `openspec validate --all --strict` pass and the Docker build accepts the pin.
+  - Done with the first published bundle, `v0.5.0` (the app released it before a v0.4.0 bundle existed).
