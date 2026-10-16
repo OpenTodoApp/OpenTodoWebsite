@@ -42,4 +42,4 @@ For people who run OpenTodo for others, [host mode](/docs/self-hosting/host-mode
 Since 0.5.0, pointing at a task turned its circle into a selection checkbox, so clicking to complete a task selected it instead. The circle completes again; [bulk selection](/docs/bulk-actions/) starts with Ctrl or ⌘ and a click, or the <kbd>x</kbd> key.
 
 <!-- no-claim -->
-The full list, with upgrade notes, is on the What's new page. Upgrading is a pull of the `0.6` image: one migration runs at startup, and no new setting is required.
+The full list, with upgrade notes, is on the What's new page and in the [0.6.0 release notes](https://github.com/pixari/opentodo/releases/tag/v0.6.0), which also have the binaries. Upgrading is a pull of the `0.6` image: one migration runs at startup, and no new setting is required.
