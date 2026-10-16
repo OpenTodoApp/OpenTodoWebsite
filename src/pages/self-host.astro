@@ -10,7 +10,7 @@ import { manifest, versionTag } from '../lib/bundle';
 
 const f = manifest.facts;
 const facts = [
-  f.imageMB && { label: 'Container image', value: `about ${f.imageMB} MB` },
+  f.imageMB ? { label: 'Container image', value: `about ${f.imageMB} MB` } : f.binaryMB && { label: 'Server binary', value: `about ${Math.round(f.binaryMB)} MB` },
   f.idleMemoryMB && { label: 'Memory when idle', value: `about ${f.idleMemoryMB} MB` },
   f.database && { label: 'Database', value: `one ${f.database} file` },
   f.architectures && { label: 'Runs on', value: f.architectures.map((a) => a.replace('linux/', '')).join(' and ') },

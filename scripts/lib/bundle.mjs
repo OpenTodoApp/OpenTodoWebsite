@@ -24,7 +24,8 @@ export function layoutProblems(dir) {
   if (!missing.includes('manifest.json')) {
     const m = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'));
     if (m.layout !== 1) missing.push(`manifest.json layout 1 (found ${JSON.stringify(m.layout)})`);
-    for (const key of ['version', 'importFormats', 'facts', 'shots']) if (!(key in m)) missing.push(`manifest.json "${key}"`);
+    for (const key of ['version', 'importFormats', 'facts']) if (!(key in m)) missing.push(`manifest.json "${key}"`);
+    if (!('screenshots' in m) && !('shots' in m)) missing.push('manifest.json "screenshots"');
   }
   return missing;
 }
@@ -71,4 +72,45 @@ export function docExistsIn(dir, href) {
   const target = path.join(dir, 'docs', rel);
   if (rel && fs.existsSync(target) && fs.statSync(target).isFile()) return true;
   return fs.existsSync(path.join(target, 'index.html'));
+}
+
+const IMAGE = 'ghcr.io/pixari/opentodo';
+
+/**
+ * The manifest in the shape the pages use (website-release-bundle D1, D2). The
+ * app's published manifest (schema 1: "v"-prefixed version, date, screenshots,
+ * facts) is converted; the interim manifest (with "shots") passes through.
+ */
+export function normalizeManifest(raw) {
+  if (raw.shots) return raw;
+  const version = String(raw.version).replace(/^v/, '');
+  const names = (raw.screenshots ?? []).map((p) => path.basename(p).replace(/\.[^.]+$/, ''));
+  const files = Object.fromEntries((raw.screenshots ?? []).map((p, i) => [names[i], { file: path.basename(p) }]));
+  const darkVariants = Object.fromEntries(names.filter((n) => files[`${n}-dark`]).map((n) => [n, `${n}-dark`]));
+  const { dockerImageMB, exportFormat, exportFormatVersion, ...facts } = raw.facts ?? {};
+  return {
+    layout: raw.layout,
+    version,
+    tag: `v${version}`,
+    releasedAt: raw.date,
+    image: `${IMAGE}:${version}`,
+    importFormats: raw.importFormats,
+    ...(exportFormat ? { exportFormat: { format: exportFormat, version: exportFormatVersion } } : {}),
+    facts: { ...facts, ...(dockerImageMB ? { imageMB: dockerImageMB } : {}) },
+    shots: files,
+    darkVariants,
+  };
+}
+
+/** Released versions only, newest first, as { version, date, summary, sections: [{ title, items }] }. */
+export function normalizeChangelog(raw) {
+  if (!Array.isArray(raw)) return raw.releases;
+  return raw
+    .filter((r) => /^\d+\.\d+\.\d+/.test(r.version))
+    .map((r) => ({
+      version: r.version,
+      date: r.date,
+      summary: r.intro ?? '',
+      sections: Object.entries(r.sections ?? {}).map(([title, items]) => ({ title, items })),
+    }));
 }
