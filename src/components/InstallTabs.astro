@@ -18,6 +18,11 @@ const methods = [
     doc: { href: '/docs/self-hosting/coolify/', label: 'Coolify guide' },
   },
   {
+    id: 'unraid', title: 'Unraid',
+    code: `# Unraid: the Apps tab (Community Applications)\nSearch   OpenTodo\nClick    Install, then Apply\n# Open the WebUI from the container's menu\n# and create the owner account.`,
+    doc: { href: '/docs/self-hosting/unraid/', label: 'Unraid guide' },
+  },
+  {
     id: 'compose', title: 'Compose',
     code: `git clone ${SITE.appRepo}.git\ncd opentodo\ndocker compose up -d\n# data lives in the opentodo-data volume`,
     doc: { href: '/docs/self-hosting/docker/', label: 'Compose and reverse proxies' },
