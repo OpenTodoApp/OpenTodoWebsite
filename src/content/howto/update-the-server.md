@@ -1,8 +1,8 @@
 ---
 title: Update the server to a new release
 summary: Pull the new image and restart. The database updates itself on start, and every device switches to the new app by itself.
-lastReviewed: 2026-10-15
-sources: [/docs/self-hosting/docker/, /docs/self-hosting/coolify/, /docs/install-app/]
+lastReviewed: 2026-10-17
+sources: [/docs/self-hosting/docker/, /docs/self-hosting/coolify/, /docs/self-hosting/unraid/, /docs/install-app/]
 group: Run the server
 audience: operator
 minutes: 3
@@ -24,6 +24,11 @@ related: [turn-on-backups, app-looks-out-of-date]
 
 1. If you pinned a release line such as `0.3`, patch releases arrive on the next **Deploy**; for a new minor version, change the tag in the compose file first. [One-click template](/docs/self-hosting/coolify/#one-click-template-pending-in-coolifys-service-list)
 2. Select **Deploy**. Coolify starts the new container before stopping the old one, which OpenTodo supports from 0.2.0 on. [Updating](/docs/self-hosting/docker/#updating)
+
+## On Unraid
+
+1. In the **Docker** tab select **Check for Updates**, then **Update** next to OpenTodo. The template follows a release line such as `0.6`, so patch releases arrive this way and migrations run on start. [Updates and backups](/docs/self-hosting/unraid/#updates-and-backups)
+2. A new release line (`0.7`) arrives as an update of the template; update the container again when it shows up. [Updates and backups](/docs/self-hosting/unraid/#updates-and-backups)
 
 ## On everyone's devices
 
