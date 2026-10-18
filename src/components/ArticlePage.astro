@@ -1,4 +1,5 @@
 ---
+import { docTitle } from '../lib/bundle';
 // Shared page for guides and toolkit pieces: last-reviewed date, the
 // templates the piece uses, its docs sources, and the closing calls to action.
 import { getEntries, render, type CollectionEntry } from 'astro:content';
@@ -55,7 +56,7 @@ const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', mo
       <div class="wrap narrow">
         <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
         <ul class="checks">
-          {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}
+          {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{docTitle(s)}</a></li>)}
         </ul>
       </div>
     </section>

@@ -17,6 +17,13 @@ const facts = [
   f.database && { label: 'Database', value: `one ${f.database} file` },
   f.architectures && { label: 'Runs on', value: f.architectures.map((a) => a.replace('linux/', '')).join(' and ') },
 ].filter(Boolean) as { label: string; value: string }[];
+// Beside the headline, the facts that answer "what does it cost?"; the footprint
+// belongs with the server it runs on (website-layout-integrity).
+const costFacts = [
+  { label: 'Licence', value: licence, href: '/about/#licence' },
+  { label: 'Accounts', value: 'Everyone, at no cost', href: '/docs/invite-people/' },
+  { label: 'You pay for', value: 'Only the server', href: '#server-title' },
+];
 const footprint = [
   f.minimumServer && `${f.minimumServer[0].toUpperCase()}${f.minimumServer.slice(1)} is plenty`,
   f.idleMemoryMB && `it idles at about ${f.idleMemoryMB} MB of memory`,
@@ -37,11 +44,10 @@ const homes = [
         <h1>OpenTodo is free. All of it, for everyone, for good.</h1>
         <p class="lede">No plan, no trial, no free tier with limits, no per-person price, no paid feature, for one person or a whole household. It is free software under the {licence} licence, which also means nobody can turn it into a subscription later. The only thing it asks of you is a server to run on, and this page says in words what that server costs and who does the work.</p>
       </div>
-      <dl class="facts" aria-label={`Footprint of OpenTodo ${versionTag}`}>
-        {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+      <dl class="facts" aria-label="What OpenTodo costs">
+        {costFacts.map((x) => <div><dt>{x.label}</dt><dd><a href={x.href}>{x.value}</a></dd></div>)}
       </dl>
     </div>
-    <div class="wrap"><p class="meta" style="margin-top: 1rem">Figures for OpenTodo {versionTag}, from the <a href="/docs/self-hosting/docker/">self-hosting guide</a>.</p></div>
   </section>
 
   <section class="section section-alt" aria-labelledby="software-title">
@@ -66,6 +72,14 @@ const homes = [
         <h2 id="server-title">Where it can live</h2>
         <p class="lede">OpenTodo is <a href="/docs/self-hosting/docker/">one container with one folder of data</a>, no database server beside it. {footprintText && `${footprintText} `}The three usual homes, cheapest first:</p>
       </div>
+      {facts.length > 0 && (
+        <>
+          <dl class="facts" aria-label={`Footprint of OpenTodo ${versionTag}`} style="margin-bottom: 0.75rem">
+            {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+          </dl>
+          <p class="meta" style="margin-bottom: 1.5rem">Figures for OpenTodo {versionTag}, from the <a href="/docs/self-hosting/docker/">self-hosting guide</a>.</p>
+        </>
+      )}
       <div class="grid grid-3">
         {homes.map((h) => (
           <article class="card">

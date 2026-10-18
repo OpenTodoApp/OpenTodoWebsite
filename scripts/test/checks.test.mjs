@@ -32,6 +32,16 @@ test('links: names the page and the broken link or fragment', () => {
   assert.ok(problems.some((p) => p.includes('#nope')));
 });
 
+test('links: a path or URL as link text fails on site pages, not in the docs', () => {
+  const dir = site({
+    'index.html': page('<a href="/a/">/a/</a> <a href="https://example.org/x">https://example.org/x</a> <a href="/a/">Sections and boards</a>'),
+    'a/index.html': page('<p>a</p>'),
+    'docs/index.html': page('<a href="/a/">/a/</a>'),
+  });
+  const { problems } = checkLinks(dir);
+  assert.deepEqual(problems, ['/: link text is a path or URL, not words: /a/', '/: link text is a path or URL, not words: https://example.org/x']);
+});
+
 test('emoji: icon-like symbols in navigation, buttons and list markers fail', () => {
   const dir = site({ 'index.html': page('<nav><a href="/">📥 Inbox</a></nav><button>▶ Play</button><ul><li>✅ Done</li></ul><p>Plain text with Settings → Data is fine.</p><code>✓</code>') });
   const { problems } = checkEmoji(dir);

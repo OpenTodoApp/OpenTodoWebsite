@@ -6,7 +6,7 @@ import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
-import { canImport, docExists, versionTag } from '../../lib/bundle';
+import { canImport, docExists, versionTag, docTitle } from '../../lib/bundle';
 import { SITE } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -72,7 +72,7 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
   <section class="section" style="padding-block: 2.5rem" aria-labelledby="sources">
     <div class="wrap narrow">
       <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
-      <ul class="checks">{d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}</ul>
+      <ul class="checks">{d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{docTitle(s)}</a></li>)}</ul>
     </div>
   </section>
 

@@ -77,7 +77,7 @@ export default {
     kicker: 'Lo que cuesta',
     h1: 'OpenTodo es gratis. Todo, para todos, para siempre.',
     lede: 'Sin plan, sin prueba, sin nivel gratuito con límites, sin precio por persona, sin funciones de pago, para una persona o para toda la casa. Es software libre bajo la licencia {licence}, lo que también significa que nadie puede convertirlo en una suscripción más adelante. Lo único que te pide es un servidor en el que correr, y esta página dice en palabras lo que cuesta ese servidor y quién hace el trabajo.',
-    facts: { image: 'Imagen del contenedor', binary: 'Binario del servidor', memory: 'Memoria en reposo', server: 'Servidor suficiente', figures: 'Cifras para OpenTodo {version}, de la', guide: 'guía de autoalojamiento' },
+    facts: { licence: 'Licencia', accounts: 'Cuentas', accountsValue: 'Cada persona, sin coste', pays: 'Pagas', paysValue: 'Solo el servidor', image: 'Imagen del contenedor', binary: 'Binario del servidor', memory: 'Memoria en reposo', server: 'Servidor suficiente', figures: 'Cifras para OpenTodo {version}, de la', guide: 'guía de autoalojamiento' },
     software: {
       h2: 'El software: gratis, para una persona o para cien',
       lede: 'Todas las funciones están en la única versión gratuita: compartir, recordatorios, tableros, filtros, calendario, copias de seguridad, inicio de sesión único, cifrado, la API. Nada se desbloquea pagando, y cada persona de tu servidor tiene su propia cuenta sin coste.',

@@ -73,6 +73,22 @@ export function docExistsIn(dir, href) {
   return fs.existsSync(path.join(target, 'index.html'));
 }
 
+/**
+ * The title of the docs page `href` names, from its <title> without the " · OpenTodo docs"
+ * suffix, so a link to it can read as words (website-layout-integrity D4). Null when the
+ * page is not in the bundle; the link check reports that case.
+ */
+export function docTitleIn(dir, href) {
+  if (!docExistsIn(dir, href)) return null;
+  const rel = String(href).split('#')[0].split('?')[0].slice('/docs'.length).replace(/^\/+/, '');
+  const file = path.join(dir, 'docs', rel, rel.endsWith('.html') ? '' : 'index.html');
+  if (!fs.existsSync(file)) return null;
+  const m = fs.readFileSync(file, 'utf8').match(/<title>([^<]*)<\/title>/);
+  if (!m) return null;
+  const title = m[1].replace(/\s*·\s*OpenTodo docs\s*$/, '').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"').trim();
+  return title || null;
+}
+
 const IMAGE = 'ghcr.io/pixari/opentodo';
 
 /**

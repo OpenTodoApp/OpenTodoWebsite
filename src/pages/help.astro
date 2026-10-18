@@ -104,9 +104,12 @@ const fixes = [
           <h2 id={`${g.id}-title`}>{g.title}</h2>
           <p class="lede">{g.lede}</p>
         </div>
-        <ul class="wants">
-          {g.items.map((i) => <li><a href={i.href}><span class="meta">I want to</span> {i.q} <Icon name="arrow-right" size={16} /></a></li>)}
-        </ul>
+        <div>
+          <p class="wants-lead" id={`${g.id}-lead`}>I want to…</p>
+          <ul class="wants" aria-labelledby={`${g.id}-lead`}>
+            {g.items.map((i) => <li><a href={i.href}>{i.q.charAt(0).toUpperCase() + i.q.slice(1)} <Icon name="arrow-right" size={16} /></a></li>)}
+          </ul>
+        </div>
       </div>
     </section>
   ))}

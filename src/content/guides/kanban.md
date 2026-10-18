@@ -1,7 +1,7 @@
 ---
 title: Kanban for a small team
 summary: Columns for stages, cards you move, a limit on work in progress, and everyone looking at the same board. Sections and the board view do it out of the box.
-lastReviewed: 2026-10-15
+lastReviewed: 2026-10-18
 sources: [/docs/sections-and-boards/, /docs/sharing/, /docs/filters/, /docs/views/]
 templates: [product-launch]
 tags: [task-management, teamwork]
@@ -27,6 +27,6 @@ A list hides the bottleneck; a board shows it. When the "In progress" column is 
 ## Make it stick
 
 - A daily glance at the board replaces the stand-up: columns left to right, newest card first. The [Week calendar](/docs/time-blocking/#open-the-calendar) shows whether the In-progress cards fit the week.
-- Each person pins a view `#Launch & @me-ish`: assignees are not a filter term, but `Assigned to me` in the sidebar already lists exactly their cards. [The built-in views](/docs/views/#the-built-in-views)
+- Each person sees their own cards in **Assigned to me** in the sidebar; assignees are not a filter term, so there is no view to build for it. Pin a view such as `#Launch` beside it for the whole board. [The built-in views](/docs/views/#the-built-in-views)
 - Blocked work goes to Waiting with a comment saying on whom; a saved view `#Launch & search: waiting` collects it. [Find tasks with a filter](/docs/labels-and-filters/#find-tasks-with-a-filter)
 - The [product launch template](/templates/product-launch/) is a board with Backlog, This week, Launch day and Week after, ready to share. [Sections and boards](/docs/sections-and-boards/)

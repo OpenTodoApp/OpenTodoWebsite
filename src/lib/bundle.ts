@@ -3,7 +3,7 @@
 // from a released site bundle").
 import fs from 'node:fs';
 import path from 'node:path';
-import { docExistsIn, normalizeChangelog, normalizeManifest, resolveBundle } from '../../scripts/lib/bundle.mjs';
+import { docExistsIn, docTitleIn, normalizeChangelog, normalizeManifest, resolveBundle } from '../../scripts/lib/bundle.mjs';
 
 export interface Shot { file: string; width?: number; height?: number }
 export interface Manifest {
@@ -34,6 +34,9 @@ export const releases: Release[] = normalizeChangelog(JSON.parse(read('changelog
 
 /** True when `href` (a /docs/... path, optionally with #anchor) names a page of the bundle's docs. */
 export const docExists = (href: string): boolean => docExistsIn(bundle.dir, href);
+
+/** The title of the docs page `href` names (for link text), or the path when the page has none. */
+export const docTitle = (href: string): string => docTitleIn(bundle.dir, href) ?? href;
 
 /** Inner SVG markup of each icon in the bundle's sprite, by name. */
 export const icons: Record<string, string> = Object.fromEntries(

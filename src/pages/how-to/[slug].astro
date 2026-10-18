@@ -9,7 +9,7 @@ import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../lib/site';
 import authors from '../../content/authors.json';
-import { manifest } from '../../lib/bundle';
+import { manifest, docTitle } from '../../lib/bundle';
 
 export async function getStaticPaths() {
   return (await getCollection('howto', (e) => !e.data.draft)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -65,7 +65,7 @@ const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', mo
     <div class="wrap narrow">
       <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
       <ul class="checks">
-        {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}
+        {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{docTitle(s)}</a></li>)}
       </ul>
       <p class="meta">The docs are also inside the app: select Help at the bottom of the sidebar. <a href="/docs/getting-started/#help-inside-the-app">Help inside the app</a></p>
     </div>

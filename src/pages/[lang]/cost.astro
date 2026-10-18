@@ -25,6 +25,11 @@ const facts = [
   f.idleMemoryMB && { label: k.facts.memory, value: `~ ${f.idleMemoryMB} MB` },
   f.minimumServer && { label: k.facts.server, value: f.minimumServer },
 ].filter(Boolean) as { label: string; value: string }[];
+const costFacts = [
+  { label: k.facts.licence, value: vars.licence, href: '/about/#licence' },
+  { label: k.facts.accounts, value: k.facts.accountsValue, href: '/docs/invite-people/' },
+  { label: k.facts.pays, value: k.facts.paysValue, href: '#server-title' },
+];
 const footprint = f.minimumServer && f.idleMemoryMB ? fill(k.server.footprint, vars) : '';
 const homeIcons = ['house', 'package', 'server'];
 ---
@@ -36,11 +41,10 @@ const homeIcons = ['house', 'package', 'server'];
         <h1>{k.h1}</h1>
         <p class="lede">{fill(k.lede, vars)}</p>
       </div>
-      <dl class="facts" aria-label={`OpenTodo ${versionTag}`}>
-        {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+      <dl class="facts" aria-label={k.kicker}>
+        {costFacts.map((x) => <div><dt>{x.label}</dt><dd><a href={x.href}>{x.value}</a></dd></div>)}
       </dl>
     </div>
-    <div class="wrap"><p class="meta" style="margin-top: 1rem">{fill(k.facts.figures, vars)} <a href="/docs/self-hosting/docker/">{k.facts.guide}</a>.</p></div>
   </section>
 
   <LangNote lang={lang} />
@@ -65,6 +69,14 @@ const homeIcons = ['house', 'package', 'server'];
         <h2 id="server-title">{k.server.h2}</h2>
         <p class="lede">{k.server.lede} {footprint && `${footprint} `}{k.server.homesIntro} <a href="/docs/self-hosting/docker/">Docker</a></p>
       </div>
+      {facts.length > 0 && (
+        <>
+          <dl class="facts" aria-label={`OpenTodo ${versionTag}`} style="margin-bottom: 0.75rem">
+            {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+          </dl>
+          <p class="meta" style="margin-bottom: 1.5rem">{fill(k.facts.figures, vars)} <a href="/docs/self-hosting/docker/">{k.facts.guide}</a>.</p>
+        </>
+      )}
       <div class="grid grid-3">
         {k.server.homes.map((h, i) => (
           <article class="card">

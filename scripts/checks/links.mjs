@@ -2,7 +2,9 @@
 // Link check over dist/ (website-platform D6.2): every internal link, image,
 // stylesheet and script of every page, the site's and the docs', must resolve to
 // a built file, and a #fragment must name an id on the target page. Offline:
-// links to other sites are not fetched.
+// links to other sites are not fetched. On the site's own pages (not the bundle's docs)
+// a link must read as words: text that is a URL or a site path fails
+// (website-layout-integrity D6).
 import fs from 'node:fs';
 import path from 'node:path';
 import { htmlFiles, load, report, urlOf } from './lib.mjs';
@@ -28,6 +30,12 @@ export function checkLinks(dir) {
     const root = load(file);
     const refs = [];
     for (const el of root.querySelectorAll('a[href], link[href], area[href]')) refs.push(el.getAttribute('href'));
+    if (!page.startsWith('/docs/')) {
+      for (const a of root.querySelectorAll('a[href]')) {
+        const text = a.text.trim();
+        if (text && (text === a.getAttribute('href') || /^(\/|https?:\/\/)\S*$/.test(text))) problems.push(`${page}: link text is a path or URL, not words: ${text}`);
+      }
+    }
     for (const el of root.querySelectorAll('img[src], script[src], source[src], iframe[src]')) refs.push(el.getAttribute('src'));
     for (const el of root.querySelectorAll('img[srcset], source[srcset]')) refs.push(...el.getAttribute('srcset').split(',').map((s) => s.trim().split(/\s+/)[0]));
     for (const ref of refs) {
