@@ -4,6 +4,10 @@
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import LangNote from '../../components/LangNote.astro';
+import Close from '../../components/sections/Close.astro';
+import Statement from '../../components/sections/Statement.astro';
+import Split from '../../components/sections/Split.astro';
+import Catalogue from '../../components/sections/Catalogue.astro';
 import { OTHER_LANGS } from '../../i18n/index.mjs';
 import { DICT, fill } from '../../i18n/dict.mjs';
 import { manifest, versionTag } from '../../lib/bundle';
@@ -34,41 +38,32 @@ const footprint = f.minimumServer && f.idleMemoryMB ? fill(k.server.footprint, v
 const homeIcons = ['house', 'package', 'server'];
 ---
 <Base title={k.title} description={k.description} lang={lang}>
-  <section class="page-head">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">{k.kicker}</p>
-        <h1>{k.h1}</h1>
-        <p class="lede">{fill(k.lede, vars)}</p>
-      </div>
-      <dl class="facts" aria-label={k.kicker}>
-        {costFacts.map((x) => <div><dt>{x.label}</dt><dd><a href={x.href}>{x.value}</a></dd></div>)}
-      </dl>
-    </div>
-  </section>
+  <Statement page id="cost" kicker={k.kicker} title={k.h1} lede={fill(k.lede, vars)}>
+    <dl slot="fact" class="facts" aria-label={k.kicker}>
+      {costFacts.map((x) => <div><dt>{x.label}</dt><dd><a href={x.href}>{x.value}</a></dd></div>)}
+    </dl>
+  </Statement>
 
   <LangNote lang={lang} />
 
-  <section class="section section-alt" aria-labelledby="software-title">
-    <div class="wrap split">
-      <div>
-        <h2 id="software-title">{k.software.h2}</h2>
-        <p class="lede">{k.software.lede} <a href="/docs/sharing/">Sharing</a></p>
-      </div>
-      <ul class="checks">
-        {k.software.checks.map((x) => <li><Icon name="check" size={18} /> {fill(x, vars)}</li>)}
-        <li><Icon name="book-open" size={18} /> <a href="/about/#licence">{vars.licence}</a> · <a href="/docs/offline-and-sync/">Offline</a> · <a href="/docs/assistant/">AI</a></li>
-      </ul>
-    </div>
-  </section>
+  <Split id="software" alt title={k.software.h2}>
+    <Fragment slot="lede">{k.software.lede} <a href="/docs/sharing/">Sharing</a></Fragment>
+    <ul slot="media" class="checks">
+      {k.software.checks.map((x) => <li><Icon name="check" size={18} /> {fill(x, vars)}</li>)}
+      <li><Icon name="book-open" size={18} /> <a href="/about/#licence">{vars.licence}</a> · <a href="/docs/offline-and-sync/">Offline</a> · <a href="/docs/assistant/">AI</a></li>
+    </ul>
+  </Split>
 
-  <section class="section" aria-labelledby="server-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">{k.server.kicker}</p>
-        <h2 id="server-title">{k.server.h2}</h2>
-        <p class="lede">{k.server.lede} {footprint && `${footprint} `}{k.server.homesIntro} <a href="/docs/self-hosting/docker/">Docker</a></p>
-      </div>
+  <Catalogue id="server" kicker={k.server.kicker} title={k.server.h2}>
+    <Fragment slot="lede">{k.server.lede} {footprint && `${footprint} `}{k.server.homesIntro} <a href="/docs/self-hosting/docker/">Docker</a></Fragment>
+    {k.server.homes.map((h, i) => (
+      <article class="card">
+        <span class="card-icon"><Icon name={homeIcons[i]} size={22} /></span>
+        <h3>{h.title}</h3>
+        <p>{h.text}</p>
+      </article>
+    ))}
+    <Fragment slot="after">
       {facts.length > 0 && (
         <>
           <dl class="facts" aria-label={`OpenTodo ${versionTag}`} style="margin-bottom: 0.75rem">
@@ -77,61 +72,32 @@ const homeIcons = ['house', 'package', 'server'];
           <p class="meta" style="margin-bottom: 1.5rem">{fill(k.facts.figures, vars)} <a href="/docs/self-hosting/docker/">{k.facts.guide}</a>.</p>
         </>
       )}
-      <div class="grid grid-3">
-        {k.server.homes.map((h, i) => (
-          <article class="card">
-            <span class="card-icon"><Icon name={homeIcons[i]} size={22} /></span>
-            <h3>{h.title}</h3>
-            <p>{h.text}</p>
-          </article>
-        ))}
-      </div>
-      <p style="margin-top: 1.5rem"><a class="link-arrow" href="/self-host/">{k.server.link} <Icon name="arrow-right" size={16} /></a></p>
-    </div>
-  </section>
+      <p><a class="link-arrow" href="/self-host/">{k.server.link} <Icon name="arrow-right" size={16} /></a></p>
+    </Fragment>
+  </Catalogue>
 
-  <section class="section section-alt" aria-labelledby="work-title">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">{k.work.kicker}</p>
-        <h2 id="work-title">{k.work.h2}</h2>
-        <p class="lede">{k.work.lede}</p>
-      </div>
-      <dl class="fine-list">
-        {k.work.items.map((it, i) => <div><dt>{it.dt}</dt><dd>{it.dd} <a href={['/docs/self-hosting/coolify/', '/docs/self-hosting/docker/#updating', '/docs/backups/', '/docs/install-app/'][i]}>{c.docs}</a></dd></div>)}
-      </dl>
-    </div>
-  </section>
+  <Split id="work" alt kicker={k.work.kicker} title={k.work.h2} lede={k.work.lede}>
+    <dl slot="media" class="fine-list">
+      {k.work.items.map((it, i) => <div><dt>{it.dt}</dt><dd>{it.dd} <a href={['/docs/self-hosting/coolify/', '/docs/self-hosting/docker/#updating', '/docs/backups/', '/docs/install-app/'][i]}>{c.docs}</a></dd></div>)}
+    </dl>
+  </Split>
 
-  <section class="section" aria-labelledby="compare-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">{k.compare.kicker}</p>
-        <h2 id="compare-title">{k.compare.h2}</h2>
-      </div>
-      <div class="versus">
-        <div class="card"><h3><Icon name="users" size={20} /> {k.compare.them.h3}</h3><p>{k.compare.them.text}</p></div>
-        <div class="card us"><h3><Icon name="server" size={20} /> {k.compare.us.h3}</h3><p>{k.compare.us.text} <a href="/docs/import-export/">Export</a></p></div>
-      </div>
-      <p class="meta" style="margin-top: 1rem"><a href="/vs/">{k.compare.meta}</a></p>
+  <Catalogue id="compare" kicker={k.compare.kicker} title={k.compare.h2} bare>
+    <div class="versus">
+      <div class="card"><h3><Icon name="users" size={20} /> {k.compare.them.h3}</h3><p>{k.compare.them.text}</p></div>
+      <div class="card us"><h3><Icon name="server" size={20} /> {k.compare.us.h3}</h3><p>{k.compare.us.text} <a href="/docs/import-export/">Export</a></p></div>
     </div>
-  </section>
+    <p slot="after" class="meta"><a href="/vs/">{k.compare.meta}</a></p>
+  </Catalogue>
 
-  <section class="section section-alt" aria-labelledby="money-title">
-    <div class="wrap narrow">
-      <h2 id="money-title">{k.money.h2}</h2>
-      <p class="lede">{k.money.lede} <a href={SITE.appRepo}>GitHub</a> · <a href="https://buymeacoffee.com/pixari">Buy me a coffee</a></p>
-    </div>
-  </section>
+  <Statement id="money" alt title={k.money.h2}>
+    <Fragment slot="lede">{k.money.lede} <a href={SITE.appRepo}>GitHub</a> · <a href="https://buymeacoffee.com/pixari">Buy me a coffee</a></Fragment>
+  </Statement>
 
-  <section class="end-cta" aria-labelledby="end-cta-title">
-    <div class="wrap">
-      <h2 id="end-cta-title">{k.end.title}</h2>
-      <p class="lede">{k.end.lede}</p>
-      <div class="cta-row center">
-        <a class="btn btn-primary" href={SITE.demo}>{c.tryDemo} <Icon name="arrow-right" size={18} /></a>
-        <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> {c.selfHost}</a>
-      </div>
-    </div>
-  </section>
+  <Close title={k.end.title} lede={k.end.lede}>
+    <Fragment slot="actions">
+      <a class="btn btn-primary" href={SITE.demo}>{c.tryDemo} <Icon name="arrow-right" size={18} /></a>
+      <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> {c.selfHost}</a>
+    </Fragment>
+  </Close>
 </Base>

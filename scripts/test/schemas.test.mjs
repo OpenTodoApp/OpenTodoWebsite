@@ -149,3 +149,20 @@ test('guides accept known tags only', () => {
   assert.equal(as.safeParse({ ...g, tags: ['focus', 'habits'] }).success, true);
   assert.ok(messages(as.safeParse({ ...g, tags: ['Focus'] })).some((m) => m.includes('"tags" must be among')));
 });
+
+test('authors: a local photo and a short note pass; a remote photo or a long note fail', async () => {
+  const { authorsSchema } = await import('../../src/content/schemas.mjs');
+  const base = { name: 'A', bio: 'A builds it.', url: 'https://example.org' };
+  assert.ok(authorsSchema.safeParse({ a: { ...base, photo: 'src/assets/authors/a.jpg', note: 'I build it.' } }).success);
+  const remote = authorsSchema.safeParse({ a: { ...base, photo: 'https://example.org/a.jpg' } });
+  assert.ok(!remote.success && messages(remote).some((m) => m.includes('not a URL')));
+  const long = authorsSchema.safeParse({ a: { ...base, note: Array(121).fill('word').join(' ') } });
+  assert.ok(!long.success && messages(long).some((m) => m.includes('at most 120 words')));
+});
+
+test('authors: the real authors file is valid', async () => {
+  const { authorsSchema } = await import('../../src/content/schemas.mjs');
+  const fs = await import('node:fs');
+  const r = authorsSchema.safeParse(JSON.parse(fs.readFileSync(new URL('../../src/content/authors.json', import.meta.url), 'utf8')));
+  assert.ok(r.success, r.success ? '' : messages(r).join('\n'));
+});

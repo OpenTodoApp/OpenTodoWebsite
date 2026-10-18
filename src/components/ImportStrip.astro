@@ -8,8 +8,21 @@ import { STRIP_APPS, IMPORT_GUIDE, switchLink } from '../lib/switch';
 const apps = STRIP_APPS.map((a) => ({ ...a, link: switchLink(a) }));
 const named = apps.filter((a) => a.link.named);
 const generic = apps.filter((a) => !a.link.named);
+// `inline` renders the strip inside another section (the home page's "three ways in").
+const { inline = false } = Astro.props as { inline?: boolean };
 const list = (names: string[]) => names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} or ${names.at(-1)}`;
 ---
+{inline ? (
+  <div class="import-inner import-inline" id="switch">
+    <p id="switch-title">Using {list(STRIP_APPS.map((a) => a.app))} today? You can bring your tasks with you.</p>
+    <ul class="import-apps">
+      {named.map((a) => <li><a class="btn btn-secondary btn-small" href={a.link.href} data-switch={a.app}><Icon name="arrow-right" size={16} />{a.link.label}</a></li>)}
+      {generic.length > 0 && (
+        <li><a class="btn btn-secondary btn-small" href={IMPORT_GUIDE} data-switch="generic"><Icon name="upload" size={16} />How to import a CSV or JSON export</a></li>
+      )}
+    </ul>
+  </div>
+) : (
 <section class="import-strip" id="switch" aria-labelledby="switch-title">
   <div class="wrap import-inner">
     <p id="switch-title">Using {list(STRIP_APPS.map((a) => a.app))} today? You can bring your tasks with you.</p>
@@ -21,3 +34,4 @@ const list = (names: string[]) => names.length < 2 ? names.join('') : `${names.s
     </ul>
   </div>
 </section>
+)}

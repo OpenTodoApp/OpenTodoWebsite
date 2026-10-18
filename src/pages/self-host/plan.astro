@@ -2,7 +2,7 @@
 // /self-host/plan (website-playgrounds-and-tools D3): answer a few questions,
 // get the checklist, the compose file and the proxy snippet.
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import ServerPlanner from '../../components/ServerPlanner.astro';
 import { versionTag } from '../../lib/bundle';
@@ -13,7 +13,7 @@ import { versionTag } from '../../lib/bundle';
       <p class="breadcrumb"><a href="/self-host/">Self-host</a></p>
       <p class="kicker">Plan your server</p>
       <h1>Say where it will run. Get the file to run it.</h1>
-      <p class="lede">Pick where OpenTodo will live, how your phones reach it, who uses it and where backups go. You get an honest "is that enough?", a checklist in order, a <code>docker-compose.yml</code> with the variables already named, and the proxy snippet. Everything comes from the <a href="/docs/self-hosting/docker/">self-hosting docs</a> of OpenTodo {versionTag} and runs in your browser; nothing is stored or sent.</p>
+      <p class="lede">Pick where OpenTodo will live, how your phones reach it, who uses it and where backups go. You get a plain "is that enough?", a checklist in order, a <code>docker-compose.yml</code> with the variables already named, and the proxy snippet. Everything comes from the <a href="/docs/self-hosting/docker/">self-hosting docs</a> of OpenTodo {versionTag} and runs in your browser; nothing is stored or sent.</p>
     </div>
   </section>
   <section class="section" style="padding-top: 1rem">
@@ -32,5 +32,5 @@ import { versionTag } from '../../lib/bundle';
       </div>
     </div>
   </section>
-  <EndCta title="Try it before you run it." lede="The demo needs nothing. When you like it, the file above starts your own server in a few minutes." />
+  <Close title="Try it before you run it." lede="The demo needs nothing. When you like it, the file above starts your own server in a few minutes." />
 </Base>

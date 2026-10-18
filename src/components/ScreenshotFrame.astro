@@ -1,10 +1,13 @@
 ---
 // A real screenshot from the bundle in a frame drawn from the tokens (browser or
 // phone), as a responsive <picture>: AVIF and WebP at several widths, and the
-// dark capture for visitors who prefer dark when the bundle has one.
+// dark capture for visitors who prefer dark when the bundle has one. With `crop` it
+// shows only a focus box of the screen (src/lib/crops.ts), at its natural size, with
+// a link to the full screen (website-section-system D3).
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 import { manifest } from '../lib/bundle';
+import { crops, type Crop } from '../lib/crops';
 
 interface Props {
   shot: string;
@@ -17,8 +20,14 @@ interface Props {
   class?: string;
   /** data-* hooks for islands (the feature tour swaps the image). */
   imgAttrs?: Record<string, string>;
+  /** Show only part of the screen: the name of a box in src/lib/crops.ts, or a box. */
+  crop?: string | Crop;
+  /** Text of the link to the uncropped screen, for translated pages. */
+  fullLabel?: string;
 }
 const { shot, alt, frame = 'browser', caption, url = 'todo.your-server.com', eager = false, class: className, imgAttrs = {} } = Astro.props;
+const box: Crop | undefined = typeof Astro.props.crop === 'string' ? crops[Astro.props.crop] : Astro.props.crop;
+if (typeof Astro.props.crop === 'string' && !box) throw new Error(`No crop named "${Astro.props.crop}" in src/lib/crops.ts`);
 
 const files = import.meta.glob<{ default: ImageMetadata }>('@bundle/shots/*.{webp,png,jpg}', { eager: true });
 const byName = (name: string) => {
@@ -33,7 +42,9 @@ const light = byName(shot);
 const darkName = manifest.darkVariants?.[shot];
 const dark = darkName ? byName(darkName) : undefined;
 const widths = (frame === 'phone' ? [280, 420, 560] : [480, 800, 1200, 1600, 2160]).filter((w) => w <= light.width);
-const sizes = Astro.props.sizes ?? (frame === 'phone' ? '(min-width: 640px) 280px, 45vw' : '(min-width: 1200px) 760px, (min-width: 1024px) 60vw, 100vw');
+// A crop shows the image larger than its slot by 100 / box width.
+const zoom = box ? 100 / box.w : 1;
+const sizes = Astro.props.sizes ?? (frame === 'phone' ? '(min-width: 640px) 280px, 45vw' : box ? `(min-width: 1200px) ${Math.round(760 * zoom)}px, ${Math.round(100 * zoom)}vw` : '(min-width: 1200px) 760px, (min-width: 1024px) 60vw, 100vw');
 
 const sources = async (img: ImageMetadata, media?: string) =>
   Promise.all(
@@ -43,13 +54,23 @@ const sources = async (img: ImageMetadata, media?: string) =>
     }),
   );
 const list = [...(dark ? await sources(dark, '(prefers-color-scheme: dark)') : []), ...(await sources(light))];
-const fallback = await getImage({ src: light, width: Math.min(1200, light.width), format: 'webp' });
+const fallback = await getImage({ src: light, width: Math.min(box ? 2160 : 1200, light.width), format: 'webp' });
+const fullImg = box ? await getImage({ src: light, width: light.width, format: 'webp' }) : fallback;
 ---
 <figure class:list={[frame === 'none' ? '' : 'frame', frame === 'phone' && 'frame-phone', className]}>
   {frame === 'browser' && <div class="frame-bar" aria-hidden="true"><i /><i /><i /><span>{url}</span></div>}
-  <picture>
-    {list.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} media={s.media} />)}
-    <img src={fallback.src} width={light.width} height={light.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" {...imgAttrs} />
-  </picture>
-  {caption && <figcaption>{caption}</figcaption>}
+  {box ? (
+    <div class="crop" style={`aspect-ratio: ${(light.width * box.w).toFixed(0)} / ${(light.height * box.h).toFixed(0)}`}>
+      <picture>
+        {list.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} media={s.media} />)}
+        <img src={fallback.src} width={light.width} height={light.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" style={`width: ${(100 * zoom).toFixed(3)}%; height: auto; left: ${(-box.x * zoom).toFixed(3)}%; top: ${(-box.y * 100 / box.h).toFixed(3)}%`} {...imgAttrs} />
+      </picture>
+    </div>
+  ) : (
+    <picture>
+      {list.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} media={s.media} />)}
+      <img src={fallback.src} width={light.width} height={light.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" {...imgAttrs} />
+    </picture>
+  )}
+  {(caption || box) && <figcaption>{caption}{caption && box && ' '}{box && <a href={fullImg.src}>{Astro.props.fullLabel ?? 'See the full screen'}</a>}</figcaption>}
 </figure>

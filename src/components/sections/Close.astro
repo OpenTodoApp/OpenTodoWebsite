@@ -1,0 +1,27 @@
+---
+// Close (website-section-system D1, D6): the call to action every page ends with
+// (website-content "Content navigation"): try the demo, self-host, import. The
+// coffee button lives in the footer and on /about/, not here. Translated pages pass
+// their own buttons in the "actions" slot.
+import Icon from '../Icon.astro';
+import { SITE } from '../../lib/site';
+interface Props { title?: string; lede?: string }
+const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in your browser. When you like it, install OpenTodo on your server and import your tasks.' } = Astro.props;
+---
+<section class="end-cta" data-section-type="close" aria-labelledby="end-cta-title">
+  <div class="wrap">
+    <slot name="before" />
+    <h2 id="end-cta-title">{title}</h2>
+    <p class="lede">{lede}</p>
+    <div class="cta-row center">
+      {Astro.slots.has('actions') ? <slot name="actions" /> : (
+        <>
+          <a class="btn btn-primary" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
+          <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Self-host</a>
+          <a class="btn btn-secondary" href="/docs/import/"><Icon name="upload" size={18} /> Bring your tasks over</a>
+        </>
+      )}
+    </div>
+    <slot />
+  </div>
+</section>

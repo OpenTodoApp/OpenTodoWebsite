@@ -1,11 +1,16 @@
 ---
-// /help (website-help-and-howtos D1): entry points by audience, phrased as tasks.
-// Static, anchors instead of tabs, so it reads and links without JavaScript.
+// /help (website-help-and-howtos D1, website-navigation-and-home D7): the one entry
+// point for doing something. Entry points by audience, phrased as tasks, then every
+// topic and every install page, so how-tos, toolkit, topics, FAQ and install pages
+// are all one click from here. Static, anchors instead of tabs, so it reads and links
+// without JavaScript.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
+import Close from '../components/sections/Close.astro';
 import Icon from '../components/Icon.astro';
 import { SITE } from '../lib/site';
+import { TOPICS } from '../lib/topics.mjs';
+import { PLATFORMS } from '../lib/install';
 
 // Every how-to link here must exist; the link check catches a typo in dist.
 const howtos = new Set((await getCollection('howto', (e) => !e.data.draft)).map((e) => e.id));
@@ -16,7 +21,9 @@ const groups = [
     id: 'use', icon: 'list-checks', title: 'I use the app', lede: 'You have an account on a server, or you are about to. These are the things people ask first.',
     items: [
       { q: 'get started in five minutes', href: '/docs/getting-started/' },
+      { q: 'sign in and add my first task', href: ht('sign-in-and-add-your-first-task') },
       { q: 'install it on my phone or computer', href: '/install/' },
+      { q: 'install it on my phone, step by step', href: ht('install-on-your-phone') },
       { q: 'get reminders on my phone when the app is closed', href: ht('reminders-on-your-phone') },
       { q: 'add a task with a date, a project and a label in one line', href: ht('add-a-task-with-everything-in-one-line') },
       { q: 'try quick add and filters in my browser first', href: '/playground/' },
@@ -91,6 +98,7 @@ const fixes = [
       <ul class="jump">
         {groups.map((g) => <li><a href={`#${g.id}`}>{g.title}</a></li>)}
         <li><a href="#fix">Something is wrong</a></li>
+        <li><a href="#topics">By topic</a></li>
         <li><a href="/faq/">FAQ</a></li>
       </ul>
     </div>
@@ -127,6 +135,25 @@ const fixes = [
     </div>
   </section>
 
+  <section class="section help-group" id="topics" aria-labelledby="topics-title" style="padding-top: 1.5rem; padding-bottom: 2rem">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <span class="card-icon"><Icon name="map" size={22} /></span>
+        <h2 id="topics-title">Browse by topic</h2>
+        <p class="lede">Guides, templates and how-tos gathered around one subject. Or install the app on a particular device, or read the <a href="/faq/">frequently asked questions</a>.</p>
+      </div>
+      <div>
+        <ul class="wants" aria-labelledby="topics-title">
+          {TOPICS.map((tp) => <li><a href={`/topics/${tp.slug}/`}>{tp.title} <Icon name="arrow-right" size={16} /></a></li>)}
+        </ul>
+        <p class="wants-lead" id="install-lead" style="margin-top: 1.25rem">Install the app on…</p>
+        <ul class="wants" aria-labelledby="install-lead">
+          {PLATFORMS.map((pl) => <li><a href={`/install/${pl.slug}/`}>{pl.name} <Icon name="arrow-right" size={16} /></a></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="more-title">
     <div class="wrap">
       <h2 id="more-title" style="font-size: 1.5rem">More ways in</h2>
@@ -137,5 +164,5 @@ const fixes = [
       </ul>
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

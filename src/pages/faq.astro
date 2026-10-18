@@ -4,14 +4,14 @@
 // supports it. <details open> so every answer reads without JavaScript; the same
 // list feeds the FAQPage structured data.
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
+import Close from '../components/sections/Close.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { manifest, versionTag } from '../lib/bundle';
 import { SITE } from '../lib/site';
 
 const licence = manifest.facts.license ?? 'AGPL-3.0';
 const faq: { id: string; q: string; a: string }[] = [
-  { id: 'free', q: 'Is OpenTodo really free?', a: `Yes. All of it, for everyone on your server, for good. There is no plan, no trial, no free tier with limits and no paid feature. OpenTodo is free software under the ${licence} licence, which also means nobody can later turn it into a subscription. What you provide is a server to run it on. <a href="/cost/">What it costs, in words</a> · <a href="/about/#licence">The licence in plain words</a>` },
+  { id: 'free', q: 'Is OpenTodo really free?', a: `Yes. All of it, for everyone on your server, for good. There is no plan, no trial, no free tier with limits and no paid feature. OpenTodo is free software under the ${licence} licence, which also means nobody can later turn it into a subscription. What you provide is a server to run it on. <a href="/cost/">What it costs, in words</a> · <a href="/about/#licence">What the licence means</a>` },
   { id: 'hosted', q: 'Is there a hosted version I can sign up for?', a: `No. OpenTodo is not offered as a hosted service. You try it in the demo, you join a server someone you know runs, or you run one yourself. <a href="/#get-it">The three ways in</a>` },
   { id: 'try', q: 'Do I need a server just to try it?', a: `No. The demo runs in your browser with nothing to install. You get a private sandbox with sample projects that nobody else can see; it is deleted after two hours without activity and every night, so do not keep anything personal there. <a href="${SITE.demo}">Open the demo</a> · <a href="/docs/self-hosting/demo/">How the demo works</a>` },
   { id: 'alone', q: 'Can I use it alone, without anyone else?', a: `Yes, but it still needs a server to sign in and sync, because every device keeps a copy of your tasks and the server keeps them in step. The server can be small: a single container on a Raspberry Pi, a machine already at home, or the cheapest rented server. <a href="/docs/troubleshooting/#can-i-use-opentodo-on-my-own-without-a-server">Using it on your own</a> · <a href="/toolkit/your-first-server/">Your first server</a>` },
@@ -46,5 +46,5 @@ const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g
     </div>
   </section>
 
-  <EndCta title="Something else?" lede="The troubleshooting page covers the problems people actually hit, and the help page lists the rest." />
+  <Close title="Something else?" lede="The troubleshooting page covers the problems people actually hit, and the help page lists the rest." />
 </Base>

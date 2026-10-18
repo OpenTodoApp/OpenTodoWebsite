@@ -73,4 +73,4 @@ gaps:
 ---
 Todoist is one of the best task apps there is, and if you only want a list on your phone, it is hard to beat. People come to OpenTodo for different reasons: they want the whole household on one setup without paying per person, they want their tasks on hardware they control, or they want an app that keeps working when the connection does not.
 
-The table below is honest in both directions. Where Todoist is ahead, it says so.
+Where Todoist is ahead, the table says so.

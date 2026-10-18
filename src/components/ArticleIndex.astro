@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import EndCta from './EndCta.astro';
+import Close from './sections/Close.astro';
 import Icon from './Icon.astro';
 interface Item { href: string; title: string; summary: string }
 interface Props { kicker: string; title: string; lede: string; description: string; items: Item[]; icon: string }
@@ -26,5 +26,5 @@ const { kicker, title, lede, description, items, icon } = Astro.props;
     </div>
   </section>
   <slot />
-  <EndCta />
+  <Close />
 </Base>

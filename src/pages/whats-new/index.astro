@@ -1,10 +1,18 @@
 ---
+// /whats-new (website-content-hub D4, website-voice-and-releases D3, D4): every release,
+// newest first, each with its date, the first sentence of its intro, the size of each
+// changelog section and a mark when it has upgrade notes; the full notes are on the
+// release's own page. Pre-releases are listed after the releases.
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import { releases } from '../../lib/bundle';
 import { inline } from '../../lib/changelog';
+import { firstSentence, hasUpgradeNotes, isPreRelease, sectionCounts } from '../../lib/changelog-core.mjs';
 const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const plain = (md: string) => md.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+const stable = releases.filter((r) => !isPreRelease(r.version));
+const pre = releases.filter((r) => isPreRelease(r.version));
 ---
 <Base title="What's new" description="Every OpenTodo release, what it added and what changed.">
   <section class="page-head">
@@ -15,16 +23,32 @@ const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB'
     </div>
   </section>
   <section class="section" style="padding-top: 1rem">
-    <div class="wrap grid">
-      {releases.map((r) => (
-        <a class="card" href={`/whats-new/${r.version}/`}>
-          <h2 style="font-size: 1.35rem">OpenTodo {r.version}</h2>
-          <p class="meta"><time datetime={r.date}>{day(r.date)}</time></p>
-          {r.summary && <p set:html={inline(r.summary.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'))} />}
-          <span class="card-link">Read the release notes <Icon name="arrow-right" size={16} /></span>
-        </a>
-      ))}
+    <div class="wrap narrow">
+      <ol class="release-list">
+        {stable.map((r) => (
+          <li>
+            <h2><a href={`/whats-new/${r.version}/`}>OpenTodo {r.version}</a></h2>
+            <p class="meta"><time datetime={r.date}>{day(r.date)}</time>{hasUpgradeNotes(r.sections) && <span class="post-badge release-mark"><Icon name="flag" size={14} /> Read the upgrade notes</span>}</p>
+            {r.summary && <p set:html={inline(plain(firstSentence(r.summary)))} />}
+            {sectionCounts(r.sections).length > 0 && <p class="release-counts">{sectionCounts(r.sections).join(' · ')}</p>}
+          </li>
+        ))}
+      </ol>
+      {pre.length > 0 && (
+        <>
+          <h2 class="release-pre-title">Pre-releases</h2>
+          <p class="meta">Builds that test the release process. They are not supported releases.</p>
+          <ul class="release-list release-pre">
+            {pre.map((r) => (
+              <li>
+                <h3><a href={`/whats-new/${r.version}/`}>OpenTodo {r.version}</a></h3>
+                <p class="meta"><time datetime={r.date}>{day(r.date)}</time></p>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

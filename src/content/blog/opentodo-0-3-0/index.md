@@ -11,7 +11,7 @@ OpenTodo 0.3.0 is about bringing your own AI, if you want one. Nothing in this r
 
 ## An assistant inside the app
 
-There is now a chat panel in OpenTodo that answers questions about your tasks and proposes changes: "move everything overdue to Friday", "break this task into steps". Each proposal is a list of changes in plain words. You tick the ones you want, apply them in one step, and undo them in one step. The [assistant guide](/docs/assistant/) shows the whole flow.
+There is now a chat panel in OpenTodo that answers questions about your tasks and proposes changes: "move everything overdue to Friday", "break this task into steps". Each proposal is a list of changes in everyday language. You tick the ones you want, apply them in one step, and undo them in one step. The [assistant guide](/docs/assistant/) shows the whole flow.
 
 It works with Anthropic, OpenAI, Google Gemini, or a model on your own network such as Ollama or LM Studio, with your own key. The owner can let each member bring their own provider and key too. Keys stay on the server and are never sent back to the app or written to backups, as the [assistant settings](/docs/assistant/) describe.
 

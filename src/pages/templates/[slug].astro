@@ -4,7 +4,7 @@
 // how to use it, how to make it yours, import steps, byline, similar templates.
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import ShotPicture from '../../components/ShotPicture.astro';
 import TemplateGrid from '../../components/TemplateGrid.astro';
@@ -127,5 +127,5 @@ const meta = (t: Task) => [t.recurrence && `repeats ${t.recurrence}`, t.estimate
       </div>
     </section>
   )}
-  <EndCta />
+  <Close />
 </Base>

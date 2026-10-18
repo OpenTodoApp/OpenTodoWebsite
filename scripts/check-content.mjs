@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 // Runs before every build: the claim-and-source lint over guides, toolkit,
-// templates (website-content-hub D3) and blog posts (website-blog D5).
+// templates (website-content-hub D3) and blog posts (website-blog D5), and the
+// voice lint over all English content and page copy (website-voice-and-releases D1).
 // Fails naming file and line.
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { ROOT, docExistsIn, resolveBundle } from './lib/bundle.mjs';
 import { lint } from './lib/claim-lint.mjs';
+import { parseAvoid, voiceLint } from './lib/voice-lint.mjs';
 import { isPublished } from '../src/lib/blog-core.mjs';
 import { BLOG_CATEGORIES, CONTENT_TAGS, TEMPLATE_AUDIENCES, TEMPLATE_LAYOUTS, slugify } from '../src/content/schemas.mjs';
 import { TOPICS } from '../src/lib/topics.mjs';
@@ -59,6 +61,19 @@ for (const c of COLLECTIONS) {
 // Posts about unreleased work describe things not in the docs yet: their links are
 // still checked, the feature-keyword rule is not (website-blog spec "Sourced claims").
 for (const p of posts) problems.push(...lint(p.text, { docExists, pageExists, file: p.file, claims: !p.inDevelopment }));
+
+// Voice: the guide's words to avoid, in English content and page copy. Translations
+// (src/i18n) follow their own language and are not checked against an English list.
+const avoid = parseAvoid(fs.readFileSync(path.join(ROOT, 'content/VOICE.md'), 'utf8'));
+const walk = (dir, exts) => fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(path.join(dir, e.name), exts) : exts.some((x) => e.name.endsWith(x)) ? [path.join(dir, e.name)] : []) : [];
+for (const f of walk(contentDir, ['.md'])) problems.push(...voiceLint(fs.readFileSync(f, 'utf8'), { file: path.relative(ROOT, f), avoid, kind: 'md' }));
+// The authors' notes and bios are copy too (website-maintainer-and-proof D4).
+for (const [key, a] of Object.entries(JSON.parse(fs.readFileSync(path.join(contentDir, 'authors.json'), 'utf8')))) {
+  for (const field of ['bio', 'note']) if (a[field]) problems.push(...voiceLint(a[field], { file: `src/content/authors.json (${key}.${field})`, avoid, kind: 'md' }));
+}
+for (const d of ['src/pages', 'src/components', 'src/layouts', 'src/lib']) {
+  for (const f of walk(path.join(ROOT, d), ['.astro', '.ts', '.mjs'])) problems.push(...voiceLint(fs.readFileSync(f, 'utf8'), { file: path.relative(ROOT, f), avoid, kind: 'astro' }));
+}
 
 if (problems.length) {
   console.error(`Content check failed:\n${problems.map((p) => `  ${p}`).join('\n')}`);

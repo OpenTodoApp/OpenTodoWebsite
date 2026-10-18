@@ -12,6 +12,33 @@ People who use a commercial task app today and wonder whether there is something
 - **Outcome first.** Lead with what a person gets (clarity, calm, ownership, no subscription). Implementation details (op log, clocks, SQLite) belong on `/self-host` and `/developers` only.
 - **British spelling**, as in the app (organise, colour, licence for the noun).
 
+## Confidence
+Show, do not reassure. A page earns trust with what it shows (a dated comparison with the other app's strengths, a docs link, a real screenshot), not by saying it is trustworthy.
+- **One reassurance per page at most.** "Nothing to install", "no catch", "nothing hidden": say it once, where it matters most, or not at all.
+- **Never call the site, a comparison or a claim "honest".** The gaps sections show it; saying it invites doubt.
+- **Hero promises are at most 25 words.** One sentence of outcome, then the button. The rest of the page explains.
+- **One narrator.** The blog and the about page speak as the maintainer, in the first person ("I"). Every other page uses the neutral product voice, with no "we".
+
+The content check fails on any of these words and phrases, in content and in page copy. Add a line here and the next build checks it. Quote another app or a person with `<!-- quote -->` on the line above (Markdown) or a `data-quote` attribute (pages).
+
+```avoid
+revolutionary
+game-changing
+game changer
+supercharge
+seamless
+seamlessly
+effortless
+effortlessly
+blazing
+honest
+honestly
+honesty
+in plain words
+rest assured
+no catch
+```
+
 ## Claims
 - Every statement about what OpenTodo can do links to the documentation page of the pinned release that supports it. The content check fails otherwise; mark a paragraph `<!-- no-claim -->` only when it truly claims nothing.
 - Only released features. If it is on the roadmap, it does not exist yet.

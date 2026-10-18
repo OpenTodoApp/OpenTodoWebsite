@@ -1,6 +1,7 @@
 // Portuguese (website-languages), European, as the app's own Portuguese examples are.
 export default {
   common: {
+    fullScreen: 'Ver o ecrã inteiro',
     langNote: 'Esta página existe em português. O resto do site, a documentação e a própria aplicação estão em inglês; a introdução rápida da aplicação, essa, percebe datas e horas em português.',
     otherLanguages: 'Esta página noutras línguas',
     tryDemo: 'Experimentar a demo',
@@ -17,7 +18,7 @@ export default {
     eyebrow: 'Livre e de código aberto',
     h1a: 'Uma aplicação de tarefas que corre no ',
     h1b: 'teu próprio servidor.',
-    lede: 'Planeia o dia, mantém os projetos em ordem, define lembretes e partilha listas com a tua família ou a tua equipa. Como o OpenTodo corre num pequeno servidor teu, não há um plano mensal por pessoa e as tuas tarefas ficam contigo. Junta um assistente de IA se quiseres, com o modelo e a chave que escolheres.',
+    promise: 'Planeia o dia, partilha listas com a família ou a equipa e guarda cada tarefa num servidor teu. Sem mensalidade por pessoa.',
     note: 'Funciona no telemóvel e no computador, com ou sem ligação. A aplicação não envia nada a ninguém a não ser ao teu servidor.',
     getIt: {
       kicker: 'Como o obtenho?',
@@ -39,18 +40,16 @@ export default {
         { title: 'Lembretes e tarefas recorrentes', text: 'Recebe uma notificação antes de algo vencer. «Todas as segundas» ou «de 2 em 2 semanas» simplesmente funciona.' },
         { title: 'Etiquetas e filtros', text: 'Marca tarefas com @recado ou @chamada e fixa na barra lateral um filtro como «vence esta semana e não está feita».' },
         { title: 'Listas partilhadas', text: 'Partilha um projeto com o teu par ou a tua equipa, atribui tarefas e deixa comentários.' },
-        { title: 'Telemóvel, portátil, offline', text: 'Instala a partir do browser no iPhone, Android, Mac, Windows ou Linux. Continua a funcionar sem ligação.' },
       ],
+      assistant: { title: 'Um assistente, com a tua chave', text: 'Desligado até o ligares. Escolhes o modelo e o fornecedor, e vês cada alteração antes de acontecer.' },
     },
     reasons: {
-      kicker: 'Porque é que as pessoas trazem as listas para aqui',
-      h2: 'O que ganhas em corrê-lo tu.',
       items: [
-        { title: 'Um servidor para toda a casa', text: 'Cada pessoa tem a sua conta e as suas listas. Partilha a lista de compras, a mudança ou as férias com quem precisa. Ninguém paga por pessoa.', link: 'Partilha e contas' },
-        { title: 'Funciona sem ligação', text: 'O teu telemóvel guarda uma cópia completa das tuas tarefas. Acrescenta e risca no comboio ou no avião, e tudo sincroniza quando voltas a estar online.', link: 'Offline e sincronização' },
-        { title: 'Cifrado, se quiseres', text: 'Liga-o e os títulos e notas das tarefas são cifrados nos teus dispositivos antes de chegarem ao servidor. Nem o servidor os consegue ler.', link: 'Cifragem ponta a ponta' },
-        { title: 'Rápido com o teclado', text: 'Acrescenta, move e termina tarefas sem tocar no rato. Escreve «ligar ao dentista amanhã às 9 #Casa» e vira uma tarefa com data, hora e projeto. Até há um modo Vim.', link: 'Atalhos de teclado' },
-        { title: 'Os teus dados vão contigo', text: 'Descarrega tudo num único ficheiro quando quiseres. Importa de um CSV ou da exportação de outra aplicação. Nada te prende aqui, a não ser funcionar.', link: 'Importar e exportar' },
+        { title: 'Um servidor para toda a casa', text: 'Cada pessoa tem a sua conta e as suas listas. Partilha a lista de compras, a mudança ou as férias com quem precisa. Ninguém paga por pessoa.' },
+        { title: 'Funciona sem ligação', text: 'O teu telemóvel guarda uma cópia completa das tuas tarefas. Acrescenta e risca no comboio ou no avião, e tudo sincroniza quando voltas a estar online.' },
+        { title: 'Cifrado, se quiseres', text: 'Liga-o e os títulos e notas das tarefas são cifrados nos teus dispositivos antes de chegarem ao servidor. Nem o servidor os consegue ler.' },
+        { title: 'Rápido com o teclado', text: 'Acrescenta, move e termina tarefas sem tocar no rato. Escreve «ligar ao dentista amanhã às 9 #Casa» e vira uma tarefa com data, hora e projeto. Até há um modo Vim.' },
+        { title: 'Os teus dados vão contigo', text: 'Descarrega tudo num único ficheiro quando quiseres. Importa de um CSV ou da exportação de outra aplicação. Nada te prende aqui, a não ser funcionar.' },
       ],
     },
     household: {
@@ -59,6 +58,7 @@ export default {
       lede: 'Quem em casa não se importa com um pouco de configuração instala o OpenTodo num servidor pequeno, num VPS barato ou num Raspberry Pi. Os outros abrem a aplicação no telemóvel ou no portátil e usam-na como qualquer outra aplicação de tarefas.',
       them: { h3: 'Com uma aplicação por subscrição', text: 'Todos se registam na empresa. A aplicação completa costuma custar uma mensalidade por pessoa, e as vossas listas vivem nos servidores da empresa.' },
       us: { h3: 'Com o OpenTodo', text: 'Todos têm conta no vosso servidor. Convida com uma ligação, partilha as listas em comum, mantém o resto privado. O único custo é o servidor.' },
+      leaving: 'E se um dia saíres, cada pessoa descarrega os seus dados num só ficheiro. Nada te prende aqui, a não ser que funciona.',
       link: 'Como instalar em telemóveis e portáteis',
     },
     how: {
@@ -67,8 +67,8 @@ export default {
       lede: 'Cada um dos teus dispositivos guarda uma cópia das tuas tarefas e troca as suas alterações com os outros através do teu servidor. Não há nenhuma janela «que versão queres manter?». O todo é um contentor e uma pasta de dados.',
       cta1: 'Ver a sincronização a funcionar',
       cta2: 'Para quem desenvolve',
-      checks: ['Instala-se em telemóveis e computadores diretamente a partir do browser, sem loja de aplicações', 'Os teus dados são uma pasta no teu servidor, com cópias de segurança agendadas', 'Liga-se a aplicações de calendário, email, webhooks e a uma linha de comandos', 'Cada funcionalidade está descrita numa especificação aberta que podes ler'],
     },
+    sync: { laptop: 'Portátil', phone: 'Telemóvel', server: 'O teu servidor', log: '2 alterações, ambas mantidas', renamed: 'Renomeada offline', completed: 'Concluída offline', synced: 'Sincronizado', done: 'concluída', listLaptop: 'Tarefas no portátil', listPhone: 'Tarefas no telemóvel', caption: 'A mesma tarefa, renomeada no portátil e concluída no telemóvel, ambos sem ligação. Depois de sincronizar, os dois dispositivos mostram as duas alterações.', link: 'Experimenta tu', tasks: ['Comprar leite de aveia', 'Reservar voos para Lisboa, 12 de maio', 'Renovar o passaporte'] },
     end: { title: 'Experimenta primeiro, depois torna-o teu.', lede: 'A demo corre no browser, sem nada para instalar. Quando gostares, põe-no no teu próprio servidor e leva as tuas tarefas.' },
   },
   cost: {

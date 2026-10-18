@@ -1,0 +1,16 @@
+---
+// Showcase (website-section-system D1): one large product screenshot (or the tour)
+// at full content width, under the section head.
+import SectionHead from './SectionHead.astro';
+interface Props { id: string; title: string; kicker?: string; lede?: string; alt?: boolean }
+const { id, title, kicker, lede, alt = false } = Astro.props;
+---
+<section class:list={['section', alt && 'section-alt']} id={id} data-section-type="showcase" aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <SectionHead id={id} title={title} kicker={kicker} lede={lede}>
+      {Astro.slots.has('lede') && <Fragment slot="lede"><slot name="lede" /></Fragment>}
+    </SectionHead>
+    <div class="showcase-media"><slot /></div>
+    {Astro.slots.has('after') && <slot name="after" />}
+  </div>
+</section>

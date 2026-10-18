@@ -2,7 +2,7 @@
 // /guides/tag/<tag> (website-templates-and-methods D3): the catalogue for one tag.
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import EndCta from '../../../components/EndCta.astro';
+import Close from '../../../components/sections/Close.astro';
 import Icon from '../../../components/Icon.astro';
 import { CONTENT_TAGS, TAG_LABELS } from '../../../content/schemas.mjs';
 
@@ -48,5 +48,5 @@ const templates = (await getCollection('templates')).filter((t) => t.data.tags.i
       {entries.length === 0 && templates.length === 0 && <p class="lede">Nothing carries this tag yet. <a href="/guides/">All guides</a></p>}
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

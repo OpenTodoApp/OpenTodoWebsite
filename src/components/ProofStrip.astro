@@ -1,0 +1,16 @@
+---
+// Checkable figures from the pinned bundle (website-maintainer-and-proof D1, D2): the
+// licence, the published specifications, the documentation pages and the import
+// formats, each a link to where it can be checked. Missing figures are left out.
+import { manifest } from '../lib/bundle';
+import { SITE } from '../lib/site';
+import { proofFigures } from '../lib/proof.mjs';
+interface Props { keys?: string[]; label?: string }
+const { keys = ['license', 'specCount', 'docsPages', 'importFormatCount'], label = 'OpenTodo in figures from the pinned release' } = Astro.props;
+const figures = proofFigures(manifest.facts, keys, SITE.appRepo);
+---
+{figures.length > 0 && (
+  <ul class="proof" aria-label={label}>
+    {figures.map((f: { href: string; value: string; caption: string }) => <li><a href={f.href}><span class="proof-value">{f.value}</span> <span class="proof-caption">{f.caption}</span></a></li>)}
+  </ul>
+)}

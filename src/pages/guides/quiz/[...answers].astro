@@ -2,7 +2,7 @@
 // /guides/quiz/<a1>/ shows the second question; /guides/quiz/<a1>/<a2>/ the result.
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import EndCta from '../../../components/EndCta.astro';
+import Close from '../../../components/sections/Close.astro';
 import Icon from '../../../components/Icon.astro';
 import { isLeaf, paths, trail } from '../../../lib/quiz';
 
@@ -65,5 +65,5 @@ const howtos = isLeaf(node) ? (await getCollection('howto')).filter((h) => guide
       </div>
     </section>
   )}
-  {isLeaf(node) && <EndCta title="Try it in the demo first." lede="Import the template into the demo, follow the guide for a week, and move it to your own server when it sticks." />}
+  {isLeaf(node) && <Close title="Try it in the demo first." lede="Import the template into the demo, follow the guide for a week, and move it to your own server when it sticks." />}
 </Base>

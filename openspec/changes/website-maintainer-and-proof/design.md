@@ -22,7 +22,7 @@ See proposal.md. `about.astro` builds its hero facts from the changelog (first a
 
 - [A small count can read as weak, for example a first release with few specs] → the strip shows what exists; the maintainer can drop the strip from a page in review. The about page always shows the licence.
 - [The photo becomes outdated] → it is the maintainer's file and changes only in their pull requests.
-- [Fact keys renamed in a future bundle] → the bundle's stable-layout requirement covers manifest fields; a renamed key makes the figure disappear, and `fetch-bundle.test.mjs` gains a case that fails when none of the strip's keys is present.
+- [Fact keys renamed in a future bundle] → the bundle's stable-layout requirement covers manifest fields; a renamed key makes the figure disappear, and a unit test (`scripts/test/proof.test.mjs`) reads the pinned manifest and fails when fewer than two of the strip's keys are present.
 
 ## Effect on build and downloads
 

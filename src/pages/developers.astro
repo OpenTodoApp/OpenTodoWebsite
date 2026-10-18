@@ -1,7 +1,11 @@
 ---
 // /developers (website-switcher-pages D4): API, CLI, MCP, webhooks, CalDAV and the open specs.
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
+import Close from '../components/sections/Close.astro';
+import Statement from '../components/sections/Statement.astro';
+import ProofStrip from '../components/ProofStrip.astro';
+import Split from '../components/sections/Split.astro';
+import Catalogue from '../components/sections/Catalogue.astro';
 import Icon from '../components/Icon.astro';
 import { SITE, specUrl } from '../lib/site';
 
@@ -23,17 +27,12 @@ const specs = [
 ] as const;
 ---
 <Base title="OpenTodo for developers" description="REST API, the ot command line, MCP for AI assistants, webhooks, CalDAV and open specifications for every feature.">
-  <section class="page-head">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">Developers</p>
-        <h1>Everything the app does, you can do from a script.</h1>
-        <p class="lede">The app, the command line, AI assistants and your own scripts all write to the same place, so a task created from a script shows up on your phone a moment later.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="/docs/api/"><Icon name="book-open" size={18} /> API docs</a>
-          <a class="btn btn-secondary" href={SITE.appRepo}><Icon name="code" size={18} /> Source on GitHub</a>
-        </div>
-      </div>
+  <Split id="developers" level={1} kicker="Developers" title="Everything the app does, you can do from a script." lede="The app, the command line, AI assistants and your own scripts all write to the same place, so a task created from a script shows up on your phone a moment later.">
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/docs/api/"><Icon name="book-open" size={18} /> API docs</a>
+      <a class="btn btn-secondary" href={SITE.appRepo}><Icon name="code" size={18} /> Source on GitHub</a>
+    </div>
+    <Fragment slot="media">
       <pre tabindex="0" aria-label="Example: add a task with curl"><code># add a task from a script
 curl -X POST "$OPENTODO/api/v1/tasks" \
   -H "Authorization: Bearer $TOKEN" \
@@ -42,42 +41,37 @@ curl -X POST "$OPENTODO/api/v1/tasks" \
 
 # or with the command line
 ot add "Renew passport" --priority 1 --due tomorrow</code></pre>
-    </div>
-  </section>
+    </Fragment>
+  </Split>
 
-  <section class="section" style="padding-top: 1.5rem">
-    <div class="wrap grid grid-3">
-      {tools.map((t) => (
-        <article class="card">
-          <span class="card-icon"><Icon name={t.icon} size={22} /></span>
-          <h2 style="font-size: 1.2rem">{t.title}</h2>
-          <p>{t.text}</p>
-          <a class="card-link" href={t.doc}>{t.link} <Icon name="arrow-right" size={16} /></a>
-        </article>
+  <Catalogue id="tools" title="Six ways to build on it">
+    {tools.map((t) => (
+      <article class="card">
+        <span class="card-icon"><Icon name={t.icon} size={22} /></span>
+        <h3>{t.title}</h3>
+        <p>{t.text}</p>
+        <a class="card-link" href={t.doc}>{t.link} <Icon name="arrow-right" size={16} /></a>
+      </article>
+    ))}
+  </Catalogue>
+
+  <Statement id="proof" alt title="Built in the open, and checkable." lede="Every figure links to the place you can check it, for the current release.">
+    <ProofStrip slot="fact" />
+  </Statement>
+
+  <Split id="specs"  kicker="Open specifications" title="Every feature has a spec you can read." lede="Each feature started as an OpenSpec change: a proposal, behaviour with testable scenarios, a design and tasks. The specs describe how OpenTodo behaves today.">
+    <p><a class="link-arrow" href={`${SITE.appRepo}/tree/main/openspec/specs`}>All specifications <Icon name="arrow-right" size={16} /></a></p>
+    <div slot="media" class="spec-groups">
+      {specs.map(([group, items]) => (
+        <div>
+          <h3>{group}</h3>
+          <ul>
+            {items.map(([cap, label]) => <li><a href={specUrl(cap)}>{label}</a></li>)}
+          </ul>
+        </div>
       ))}
     </div>
-  </section>
+  </Split>
 
-  <section class="section section-alt" id="specs" aria-labelledby="specs-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Open specifications</p>
-        <h2 id="specs-title">Every feature has a spec you can read.</h2>
-        <p class="lede">Each feature started as an OpenSpec change: a proposal, behaviour with testable scenarios, a design and tasks. The specs describe how OpenTodo behaves today.</p>
-      </div>
-      <div class="grid grid-3">
-        {specs.map(([group, items]) => (
-          <div class="card">
-            <h3>{group}</h3>
-            <ul class="checks" style="margin: 0">
-              {items.map(([cap, label]) => <li><Icon name="book-open" size={16} /><a href={specUrl(cap)}>{label}</a></li>)}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <p style="margin-top: 1.5rem"><a class="link-arrow" href={`${SITE.appRepo}/tree/main/openspec/specs`}>All specifications <Icon name="arrow-right" size={16} /></a></p>
-    </div>
-  </section>
-
-  <EndCta />
+  <Close />
 </Base>

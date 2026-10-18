@@ -1,6 +1,7 @@
 // Spanish (website-languages). Informal "tú", as the app's own Spanish does.
 export default {
   common: {
+    fullScreen: 'Ver la pantalla completa',
     langNote: 'Esta página existe en español. El resto del sitio, la documentación y la propia aplicación están en inglés; la entrada rápida de la aplicación, eso sí, entiende fechas y horas en español.',
     otherLanguages: 'Esta página en otros idiomas',
     tryDemo: 'Probar la demo',
@@ -17,7 +18,7 @@ export default {
     eyebrow: 'Libre y de código abierto',
     h1a: 'Una aplicación de tareas que corre en ',
     h1b: 'tu propio servidor.',
-    lede: 'Planifica tu día, mantén tus proyectos en orden, pon recordatorios y comparte listas con tu familia o tu equipo. Como OpenTodo corre en un pequeño servidor tuyo, no hay un plan mensual por persona y tus tareas se quedan contigo. Añade un asistente de IA si quieres, con el modelo y la clave que tú elijas.',
+    promise: 'Planifica tu día, comparte listas con tu familia o tu equipo y guarda cada tarea en un servidor tuyo. Sin cuota mensual por persona.',
     note: 'Funciona en tu teléfono y en tu ordenador, con o sin conexión. La aplicación no envía nada a nadie salvo a tu servidor.',
     getIt: {
       kicker: '¿Cómo lo consigo?',
@@ -39,18 +40,16 @@ export default {
         { title: 'Recordatorios y tareas recurrentes', text: 'Recibe una notificación antes del vencimiento. «Cada lunes» o «cada 2 semanas» simplemente funciona.' },
         { title: 'Etiquetas y filtros', text: 'Marca tareas con @recado o @llamada y fija en la barra lateral un filtro como «vence esta semana y no está hecha».' },
         { title: 'Listas compartidas', text: 'Comparte un proyecto con tu pareja o tu equipo, asigna tareas y deja comentarios.' },
-        { title: 'Teléfono, portátil, sin conexión', text: 'Instálala desde el navegador en iPhone, Android, Mac, Windows o Linux. Sigue funcionando sin conexión.' },
       ],
+      assistant: { title: 'Un asistente, con tu propia clave', text: 'Apagado hasta que lo enciendes. Eliges el modelo y el proveedor, y ves cada cambio antes de que ocurra.' },
     },
     reasons: {
-      kicker: 'Por qué la gente se trae sus listas aquí',
-      h2: 'Lo que ganas al ejecutarlo tú.',
       items: [
-        { title: 'Un servidor para toda la casa', text: 'Cada persona tiene su propia cuenta y sus propias listas. Comparte la lista de la compra, la mudanza o las vacaciones con quien lo necesite. Nadie paga por persona.', link: 'Compartir y cuentas' },
-        { title: 'Funciona sin conexión', text: 'Tu teléfono guarda una copia completa de tus tareas. Añade y marca en el tren o en el avión, y todo se sincroniza cuando vuelves a estar en línea.', link: 'Sin conexión y sincronización' },
-        { title: 'Cifrado, si quieres', text: 'Actívalo y los títulos y notas de tus tareas se cifran en tus dispositivos antes de llegar al servidor. Ni siquiera el servidor puede leerlos.', link: 'Cifrado de extremo a extremo' },
-        { title: 'Rápido con el teclado', text: 'Añade, mueve y termina tareas sin tocar el ratón. Escribe «llamar al dentista mañana a las 9 #Casa» y se convierte en una tarea con fecha, hora y proyecto. Hasta hay un modo Vim.', link: 'Atajos de teclado' },
-        { title: 'Tus datos van contigo', text: 'Descarga todo en un solo archivo cuando quieras. Importa desde un CSV o la exportación de otra aplicación. Nada te retiene aquí, salvo que funciona.', link: 'Importar y exportar' },
+        { title: 'Un servidor para toda la casa', text: 'Cada persona tiene su propia cuenta y sus propias listas. Comparte la lista de la compra, la mudanza o las vacaciones con quien lo necesite. Nadie paga por persona.' },
+        { title: 'Funciona sin conexión', text: 'Tu teléfono guarda una copia completa de tus tareas. Añade y marca en el tren o en el avión, y todo se sincroniza cuando vuelves a estar en línea.' },
+        { title: 'Cifrado, si quieres', text: 'Actívalo y los títulos y notas de tus tareas se cifran en tus dispositivos antes de llegar al servidor. Ni siquiera el servidor puede leerlos.' },
+        { title: 'Rápido con el teclado', text: 'Añade, mueve y termina tareas sin tocar el ratón. Escribe «llamar al dentista mañana a las 9 #Casa» y se convierte en una tarea con fecha, hora y proyecto. Hasta hay un modo Vim.' },
+        { title: 'Tus datos van contigo', text: 'Descarga todo en un solo archivo cuando quieras. Importa desde un CSV o la exportación de otra aplicación. Nada te retiene aquí, salvo que funciona.' },
       ],
     },
     household: {
@@ -59,6 +58,7 @@ export default {
       lede: 'Quien en casa no le tenga miedo a un poco de configuración instala OpenTodo en un servidor pequeño, un VPS barato o una Raspberry Pi. Los demás abren la aplicación en su teléfono o portátil y la usan como cualquier otra aplicación de tareas.',
       them: { h3: 'Con una aplicación de suscripción', text: 'Todos se registran con la empresa. La aplicación completa suele costar una cuota mensual por persona, y vuestras listas viven en los servidores de la empresa.' },
       us: { h3: 'Con OpenTodo', text: 'Todos tienen una cuenta en vuestro servidor. Invita con un enlace, comparte las listas en común y mantén el resto en privado. El único coste es el servidor.' },
+      leaving: 'Y si algún día te vas, cada persona descarga sus datos en un solo archivo. Nada te retiene, salvo que funciona.',
       link: 'Cómo instalarla en teléfonos y portátiles',
     },
     how: {
@@ -67,8 +67,8 @@ export default {
       lede: 'Cada uno de tus dispositivos guarda una copia de tus tareas e intercambia sus cambios con los demás a través de tu servidor. No hay ningún diálogo de «¿qué versión quieres conservar?». Todo cabe en un contenedor y una carpeta de datos.',
       cta1: 'Ver la sincronización en acción',
       cta2: 'Para desarrolladores',
-      checks: ['Se instala en teléfonos y ordenadores directamente desde el navegador, sin tienda de aplicaciones', 'Tus datos son una carpeta en tu servidor, con copias de seguridad programadas', 'Se conecta a aplicaciones de calendario, correo, webhooks y una línea de comandos', 'Cada función está descrita en una especificación abierta que puedes leer'],
     },
+    sync: { laptop: 'Portátil', phone: 'Teléfono', server: 'Tu servidor', log: '2 cambios, los dos guardados', renamed: 'Renombrada sin conexión', completed: 'Completada sin conexión', synced: 'Sincronizado', done: 'completada', listLaptop: 'Tareas en el portátil', listPhone: 'Tareas en el teléfono', caption: 'La misma tarea, renombrada en el portátil y completada en el teléfono, ambos sin conexión. Tras sincronizar, los dos dispositivos muestran los dos cambios.', link: 'Pruébalo tú', tasks: ['Comprar leche de avena', 'Reservar vuelos a Lisboa, 12 de mayo', 'Renovar el pasaporte'] },
     end: { title: 'Pruébalo primero, y luego hazlo tuyo.', lede: 'La demo corre en tu navegador, sin instalar nada. Cuando te guste, ponlo en tu propio servidor y llévate tus tareas.' },
   },
   cost: {

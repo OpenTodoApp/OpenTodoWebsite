@@ -3,7 +3,7 @@
 // and posts that carry the topic's tags.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import PostCard from '../../components/blog/PostCard.astro';
 import TemplateGrid from '../../components/TemplateGrid.astro';
@@ -72,5 +72,5 @@ const sections = [guides.length && 'guides', templates.length && 'templates', ho
       </div>
     </section>
   )}
-  <EndCta />
+  <Close />
 </Base>

@@ -2,7 +2,7 @@
 // One page per release in the bundle's changelog (website-content-hub D4). Only
 // released versions are in it, so nothing unreleased can appear.
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import { releases } from '../../lib/bundle';
 import { inline } from '../../lib/changelog';
 import { SITE } from '../../lib/site';
@@ -31,5 +31,5 @@ const day = new Date(`${release.date}T00:00:00Z`).toLocaleDateString('en-GB', { 
     ))}
     <p><a href={`${SITE.appRepo}/releases/tag/v${release.version}`}>Downloads and checksums for v{release.version}</a></p>
   </div>
-  <EndCta />
+  <Close />
 </Base>

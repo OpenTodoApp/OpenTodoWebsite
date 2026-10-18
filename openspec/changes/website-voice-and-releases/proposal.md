@@ -29,7 +29,7 @@ Pages affected: hero and intro copy of every marketing page, `/blog/`, `/whats-n
 ## Impact
 
 - `content/VOICE.md`, `scripts/check-content.mjs` and `scripts/test/claim-lint.test.mjs`.
-- `src/pages/whats-new/index.astro` and `[version].astro`, `src/lib/bundle.ts` (pre-release detection, section counts).
+- `src/pages/whats-new/index.astro`, and `src/lib/changelog-core.mjs` (first sentence, section counts, pre-release detection).
 - Copy in `src/pages/*.astro`, `src/pages/blog/index.astro`, and the language dictionaries.
 - New post folder `src/content/blog/opentodo-0-7-0/`.
 - No new build dependency.

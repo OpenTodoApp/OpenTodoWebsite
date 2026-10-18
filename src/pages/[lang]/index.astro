@@ -1,11 +1,15 @@
 ---
-// The home page in the other languages (website-languages D3): the same
-// hierarchy as the English page without the English-only islands; a real
-// screenshot stands in for the live miniature.
+// The home page in the other languages (website-languages D3, website-navigation-and-home
+// D4): the same seven sections as the English page without the English-only islands;
+// a cropped real screenshot stands in for the live miniature.
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
 import LangNote from '../../components/LangNote.astro';
+import SyncIllustration from '../../components/SyncIllustration.astro';
+import Close from '../../components/sections/Close.astro';
+import Split from '../../components/sections/Split.astro';
+import Catalogue from '../../components/sections/Catalogue.astro';
 import { OTHER_LANGS } from '../../i18n/index.mjs';
 import { DICT } from '../../i18n/dict.mjs';
 import { SITE } from '../../lib/site';
@@ -20,142 +24,89 @@ const c = t.common;
 const pathIcons = ['sparkles', 'users-round', 'server'];
 const pathHrefs = [SITE.demo, '/docs/getting-started/', '/self-host/'];
 const pathMore = ['/docs/self-hosting/demo/', '/docs/install-app/', `/${lang}/cost/`];
-const featureIcons = ['calendar-check', 'folder', 'alarm-clock', 'tag', 'users', 'monitor-smartphone'];
-const featureDocs = ['/docs/views/', '/docs/sections-and-boards/', '/docs/recurring-and-reminders/', '/docs/labels-and-filters/', '/docs/sharing/', '/docs/install-app/'];
-const reasonIcons = ['house', 'wifi-off', 'lock', 'keyboard', 'door-open'];
-const reasonDocs = ['/docs/sharing/', '/docs/offline-and-sync/', '/docs/e2ee/', '/docs/keyboard/', '/docs/import-export/'];
+// Nine features in one grid (website-navigation-and-home D4): the five everyday ones,
+// then offline, encryption and the keyboard from the reasons, then the assistant.
+const features = [
+  ...h.features.items.slice(0, 5).map((b, i) => ({ ...b, icon: ['calendar-check', 'folder', 'alarm-clock', 'tag', 'users'][i], doc: ['/docs/views/', '/docs/sections-and-boards/', '/docs/recurring-and-reminders/', '/docs/labels-and-filters/', '/docs/sharing/'][i] })),
+  ...h.reasons.items.slice(1, 4).map((b, i) => ({ ...b, icon: ['wifi-off', 'lock', 'keyboard'][i], doc: ['/docs/offline-and-sync/', '/docs/e2ee/', '/docs/keyboard/'][i] })),
+  { ...h.features.assistant, icon: 'sparkles', doc: '/docs/ai-and-agents/' },
+];
 ---
 <Base title={h.title} bareTitle description={h.description} lang={lang}>
-  <section class="hero" aria-labelledby="hero-title">
+  <section data-section-type="split" class="hero" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow"><Icon name="heart" size={16} /> {h.eyebrow}</p>
         <h1 id="hero-title">{h.h1a}<span class="accent">{h.h1b}</span></h1>
-        <p class="lede">{h.lede}</p>
+        <p class="lede" data-hero-promise>{h.promise}</p>
         <div class="cta-row">
           <a class="btn btn-primary" href={SITE.demo}>{c.tryDemo} <Icon name="arrow-right" size={18} /></a>
-          <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> {c.selfHost}</a>
-          <a class="btn btn-secondary" href="/switch/"><Icon name="upload" size={18} /> {c.bring}</a>
         </div>
+        <p class="hero-links"><a class="link-arrow" href="/self-host/">{c.selfHost} <Icon name="arrow-right" size={16} /></a> <a class="link-arrow" href="/switch/">{c.bring} <Icon name="arrow-right" size={16} /></a></p>
         <p class="hero-note">{h.note}</p>
-        <p class="hero-note"><a class="link-arrow" href={SITE.appRepo} data-star><Icon name="star" size={16} /> {c.star}</a></p>
       </div>
       <div>
-        <ScreenshotFrame shot="today" alt="OpenTodo: the Today view with overdue and today's tasks, projects and saved views in the sidebar" eager />
+        <ScreenshotFrame shot="today" crop="today" fullLabel={c.fullScreen} alt="OpenTodo: the Today view with overdue and today's tasks" eager />
       </div>
     </div>
   </section>
 
   <LangNote lang={lang} />
 
-  <section class="section get-it" id="get-it" aria-labelledby="get-it-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">{h.getIt.kicker}</p>
-        <h2 id="get-it-title">{h.getIt.h2}</h2>
-        <p class="lede">{h.getIt.lede}</p>
-      </div>
-      <ol class="grid grid-3 paths">
-        {h.getIt.paths.map((p, i) => (
-          <li class="card">
-            <span class="card-icon"><Icon name={pathIcons[i]} size={22} /></span>
-            <p class="path-when">{p.when}</p>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-            <p class="meta">{p.effort}</p>
-            <a class={i === 0 ? 'btn btn-primary' : 'btn btn-secondary'} href={pathHrefs[i]}>{p.cta} <Icon name="arrow-right" size={16} /></a>
-            <p class="meta" style="margin-top: 0.75rem"><a href={pathMore[i]}>{p.more}</a></p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+  <Catalogue id="get-it" kicker={h.getIt.kicker} title={h.getIt.h2} lede={h.getIt.lede} bare>
+    <ol class="grid grid-3 paths">
+      {h.getIt.paths.map((p, i) => (
+        <li class="card">
+          <span class="card-icon"><Icon name={pathIcons[i]} size={22} /></span>
+          <p class="path-when">{p.when}</p>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+          <p class="meta">{p.effort}</p>
+          <a class="card-link" href={pathHrefs[i]}>{p.cta} <Icon name="arrow-right" size={16} /></a>
+          <p class="meta" style="margin-top: 0.5rem"><a href={pathMore[i]}>{p.more}</a></p>
+        </li>
+      ))}
+    </ol>
+  </Catalogue>
 
-  <section class="section section-alt" id="features" aria-labelledby="features-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">{h.features.kicker}</p>
-        <h2 id="features-title">{h.features.h2}</h2>
-        <p class="lede">{h.features.lede}</p>
-      </div>
-      <div class="grid grid-3">
-        {h.features.items.map((b, i) => (
-          <article class="card">
-            <span class="card-icon"><Icon name={featureIcons[i]} size={22} /></span>
-            <h3>{b.title}</h3>
-            <p>{b.text}</p>
-            <a class="card-link" href={featureDocs[i]}>{c.howItWorks} <Icon name="arrow-right" size={16} /></a>
-          </article>
-        ))}
-      </div>
+  <Split id="household" alt kicker={h.household.kicker} title={h.household.h2} lede={h.household.lede}>
+    <div class="aside-note-stack" style="margin-bottom: 1.25rem">
+      <div class="aside-note"><h3><Icon name="users" size={20} /> {h.household.them.h3}</h3><p>{h.household.them.text}</p></div>
+      <div class="aside-note"><h3><Icon name="server" size={20} /> {h.household.us.h3}</h3><p>{h.household.us.text}</p></div>
     </div>
-  </section>
+    <p>{h.household.leaving} <a href="/docs/import-export/">Export</a></p>
+    <p><a class="link-arrow" href="/docs/install-app/">{h.household.link} <Icon name="arrow-right" size={16} /></a></p>
+    <div slot="media" class="phones">
+      <ScreenshotFrame shot="mobile-dark" frame="phone" alt="OpenTodo: Today view on a phone in dark mode" />
+      <ScreenshotFrame shot="mobile-detail" frame="phone" alt="OpenTodo: task detail panel on a phone" />
+    </div>
+  </Split>
 
-  <section class="section" id="why" aria-labelledby="why-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">{h.reasons.kicker}</p>
-        <h2 id="why-title">{h.reasons.h2}</h2>
-      </div>
-      <div class="grid grid-5">
-        {h.reasons.items.map((d, i) => (
-          <article class="card">
-            <span class="card-icon"><Icon name={reasonIcons[i]} size={22} /></span>
-            <h3>{d.title}</h3>
-            <p>{d.text}</p>
-            <a class="card-link" href={reasonDocs[i]}>{d.link} <Icon name="arrow-right" size={16} /></a>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
+  <Catalogue id="features" kicker={h.features.kicker} title={h.features.h2} lede={h.features.lede}>
+    {features.map((b) => (
+      <article class="card">
+        <span class="card-icon"><Icon name={b.icon} size={22} /></span>
+        <h3>{b.title}</h3>
+        <p>{b.text}</p>
+        <a class="card-link" href={b.doc}>{c.howItWorks} <Icon name="arrow-right" size={16} /></a>
+      </article>
+    ))}
+  </Catalogue>
 
-  <section class="section section-alt" id="household" aria-labelledby="household-title">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">{h.household.kicker}</p>
-        <h2 id="household-title">{h.household.h2}</h2>
-        <p class="lede">{h.household.lede}</p>
-        <div class="versus">
-          <div class="card"><h3><Icon name="users" size={20} /> {h.household.them.h3}</h3><p>{h.household.them.text}</p></div>
-          <div class="card us"><h3><Icon name="server" size={20} /> {h.household.us.h3}</h3><p>{h.household.us.text}</p></div>
-        </div>
-        <p style="margin-top: 1.25rem"><a class="link-arrow" href="/docs/install-app/">{h.household.link} <Icon name="arrow-right" size={16} /></a></p>
-      </div>
-      <div class="phones">
-        <ScreenshotFrame shot="mobile-dark" frame="phone" alt="OpenTodo: Today view on a phone in dark mode" />
-        <ScreenshotFrame shot="mobile-detail" frame="phone" alt="OpenTodo: task detail panel on a phone" />
-      </div>
+  <Split id="self-host" alt kicker={h.how.kicker} title={h.how.h2} lede={h.how.lede}>
+    <div class="cta-row">
+      <a class="btn btn-secondary" href="/self-host/#sync">{h.how.cta1} <Icon name="arrow-right" size={18} /></a>
+      <a class="btn btn-secondary" href="/developers/"><Icon name="braces" size={18} /> {h.how.cta2}</a>
     </div>
-  </section>
+    <SyncIllustration slot="media" labels={h.sync} />
+  </Split>
 
-  <section class="section" id="self-host" aria-labelledby="how-title">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">{h.how.kicker}</p>
-        <h2 id="how-title">{h.how.h2}</h2>
-        <p class="lede">{h.how.lede}</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="/self-host/#sync">{h.how.cta1} <Icon name="arrow-right" size={18} /></a>
-          <a class="btn btn-secondary" href="/developers/"><Icon name="braces" size={18} /> {h.how.cta2}</a>
-        </div>
-      </div>
-      <ul class="checks">
-        {h.how.checks.map((x) => <li><Icon name="check" size={18} /> {x}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <section class="end-cta" aria-labelledby="end-cta-title">
-    <div class="wrap">
-      <h2 id="end-cta-title">{h.end.title}</h2>
-      <p class="lede">{h.end.lede}</p>
-      <div class="cta-row center">
-        <a class="btn btn-primary" href={SITE.demo}>{c.tryDemo} <Icon name="arrow-right" size={18} /></a>
-        <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> {c.selfHost}</a>
-        <a class="btn btn-secondary" href="/switch/"><Icon name="upload" size={18} /> {c.bring}</a>
-      </div>
-      <p class="meta" style="margin-top: 1.25rem"><a href={SITE.appRepo} data-star>{c.endMeta}</a></p>
-    </div>
-  </section>
+  <Close title={h.end.title} lede={h.end.lede}>
+    <Fragment slot="actions">
+      <a class="btn btn-primary" href={SITE.demo}>{c.tryDemo} <Icon name="arrow-right" size={18} /></a>
+      <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> {c.selfHost}</a>
+      <a class="btn btn-secondary" href="/switch/"><Icon name="upload" size={18} /> {c.bring}</a>
+    </Fragment>
+    <p class="meta" style="margin-top: 1.25rem"><a href={SITE.appRepo} data-star>{c.endMeta}</a></p>
+  </Close>
 </Base>

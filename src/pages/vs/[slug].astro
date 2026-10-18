@@ -3,7 +3,9 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import CompareTable from '../../components/CompareTable.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
+import Split from '../../components/sections/Split.astro';
+import Catalogue from '../../components/sections/Catalogue.astro';
 import Icon from '../../components/Icon.astro';
 import { switchLink } from '../../lib/switch';
 import { versionTag } from '../../lib/bundle';
@@ -21,10 +23,10 @@ const switchPage = (await getCollection('switch')).find((e) => e.data.compare ==
 const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title={`OpenTodo vs ${d.competitor}`} description={d.summary} ogType="article">
-  <section class="page-head">
+  <section class="page-head" data-section-type="statement" aria-labelledby="vs-title">
     <div class="wrap">
       <p class="breadcrumb"><a href="/vs/">Compare</a></p>
-      <h1>OpenTodo vs {d.competitor}</h1>
+      <h1 id="vs-title">OpenTodo vs {d.competitor}</h1>
       <p class="lede">{d.audience}</p>
       <p class="updated"><Icon name="calendar-check" size={16} /> Checked on <time datetime={d.checkedOn.toISOString().slice(0, 10)}>{day}</time> against OpenTodo {versionTag}</p>
       <div class="cta-row" style="margin-top: 1.25rem">
@@ -36,36 +38,24 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
     </div>
   </section>
 
-  <section class="section" style="padding-top: 1rem">
-    <div class="wrap">
-      <div class="prose" style="margin-bottom: 2rem"><Content /></div>
-      <h2>Feature by feature</h2>
-      <CompareTable competitor={d.competitor} rows={d.rows} checkedOn={d.checkedOn} />
-    </div>
-  </section>
+  <Catalogue id="features" title="Feature by feature" bare>
+    <div class="prose" style="margin-bottom: 2rem"><Content /></div>
+    <CompareTable competitor={d.competitor} rows={d.rows} checkedOn={d.checkedOn} />
+  </Catalogue>
 
-  <section class="section section-alt">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>Where {d.competitor} is ahead</h2>
-        <p class="lede">If any of these matter most to you, {d.competitor} may be the better choice, and that is fine.</p>
-      </div>
-      <div class="grid grid-3">
-        {d.gaps.map((g) => <div class="card gaps"><h3>{g.title}</h3><p>{g.detail}</p></div>)}
-      </div>
+  <Split id="ahead" alt title={`Where ${d.competitor} is ahead`} lede={`If any of these matter most to you, ${d.competitor} may be the better choice, and that is fine.`}>
+    <div slot="media" class="aside-note-stack">
+      {d.gaps.map((g) => <div class="aside-note gap"><h3>{g.title}</h3><p>{g.detail}</p></div>)}
     </div>
-  </section>
+  </Split>
 
-  <section class="section">
-    <div class="wrap">
-      <h2>What it costs</h2>
-      <div class="versus">
-        <div class="card"><h3>{d.competitor}</h3><p>{d.cost.them}</p></div>
-        <div class="card us"><h3>OpenTodo</h3><p>{d.cost.us}</p></div>
-      </div>
-      <p class="meta" style="margin-top: 1rem">Costs are described in words because prices change. {d.competitor} is named here only to identify it; this page is not affiliated with it.</p>
+  <Catalogue id="costs" title="What it costs" bare>
+    <div class="versus">
+      <div class="card"><h3>{d.competitor}</h3><p>{d.cost.them}</p></div>
+      <div class="card us"><h3>OpenTodo</h3><p>{d.cost.us}</p></div>
     </div>
-  </section>
+    <p slot="after" class="meta">Costs are described in words because prices change. {d.competitor} is named here only to identify it; this page is not affiliated with it.</p>
+  </Catalogue>
 
-  <EndCta />
+  <Close />
 </Base>

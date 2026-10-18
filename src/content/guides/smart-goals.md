@@ -1,14 +1,14 @@
 ---
 title: SMART goals as projects
 summary: Specific, measurable, achievable, relevant, time-bound. A goal becomes a project with a date, its measures become subtasks, and the parent shows the progress.
-lastReviewed: 2026-10-15
+lastReviewed: 2026-10-18
 sources: [/docs/tasks-and-projects/, /docs/views/, /docs/recurring-and-reminders/, /docs/sharing/]
 templates: [new-job]
 tags: [goals]
 order: 10
 ---
 <!-- no-claim -->
-A goal like "get fitter" cannot be done on a Tuesday. A SMART goal can: "run 5 km without stopping by 31 March, three runs a week". Specific says what, measurable says how you will know, achievable keeps it honest, relevant ties it to something you care about, and time-bound gives it an end.
+A goal like "get fitter" cannot be done on a Tuesday. A SMART goal can: "run 5 km without stopping by 31 March, three runs a week". Specific says what, measurable says how you will know, achievable keeps it realistic, relevant ties it to something you care about, and time-bound gives it an end.
 
 ## Why it works
 

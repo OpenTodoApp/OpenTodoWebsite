@@ -1,0 +1,17 @@
+---
+// Catalogue (website-section-system D1): a dense grid or table of items, and the
+// only section type whose items are cards. Pass the cards (or a table) as children;
+// `cols` sets the grid, `bare` leaves the children as they are (a table, a list).
+import SectionHead from './SectionHead.astro';
+interface Props { id: string; title: string; kicker?: string; lede?: string; alt?: boolean; cols?: 2 | 3; bare?: boolean }
+const { id, title, kicker, lede, alt = false, cols = 3, bare = false } = Astro.props;
+---
+<section class:list={['section', alt && 'section-alt']} id={id} data-section-type="catalogue" aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <SectionHead id={id} title={title} kicker={kicker} lede={lede}>
+      {Astro.slots.has('lede') && <Fragment slot="lede"><slot name="lede" /></Fragment>}
+    </SectionHead>
+    {bare ? <slot /> : <div class:list={['grid', cols === 2 ? 'grid-2' : 'grid-3']}><slot /></div>}
+    {Astro.slots.has('after') && <div class="catalogue-after"><slot name="after" /></div>}
+  </div>
+</section>

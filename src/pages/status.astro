@@ -2,7 +2,7 @@
 // /status (website-trust-pages D3): what the public demo is, how it resets, and
 // where to see whether it is up right now. Static: no script polls anything.
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
+import Close from '../components/sections/Close.astro';
 import Icon from '../components/Icon.astro';
 import { versionTag } from '../lib/bundle';
 import { SITE } from '../lib/site';
@@ -64,5 +64,5 @@ import { SITE } from '../lib/site';
       <p class="meta">This page is static and makes no request on your behalf. Your own server has the same health endpoint, which orchestrators use for their checks. <a href="/docs/self-hosting/docker/#health">Health</a></p>
     </div>
   </section>
-  <EndCta title="Rather have your own?" lede="Your own server keeps your data, resets never, and takes about twenty minutes to set up." />
+  <Close title="Rather have your own?" lede="Your own server keeps your data, resets never, and takes about twenty minutes to set up." />
 </Base>

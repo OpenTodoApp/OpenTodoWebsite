@@ -8,7 +8,7 @@
 ## 2. Proof strip
 
 - [ ] 2.1 Add `ProofStrip.astro` (a Statement variant) that renders the requested manifest facts with their fixed links and skips missing keys, with a test that a manifest without `specCount` omits it; verify `npm test`
-- [ ] 2.2 Add a case to `scripts/test/fetch-bundle.test.mjs` that fails when none of the strip's keys is in the manifest; verify `npm test`
+- [ ] 2.2 Add a test (`scripts/test/proof.test.mjs`) that fails when the pinned bundle's manifest carries fewer than two of the strip's keys, so a renamed manifest field cannot silently empty the strip; verify `npm test`
 - [ ] 2.3 Use the strip in the home page's closing section and on `/developers/`; verify both pages show 78 specifications, 115 documentation pages and 10 import formats with working links (`npm run check:links`) and pass the composition check
 
 ## 3. About page

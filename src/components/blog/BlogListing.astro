@@ -2,7 +2,7 @@
 // A page of posts: the index (page 1 features the newest post) or a category.
 // Plain links for pagination, so it works without JavaScript.
 import Base from '../../layouts/Base.astro';
-import EndCta from '../EndCta.astro';
+import Close from '../sections/Close.astro';
 import Icon from '../Icon.astro';
 import CategoryNav from './CategoryNav.astro';
 import PostCard from './PostCard.astro';
@@ -47,5 +47,5 @@ const grid = featured ? rest : posts;
       <p class="meta" style="margin-top: 2rem"><a class="link-arrow" href="/blog/feed.xml"><Icon name="rss" size={16} /> Follow the blog with RSS</a></p>
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

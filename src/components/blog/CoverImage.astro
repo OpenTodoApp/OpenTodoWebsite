@@ -1,14 +1,15 @@
 ---
-// A post's cover as a responsive <picture> (AVIF and WebP), or, without a cover,
-// a panel in the category's colours with its icon from the sprite.
+// A post's cover as a responsive <picture> (AVIF and WebP). Without a cover, a card
+// passes the post's title and gets a typographic cover on the category's tint
+// (website-section-system D5); the post page itself shows no cover then.
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
-import Icon from '../Icon.astro';
 import type { Category } from '../../lib/blog';
 
-interface Props { cover?: ImageMetadata; alt?: string; category: Category; sizes: string; eager?: boolean; class?: string }
-const { cover, alt = '', category, sizes, eager = false, class: className } = Astro.props;
-const ICONS: Record<Category, string> = { news: 'newspaper', releases: 'package', development: 'git-branch', ownership: 'key-round' };
+interface Props { cover?: ImageMetadata; alt?: string; category: Category; sizes: string; eager?: boolean; class?: string; title?: string }
+const { cover, alt = '', category, sizes, eager = false, class: className, title } = Astro.props;
+// Three sizes, so a short title fills the cover and a long one still fits.
+const size = !title ? '' : title.length <= 28 ? 'size-l' : title.length <= 56 ? 'size-m' : 'size-s';
 
 let sources: { type: string; srcset: string }[] = [];
 let fallback: { src: string } | undefined;
@@ -24,5 +25,5 @@ if (cover) {
     <img src={fallback.src} width={cover.width} height={cover.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
   </picture>
 ) : (
-  <div class:list={['post-cover', 'post-cover-panel', `cat-${category}`, className]} aria-hidden="true"><Icon name={ICONS[category]} size={40} /></div>
+  title && <div class:list={['post-cover', 'post-cover-type', `cat-${category}`, className]} aria-hidden="true"><span class:list={['post-cover-title', size]}>{title}</span></div>
 )}

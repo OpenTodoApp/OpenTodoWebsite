@@ -1,6 +1,7 @@
 // French (website-languages). "Vous", as the app's own French does.
 export default {
   common: {
+    fullScreen: 'Voir l\'écran entier',
     langNote: 'Cette page existe en français. Le reste du site, la documentation et l\'application elle-même sont en anglais ; la saisie rapide de l\'application comprend toutefois les dates et les heures en français.',
     otherLanguages: 'Cette page dans d\'autres langues',
     tryDemo: 'Essayer la démo',
@@ -17,7 +18,7 @@ export default {
     eyebrow: 'Libre et open source',
     h1a: 'Une application de tâches qui tourne sur ',
     h1b: 'votre propre serveur.',
-    lede: 'Planifiez votre journée, gardez vos projets en ordre, posez des rappels et partagez des listes avec votre famille ou votre équipe. Comme OpenTodo tourne sur un petit serveur à vous, il n\'y a pas de forfait mensuel par personne, et vos tâches restent chez vous. Ajoutez un assistant IA si vous le souhaitez, avec le modèle et la clé de votre choix.',
+    promise: 'Planifiez votre journée, partagez des listes avec votre foyer ou votre équipe, et gardez chaque tâche sur un serveur à vous. Sans abonnement par personne.',
     note: 'Fonctionne sur votre téléphone et votre ordinateur, avec ou sans connexion. L\'application n\'envoie rien à personne d\'autre qu\'à votre serveur.',
     getIt: {
       kicker: 'Comment l\'obtenir ?',
@@ -39,18 +40,16 @@ export default {
         { title: 'Rappels et tâches récurrentes', text: 'Recevez une notification avant l\'échéance. « Tous les lundis » ou « toutes les 2 semaines » fonctionne tout simplement.' },
         { title: 'Étiquettes et filtres', text: 'Marquez les tâches avec @course ou @appel, puis épinglez un filtre comme « dû cette semaine et non terminé » dans la barre latérale.' },
         { title: 'Listes partagées', text: 'Partagez un projet avec votre conjoint ou votre équipe, assignez des tâches et laissez des commentaires.' },
-        { title: 'Téléphone, ordinateur, hors ligne', text: 'Installez-la depuis le navigateur sur iPhone, Android, Mac, Windows ou Linux. Elle continue de fonctionner sans connexion.' },
       ],
+      assistant: { title: 'Un assistant, avec votre propre clé', text: 'Désactivé tant que vous ne l\'activez pas. Vous choisissez le modèle et le fournisseur, et voyez chaque modification avant qu\'elle ait lieu.' },
     },
     reasons: {
-      kicker: 'Pourquoi les gens déménagent leurs listes ici',
-      h2: 'Ce que vous gagnez à le faire tourner vous-même.',
       items: [
-        { title: 'Un serveur pour toute la maison', text: 'Chaque personne a son propre compte et ses propres listes. Partagez la liste de courses, le déménagement ou les vacances avec qui en a besoin. Personne ne paie par personne.', link: 'Partage et comptes' },
-        { title: 'Fonctionne sans connexion', text: 'Votre téléphone garde une copie complète de vos tâches. Ajoutez et cochez dans le train ou l\'avion, et tout se synchronise quand vous êtes de nouveau en ligne.', link: 'Hors ligne et synchronisation' },
-        { title: 'Chiffré, si vous le voulez', text: 'Activez-le et les titres et notes de vos tâches sont chiffrés sur vos appareils avant d\'atteindre le serveur. Même le serveur ne peut pas les lire.', link: 'Chiffrement de bout en bout' },
-        { title: 'Rapide au clavier', text: 'Ajoutez, déplacez et terminez des tâches sans toucher la souris. Tapez « appeler le dentiste demain à 9h #Maison » et cela devient une tâche avec une date, une heure et un projet. Il y a même un mode Vim.', link: 'Raccourcis clavier' },
-        { title: 'Vos données vous suivent', text: 'Téléchargez tout en un seul fichier quand vous voulez. Importez depuis un CSV ou l\'export d\'une autre application. Rien ne vous retient ici, sauf que ça marche.', link: 'Import et export' },
+        { title: 'Un serveur pour toute la maison', text: 'Chaque personne a son propre compte et ses propres listes. Partagez la liste de courses, le déménagement ou les vacances avec qui en a besoin. Personne ne paie par personne.' },
+        { title: 'Fonctionne sans connexion', text: 'Votre téléphone garde une copie complète de vos tâches. Ajoutez et cochez dans le train ou l\'avion, et tout se synchronise quand vous êtes de nouveau en ligne.' },
+        { title: 'Chiffré, si vous le voulez', text: 'Activez-le et les titres et notes de vos tâches sont chiffrés sur vos appareils avant d\'atteindre le serveur. Même le serveur ne peut pas les lire.' },
+        { title: 'Rapide au clavier', text: 'Ajoutez, déplacez et terminez des tâches sans toucher la souris. Tapez « appeler le dentiste demain à 9h #Maison » et cela devient une tâche avec une date, une heure et un projet. Il y a même un mode Vim.' },
+        { title: 'Vos données vous suivent', text: 'Téléchargez tout en un seul fichier quand vous voulez. Importez depuis un CSV ou l\'export d\'une autre application. Rien ne vous retient ici, sauf que ça marche.' },
       ],
     },
     household: {
@@ -59,6 +58,7 @@ export default {
       lede: 'Celui ou celle qui, à la maison, ne craint pas un peu de configuration installe OpenTodo sur un petit serveur, un VPS bon marché ou un Raspberry Pi. Les autres ouvrent l\'application sur leur téléphone ou leur ordinateur et l\'utilisent comme n\'importe quelle application de tâches.',
       them: { h3: 'Avec une application par abonnement', text: 'Tout le monde s\'inscrit auprès de l\'entreprise. L\'application complète coûte généralement un forfait mensuel par personne, et vos listes vivent sur les serveurs de l\'entreprise.' },
       us: { h3: 'Avec OpenTodo', text: 'Tout le monde a un compte sur votre serveur. Invitez par lien, partagez les listes communes, gardez le reste privé. Le seul coût est le serveur.' },
+      leaving: 'Et si vous partez un jour, chacun télécharge ses données en un seul fichier. Rien ne vous retient, sauf que ça marche.',
       link: 'Comment l\'installer sur les téléphones et les ordinateurs',
     },
     how: {
@@ -67,8 +67,8 @@ export default {
       lede: 'Chacun de vos appareils garde une copie de vos tâches et échange ses changements avec les autres par votre serveur. Il n\'y a pas de boîte de dialogue « quelle version garder ? ». Le tout tient dans un conteneur et un dossier de données.',
       cta1: 'Voir la synchronisation à l\'œuvre',
       cta2: 'Pour les développeurs',
-      checks: ['S\'installe sur les téléphones et les ordinateurs directement depuis le navigateur, sans magasin d\'applications', 'Vos données sont un dossier sur votre serveur, avec des sauvegardes planifiées', 'Se connecte aux applications de calendrier, à l\'e-mail, aux webhooks et à une ligne de commande', 'Chaque fonctionnalité est décrite dans une spécification ouverte que vous pouvez lire'],
     },
+    sync: { laptop: 'Ordinateur portable', phone: 'Téléphone', server: 'Votre serveur', log: '2 modifications, toutes deux gardées', renamed: 'Renommée hors ligne', completed: 'Terminée hors ligne', synced: 'Synchronisé', done: 'terminée', listLaptop: 'Tâches sur l\'ordinateur portable', listPhone: 'Tâches sur le téléphone', caption: 'La même tâche, renommée sur l\'ordinateur et terminée sur le téléphone, tous deux sans connexion. Après la synchronisation, les deux appareils montrent les deux modifications.', link: 'Essayez vous-même', tasks: ['Acheter du lait d\'avoine', 'Réserver les vols pour Lisbonne, 12 mai', 'Renouveler le passeport'] },
     end: { title: 'Essayez d\'abord, puis faites-en le vôtre.', lede: 'La démo tourne dans votre navigateur, rien à installer. Quand elle vous plaît, mettez-la sur votre propre serveur et emportez vos tâches.' },
   },
   cost: {

@@ -1,17 +1,11 @@
 ---
-// The familiar yellow "Buy me a coffee" button, drawn by the site: no script,
-// font or image from buymeacoffee.com is loaded (website-platform: no
-// third-party requests). The cup is the button's own mark, not a UI icon.
+// "Buy me a coffee", in the site's own secondary button style with the bundle's
+// coffee icon (website-section-system D6): no colour outside the tokens, and no
+// script, font or image from buymeacoffee.com (website-platform: no third-party
+// requests). Shown in the footer and on /about/ only.
+import Icon from './Icon.astro';
 import { SITE } from '../lib/site';
 interface Props { small?: boolean }
 const { small = false } = Astro.props;
 ---
-<a class:list={['btn', 'btn-coffee', { 'btn-small': small }]} href={SITE.coffee} data-coffee>
-  <svg width={small ? 18 : 22} height={small ? 18 : 22} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path d="M5 8h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V8Z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round" />
-    <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" />
-    <path d="M6.2 11h10.6v3a4 4 0 0 1-4 4h-2.6a4 4 0 0 1-4-4v-3Z" fill="#ff813f" />
-    <path d="M9 2.5c-.6.8-.6 1.7 0 2.5M12 2.5c-.6.8-.6 1.7 0 2.5" fill="none" stroke="#000" stroke-width="1.4" stroke-linecap="round" />
-  </svg>
-  Buy me a coffee
-</a>
+<a class:list={['btn', 'btn-secondary', { 'btn-small': small }]} href={SITE.coffee} data-coffee><Icon name="coffee" size={small ? 16 : 18} /> Buy me a coffee</a>

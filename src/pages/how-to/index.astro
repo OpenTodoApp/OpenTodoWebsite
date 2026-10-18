@@ -2,7 +2,7 @@
 // /how-to (website-help-and-howtos D2): every how-to, grouped in the fixed order.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import { HOWTO_GROUPS } from '../../content/schemas.mjs';
 
@@ -51,5 +51,5 @@ const blurb: Record<string, string> = {
       </div>
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

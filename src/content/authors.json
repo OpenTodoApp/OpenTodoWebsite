@@ -2,6 +2,7 @@
   "raffaele": {
     "name": "Raffaele Pizzari",
     "bio": "Raffaele builds OpenTodo in the open: one container, your own server, every feature specified before it is built.",
-    "url": "https://pixari.dev"
+    "url": "https://pixari.dev",
+    "note": "I started OpenTodo as a replacement for the subscription task apps one household was paying for, and it grew from there. I build it in the open: every feature is written down as a specification before it is built, every release says what changed, and nothing on this site is published without my review. It is not a company and sells nothing. If something is wrong or missing, open an issue; I read every one."
   }
 }

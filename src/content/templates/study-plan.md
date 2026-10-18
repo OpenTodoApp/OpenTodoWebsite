@@ -10,10 +10,10 @@ howToUse:
   - "Open the Week calendar to see the blocks in place, and drag them to the hours that suit you."
   - "Milestones are dated from the import day; set the exam date and move them back from it."
 makeItYours:
-  - "One project per subject, with the same sections, keeps revision honest."
+  - "One project per subject, with the same sections, keeps revision on track."
   - "Shorten the blocks if you work better in short bursts; the Pomodoro guide shows how."
   - "Add a `@revise` label and a saved view for the last two weeks."
-lastReviewed: 2026-10-15
+lastReviewed: 2026-10-18
 sources: [/docs/time-blocking/, /docs/recurrence/]
 order: 10
 labels:

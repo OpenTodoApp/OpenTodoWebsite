@@ -1,0 +1,18 @@
+---
+// Split (website-section-system D1): text beside one image or one demo. The media
+// goes in the "media" slot; `reverse` puts it first from 900 px wide.
+import SectionHead from './SectionHead.astro';
+interface Props { id: string; title: string; kicker?: string; lede?: string; alt?: boolean; reverse?: boolean; level?: 1 | 2 }
+const { id, title, kicker, lede, alt = false, reverse = false, level = 2 } = Astro.props;
+---
+<section class:list={[level === 1 ? 'page-head' : 'section', alt && 'section-alt']} id={id} data-section-type="split" aria-labelledby={`${id}-title`}>
+  <div class:list={['wrap', 'split', reverse && 'reverse']}>
+    <div>
+      <SectionHead id={id} title={title} kicker={kicker} lede={lede} level={level}>
+        {Astro.slots.has('lede') && <Fragment slot="lede"><slot name="lede" /></Fragment>}
+      </SectionHead>
+      <slot />
+    </div>
+    <div class="split-media"><slot name="media" /></div>
+  </div>
+</section>

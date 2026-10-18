@@ -31,8 +31,8 @@ The home page SHALL open with the outcome for people who use a task app, not wit
 - **THEN** it contains exactly one button, and the self-host and import paths are text links
 
 #### Scenario: Short promise
-- **WHEN** the content check reads the home page hero
-- **THEN** the promise under the headline is at most 25 words, or the build fails and names the page
+- **WHEN** the website checks read a built home page in any language
+- **THEN** the promise under the headline is at most 25 words, or the checks fail and name the page
 
 ### Requirement: Differentiators and proof on the home page
 Below the hero, the home page SHALL present, in this order and using the site's section types: the three ways to get OpenTodo; the product in real screenshots; why running it oneself pays off for a household or team; one grid of everyday features and differentiators (one server for a whole household, full offline use, optional end-to-end encryption, assistants with the user's own model key, leaving at any time); working offline, shown with the sync illustration and linking the self-hosting page's interactive demo; and the closing section. Every claim in these sections SHALL link to its documentation page of the pinned release.

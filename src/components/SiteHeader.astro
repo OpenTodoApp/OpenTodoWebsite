@@ -1,12 +1,14 @@
 ---
-// Main navigation (website-platform spec "Shared layout and navigation",
-// website-first-visit D4, website-help-and-howtos D7). From 768 px: flat links plus one Learn <details>
-// menu for the guidance content. Below 768 px: one <details> menu with the
-// same links in two groups. Both open without JavaScript.
+// Main navigation (website-platform "Shared layout and navigation", website-first-visit D4,
+// website-navigation-and-home D1–D3). From 768 px: Features, Compare, What it costs,
+// Self-host, a Resources <details> menu and Docs, a GitHub icon link and one button.
+// Below 768 px: one <details> menu with the same links in two groups. Both open
+// without JavaScript. The links come from src/lib/nav.ts.
 import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 import { SITE } from '../lib/site';
 import { publishedPosts } from '../lib/blog';
+import { headerLinks, resourceLinks } from '../lib/nav';
 
 const path = Astro.url.pathname;
 const published = async (c: 'templates' | 'guides') =>
@@ -16,32 +18,10 @@ const content = (await published('templates')) && (await published('guides'));
 // Blog appears once a post is published (website-blog spec "Blog in navigation").
 const blog = (await publishedPosts()).length > 0;
 
-interface Link { href: string; label: string; match: string | null }
-const product: Link[] = [
-  { href: '/#features', label: 'Features', match: null },
-  { href: '/vs/', label: 'Compare', match: '/vs/' },
-  { href: '/cost/', label: 'What it costs', match: '/cost/' },
-];
-const learn: Link[] = content
-  ? [
-      { href: '/guides/', label: 'Guides', match: '/guides/' },
-      { href: '/how-to/', label: 'How-tos', match: '/how-to/' },
-      { href: '/templates/', label: 'Templates', match: '/templates/' },
-      { href: '/switch/', label: 'Switch', match: '/switch/' },
-      { href: '/topics/', label: 'Topics', match: '/topics/' },
-      { href: '/toolkit/', label: 'Toolkit', match: '/toolkit/' },
-      ...(blog ? [{ href: '/blog/', label: 'Blog', match: '/blog/' }] : []),
-      { href: '/whats-new/', label: "What's new", match: '/whats-new/' },
-    ]
-  : [];
-const run: Link[] = [
-  { href: '/self-host/', label: 'Self-host', match: '/self-host/' },
-  { href: '/developers/', label: 'Developers', match: '/developers/' },
-  { href: '/help/', label: 'Help', match: '/help/' },
-  { href: '/docs/', label: 'Docs', match: null },
-];
+const { before, after } = headerLinks();
+const resources = resourceLinks({ content, blog });
 const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefined);
-const inLearn = learn.some((l) => current(l.match));
+const inResources = resources.some((l) => current(l.match));
 ---
 <header class="site-header">
   <div class="wrap header-inner">
@@ -51,21 +31,19 @@ const inLearn = learn.some((l) => current(l.match));
     </a>
     <nav class="nav-desktop" aria-label="Main">
       <ul>
-        {product.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
-        {learn.length > 0 && (
-          <li>
-            <details class="nav-group">
-              <summary class="nav-link" aria-current={inLearn ? 'page' : undefined}>Learn <Icon name="chevron-down" size={16} /></summary>
-              <ul class="nav-group-panel">
-                {learn.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
-              </ul>
-            </details>
-          </li>
-        )}
-        {run.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+        {before.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+        <li>
+          <details class="nav-group">
+            <summary class="nav-link" aria-current={inResources ? 'page' : undefined}>Resources <Icon name="chevron-down" size={16} /></summary>
+            <ul class="nav-group-panel">
+              {resources.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+            </ul>
+          </details>
+        </li>
+        {after.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
       </ul>
     </nav>
-    <a class="btn btn-secondary btn-small header-cta header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /> Star on GitHub</a>
+    <a class="header-gh header-cta" href={SITE.appRepo} aria-label="OpenTodo on GitHub" title="OpenTodo on GitHub" data-star><Icon name="code" size={20} /></a>
     <a class="btn btn-primary btn-small header-cta" href={SITE.demo}>Try the demo</a>
     <details class="nav-menu">
       <summary><Icon name="menu" size={18} /> Menu</summary>
@@ -73,20 +51,16 @@ const inLearn = learn.some((l) => current(l.match));
         <nav aria-label="Main">
           <p class="menu-group">Product</p>
           <ul>
-            {[...product, ...run].map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+            {[...before, ...after].map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
           </ul>
-          {learn.length > 0 && (
-            <>
-              <p class="menu-group">Learn</p>
-              <ul>
-                {learn.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
-              </ul>
-            </>
-          )}
+          <p class="menu-group">Resources</p>
+          <ul>
+            {resources.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+          </ul>
         </nav>
         <div class="menu-cta">
           <a class="btn btn-primary" href={SITE.demo}>Try the demo</a>
-          <a class="btn btn-secondary" href={SITE.appRepo} data-star><Icon name="star" size={18} /> Star on GitHub</a>
+          <a class="btn btn-secondary" href={SITE.appRepo} data-star><Icon name="code" size={18} /> OpenTodo on GitHub</a>
         </div>
       </div>
     </details>

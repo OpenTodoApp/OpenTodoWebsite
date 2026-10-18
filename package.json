@@ -16,11 +16,12 @@
     "check:links": "node scripts/checks/links.mjs dist",
     "check:emoji": "node scripts/checks/emoji.mjs dist",
     "check:scripts": "node scripts/checks/scripts.mjs dist",
-    "check:dist": "npm run check:links && npm run check:emoji && npm run check:scripts",
+    "check:dist": "npm run check:links && npm run check:emoji && npm run check:scripts && npm run check:hero",
     "test:browser": "playwright test",
     "templates:check": "node scripts/templates-check.mjs --shots",
     "serve": "node scripts/serve.mjs 4321",
-    "og": "node scripts/og.mjs dist"
+    "og": "node scripts/og.mjs dist",
+    "check:hero": "node scripts/checks/hero.mjs dist"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.19",

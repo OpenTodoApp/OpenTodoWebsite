@@ -1,0 +1,13 @@
+---
+// The head every section type shares: an optional kicker, the heading and an
+// optional lede. A page head uses h1; every other section h2 (website-section-system).
+interface Props { id: string; title: string; kicker?: string; lede?: string; level?: 1 | 2; center?: boolean }
+const { id, title, kicker, lede, level = 2, center = false } = Astro.props;
+const H = level === 1 ? 'h1' : 'h2';
+---
+<div class:list={['section-head', center && 'center']}>
+  {kicker && <p class="kicker">{kicker}</p>}
+  <H id={`${id}-title`}>{title}</H>
+  {lede && <p class="lede">{lede}</p>}
+  {Astro.slots.has('lede') && <p class="lede"><slot name="lede" /></p>}
+</div>

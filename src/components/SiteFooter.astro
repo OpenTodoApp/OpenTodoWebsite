@@ -2,11 +2,18 @@
 import { SITE } from '../lib/site';
 import CoffeeButton from './CoffeeButton.astro';
 import { versionTag } from '../lib/bundle';
+import { getCollection } from 'astro:content';
 import { publishedPosts } from '../lib/blog';
+import { footerColumns } from '../lib/nav';
 import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
 interface Props { lang?: keyof typeof LANGS }
 const { lang = DEFAULT_LANG } = Astro.props;
 const blog = (await publishedPosts()).length > 0;
+const published = async (c: 'templates' | 'guides') =>
+  (await getCollection(c, (e) => !('draft' in e.data) || !e.data.draft)).length > 0;
+const content = (await published('templates')) && (await published('guides'));
+// Four columns from the shared navigation model (website-navigation-and-home D1).
+const columns = footerColumns({ content, blog });
 // This page in every language when it is translated; otherwise each language's home page (website-languages D4).
 const languages = alternatesFor(Astro.url.pathname) ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
 const year = new Date().getFullYear();
@@ -19,59 +26,27 @@ const year = new Date().getFullYear();
         <p>An open-source task manager you host yourself. This site describes OpenTodo {versionTag}, the latest release.</p>
         <p class="footer-coffee"><CoffeeButton small /></p>
       </div>
-      <nav aria-label="Product">
-        <h2>Product</h2>
-        <ul>
-          {blog && <li><a href="/blog/">Blog</a></li>}
-          <li><a href="/vs/">Compare</a></li>
-          <li><a href="/cost/">What it costs</a></li>
-          <li><a href="/templates/">Templates</a></li>
-          <li><a href="/guides/">Guides</a></li>
-          <li><a href="/toolkit/">Toolkit</a></li>
-          <li><a href="/help/">Help</a></li>
-          <li><a href="/how-to/">How-tos</a></li>
-          <li><a href="/install/">Install the app</a></li>
-          <li><a href="/switch/">Moving from another app</a></li>
-          <li><a href="/faq/">FAQ</a></li>
-          <li><a href="/topics/">Topics</a></li>
-          <li><a href="/guides/quiz/">Which method fits you?</a></li>
-          <li><a href="/capture/">Browser extension and share sheet</a></li>
-          <li><a href="/playground/">Try quick add and filters</a></li>
-          <li><a href="/self-host/plan/">Plan your server</a></li>
-          <li><a href="/self-host/">Self-host</a></li>
-          <li><a href="/developers/">Developers</a></li>
-          <li><a href="/whats-new/">What's new</a></li>
-          <li><a href="/docs/">Docs</a></li>
-        </ul>
-      </nav>
-      <nav aria-label="Source">
-        <h2>Project</h2>
-        <ul>
-          <li><a href="/about/">About and trust</a></li>
-          <li><a href="/status/">Demo status</a></li>
-          <li><a href="/accessibility/">Accessibility</a></li>
-          <li><a href={SITE.appRepo}>App on GitHub</a></li>
-          <li><a href={`${SITE.appRepo}/tree/main/openspec/specs`}>App specifications</a></li>
-          <li><a href={SITE.siteRepo}>This website on GitHub</a></li>
-          <li><a href={`${SITE.siteRepo}/tree/main/openspec`}>Website specifications</a></li>
-          <li><a href="/feed.xml">RSS feed</a></li>
-        </ul>
-      </nav>
-      <nav aria-label="Licences">
-        <h2>Licences</h2>
-        <ul>
-          <li><a href={`${SITE.appRepo}/blob/main/LICENSE`}>App: AGPL-3.0</a></li>
-          <li><a href={`${SITE.siteRepo}/blob/main/LICENSE`}>Website code: MIT</a></li>
-          <li><a href={`${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`}>Words and images: CC BY 4.0</a></li>
-          <li><a href={`${SITE.appRepo}/blob/main/SECURITY.md`}>Security</a></li>
-        </ul>
-      </nav>
+      {columns.map((c) => (
+        <nav aria-label={c.title}>
+          <h2>{c.title}</h2>
+          <ul>
+            {c.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </nav>
+      ))}
     </div>
     <nav class="footer-langs" aria-label="Languages">
       <ul>
         {languages.map((l) => <li><a href={l.href} hreflang={l.hreflang} lang={l.hreflang} aria-current={l.lang === lang ? 'page' : undefined}>{l.name}</a></li>)}
       </ul>
     </nav>
-    <p class="footer-fine">© {year} the OpenTodo contributors. Product names of other apps are used to identify them only. This website (not the app) counts visits with self-hosted Umami: no cookies, no personal data.</p>
+    <p class="footer-fine">
+      <span class="footer-legal">
+        <a href={`${SITE.appRepo}/blob/main/LICENSE`}>App: AGPL-3.0</a>
+        <a href={`${SITE.siteRepo}/blob/main/LICENSE`}>Website code: MIT</a>
+        <a href={`${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`}>Words and images: CC BY 4.0</a>
+        <a href={`${SITE.appRepo}/blob/main/SECURITY.md`}>Security</a>
+      </span>
+      © {year} the OpenTodo contributors. Product names of other apps are used to identify them only. This website (not the app) counts visits with self-hosted Umami: no cookies, no personal data.</p>
   </div>
 </footer>

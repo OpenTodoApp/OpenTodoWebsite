@@ -2,7 +2,9 @@
 // /capture (website-trust-pages D1): the browser extension, the share sheet and
 // the bookmarklet, restated from /docs/capture/ of the pinned release.
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
+import Close from '../components/sections/Close.astro';
+import Split from '../components/sections/Split.astro';
+import Catalogue from '../components/sections/Catalogue.astro';
 import Icon from '../components/Icon.astro';
 import { SITE } from '../lib/site';
 
@@ -20,53 +22,38 @@ const platforms = [
 ];
 ---
 <Base title="Save any page as a task" description="Three ways to capture a page into OpenTodo: the share sheet on your phone, a browser extension for Chrome, Edge, Brave, Vivaldi and Firefox, and a bookmarklet for any desktop browser. All open the capture screen on your own server.">
-  <section class="page-head">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">Capture</p>
-        <h1>Save any page as a task, from your phone or your browser.</h1>
-        <p class="lede">Many tasks start as "deal with this page later". OpenTodo can receive a page from three places, and all of them open the same capture screen on your own server: the title becomes the task (and is a normal quick-add line, so <code>tomorrow #work p1</code> works in it), the selected text and the link become the description, and nothing is saved until you press Enter. <a href="/docs/capture/">Capturing pages</a></p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href={`${SITE.appRepo}/releases`}><Icon name="download" size={18} /> Get the extension from a release</a>
-          <a class="btn btn-secondary" href="/install/"><Icon name="smartphone" size={18} /> Install the app for the share sheet</a>
-        </div>
-      </div>
-      <div class="card">
-        <h2 style="font-size: 1.2rem">What the capture screen proposes</h2>
+  <Split id="capture" level={1} kicker="Capture" title="Save any page as a task, from your phone or your browser.">
+    <Fragment slot="lede">Many tasks start as "deal with this page later". Send a page from your phone or your browser, and it opens as a task on your own server, ready to save. <a href="/docs/capture/">Capturing pages</a></Fragment>
+    <div class="cta-row">
+      <a class="btn btn-primary" href={`${SITE.appRepo}/releases`}><Icon name="download" size={18} /> Get the extension from a release</a>
+      <a class="btn btn-secondary" href="/install/"><Icon name="smartphone" size={18} /> Install the app for the share sheet</a>
+    </div>
+    <div slot="media" class="aside-note">
+      <h3>What the capture screen proposes</h3>
         <ul class="checks" style="margin: 0">
           <li><Icon name="check" size={18} /> <strong>Title:</strong> the page title, or the link's host name</li>
           <li><Icon name="check" size={18} /> <strong>Description:</strong> the selected or shared text, then the link</li>
           <li><Icon name="check" size={18} /> <strong>Project:</strong> the Inbox by default, or any project you pick</li>
         </ul>
         <p class="meta" style="margin-top: 0.75rem">Saving creates an ordinary task on the device first and syncs it like any other, so it works with no network and reaches your other devices when the network returns. <a href="/docs/capture/">How it works</a></p>
-      </div>
     </div>
-  </section>
+  </Split>
 
-  <section class="section section-alt">
-    <div class="wrap">
-      <div class="grid grid-3">
-        {ways.map((w) => (
-          <article class="card">
-            <span class="card-icon"><Icon name={w.icon} size={22} /></span>
-            <h2 style="font-size: 1.2rem">{w.title}</h2>
-            <p>{w.text}</p>
-            <a class="card-link" href={w.doc}>{w.docLabel} <Icon name="arrow-right" size={16} /></a>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
+  <Catalogue id="ways" alt title="Three ways in">
+    {ways.map((w) => (
+      <article class="card">
+        <span class="card-icon"><Icon name={w.icon} size={22} /></span>
+        <h3>{w.title}</h3>
+        <p>{w.text}</p>
+        <a class="card-link" href={w.doc}>{w.docLabel} <Icon name="arrow-right" size={16} /></a>
+      </article>
+    ))}
+  </Catalogue>
 
-  <section class="section" aria-labelledby="ext-title">
-    <div class="wrap split" style="align-items: start">
-      <div>
-        <p class="kicker">The browser extension</p>
-        <h2 id="ext-title">Small on purpose, and not in the stores yet</h2>
-        <p class="lede">The extension stores only your server's address. It holds no token or password, has no host permissions and no content scripts, and makes no network requests itself: the only traffic is the capture popup you open, which loads your own server. <a href="/docs/capture/#browser-extension">Privacy and permissions</a></p>
+  <Split id="ext" kicker="The browser extension" title="Small on purpose, and not in the stores yet">
+    <Fragment slot="lede">The extension stores only your server's address. It holds no token or password, has no host permissions and no content scripts, and makes no network requests itself: the only traffic is the capture popup you open, which loads your own server. <a href="/docs/capture/#browser-extension">Privacy and permissions</a></Fragment>
         <p>It is not published in the browser stores yet, so it installs as an unpacked extension from a release download. A signed Firefox build is a release task. <a href="/docs/capture/#browser-extension">In the docs</a></p>
-      </div>
-      <div>
+    <div slot="media">
         <h3>Install it</h3>
         <ol class="steps">
           <li>Download <code>opentodo-browser-extension.zip</code> from a <a href={`${SITE.appRepo}/releases`}>release</a> and unzip it. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
@@ -74,20 +61,16 @@ const platforms = [
           <li><strong>Firefox:</strong> open <code>about:debugging#/runtime/this-firefox</code>, choose <strong>Load Temporary Add-on…</strong> and pick <code>manifest.json</code> from the folder. Temporary add-ons are removed when Firefox restarts. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
           <li>On first use it asks for your server's address, saves it, and continues the capture you started. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
         </ol>
-      </div>
     </div>
-  </section>
+  </Split>
 
-  <section class="section section-alt" aria-labelledby="platform-title">
-    <div class="wrap narrow">
-      <h2 id="platform-title">The share sheet, by platform</h2>
-      <p class="lede">The browser adds OpenTodo to the share menu once the app is installed. Support differs by platform: <a href="/docs/capture/#share-sheet-installed-app">share sheet in the docs</a>.</p>
+  <Catalogue id="platform" alt title="The share sheet, by platform" bare>
+    <Fragment slot="lede">The browser adds OpenTodo to the share menu once the app is installed. Support differs by platform: <a href="/docs/capture/#share-sheet-installed-app">share sheet in the docs</a>.</Fragment>
       <dl class="fine-list">
         {platforms.map(([p, t]) => <div><dt>{p}</dt><dd>{t}</dd></div>)}
       </dl>
       <p class="meta" style="margin-top: 1rem">Files and images cannot be shared yet; the app is offered for text and links only. A shared link is kept only when it starts with http or https, and the capture screen never opens it. <a href="/docs/capture/#limits-and-safety">Limits and safety</a></p>
-    </div>
-  </section>
+  </Catalogue>
 
-  <EndCta title="Try it in the demo." lede="Open the demo on your phone, add it to the home screen, and share a page into it. The sandbox is private and deleted after two hours." />
+  <Close title="Try it in the demo." lede="Open the demo on your phone, add it to the home screen, and share a page into it. The sandbox is private and deleted after two hours." />
 </Base>

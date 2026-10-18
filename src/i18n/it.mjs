@@ -1,6 +1,7 @@
 // Italian (website-languages). Informal "tu", as the app's own Italian does.
 export default {
   common: {
+    fullScreen: 'Vedi lo schermo intero',
     langNote: 'Questa pagina esiste in italiano. Il resto del sito, la documentazione e l\'app stessa sono in inglese; l\'inserimento rapido dell\'app però capisce date e orari in italiano.',
     otherLanguages: 'Questa pagina in altre lingue',
     tryDemo: 'Prova la demo',
@@ -17,7 +18,7 @@ export default {
     eyebrow: 'Libero e open source',
     h1a: 'Un\'app per le cose da fare che gira sul ',
     h1b: 'tuo server.',
-    lede: 'Pianifica la giornata, tieni in ordine i progetti, imposta promemoria e condividi liste con la tua famiglia o il tuo team. Siccome OpenTodo gira su un piccolo server tuo, non c\'è un piano mensile a persona e le tue attività restano con te. Aggiungi un assistente IA se vuoi, con il modello e la chiave che scegli tu.',
+    promise: 'Pianifica la giornata, condividi liste con la famiglia o il team e tieni ogni attività su un server tuo. Nessun abbonamento a persona.',
     note: 'Funziona sul telefono e sul computer, con o senza connessione. L\'app non manda niente a nessuno tranne che al tuo server.',
     getIt: {
       kicker: 'Come lo ottengo?',
@@ -39,18 +40,16 @@ export default {
         { title: 'Promemoria e attività ricorrenti', text: 'Ricevi una notifica prima della scadenza. «Ogni lunedì» o «ogni 2 settimane» funziona e basta.' },
         { title: 'Etichette e filtri', text: 'Marca le attività con @commissione o @chiamata, poi fissa nella barra laterale un filtro come «scade questa settimana e non è fatta».' },
         { title: 'Liste condivise', text: 'Condividi un progetto con il partner o il team, assegna le attività e lascia commenti.' },
-        { title: 'Telefono, portatile, offline', text: 'Installala dal browser su iPhone, Android, Mac, Windows o Linux. Continua a funzionare senza connessione.' },
       ],
+      assistant: { title: 'Un assistente, con la tua chiave', text: 'Spento finché non lo accendi. Scegli modello e fornitore, e vedi ogni modifica prima che avvenga.' },
     },
     reasons: {
-      kicker: 'Perché le persone spostano qui le loro liste',
-      h2: 'Cosa ci guadagni a farlo girare tu.',
       items: [
-        { title: 'Un server per tutta la casa', text: 'Ogni persona ha il suo account e le sue liste. Condividi la lista della spesa, il trasloco o la vacanza con chi serve. Nessuno paga a persona.', link: 'Condivisione e account' },
-        { title: 'Funziona senza connessione', text: 'Il tuo telefono tiene una copia completa delle tue attività. Aggiungi e spunta in treno o in aereo, e tutto si sincronizza quando torni online.', link: 'Offline e sincronizzazione' },
-        { title: 'Cifrato, se vuoi', text: 'Attivalo e titoli e note delle attività vengono cifrati sui tuoi dispositivi prima di raggiungere il server. Nemmeno il server può leggerli.', link: 'Cifratura end-to-end' },
-        { title: 'Veloce da tastiera', text: 'Aggiungi, sposta e completa attività senza toccare il mouse. Scrivi «chiamare il dentista domani alle 9 #Casa» e diventa un\'attività con data, ora e progetto. C\'è perfino una modalità Vim.', link: 'Scorciatoie da tastiera' },
-        { title: 'I tuoi dati vengono con te', text: 'Scarica tutto in un unico file quando vuoi. Importa da un CSV o dall\'esportazione di un\'altra app. Niente ti trattiene qui, tranne che funziona.', link: 'Importazione ed esportazione' },
+        { title: 'Un server per tutta la casa', text: 'Ogni persona ha il suo account e le sue liste. Condividi la lista della spesa, il trasloco o la vacanza con chi serve. Nessuno paga a persona.' },
+        { title: 'Funziona senza connessione', text: 'Il tuo telefono tiene una copia completa delle tue attività. Aggiungi e spunta in treno o in aereo, e tutto si sincronizza quando torni online.' },
+        { title: 'Cifrato, se vuoi', text: 'Attivalo e titoli e note delle attività vengono cifrati sui tuoi dispositivi prima di raggiungere il server. Nemmeno il server può leggerli.' },
+        { title: 'Veloce da tastiera', text: 'Aggiungi, sposta e completa attività senza toccare il mouse. Scrivi «chiamare il dentista domani alle 9 #Casa» e diventa un\'attività con data, ora e progetto. C\'è perfino una modalità Vim.' },
+        { title: 'I tuoi dati vengono con te', text: 'Scarica tutto in un unico file quando vuoi. Importa da un CSV o dall\'esportazione di un\'altra app. Niente ti trattiene qui, tranne che funziona.' },
       ],
     },
     household: {
@@ -59,6 +58,7 @@ export default {
       lede: 'Chi in casa non teme un po\' di configurazione installa OpenTodo su un piccolo server, un VPS economico o un Raspberry Pi. Tutti gli altri aprono l\'app sul telefono o sul portatile e la usano come qualunque altra app per le cose da fare.',
       them: { h3: 'Con un\'app in abbonamento', text: 'Tutti si registrano presso l\'azienda. L\'app completa costa di solito un canone mensile a persona, e le vostre liste vivono sui server dell\'azienda.' },
       us: { h3: 'Con OpenTodo', text: 'Tutti hanno un account sul vostro server. Invita le persone con un link, condividi le liste in comune, tieni privato il resto. L\'unico costo è il server.' },
+      leaving: 'E se un giorno te ne vai, ognuno scarica i propri dati in un unico file. Niente ti trattiene, se non il fatto che funziona.',
       link: 'Come installarla su telefoni e portatili',
     },
     how: {
@@ -67,8 +67,8 @@ export default {
       lede: 'Ognuno dei tuoi dispositivi tiene una copia delle tue attività e scambia le sue modifiche con gli altri attraverso il tuo server. Non c\'è nessuna finestra «quale versione vuoi tenere?». Il tutto è un container e una cartella di dati.',
       cta1: 'Guarda la sincronizzazione in azione',
       cta2: 'Per chi sviluppa',
-      checks: ['Si installa su telefoni e computer direttamente dal browser, senza store', 'I tuoi dati sono una cartella sul tuo server, con backup pianificati', 'Si collega ad app di calendario, email, webhook e a una riga di comando', 'Ogni funzione è descritta in una specifica aperta che puoi leggere'],
     },
+    sync: { laptop: 'Portatile', phone: 'Telefono', server: 'Il tuo server', log: '2 modifiche, entrambe tenute', renamed: 'Rinominata offline', completed: 'Completata offline', synced: 'Sincronizzato', done: 'completata', listLaptop: 'Attività sul portatile', listPhone: 'Attività sul telefono', caption: 'La stessa attività, rinominata sul portatile e completata sul telefono, entrambi senza connessione. Dopo la sincronizzazione, entrambi i dispositivi mostrano entrambe le modifiche.', link: 'Provalo tu', tasks: ['Comprare latte d\'avena', 'Prenotare i voli per Lisbona, 12 maggio', 'Rinnovare il passaporto'] },
     end: { title: 'Prima provalo, poi fallo tuo.', lede: 'La demo gira nel browser, niente da installare. Quando ti piace, mettilo sul tuo server e porta con te le tue attività.' },
   },
   cost: {

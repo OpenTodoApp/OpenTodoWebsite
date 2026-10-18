@@ -3,7 +3,7 @@ import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docExists, releases } from './lib/bundle';
 import authors from './content/authors.json';
-import { articleSchema, blogSchema, blogSlugProblem, compareSchema, howtoSchema, switchSchema, templateSchema } from './content/schemas.mjs';
+import { articleSchema, authorsSchema, blogSchema, blogSlugProblem, compareSchema, howtoSchema, switchSchema, templateSchema } from './content/schemas.mjs';
 
 const md = (base: string) => glob({ pattern: '**/[^_]*.md', base: `./src/content/${base}` });
 
@@ -20,6 +20,9 @@ const blogLoader = glob({
 });
 const releaseExists = (v: string) => releases.some((r) => r.version === v);
 // A key of src/content/authors.json; checked here so a typo fails the build (Astro's reference() only logs).
+// The authors file itself (website-maintainer-and-proof D3): a bad photo path or an over-long note fails the build.
+const authorsCheck = authorsSchema.safeParse(authors);
+if (!authorsCheck.success) throw new Error(`src/content/authors.json: ${authorsCheck.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')}`);
 const authorKey = z.string().refine((k) => k in authors, { error: (iss) => `"author" ${iss.input} is not in src/content/authors.json` });
 
 export const collections = {

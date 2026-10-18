@@ -232,3 +232,18 @@ export function blogSchema({ releaseExists, image = () => z.string(), author = z
 /** The folder name of a post must not collide with a blog route. */
 export const blogSlugProblem = (slug) =>
   RESERVED_BLOG_SLUGS.includes(slug) ? `blog post folder "${slug}" collides with the route /blog/${slug}/; rename it` : null;
+
+/**
+ * One author in src/content/authors.json (website-maintainer-and-proof D3, D4): a name,
+ * a one-sentence bio, a link, and optionally a photo (a file in this repository, never
+ * a remote image, so no third-party request) and a short first-person note for /about/.
+ */
+export const NOTE_MAX_WORDS = 120;
+export const authorSchema = z.object({
+  name: z.string().min(1),
+  bio: z.string().min(1),
+  url: z.string().url(),
+  photo: z.string().regex(/^src\/assets\/authors\/[\w.-]+\.(jpe?g|png|webp|avif)$/, 'a photo is a file under src/assets/authors/, not a URL').optional(),
+  note: z.string().refine((s) => s.trim().split(/\s+/).length <= NOTE_MAX_WORDS, `a note has at most ${NOTE_MAX_WORDS} words`).optional(),
+});
+export const authorsSchema = z.record(z.string(), authorSchema);

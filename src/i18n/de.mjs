@@ -1,6 +1,7 @@
 // German (website-languages). Informal "du", as the app's own German does.
 export default {
   common: {
+    fullScreen: 'Ganzen Bildschirm ansehen',
     langNote: 'Diese Seite gibt es auf Deutsch. Die übrigen Seiten dieser Website, die Dokumentation und die App selbst sind auf Englisch; die Schnelleingabe der App versteht aber Daten und Zeiten auf Deutsch.',
     otherLanguages: 'Diese Seite in anderen Sprachen',
     tryDemo: 'Demo ausprobieren',
@@ -17,7 +18,7 @@ export default {
     eyebrow: 'Frei und quelloffen',
     h1a: 'Eine To-do-App, die auf ',
     h1b: 'deinem eigenen Server läuft.',
-    lede: 'Plane deinen Tag, halte Projekte in Ordnung, setze Erinnerungen und teile Listen mit deiner Familie oder deinem Team. Weil OpenTodo auf einem kleinen eigenen Server läuft, gibt es keinen Monatstarif pro Person, und deine Aufgaben bleiben bei dir. Einen KI-Assistenten kannst du hinzufügen, wenn du willst, mit Modell und Schlüssel deiner Wahl.',
+    promise: 'Plane deinen Tag, teile Listen mit Familie oder Team und behalte jede Aufgabe auf einem Server, der dir gehört. Kein Monatstarif pro Person.',
     note: 'Funktioniert auf dem Handy und am Computer, mit oder ohne Verbindung. Die App schickt nichts an irgendjemanden außer an deinen Server.',
     getIt: {
       kicker: 'Wie komme ich dran?',
@@ -39,18 +40,16 @@ export default {
         { title: 'Erinnerungen und wiederkehrende Aufgaben', text: 'Bekomme eine Benachrichtigung, bevor etwas fällig ist. „Jeden Montag“ oder „alle 2 Wochen“ funktioniert einfach.' },
         { title: 'Labels und Filter', text: 'Markiere Aufgaben mit @besorgung oder @anruf und hefte einen Filter wie „diese Woche fällig und offen“ in die Seitenleiste.' },
         { title: 'Geteilte Listen', text: 'Teile ein Projekt mit Partnerin, Partner oder Team, weise Aufgaben zu und hinterlasse Kommentare.' },
-        { title: 'Handy, Laptop, offline', text: 'Aus dem Browser installieren auf iPhone, Android, Mac, Windows oder Linux. Funktioniert auch ohne Verbindung weiter.' },
       ],
+      assistant: { title: 'Ein Assistent, mit deinem Schlüssel', text: 'Aus, bis du ihn einschaltest. Du wählst Modell und Anbieter und siehst jede Änderung, bevor sie passiert.' },
     },
     reasons: {
-      kicker: 'Warum Leute ihre Listen hierher umziehen',
-      h2: 'Was du davon hast, es selbst zu betreiben.',
       items: [
-        { title: 'Ein Server für alle zu Hause', text: 'Jede Person bekommt ein eigenes Konto und eigene Listen. Teile die Einkaufsliste, den Umzug oder den Urlaub mit denen, die es brauchen. Niemand zahlt pro Person.', link: 'Teilen und Konten' },
-        { title: 'Funktioniert ohne Verbindung', text: 'Dein Handy behält eine vollständige Kopie deiner Aufgaben. Im Zug oder im Flugzeug fügst du hinzu und hakst ab, und sobald du wieder online bist, wird alles abgeglichen.', link: 'Offline und Sync' },
-        { title: 'Verschlüsselt, wenn du willst', text: 'Schalte es ein, und Titel und Notizen werden auf deinen Geräten verschlüsselt, bevor sie den Server erreichen. Nicht einmal der Server kann sie lesen.', link: 'Ende-zu-Ende-Verschlüsselung' },
-        { title: 'Schnell per Tastatur', text: 'Aufgaben anlegen, verschieben und erledigen, ohne die Maus anzufassen. Tippe „Zahnarzt anrufen morgen 9 Uhr #Zuhause“, und daraus wird eine Aufgabe mit Datum, Uhrzeit und Projekt. Es gibt sogar einen Vim-Modus.', link: 'Tastenkürzel' },
-        { title: 'Deine Daten gehen mit', text: 'Lade jederzeit alles als eine Datei herunter. Importiere aus CSV oder dem Export einer anderen App. Nichts hält dich hier, außer dass es funktioniert.', link: 'Import und Export' },
+        { title: 'Ein Server für alle zu Hause', text: 'Jede Person bekommt ein eigenes Konto und eigene Listen. Teile die Einkaufsliste, den Umzug oder den Urlaub mit denen, die es brauchen. Niemand zahlt pro Person.' },
+        { title: 'Funktioniert ohne Verbindung', text: 'Dein Handy behält eine vollständige Kopie deiner Aufgaben. Im Zug oder im Flugzeug fügst du hinzu und hakst ab, und sobald du wieder online bist, wird alles abgeglichen.' },
+        { title: 'Verschlüsselt, wenn du willst', text: 'Schalte es ein, und Titel und Notizen werden auf deinen Geräten verschlüsselt, bevor sie den Server erreichen. Nicht einmal der Server kann sie lesen.' },
+        { title: 'Schnell per Tastatur', text: 'Aufgaben anlegen, verschieben und erledigen, ohne die Maus anzufassen. Tippe „Zahnarzt anrufen morgen 9 Uhr #Zuhause“, und daraus wird eine Aufgabe mit Datum, Uhrzeit und Projekt. Es gibt sogar einen Vim-Modus.' },
+        { title: 'Deine Daten gehen mit', text: 'Lade jederzeit alles als eine Datei herunter. Importiere aus CSV oder dem Export einer anderen App. Nichts hält dich hier, außer dass es funktioniert.' },
       ],
     },
     household: {
@@ -59,6 +58,7 @@ export default {
       lede: 'Wer zu Hause ein bisschen Einrichtung nicht scheut, installiert OpenTodo auf einem kleinen Server, einem günstigen VPS oder einem Raspberry Pi. Alle anderen öffnen die App auf Handy oder Laptop und benutzen sie wie jede andere To-do-App.',
       them: { h3: 'Mit einer Abo-App', text: 'Alle melden sich beim Unternehmen an. Die volle App kostet meist eine Monatsgebühr pro Person, und eure Listen liegen auf den Servern des Unternehmens.' },
       us: { h3: 'Mit OpenTodo', text: 'Alle haben ein Konto auf eurem Server. Lade Leute per Link ein, teile die gemeinsamen Listen, halte den Rest privat. Der einzige Kostenpunkt ist der Server.' },
+      leaving: 'Und wenn du gehst, lädt jede Person ihre Daten als eine Datei herunter. Nichts hält dich hier, außer dass es funktioniert.',
       link: 'So installierst du es auf Handys und Laptops',
     },
     how: {
@@ -67,8 +67,8 @@ export default {
       lede: 'Jedes deiner Geräte behält eine Kopie deiner Aufgaben und tauscht seine Änderungen über deinen Server mit den anderen aus. Es gibt keinen „Welche Version willst du behalten?“-Dialog. Das Ganze ist ein Container und ein Datenordner.',
       cta1: 'Sync in Aktion sehen',
       cta2: 'Für Entwicklerinnen und Entwickler',
-      checks: ['Installiert sich auf Handys und Computern direkt aus dem Browser, ohne App-Store', 'Deine Daten sind ein Ordner auf deinem Server, mit geplanten Backups', 'Verbindet sich mit Kalender-Apps, E-Mail, Webhooks und einer Kommandozeile', 'Jede Funktion ist in einer offenen Spezifikation beschrieben, die du lesen kannst'],
     },
+    sync: { laptop: 'Laptop', phone: 'Handy', server: 'Dein Server', log: '2 Änderungen, beide behalten', renamed: 'Offline umbenannt', completed: 'Offline erledigt', synced: 'Synchronisiert', done: 'erledigt', listLaptop: 'Aufgaben auf dem Laptop', listPhone: 'Aufgaben auf dem Handy', caption: 'Dieselbe Aufgabe, auf dem Laptop umbenannt und auf dem Handy erledigt, beide ohne Verbindung. Nach dem Abgleich zeigen beide Geräte beide Änderungen.', link: 'Selbst ausprobieren', tasks: ['Hafermilch kaufen', 'Flüge nach Lissabon buchen, 12. Mai', 'Reisepass verlängern'] },
     end: { title: 'Erst ausprobieren, dann zu deinem machen.', lede: 'Die Demo läuft im Browser, nichts zu installieren. Wenn sie dir gefällt, bringst du sie auf deinen eigenen Server und nimmst deine Aufgaben mit.' },
   },
   cost: {

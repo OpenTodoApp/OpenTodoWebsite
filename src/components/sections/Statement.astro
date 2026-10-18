@@ -1,0 +1,21 @@
+---
+// Statement (website-section-system D1): one claim with at most one supporting fact.
+// Page heads are statements: the h1, a lede, the page's actions in the default slot,
+// and the supporting fact (a facts list, a proof strip) in the "fact" slot beside it.
+import SectionHead from './SectionHead.astro';
+interface Props { id: string; title: string; kicker?: string; lede?: string; page?: boolean; alt?: boolean; center?: boolean }
+const { id, title, kicker, lede, page = false, alt = false, center = false } = Astro.props;
+const hasFact = Astro.slots.has('fact');
+---
+<section class:list={[page ? 'page-head' : 'section', alt && 'section-alt', center && 'center']} id={page ? undefined : id} data-section-type="statement" aria-labelledby={`${id}-title`}>
+  <div class:list={['wrap', hasFact && 'split']}>
+    <div>
+      <SectionHead id={id} title={title} kicker={kicker} lede={lede} level={page ? 1 : 2} center={center}>
+        {Astro.slots.has('lede') && <Fragment slot="lede"><slot name="lede" /></Fragment>}
+      </SectionHead>
+      <slot />
+    </div>
+    {hasFact && <div><slot name="fact" /></div>}
+  </div>
+  {Astro.slots.has('after') && <div class="wrap"><slot name="after" /></div>}
+</section>

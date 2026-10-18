@@ -24,7 +24,7 @@ The public website of [OpenTodo](https://github.com/pixari/opentodo), live at ht
 
 ## Content workflow
 1. Pick the top item of `content/BACKLOG.md`.
-2. Draft it following `content/VOICE.md`: every product claim links to a docs page of the pinned release; a paragraph that only looks like a claim gets `<!-- no-claim -->` on the line above. Set `lastReviewed` to today.
+2. Draft it following `content/VOICE.md` (and lay out any new page by `content/LAYOUT.md`): every product claim links to a docs page of the pinned release; a paragraph that only looks like a claim gets `<!-- no-claim -->` on the line above. Set `lastReviewed` to today.
 3. A new template also needs its screenshots: run `npm run templates:check` against the pinned release.
 4. Run the checks, open a **draft** pull request, and link the preview. The maintainer reviews on the rendered page and merges; agents never merge.
 

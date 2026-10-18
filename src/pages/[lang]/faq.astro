@@ -44,7 +44,7 @@ const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g
     </div>
   </section>
 
-  <section class="end-cta" aria-labelledby="end-cta-title">
+  <section class="end-cta" data-section-type="close" aria-labelledby="end-cta-title">
     <div class="wrap">
       <h2 id="end-cta-title">{q.end.title}</h2>
       <p class="lede">{q.end.lede} <a href="/docs/troubleshooting/">Troubleshooting</a> · <a href="/help/">Help</a></p>

@@ -3,13 +3,20 @@
 // plain words, security, the specs, the demo, this website, and how to leave.
 // Dates come from the bundle's changelog, the maintainer from authors.json.
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
+import CoffeeButton from '../components/CoffeeButton.astro';
+import Close from '../components/sections/Close.astro';
+import Statement from '../components/sections/Statement.astro';
+import Split from '../components/sections/Split.astro';
+import Catalogue from '../components/sections/Catalogue.astro';
+import ProofStrip from '../components/ProofStrip.astro';
 import Icon from '../components/Icon.astro';
+import { Image } from 'astro:assets';
 import { manifest, releases, versionTag } from '../lib/bundle';
 import { SITE } from '../lib/site';
 import authors from '../content/authors.json';
+import { authorPhoto, initials, type Author } from '../lib/authors';
 
-const maintainer = authors.raffaele;
+const maintainer: Author = authors.raffaele;
 const licence = manifest.facts.license ?? 'AGPL-3.0';
 const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 // Oldest first: by date, then by version, since several releases can share a day.
@@ -18,65 +25,49 @@ const byVersion = (a: string, b: string) => { const [x, y] = [num(a), num(b)]; f
 const sorted = [...releases].sort((a, b) => a.date.localeCompare(b.date) || byVersion(a.version, b.version));
 const first = sorted[0];
 const latest = sorted[sorted.length - 1];
-const facts = [
-  { label: 'First release', value: first ? `${first.version}, ${day(first.date)}` : 'none yet' },
-  { label: 'Latest release', value: latest ? `${latest.version}, ${day(latest.date)}` : 'none yet' },
-  { label: 'Licence', value: licence },
-];
+const photo = authorPhoto(maintainer);
 ---
 <Base title="About OpenTodo" description="Who makes OpenTodo, since when, what the licence means for you, how security is handled, where the specifications are, and how you can leave with your data at any time.">
-  <section class="page-head">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">About and trust</p>
-        <h1>Made in the open, for people who want their task list to be theirs.</h1>
-        <p class="lede">A task app holds the next few years of your plans, so it is fair to ask who is behind it and what happens if they stop. This page answers that as plainly as we can, and links to the files where you can check it yourself.</p>
-      </div>
-      <dl class="facts" aria-label="OpenTodo in numbers from the pinned release">
-        {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
-      </dl>
-    </div>
-  </section>
+  <Statement page id="about" kicker="About and trust" title="Made in the open, for people who want their task list to be theirs.">
+    {maintainer.note && (
+      <figure class="maintainer-note">
+        <blockquote><p>{maintainer.note}</p></blockquote>
+        <figcaption>
+          {photo ? <Image src={photo} alt={maintainer.name} width={56} height={56} class="maintainer-photo" /> : <span class="avatar maintainer-photo" aria-hidden="true">{initials(maintainer)}</span>}
+          <span><a href={maintainer.url}>{maintainer.name}</a><span class="meta">Maintainer of OpenTodo</span></span>
+        </figcaption>
+      </figure>
+    )}
+    <Fragment slot="fact">
+      <ProofStrip />
+    </Fragment>
+  </Statement>
 
-  <section class="section section-alt" id="who" aria-labelledby="who-title">
-    <div class="wrap split">
-      <div>
-        <h2 id="who-title">Who makes it</h2>
-        <p class="lede">OpenTodo is built and maintained by <a href={maintainer.url}>{maintainer.name}</a>, with contributions from people who use it. {maintainer.bio}</p>
-        <p>It started as a replacement for subscription task apps for one household and grew from there. It is not a company, has no investors and sells nothing. Work happens in public on <a href={SITE.appRepo}>GitHub</a>: issues, pull requests, specifications and releases.</p>
-      </div>
+  <Split id="who" alt title="Who makes it">
+    <Fragment slot="lede">OpenTodo is built and maintained by <a href={maintainer.url}>{maintainer.name}</a>, in the open, with contributions from people who use it.</Fragment>
+    <p>It has no investors and no paid tier. Work happens in public on <a href={SITE.appRepo}>GitHub</a>: issues, pull requests, specifications and releases.</p>
+    <p class="meta">If it earns a place in your day, a coffee helps keep it going.</p>
+    <p><CoffeeButton /></p>
+    <div slot="media">
       <ul class="checks">
         <li><Icon name="check" size={18} /> Every release is listed on <a href="/whats-new/">What's new</a> with what changed; the first was {first && day(first.date)}, the latest {latest && `${latest.version} on ${day(latest.date)}`}</li>
         <li><Icon name="check" size={18} /> Questions and bug reports go to <a href={`${SITE.appRepo}/issues`}>the issue tracker</a>; security reports go by email, see below</li>
         <li><Icon name="check" size={18} /> The <a href="/blog/">blog</a> is written in the first person by the maintainer, dated and concrete</li>
       </ul>
     </div>
-  </section>
+  </Split>
 
-  <section class="section" id="licence" aria-labelledby="licence-title">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">The licence, in plain words</p>
-        <h2 id="licence-title">{licence}: free to use, and it stays free</h2>
-        <p class="lede">You can run OpenTodo for anything, study how it works, change it and share it. The one condition is that anyone who offers a changed version to other people over the network must publish their changes under the same licence.</p>
+  <Split id="licence" kicker="The licence, in short" title={`${licence}: free to use, and it stays free`} lede="You can run OpenTodo for anything, study how it works, change it and share it. The one condition is that anyone who offers a changed version to other people over the network must publish their changes under the same licence.">
         <p>For you, that means three things. Nobody can paywall a feature you rely on. If the maintainer stopped tomorrow, the code, the container images and the <a href={`${SITE.appRepo}/tree/main/openspec/specs`}>specifications</a> would still be there for anyone to carry on. And the licence cannot be changed on the copy you already have.</p>
         <p><a class="link-arrow" href={`${SITE.appRepo}/blob/main/LICENSE`}>Read the licence <Icon name="arrow-right" size={16} /></a></p>
-      </div>
-      <div class="card">
-        <h3>What the licence does not do</h3>
-        <p>It does not give anyone access to your server or your data. The licence is about the program's source code, not about what you keep in it. Your tasks are yours and <a href="/docs/import-export/">leave with you as one file</a> whenever you like.</p>
-      </div>
+    <div slot="media" class="aside-note">
+      <h3>What the licence does not do</h3>
+      <p>It does not give anyone access to your server or your data. The licence is about the program's source code, not about what you keep in it. Your tasks are yours and <a href="/docs/import-export/">leave with you as one file</a> whenever you like.</p>
     </div>
-  </section>
+  </Split>
 
-  <section class="section section-alt" id="security" aria-labelledby="security-title">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Security</p>
-        <h2 id="security-title">How your account and your data are protected</h2>
-        <p class="lede">The security model is written down in the app's <a href={`${SITE.appRepo}/blob/main/SECURITY.md`}>security policy</a>, which also says how to report a vulnerability privately by email. The short version:</p>
-      </div>
-      <div class="grid grid-3">
+  <Catalogue id="security" alt kicker="Security" title="How your account and your data are protected">
+    <Fragment slot="lede">The security model is written down in the app's <a href={`${SITE.appRepo}/blob/main/SECURITY.md`}>security policy</a>, which also says how to report a vulnerability privately by email. The short version:</Fragment>
         <article class="card">
           <span class="card-icon"><Icon name="key-round" size={22} /></span>
           <h3>Your account</h3>
@@ -92,32 +83,18 @@ const facts = [
           <h3>Nothing phones home</h3>
           <p>The app has no telemetry and makes no request to anyone but your server, unless you configure one: a backup destination, a webhook, or <a href="/docs/ai-and-agents/">an AI provider with your own key</a>.</p>
         </article>
-      </div>
-    </div>
-  </section>
+  </Catalogue>
 
-  <section class="section" id="specs" aria-labelledby="specs-title">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">Written down before it is built</p>
-        <h2 id="specs-title">Every feature has a specification you can read</h2>
-        <p class="lede">Each feature starts as a written proposal with testable scenarios, and only then becomes code. The specifications describe how OpenTodo behaves today, and they are public. If the documentation and the app ever disagree, the specification settles it.</p>
-        <p><a class="link-arrow" href="/developers/#specs">The specifications, by topic <Icon name="arrow-right" size={16} /></a></p>
-      </div>
-      <div class="card">
-        <h3><Icon name="history" size={20} /> The demo</h3>
-        <p>The <a href={SITE.demo}>public demo</a> gives every visitor a private sandbox with sample data. Nobody else can see it, and it is deleted after two hours without activity and every night, so it is not a place to keep anything real. <a href="/docs/self-hosting/demo/">How the demo works</a></p>
-      </div>
+  <Split id="specs" kicker="Written down before it is built" title="Every feature has a specification you can read" lede="Each feature starts as a written proposal with testable scenarios, and only then becomes code. The specifications describe how OpenTodo behaves today, and they are public. If the documentation and the app ever disagree, the specification settles it.">
+    <p><a class="link-arrow" href="/developers/#specs">The specifications, by topic <Icon name="arrow-right" size={16} /></a></p>
+    <div slot="media" class="aside-note">
+      <h3><Icon name="history" size={20} /> The demo</h3>
+      <p>The <a href={SITE.demo}>public demo</a> gives every visitor a private sandbox with sample data. Nobody else can see it, and it is deleted after two hours without activity and every night, so it is not a place to keep anything real. <a href="/docs/self-hosting/demo/">How the demo works</a></p>
     </div>
-  </section>
+  </Split>
 
-  <section class="section section-alt" id="this-site" aria-labelledby="site-title">
-    <div class="wrap split">
-      <div>
-        <p class="kicker">This website</p>
-        <h2 id="site-title">What this site says, and what it collects</h2>
-        <p class="lede">Everything here about the app describes OpenTodo {versionTag}, the latest release: the version, the documentation, the screenshots and the release notes come from that release's own files, never from memory. Every statement about what the app can do links to its documentation page, and a build check fails when one does not.</p>
-      </div>
+  <Split id="this-site" alt kicker="This website" title="What this site says, and what it collects" lede={`Everything here about the app describes OpenTodo ${versionTag}, the latest release: the version, the documentation, the screenshots and the release notes come from that release's own files, never from memory. Every statement about what the app can do links to its documentation page, and a build check fails when one does not.`}>
+    <div slot="media">
       <ul class="checks">
         <li><Icon name="check" size={18} /> Comparisons name where other apps are ahead and show the date they were last checked</li>
         <li><Icon name="check" size={18} /> Nothing is published without the maintainer's review; drafts arrive as pull requests on <a href={SITE.siteRepo}>the website's repository</a></li>
@@ -125,15 +102,11 @@ const facts = [
         <li><Icon name="check" size={18} /> The words and images here are <a href={`${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`}>CC BY 4.0</a>, the site's code is <a href={`${SITE.siteRepo}/blob/main/LICENSE`}>MIT</a></li>
       </ul>
     </div>
-  </section>
+  </Split>
 
-  <section class="section" id="leaving" aria-labelledby="leaving-title">
-    <div class="wrap narrow">
-      <p class="kicker">Leaving</p>
-      <h2 id="leaving-title">You can go at any time, with everything</h2>
-      <p class="lede">Every person on a server can <a href="/docs/import-export/">download all their data as one file</a> and import it on another OpenTodo server, or read it anywhere, since it is plain JSON. The server owner can take the whole data folder with them. Nothing keeps you here except that it works.</p>
-    </div>
-  </section>
+  <Statement id="leaving" kicker="Leaving" title="You can go at any time, with everything">
+    <Fragment slot="lede">Every person on a server can <a href="/docs/import-export/">download all their data as one file</a> and import it on another OpenTodo server, or read it anywhere, since it is plain JSON. The server owner can take the whole data folder with them. Nothing keeps you here except that it works.</Fragment>
+  </Statement>
 
-  <EndCta />
+  <Close />
 </Base>

@@ -1,7 +1,7 @@
 ---
 // /install (website-help-and-howtos D3): one card per platform.
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import { INSTALL_DOC, PLATFORMS } from '../../lib/install';
 ---
@@ -23,5 +23,5 @@ import { INSTALL_DOC, PLATFORMS } from '../../lib/install';
       <p class="meta" style="margin-top: 1.5rem">Firefox on a computer does not install web apps; OpenTodo still works fully in a Firefox tab, offline included. <a href="/docs/install-app/#windows-macos-linux-and-chromeos">Details</a></p>
     </div>
   </section>
-  <EndCta title="No server to sign in to yet?" lede="Try the demo in your browser first, or see how to get OpenTodo." />
+  <Close title="No server to sign in to yet?" lede="Try the demo in your browser first, or see how to get OpenTodo." />
 </Base>

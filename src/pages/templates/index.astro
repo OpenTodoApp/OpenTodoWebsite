@@ -3,7 +3,7 @@
 // (static pages), then the gallery by category.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import TemplateFilters from '../../components/TemplateFilters.astro';
 import TemplateGrid from '../../components/TemplateGrid.astro';
 const entries = (await getCollection('templates')).sort((a, b) => a.data.order - b.data.order);
@@ -36,5 +36,5 @@ const categories = [...new Set(entries.map((e) => e.data.category))];
       </div>
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

@@ -3,6 +3,7 @@
 // draft and future-date rules live in one place.
 import { getCollection, type CollectionEntry } from 'astro:content';
 import authors from '../content/authors.json';
+import type { Author } from './authors';
 import { CATEGORY_LABELS as LABELS, feedItem, published, readingMinutes, relatedPosts as related } from './blog-core.mjs';
 import { BLOG_CATEGORIES } from '../content/schemas.mjs';
 
@@ -17,7 +18,7 @@ export async function publishedPosts(): Promise<Post[]> {
   return published(await getCollection('blog')) as Post[];
 }
 
-export const authorOf = (post: Post) => (authors as Record<string, { name: string; bio: string; url: string }>)[post.data.author];
+export const authorOf = (post: Post) => (authors as Record<string, Author>)[post.data.author];
 
 export const categoryUrl = (c: Category) => `/blog/category/${c}/`;
 

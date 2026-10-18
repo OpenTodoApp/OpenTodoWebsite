@@ -3,7 +3,7 @@
 // sharing into the app and the missing-install-option note, each line with its
 // docs link.
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import { INSTALL_DOC, NO_INSTALL_DOC, PLATFORMS, type Platform } from '../../lib/install';
 
@@ -57,5 +57,5 @@ const others = PLATFORMS.filter((o) => o.slug !== p.slug);
     </div>
   </section>
 
-  <EndCta title="Not on a server yet?" lede="Try the demo in your browser first. When you like it, run it on a server you already have." />
+  <Close title="Not on a server yet?" lede="Try the demo in your browser first. When you like it, run it on a server you already have." />
 </Base>

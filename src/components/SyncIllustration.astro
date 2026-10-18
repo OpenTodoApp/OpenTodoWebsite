@@ -1,0 +1,51 @@
+---
+// The site's signature sync visual (website-section-system D4): the playground's two
+// devices and server, drawn at the end of a conflict both devices made offline. Static
+// markup with the playground's own classes and no script, so it reads without
+// JavaScript and cannot drift from the interactive version on /self-host/.
+// Translated pages pass their own labels.
+import Icon from './Icon.astro';
+
+export interface SyncLabels {
+  laptop: string; phone: string; server: string; log: string; renamed: string; completed: string;
+  synced: string; done: string; listLaptop: string; listPhone: string; caption: string; link: string; tasks: string[];
+}
+const EN: SyncLabels = {
+  laptop: 'Laptop', phone: 'Phone', server: 'Your server', log: '2 changes, both kept', renamed: 'Renamed offline', completed: 'Completed offline',
+  synced: 'Synced', done: 'completed', listLaptop: 'Tasks on the laptop', listPhone: 'Tasks on the phone',
+  caption: 'The same task renamed on the laptop and completed on the phone, both without a connection. After they sync, both devices show both changes.',
+  link: 'Try it yourself', tasks: ['Buy oat milk', 'Book flights to Lisbon, 12 May', 'Renew passport'],
+};
+const { labels = EN } = Astro.props as { labels?: SyncLabels };
+const tasks: [string, boolean][] = [[labels.tasks[0], false], [labels.tasks[1], true], [labels.tasks[2], true]];
+const devices = [
+  { name: labels.laptop, icon: 'laptop', change: labels.renamed, list: labels.listLaptop },
+  { name: labels.phone, icon: 'smartphone', change: labels.completed, list: labels.listPhone },
+];
+---
+<figure class="sync-illustration">
+  <div class="sync-stage">
+    {devices.map((d, i) => (
+      <>
+        {i === 1 && (
+          <div class="server" aria-hidden="true">
+            <Icon name="server" size={40} />
+            <b>{labels.server}</b>
+            <span class="server-log">{labels.log}</span>
+          </div>
+        )}
+        <div class="device">
+          <div class="device-head">
+            <span class="device-name"><Icon name={d.icon} size={18} /> {d.name}</span>
+            <span class="status">{labels.synced}</span>
+            <span class="meta device-change">{d.change}</span>
+          </div>
+          <ul class="device-list" aria-label={d.list}>
+            {tasks.map(([title, done]) => <li class:list={[done && 'done']}><span class="circle" aria-hidden="true" /><span class="title">{title}{done && <span class="visually-hidden"> ({labels.done})</span>}</span></li>)}
+          </ul>
+        </div>
+      </>
+    ))}
+  </div>
+  <figcaption class="meta">{labels.caption} <a href="/self-host/#sync">{labels.link}</a></figcaption>
+</figure>

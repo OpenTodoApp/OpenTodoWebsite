@@ -11,7 +11,7 @@ const H = `h${headingLevel}` as 'h2' | 'h3';
 ---
 <article class:list={['post-card', featured && 'post-card-featured', d.inDevelopment && !d.shippedIn && 'is-dev']}>
   <a class="post-card-link" href={`/blog/${post.id}/`}>
-    <CoverImage cover={d.cover} alt="" category={d.category} eager={featured} sizes={featured ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw'} />
+    <CoverImage cover={d.cover} alt="" title={d.title} category={d.category} eager={featured} sizes={featured ? '(min-width: 1024px) 640px, 100vw' : '(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw'} />
     <div class="post-card-body">
       <p class="post-meta">
         <span class="post-cat">{CATEGORY_LABELS[d.category]}</span>

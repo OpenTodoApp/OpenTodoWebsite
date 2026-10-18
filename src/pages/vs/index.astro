@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 
 const entries = (await getCollection('compare')).sort((a, b) => a.data.order - b.data.order);
 const day = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
-<Base title="Compare OpenTodo" description="Honest, dated comparisons of OpenTodo with Todoist, Things and Linear, including where they are ahead.">
+<Base title="Compare OpenTodo" description="Dated comparisons of OpenTodo with Todoist, Things and Linear, including where they are ahead.">
   <section class="page-head">
     <div class="wrap">
       <p class="kicker">Compare</p>
@@ -27,5 +27,5 @@ const day = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 
       ))}
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>

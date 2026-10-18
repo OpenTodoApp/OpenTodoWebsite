@@ -27,7 +27,7 @@ export const QUIZ: Question = {
         options: [
           { slug: 'short-bursts', label: 'Short bursts with a clear end', next: leaf({ method: 'The Pomodoro technique', guide: 'pomodoro', template: 'study-plan', why: 'Twenty-five minute estimates, Quick wins for the gaps, and a calendar that shows the bursts as blocks.', also: 'time-blocking' }) },
           { slug: 'hardest-first', label: 'Getting the hardest thing out of the way', next: leaf({ method: 'Eat the frog', guide: 'eat-the-frog', template: 'weekly-review', why: 'Pick tonight, do first thing tomorrow, before anything else gets a vote.', also: 'pomodoro' }) },
-          { slug: 'see-time', label: 'Seeing the time on a calendar', next: leaf({ method: 'Time blocking', guide: 'time-blocking', template: 'study-plan', why: 'Give tasks an estimate and a slot, and the day header tells you whether the plan is honest.', also: 'pomodoro' }) },
+          { slug: 'see-time', label: 'Seeing the time on a calendar', next: leaf({ method: 'Time blocking', guide: 'time-blocking', template: 'study-plan', why: 'Give tasks an estimate and a slot, and the day header tells you whether the plan fits.', also: 'pomodoro' }) },
         ],
       },
     },

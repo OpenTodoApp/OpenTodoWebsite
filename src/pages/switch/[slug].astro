@@ -4,7 +4,7 @@
 // The one-step path appears only when the bundle ships the named importer.
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import { canImport, docExists, versionTag, docTitle } from '../../lib/bundle';
 import { SITE } from '../../lib/site';
@@ -76,5 +76,5 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
     </div>
   </section>
 
-  <EndCta title="Bring your tasks over at your own pace." lede="Import into the demo first if you like: the sandbox is private and deleted after two hours. Then do it for real on your server." />
+  <Close title="Bring your tasks over at your own pace." lede="Import into the demo first if you like: the sandbox is private and deleted after two hours. Then do it for real on your server." />
 </Base>

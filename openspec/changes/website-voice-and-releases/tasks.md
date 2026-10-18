@@ -4,7 +4,7 @@
 
 - [ ] 1.1 Add the "Confidence" section and an `avoid` block to `content/VOICE.md` (existing tone words plus "honest", "honestly", "honesty", "in plain words", "rest assured", "no catch"); verify the block parses with a test in `scripts/test/claim-lint.test.mjs`
 - [ ] 1.2 Add the avoid-list rule and the `<!-- quote -->` / `data-quote` opt-out to `scripts/check-content.mjs`, with tests for a hit, a quote and a phrase added to the guide; verify `npm test`
-- [ ] 1.3 Run `node scripts/check-content.mjs` and record every hit in the pull request description; verify the list matches the review's findings (eight "honest", the "in plain words" headings)
+- [ ] 1.3 Run `node scripts/check-content.mjs` and record every hit in the commit message; verify the list matches the review's findings (eight "honest", the "in plain words" headings)
 
 ## 2. Copy pass
 
@@ -15,7 +15,7 @@
 
 ## 3. Release list
 
-- [ ] 3.1 Add summary-sentence extraction, section counts and pre-release detection to `src/lib/bundle.ts`, with tests using the 0.4.0–0.7.0 intros as fixtures; verify `npm test`
+- [ ] 3.1 Add summary-sentence extraction, section counts and pre-release detection in `src/lib/changelog-core.mjs` (plain JavaScript, so the node tests import it), with tests using the 0.4.0–0.7.0 intros as fixtures; verify `npm test`
 - [ ] 3.2 Render `/whats-new/` as the summary list with an upgrade-notes mark and a "Pre-releases" list; verify 0.3.1-rc.1 appears only there and the page reads at 360 px without JavaScript (`tests/no-js.spec.ts`)
 - [ ] 3.3 Render `/whats-new/<version>/` with every section as a grouped list; verify `/whats-new/0.7.0/` lists all sections and `npm run check:links` passes
 

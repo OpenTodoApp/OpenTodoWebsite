@@ -1,9 +1,10 @@
 ---
 // One post (website-blog design D3, D4).
-import { getImage } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import { authorPhoto } from '../../lib/authors';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import CoverImage from '../../components/blog/CoverImage.astro';
 import DevNotice from '../../components/blog/DevNotice.astro';
@@ -21,6 +22,7 @@ const d = post.data;
 const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth === 2);
 const author = authorOf(post);
+const photo = authorPhoto(author);
 const related = relatedPosts(post, all);
 const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
 ---
@@ -62,7 +64,8 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
           </nav>
         )}
         <div class="post-prose prose"><Content /></div>
-        <footer class="post-author">
+        <footer class:list={['post-author', photo && 'has-photo']}>
+          {photo && <Image src={photo} alt={author.name} width={56} height={56} class="maintainer-photo" />}
           <strong>{author.name}</strong>
           <p>{author.bio} <a href={author.url}>More about {author.name.split(' ')[0]}</a></p>
         </footer>
@@ -83,5 +86,5 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
       </div>
     </section>
   )}
-  <EndCta />
+  <Close />
 </Base>

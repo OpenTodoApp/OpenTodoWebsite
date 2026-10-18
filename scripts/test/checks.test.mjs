@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { checkLinks } from '../checks/links.mjs';
 import { checkEmoji } from '../checks/emoji.mjs';
 import { checkScripts } from '../checks/scripts.mjs';
+import { checkHero } from '../checks/hero.mjs';
 
 function site(pages) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
@@ -62,4 +63,10 @@ test('scripts: names the page and the third-party script', () => {
     'vs/index.html': page('<script src="https://cdn.example.com/x.js"></script>'),
   });
   assert.deepEqual(checkScripts(dir).problems, ['/vs/: third-party script https://cdn.example.com/x.js']);
+});
+
+test('hero: a promise over 25 words fails, one at 25 passes', () => {
+  const words = (n) => Array.from({ length: n }, (_, i) => `w${i}`).join(' ');
+  const dir = site({ 'index.html': page(`<p data-hero-promise>${words(25)}</p>`), 'de/index.html': page(`<p data-hero-promise>${words(26)}</p>`) });
+  assert.deepEqual(checkHero(dir).problems, ['/de/: the hero promise has 26 words (at most 25)']);
 });

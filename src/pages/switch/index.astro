@@ -2,7 +2,7 @@
 // /switch (website-help-and-howtos D4): one card per app and the glossary.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
+import Close from '../../components/sections/Close.astro';
 import Icon from '../../components/Icon.astro';
 import { canImport } from '../../lib/bundle';
 
@@ -81,5 +81,5 @@ const glossary: { us: string; them: string[]; note?: string }[] = [
       <p class="meta" style="margin-top: 1rem">Other apps are named only to identify them, and their words were checked on the dates shown on each switch page. The OpenTodo column follows the <a href="/docs/tasks-and-projects/">tasks and projects</a>, <a href="/docs/views/">views</a> and <a href="/docs/sharing/">sharing</a> docs.</p>
     </div>
   </section>
-  <EndCta />
+  <Close />
 </Base>
