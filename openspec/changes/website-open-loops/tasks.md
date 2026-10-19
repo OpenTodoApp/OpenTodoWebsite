@@ -19,9 +19,9 @@
 
 ## 4. Links in
 
-- [ ] 4.1 Add Open Loops to the Resources menu, the phone menu and the footer through `methodPage()`; verify the 0.7.0 build has no link to `/open-loops/` (`npm run check:links`, `tests/no-js.spec.ts`) and the preview build has them
-- [ ] 4.2 Add the conditional links from the GTD guide, the weekly review template, the quiz results and Help; verify the help link test and the link check on both builds
+- [x] 4.1 Add Open Loops to the Resources menu, the phone menu and the footer through `methodPage()`; verify the 0.7.0 build has no link to `/open-loops/` (`npm run check:links`, `tests/no-js.spec.ts`) and the preview build has them
+- [x] 4.2 Add the conditional links from the GTD guide, the weekly review template, the quiz results and Help; verify the help link test and the link check on both builds
 
 ## 5. Integration
 
-- [ ] 5.1 On the 0.7.0 build, run `npm run build`, `npm run check`, `npm test`, `npm run check:dist` and `npm run test:browser`; all pass and no `/open-loops/` page exists. On the preview build of a local 0.8.0 bundle, run the same checks; all pass and the page and its links exist. Record both in the pull request
+- [x] 5.1 On the 0.7.0 build, run `npm run build`, `npm run check`, `npm test`, `npm run check:dist` and `npm run test:browser`; all pass and no `/open-loops/` page exists. On the preview build of a local 0.8.0 bundle, run the same checks; all pass and the page and its links exist. Record both in the pull request
