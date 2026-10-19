@@ -15,7 +15,9 @@ export const LANGS = {
 export const OTHER_LANGS = Object.keys(LANGS).filter((l) => l !== DEFAULT_LANG);
 
 /** The English pages that exist in every language, by their English path. */
-export const TRANSLATED_PAGES = ['/', '/cost/', '/faq/'];
+// /open-loops/ is translated while the pinned release ships the method (website-open-loops);
+// callers pass the languages its vocabulary has, so the page is only offered where it exists.
+export const TRANSLATED_PAGES = ['/', '/cost/', '/faq/', '/open-loops/'];
 
 /** Splits a pathname into its language and the English path: /de/cost/ -> ['de', '/cost/'], /about/ -> ['en', '/about/']. */
 export function splitLang(pathname) {
@@ -27,9 +29,13 @@ export function splitLang(pathname) {
 /** The path of an English page in a language: ('/cost/', 'de') -> /de/cost/; English stays unprefixed. */
 export const localePath = (englishPath, lang) => (lang === DEFAULT_LANG ? englishPath : `/${lang}${englishPath === '/' ? '/' : englishPath}`);
 
-/** Every language's version of a page, or null when the page is English only. */
-export function alternatesFor(pathname) {
+/**
+ * Every language's version of a page, or null when the page is English only.
+ * `available` limits a page to some languages: { '/open-loops/': ['en', 'de', ...] }.
+ */
+export function alternatesFor(pathname, available = {}) {
   const [, english] = splitLang(pathname);
   if (!TRANSLATED_PAGES.includes(english)) return null;
-  return Object.keys(LANGS).map((lang) => ({ lang, href: localePath(english, lang), ...LANGS[lang] }));
+  const only = available[english];
+  return Object.keys(LANGS).filter((lang) => !only || only.includes(lang)).map((lang) => ({ lang, href: localePath(english, lang), ...LANGS[lang] }));
 }

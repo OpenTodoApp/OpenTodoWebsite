@@ -3,7 +3,7 @@
 // from a released site bundle").
 import fs from 'node:fs';
 import path from 'node:path';
-import { docExistsIn, docTitleIn, normalizeChangelog, normalizeManifest, resolveBundle } from '../../scripts/lib/bundle.mjs';
+import { docExistsIn, docTitleIn, readMethod, normalizeChangelog, normalizeManifest, resolveBundle } from '../../scripts/lib/bundle.mjs';
 
 export interface Shot { file: string; width?: number; height?: number }
 export interface Manifest {
@@ -49,3 +49,29 @@ export const canImport = (format: string | undefined) => !!format && manifest.im
 
 /** The tag shown to visitors, e.g. "v0.3.0". */
 export const versionTag = manifest.tag ?? `v${manifest.version}`;
+
+/** One term of the Open Loops vocabulary (method.json schema 1). */
+export interface MethodTerm { id: string; name: Record<string, string>; description: Record<string, string>; route?: string; keys?: string }
+export interface Method {
+  schema: number; name: string; languages: string[]; tagline: Record<string, string>;
+  moves: MethodTerm[]; principles: MethodTerm[]; places: MethodTerm[]; rhythms: MethodTerm[]; horizons: MethodTerm[];
+}
+
+/** The Open Loops vocabulary of the pinned release, or null when it does not ship the method (website-open-loops D1). */
+export const method: Method | null = readMethod(bundle.dir, manifest.facts);
+
+/** A term's name and description in `lang`, English when the bundle lacks that language. */
+export const term = (t: MethodTerm, lang = 'en') => ({ name: t.name[lang] ?? t.name.en, description: t.description[lang] ?? t.description.en });
+
+/** The tagline in `lang`. */
+export const tagline = (lang = 'en') => (method ? method.tagline[lang] ?? method.tagline.en : '');
+
+/**
+ * The Place or rhythm whose screen serves a move (website-open-loops D4): a move's route
+ * that is "/<id>" of a Place, or equals a rhythm's route. Undefined otherwise, so no
+ * screen name is invented.
+ */
+export function screenOf(move: MethodTerm): MethodTerm | undefined {
+  if (!method || !move.route) return undefined;
+  return method.places.find((p) => `/${p.id}` === move.route) ?? method.rhythms.find((r) => r.route === move.route);
+}

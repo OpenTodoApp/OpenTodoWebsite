@@ -7,8 +7,10 @@ import { sitePages } from './pages';
 // Guides and Templates join once published, Blog once a post is (website-blog spec).
 const CONTENT = fs.existsSync('dist/guides/index.html') && fs.existsSync('dist/templates/index.html') ? ['Guides', 'Templates'] : [];
 const BLOG = fs.existsSync('dist/blog/index.html') ? ['Blog'] : [];
+// Open Loops joins once the pinned release ships the method (website-open-loops).
+const METHOD = fs.existsSync('dist/open-loops/index.html') ? ['Open Loops'] : [];
 const PRODUCT = ['Features', 'Compare', 'What it costs', 'Self-host', 'Docs'];
-const RESOURCES = ['Help', ...CONTENT, 'Switch from another app', 'Developers', ...BLOG, "What's new"];
+const RESOURCES = ['Help', ...CONTENT, ...METHOD, 'Switch from another app', 'Developers', ...BLOG, "What's new"];
 const MENU = [...PRODUCT, ...RESOURCES];
 
 test.use({ javaScriptEnabled: false, viewport: { width: 360, height: 800 } });

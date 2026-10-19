@@ -5,6 +5,7 @@ import { versionTag } from '../lib/bundle';
 import { getCollection } from 'astro:content';
 import { publishedPosts } from '../lib/blog';
 import { footerColumns } from '../lib/nav';
+import { pageLanguages } from '../lib/nav';
 import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
 interface Props { lang?: keyof typeof LANGS }
 const { lang = DEFAULT_LANG } = Astro.props;
@@ -15,7 +16,7 @@ const content = (await published('templates')) && (await published('guides'));
 // Four columns from the shared navigation model (website-navigation-and-home D1).
 const columns = footerColumns({ content, blog });
 // This page in every language when it is translated; otherwise each language's home page (website-languages D4).
-const languages = alternatesFor(Astro.url.pathname) ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
+const languages = alternatesFor(Astro.url.pathname, pageLanguages()) ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">

@@ -41,3 +41,9 @@ test('paths split and join by language', () => {
   assert.equal(alts[0].href, '/faq/');
   assert.ok(TRANSLATED_PAGES.includes('/'));
 });
+
+test('a page limited to some languages offers only those', () => {
+  const alts = alternatesFor('/de/open-loops/', { '/open-loops/': ['en', 'de', 'it'] });
+  assert.deepEqual(alts.map((a) => a.lang), ['en', 'de', 'it']);
+  assert.equal(alternatesFor('/open-loops/').length, Object.keys(LANGS).length);
+});

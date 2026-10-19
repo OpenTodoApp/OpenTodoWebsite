@@ -1,0 +1,22 @@
+---
+// /<lang>/open-loops/ (website-open-loops D2, D7): the method page in each site language
+// that the pinned method.json lists; the method's words come from it, the rest from
+// the dictionary.
+import Base from '../../layouts/Base.astro';
+import LangNote from '../../components/LangNote.astro';
+import OpenLoopsPage from '../../components/OpenLoopsPage.astro';
+import { OTHER_LANGS } from '../../i18n/index.mjs';
+import { DICT } from '../../i18n/dict.mjs';
+import { method } from '../../lib/bundle';
+
+export function getStaticPaths() {
+  return method ? OTHER_LANGS.filter((lang) => method!.languages.includes(lang)).map((lang) => ({ params: { lang } })) : [];
+}
+const lang = Astro.params.lang as keyof typeof DICT;
+const t = DICT[lang];
+---
+<Base title={t.method.title} description={t.method.description} lang={lang}>
+  <OpenLoopsPage lang={lang} copy={{ ...t.method.copy, fullScreen: t.common.fullScreen, selfHost: t.common.selfHost }}>
+    <LangNote slot="after-head" lang={lang} />
+  </OpenLoopsPage>
+</Base>

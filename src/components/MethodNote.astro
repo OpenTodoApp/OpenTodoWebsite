@@ -1,0 +1,10 @@
+---
+// A one-line pointer to the Open Loops page (website-open-loops D8), rendered only
+// while the pinned release ships the method, so it never links a page that was not built.
+import Icon from './Icon.astro';
+import { methodPage } from '../lib/nav';
+const href = methodPage();
+---
+{href && (
+  <p class="method-note"><Icon name="repeat" size={18} /> <span>OpenTodo has a method of its own, inspired by GTD: <a href={href}>Open Loops</a>, five moves from catching a thought to reviewing the week.</span></p>
+)}

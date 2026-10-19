@@ -89,6 +89,34 @@ export function docTitleIn(dir, href) {
   return title || null;
 }
 
+/** The method.json schema versions this site can read (website-open-loops D1). */
+export const METHOD_SCHEMAS = [1];
+export const METHOD_MOVES = ['catch', 'clarify', 'place', 'do', 'review'];
+
+/**
+ * The Open Loops vocabulary of the bundle in `dir` (website-open-loops D1): null when
+ * the bundle does not ship the method (no method.json, or the manifest's `method` fact
+ * does not list `vocabulary`), so the page and every link to it are left out. Fails
+ * on a schema this site does not know or a missing move, naming the field.
+ */
+export function readMethod(dir, manifestFacts) {
+  const file = path.join(dir, 'method.json');
+  const features = manifestFacts?.method;
+  if (!fs.existsSync(file) || !Array.isArray(features) || !features.includes('vocabulary')) return null;
+  const m = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!METHOD_SCHEMAS.includes(m.schema)) throw new Error(`method.json: schema ${m.schema} is not one this site reads (${METHOD_SCHEMAS.join(', ')})`);
+  for (const g of ['languages', 'moves', 'principles', 'places', 'rhythms', 'horizons']) {
+    if (!Array.isArray(m[g])) throw new Error(`method.json: ${g} is missing`);
+  }
+  if (!m.tagline?.en) throw new Error('method.json: tagline.en is missing');
+  const ids = m.moves.map((x) => x.id);
+  for (const id of METHOD_MOVES) if (!ids.includes(id)) throw new Error(`method.json: moves has no move with the id "${id}"`);
+  for (const g of ['moves', 'principles', 'places', 'rhythms', 'horizons']) {
+    for (const x of m[g]) if (!x.name?.en || !x.description?.en) throw new Error(`method.json: ${g}.${x.id} has no English name or description`);
+  }
+  return m;
+}
+
 const IMAGE = 'ghcr.io/pixari/opentodo';
 
 /**

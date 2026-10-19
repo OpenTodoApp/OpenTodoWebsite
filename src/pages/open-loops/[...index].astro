@@ -1,0 +1,15 @@
+---
+// /open-loops/ (website-open-loops): the app's own method, built only when the pinned
+// release ships it (D2), so it goes live with the bundle that brings it. A rest route,
+// because Astro builds a static page whatever its getStaticPaths returns.
+import Base from '../../layouts/Base.astro';
+import OpenLoopsPage from '../../components/OpenLoopsPage.astro';
+import { method } from '../../lib/bundle';
+
+export function getStaticPaths() {
+  return method ? [{ params: { index: undefined } }] : [];
+}
+---
+<Base title="Open Loops, a calm method for everything on your mind" description="OpenTodo's own method, inspired by GTD: catch, clarify, place, do and review. Five moves, seven principles, the Places a task can live and the reviews that keep it trustworthy.">
+  <OpenLoopsPage />
+</Base>

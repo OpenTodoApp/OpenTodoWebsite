@@ -1,0 +1,110 @@
+---
+// The Open Loops page (website-open-loops D5, D7): every name and description of the
+// method's terms comes from the pinned bundle's method.json in `lang`; the sentences
+// around them come from `copy` (English here, the dictionaries for translations).
+// Each section links its chapter of the method docs in the pinned release.
+import Icon from './Icon.astro';
+import LoopDiagram from './LoopDiagram.astro';
+import ScreenshotFrame from './ScreenshotFrame.astro';
+import Close from './sections/Close.astro';
+import Statement from './sections/Statement.astro';
+import Split from './sections/Split.astro';
+import Showcase from './sections/Showcase.astro';
+import Catalogue from './sections/Catalogue.astro';
+import { method, tagline, term } from '../lib/bundle';
+import { SITE } from '../lib/site';
+
+export interface OpenLoopsCopy {
+  kicker: string; lede: string; demo: string; readMethod: string;
+  loopKicker: string; loopLede: string; loopDocs: string;
+  shortcut: string; where: string; inDocs: string; choose: string;
+  principlesTitle: string; principlesDocs: string;
+  placesTitle: string; placesLede: string; placesDocs: string; loopHomeAlt: string; fullScreen: string;
+  rhythmsTitle: string; rhythmsLede: string; horizonsTitle: string; rhythmsDocs: string; horizonsDocs: string;
+  prominentTitle: string; prominentLede: string; modes: string[]; setupDocs: string;
+  gtdTitle: string; gtdLede: string; gtdDocs: string; gtdGuide: string;
+  closeTitle: string; closeLede: string; selfHost: string;
+}
+export const EN: OpenLoopsCopy = {
+  kicker: 'Open Loops',
+  lede: 'An open loop is anything that has your attention and has not been dealt with: a call to return, an idea for the garden, the tax form on the desk. Open Loops is OpenTodo\'s own method for closing them, inspired by GTD and simplified. Use as much of it as you like; the app works the same without it.',
+  demo: 'Try it in the demo', readMethod: 'Read the method',
+  loopKicker: 'Five moves', loopLede: 'Each move hands its work to the next, and the review brings you back to the start.', loopDocs: 'The five moves in the docs',
+  shortcut: 'Shortcut', where: 'Where', inDocs: 'In the docs', choose: 'Choose a move to see what it does.',
+  principlesTitle: 'Seven principles', principlesDocs: 'The principles in the docs',
+  placesTitle: 'Every task has one Place.', placesLede: 'The Place says what a task is waiting for: a decision, a moment, a person, or just you. Turn the method on fully and the sidebar is arranged by them, under a Loop home that counts what needs you.', placesDocs: 'Places in the docs',
+  loopHomeAlt: 'The Loop home: the sidebar shows Loop home, Inbox, Today, Next, Waiting and Review, beside the Catch and Clarify tiles.', fullScreen: 'See the full screen',
+  rhythmsTitle: 'Review on a rhythm.', rhythmsLede: 'A system works only while you trust it. Three reviews, each short enough to actually do, look at your work from three heights.', horizonsTitle: 'Three heights', rhythmsDocs: 'Rhythms in the docs', horizonsDocs: 'Horizons in the docs',
+  prominentTitle: 'As much of it as you like.', prominentLede: 'In Settings you choose how much the app shows the method. The choice syncs to all your devices and changes no task.',
+  modes: ['Lists only: OpenTodo as a plain task app, with no method words.', 'Companion: your sidebar stays as it is; screens name the move they serve and link to the method.', 'Open Loops first: the Loop home opens first and the sidebar shows the Places.'],
+  setupDocs: 'Set up in ten minutes',
+  gtdTitle: 'Coming from GTD?', gtdLede: 'Open Loops keeps the core of Getting Things Done: capture everything, clarify once, organise by what the next step needs, review weekly. It is simpler in places, with three horizons instead of six and contexts as labels that start with @, and it is not affiliated with David Allen or the David Allen Company.', gtdDocs: 'The words you know, and where they live', gtdGuide: 'Getting Things Done, the guide',
+  closeTitle: 'Close a few loops today.', closeLede: 'Try the method in the demo, or turn it on in your own server\'s settings.', selfHost: 'Self-host',
+};
+
+interface Props { lang?: string; copy?: OpenLoopsCopy }
+const { lang = 'en', copy: c = EN } = Astro.props;
+const m = method!;
+const moveNames = m.moves.map((x) => term(x, lang).name);
+const docs = (p: string) => `/docs/method/${p}/`;
+---
+<Statement page id="open-loops" kicker={c.kicker} title={tagline(lang)} lede={c.lede}>
+  <div class="cta-row">
+    <a class="btn btn-primary" href={SITE.demo}>{c.demo} <Icon name="arrow-right" size={18} /></a>
+    <a class="btn btn-secondary" href={docs('overview')}><Icon name="book-open" size={18} /> {c.readMethod}</a>
+  </div>
+</Statement>
+
+<slot name="after-head" />
+
+<Showcase id="loop" alt kicker={c.loopKicker} title={`${moveNames.join(', ')}.`} lede={c.loopLede}>
+  <LoopDiagram lang={lang} labels={{ shortcut: c.shortcut, screen: c.where, docs: c.inDocs, choose: c.choose }} />
+  <p slot="after" class="catalogue-after"><a class="link-arrow" href={docs('overview')}>{c.loopDocs} <Icon name="arrow-right" size={16} /></a></p>
+</Showcase>
+
+<Catalogue id="principles" title={c.principlesTitle} bare>
+  <ol class="principles">
+    {m.principles.map((p) => <li><strong>{term(p, lang).name}</strong> <span>{term(p, lang).description}</span></li>)}
+  </ol>
+  <p slot="after"><a class="link-arrow" href={docs('overview')}>{c.principlesDocs} <Icon name="arrow-right" size={16} /></a></p>
+</Catalogue>
+
+<Split id="places" alt title={c.placesTitle} lede={c.placesLede}>
+  <dl class="fine-list">
+    {m.places.map((p) => <div><dt>{term(p, lang).name}</dt><dd>{term(p, lang).description}</dd></div>)}
+  </dl>
+  <p><a class="link-arrow" href={docs('places')}>{c.placesDocs} <Icon name="arrow-right" size={16} /></a></p>
+  <ScreenshotFrame slot="media" docs="loop" crop="loop" alt={c.loopHomeAlt} fullLabel={c.fullScreen} />
+</Split>
+
+<Split id="rhythms" title={c.rhythmsTitle} lede={c.rhythmsLede}>
+  <dl class="fine-list">
+    {m.rhythms.map((r) => <div><dt>{term(r, lang).name}</dt><dd>{term(r, lang).description}</dd></div>)}
+  </dl>
+  <p><a class="link-arrow" href={docs('rhythms')}>{c.rhythmsDocs} <Icon name="arrow-right" size={16} /></a></p>
+  <div slot="media" class="aside-note">
+    <h3>{c.horizonsTitle}</h3>
+    <dl class="fine-list">
+      {m.horizons.map((h) => <div><dt>{term(h, lang).name}</dt><dd>{term(h, lang).description}</dd></div>)}
+    </dl>
+    <p><a href={docs('horizons')}>{c.horizonsDocs}</a></p>
+  </div>
+</Split>
+
+<Statement id="prominent" alt title={c.prominentTitle} lede={c.prominentLede}>
+  <ul class="checks">
+    {c.modes.map((x) => <li><Icon name="check" size={18} /> {x}</li>)}
+  </ul>
+  <p><a class="link-arrow" href={docs('set-up')}>{c.setupDocs} <Icon name="arrow-right" size={16} /></a></p>
+</Statement>
+
+<Statement id="gtd" title={c.gtdTitle} lede={c.gtdLede}>
+  <p class="hero-links"><a class="link-arrow" href={docs('coming-from-gtd')}>{c.gtdDocs} <Icon name="arrow-right" size={16} /></a> <a class="link-arrow" href="/guides/getting-things-done/">{c.gtdGuide} <Icon name="arrow-right" size={16} /></a></p>
+</Statement>
+
+<Close title={c.closeTitle} lede={c.closeLede}>
+  <Fragment slot="actions">
+    <a class="btn btn-primary" href={SITE.demo}>{c.demo} <Icon name="arrow-right" size={18} /></a>
+    <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> {c.selfHost}</a>
+  </Fragment>
+</Close>

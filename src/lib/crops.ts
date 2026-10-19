@@ -7,6 +7,8 @@ export interface Crop { x: number; y: number; w: number; h: number }
 export const crops: Record<string, Crop> = {
   // The assistant panel and its proposed change set, right of the Inbox.
   assistant: { x: 62.5, y: 0, w: 37.5, h: 66 },
+  // The Loop home (docs image): the sidebar arranged by the Places, and the Catch and Clarify tiles.
+  loop: { x: 0, y: 0, w: 70, h: 64 },
   // The Today list, overdue first, without the sidebar.
   today: { x: 30, y: 3, w: 56, h: 60 },
 };

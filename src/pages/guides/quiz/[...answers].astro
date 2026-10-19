@@ -1,5 +1,6 @@
 ---
 // /guides/quiz/<a1>/ shows the second question; /guides/quiz/<a1>/<a2>/ the result.
+import MethodNote from '../../../components/MethodNote.astro';
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import Close from '../../../components/sections/Close.astro';
@@ -62,6 +63,7 @@ const howtos = isLeaf(node) ? (await getCollection('howto')).filter((h) => guide
             <ul class="grid grid-3 plain">{howtos.map((h) => <li><a class="card" href={`/how-to/${h.id}/`}><span class="card-icon"><Icon name="list-checks" size={22} /></span><h3>{h.data.title}</h3><p>{h.data.summary}</p></a></li>)}</ul>
           </>
         )}
+        <MethodNote />
       </div>
     </section>
   )}

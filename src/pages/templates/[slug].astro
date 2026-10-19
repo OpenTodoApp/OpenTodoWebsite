@@ -2,6 +2,7 @@
 // A template page (website-content spec "Template gallery", website-templates-and-methods
 // D2): description, screenshot, what is inside (rendered from the template itself),
 // how to use it, how to make it yours, import steps, byline, similar templates.
+import MethodNote from '../../components/MethodNote.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Close from '../../components/sections/Close.astro';
@@ -77,6 +78,7 @@ const meta = (t: Task) => [t.recurrence && `repeats ${t.recurrence}`, t.estimate
         <ol class="steps">{d.howToUse.map((x) => <li>{x}</li>)}</ol>
         <h2 style="margin-top: 2rem">Make it yours</h2>
         <ul class="checks">{d.makeItYours.map((x) => <li><Icon name="pencil" size={16} />{x}</li>)}</ul>
+        {entry.id === 'weekly-review' && <MethodNote />}
         <p class="byline"><span class="avatar" aria-hidden="true">{author.name.split(' ').map((w) => w[0]).join('').slice(0, 2)}</span><span>Template by <a href={author.url}>{author.name}</a>. {author.bio}</span></p>
       </div>
       <div>

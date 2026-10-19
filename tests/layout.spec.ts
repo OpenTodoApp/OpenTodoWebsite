@@ -87,7 +87,7 @@ for (const width of [768, 1024, 1280, 1359, 1360, 1440, 1920]) {
 // at most two, a kicker only on pages with three sections or more, and product shots
 // in Showcase and Split sections shown large enough to read (or cropped).
 const TYPES = ['showcase', 'statement', 'split', 'catalogue', 'close'];
-const marketing = sitePages().filter((u) => /^\/((de|fr|it|es|pt)\/)?$|^\/((de|fr|it|es|pt)\/)?cost\/$|^\/(self-host|developers|about|capture)\/$|^\/vs\/[^/]+\/$/.test(u));
+const marketing = sitePages().filter((u) => /^\/((de|fr|it|es|pt)\/)?(open-loops\/)?$|^\/((de|fr|it|es|pt)\/)?cost\/$|^\/(self-host|developers|about|capture)\/$|^\/vs\/[^/]+\/$/.test(u));
 test.describe('composition at 1280px', () => {
   test.use({ viewport: { width: 1280, height: 900 } });
   for (const url of marketing) {

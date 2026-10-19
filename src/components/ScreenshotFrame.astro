@@ -10,7 +10,10 @@ import { manifest } from '../lib/bundle';
 import { crops, type Crop } from '../lib/crops';
 
 interface Props {
-  shot: string;
+  /** A screenshot of the manifest; or, with `docs`, leave empty. */
+  shot?: string;
+  /** A light/dark pair the docs ship as docs/images/<docs>-light.webp and -dark.webp (website-open-loops D6). */
+  docs?: string;
   alt: string;
   frame?: 'browser' | 'phone' | 'none';
   caption?: string;
@@ -38,9 +41,17 @@ const byName = (name: string) => {
   return files[key].default;
 };
 
-const light = byName(shot);
-const darkName = manifest.darkVariants?.[shot];
-const dark = darkName ? byName(darkName) : undefined;
+const docsFiles = import.meta.glob<{ default: ImageMetadata }>('@bundle/docs/images/*-{light,dark}.webp', { eager: true });
+const byDocs = (name: string) => {
+  const key = Object.keys(docsFiles).find((k) => k.endsWith(`/docs/images/${name}.webp`));
+  if (!key) throw new Error(`Docs image ${name}.webp is missing from the bundle's docs/images/`);
+  return docsFiles[key].default;
+};
+const docs = Astro.props.docs;
+if (!shot && !docs) throw new Error('ScreenshotFrame needs a shot or a docs image');
+const light = docs ? byDocs(`${docs}-light`) : byName(shot!);
+const darkName = docs ? undefined : manifest.darkVariants?.[shot!];
+const dark = docs ? byDocs(`${docs}-dark`) : darkName ? byName(darkName) : undefined;
 const widths = (frame === 'phone' ? [280, 420, 560] : [480, 800, 1200, 1600, 2160]).filter((w) => w <= light.width);
 // A crop shows the image larger than its slot by 100 / box width.
 const zoom = box ? 100 / box.w : 1;

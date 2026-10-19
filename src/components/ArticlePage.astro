@@ -5,6 +5,7 @@ import { docTitle } from '../lib/bundle';
 import { getEntries, render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Close from './sections/Close.astro';
+import MethodNote from './MethodNote.astro';
 import Icon from './Icon.astro';
 import JsonLd from './JsonLd.astro';
 import { SITE } from '../lib/site';
@@ -61,5 +62,6 @@ const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', mo
       </div>
     </section>
   )}
+  {entry.collection === 'guides' && entry.id === 'getting-things-done' && <div class="wrap narrow" style="padding-bottom: 2.5rem"><MethodNote /></div>}
   <Close />
 </Base>

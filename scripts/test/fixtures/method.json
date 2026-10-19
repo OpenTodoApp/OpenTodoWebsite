@@ -1,0 +1,518 @@
+{
+  "schema": 1,
+  "name": "Open Loops",
+  "languages": [
+    "en",
+    "de",
+    "fr",
+    "es",
+    "it",
+    "pt"
+  ],
+  "tagline": {
+    "en": "Everything that has your attention gets a home.",
+    "de": "Alles, was deine Aufmerksamkeit hat, bekommt einen Platz.",
+    "fr": "Tout ce qui retient votre attention trouve sa place.",
+    "es": "Todo lo que ocupa tu atención tiene un lugar.",
+    "it": "Tutto ciò che ha la tua attenzione trova un posto.",
+    "pt": "Tudo o que ocupa sua atenção ganha um lugar."
+  },
+  "moves": [
+    {
+      "id": "catch",
+      "name": {
+        "en": "Catch",
+        "de": "Erfassen",
+        "fr": "Capturer",
+        "es": "Capturar",
+        "it": "Cattura",
+        "pt": "Capturar"
+      },
+      "description": {
+        "en": "Get whatever is on your mind into the Inbox the moment it appears.",
+        "de": "Bring alles, was dir durch den Kopf geht, sofort in den Eingang.",
+        "fr": "Mettez dans la Boîte de réception tout ce qui vous vient à l’esprit, dès qu’il apparaît.",
+        "es": "Lleva a la Bandeja de entrada lo que tengas en mente en cuanto aparezca.",
+        "it": "Metti in In arrivo tutto ciò che hai in mente appena compare.",
+        "pt": "Leve para a Caixa de entrada o que estiver na sua cabeça assim que surgir."
+      },
+      "route": "/inbox",
+      "keys": "q"
+    },
+    {
+      "id": "clarify",
+      "name": {
+        "en": "Clarify",
+        "de": "Klären",
+        "fr": "Clarifier",
+        "es": "Aclarar",
+        "it": "Chiarisci",
+        "pt": "Esclarecer"
+      },
+      "description": {
+        "en": "Decide once what each item is and what it needs.",
+        "de": "Entscheide einmal, was jeder Eintrag ist und was er braucht.",
+        "fr": "Décidez une fois ce qu’est chaque élément et ce qu’il demande.",
+        "es": "Decide una vez qué es cada elemento y qué necesita.",
+        "it": "Decidi una volta cos’è ogni elemento e cosa richiede.",
+        "pt": "Decida uma vez o que cada item é e do que precisa."
+      },
+      "route": "/triage",
+      "keys": "g p"
+    },
+    {
+      "id": "place",
+      "name": {
+        "en": "Place",
+        "de": "Einordnen",
+        "fr": "Placer",
+        "es": "Ubicar",
+        "it": "Colloca",
+        "pt": "Organizar"
+      },
+      "description": {
+        "en": "Give every item one home: a project, a date, Waiting or Someday.",
+        "de": "Gib jedem Eintrag einen Platz: ein Projekt, ein Datum, Wartend oder Irgendwann.",
+        "fr": "Donnez à chaque élément une place : un projet, une date, En attente ou Un jour.",
+        "es": "Da a cada elemento un lugar: un proyecto, una fecha, En espera o Algún día.",
+        "it": "Dai a ogni elemento un posto: un progetto, una data, In attesa o Un giorno.",
+        "pt": "Dê a cada item um lugar: um projeto, uma data, Aguardando ou Algum dia."
+      },
+      "route": "/waiting",
+      "keys": "g Shift+W"
+    },
+    {
+      "id": "do",
+      "name": {
+        "en": "Do",
+        "de": "Tun",
+        "fr": "Agir",
+        "es": "Hacer",
+        "it": "Fai",
+        "pt": "Fazer"
+      },
+      "description": {
+        "en": "Work from your next actions, by context, one step at a time.",
+        "de": "Arbeite mit deinen nächsten Schritten, nach Kontext, einen nach dem anderen.",
+        "fr": "Travaillez à partir de vos prochaines actions, par contexte, une étape à la fois.",
+        "es": "Trabaja con tus siguientes acciones, por contexto, paso a paso.",
+        "it": "Lavora dalle tue prossime azioni, per contesto, un passo alla volta.",
+        "pt": "Trabalhe a partir das suas próximas ações, por contexto, um passo de cada vez."
+      },
+      "route": "/next",
+      "keys": "g Shift+N"
+    },
+    {
+      "id": "review",
+      "name": {
+        "en": "Review",
+        "de": "Rückblick",
+        "fr": "Revue",
+        "es": "Revisión",
+        "it": "Revisione",
+        "pt": "Revisão"
+      },
+      "description": {
+        "en": "Look over the whole system on a rhythm, so you can trust it.",
+        "de": "Sieh das ganze System in einem festen Rhythmus durch, damit du ihm vertrauen kannst.",
+        "fr": "Passez tout le système en revue à un rythme régulier, pour pouvoir lui faire confiance.",
+        "es": "Repasa todo el sistema con un ritmo, para poder confiar en él.",
+        "it": "Rivedi tutto il sistema con un ritmo, per poterti fidare.",
+        "pt": "Revise todo o sistema em um ritmo, para poder confiar nele."
+      },
+      "route": "/review",
+      "keys": "g r"
+    }
+  ],
+  "principles": [
+    {
+      "id": "catch-everything",
+      "name": {
+        "en": "Catch everything",
+        "de": "Alles erfassen",
+        "fr": "Tout capturer",
+        "es": "Capturarlo todo",
+        "it": "Cattura tutto",
+        "pt": "Capture tudo"
+      },
+      "description": {
+        "en": "If it is on your mind, it goes in the Inbox.",
+        "de": "Was dir durch den Kopf geht, kommt in den Eingang.",
+        "fr": "Ce qui vous occupe l’esprit va dans la Boîte de réception.",
+        "es": "Si lo tienes en mente, va a la Bandeja de entrada.",
+        "it": "Se ce l’hai in mente, va in In arrivo.",
+        "pt": "Se está na sua cabeça, vai para a Caixa de entrada."
+      }
+    },
+    {
+      "id": "decide-once",
+      "name": {
+        "en": "Decide once",
+        "de": "Einmal entscheiden",
+        "fr": "Décider une fois",
+        "es": "Decidir una vez",
+        "it": "Decidi una volta",
+        "pt": "Decida uma vez"
+      },
+      "description": {
+        "en": "Each item gets one decision, the first time you look at it.",
+        "de": "Jeder Eintrag bekommt eine Entscheidung, beim ersten Hinsehen.",
+        "fr": "Chaque élément reçoit une décision, la première fois que vous le regardez.",
+        "es": "Cada elemento recibe una decisión, la primera vez que lo miras.",
+        "it": "Ogni elemento riceve una decisione, la prima volta che lo guardi.",
+        "pt": "Cada item recebe uma decisão, na primeira vez que você o olha."
+      }
+    },
+    {
+      "id": "do-it-now",
+      "name": {
+        "en": "Do it if it is quicker than filing it",
+        "de": "Sofort tun, wenn es schneller geht als Ablegen",
+        "fr": "Le faire s’il est plus rapide que de le classer",
+        "es": "Hazlo si es más rápido que archivarlo",
+        "it": "Fallo se è più veloce che archiviarlo",
+        "pt": "Faça se for mais rápido do que arquivar"
+      },
+      "description": {
+        "en": "A task of a minute or two is done on the spot, not filed.",
+        "de": "Eine Aufgabe von ein, zwei Minuten wird sofort erledigt, nicht abgelegt.",
+        "fr": "Une tâche d’une ou deux minutes se fait tout de suite, sans la classer.",
+        "es": "Una tarea de uno o dos minutos se hace en el momento, no se archiva.",
+        "it": "Un’attività di un minuto o due si fa subito, non si archivia.",
+        "pt": "Uma tarefa de um ou dois minutos é feita na hora, não arquivada."
+      }
+    },
+    {
+      "id": "one-next-step",
+      "name": {
+        "en": "One next step",
+        "de": "Ein nächster Schritt",
+        "fr": "Une prochaine étape",
+        "es": "Un siguiente paso",
+        "it": "Un prossimo passo",
+        "pt": "Um próximo passo"
+      },
+      "description": {
+        "en": "Every project always shows its very next action.",
+        "de": "Jedes Projekt zeigt immer seinen allernächsten Schritt.",
+        "fr": "Chaque projet montre toujours sa toute prochaine action.",
+        "es": "Cada proyecto muestra siempre su siguiente acción.",
+        "it": "Ogni progetto mostra sempre la sua prossima azione.",
+        "pt": "Cada projeto sempre mostra sua próxima ação."
+      }
+    },
+    {
+      "id": "hide-what-is-not-now",
+      "name": {
+        "en": "Hide what is not now",
+        "de": "Verbergen, was nicht jetzt dran ist",
+        "fr": "Cacher ce qui n’est pas pour maintenant",
+        "es": "Oculta lo que no es para ahora",
+        "it": "Nascondi ciò che non è per ora",
+        "pt": "Esconda o que não é para agora"
+      },
+      "description": {
+        "en": "Deferred, waiting and someday items stay out of sight until they matter.",
+        "de": "Zurückgestellte, wartende und Irgendwann-Einträge bleiben verborgen, bis sie zählen.",
+        "fr": "Les éléments reportés, en attente ou « un jour » restent hors de vue jusqu’à ce qu’ils comptent.",
+        "es": "Lo aplazado, en espera o para algún día queda fuera de la vista hasta que importe.",
+        "it": "Gli elementi rimandati, in attesa o per un giorno restano nascosti finché non contano.",
+        "pt": "Itens adiados, aguardando ou para algum dia ficam fora de vista até importarem."
+      }
+    },
+    {
+      "id": "review-on-a-rhythm",
+      "name": {
+        "en": "Review on a rhythm",
+        "de": "Im Rhythmus zurückblicken",
+        "fr": "Faire la revue à un rythme régulier",
+        "es": "Revisar con un ritmo",
+        "it": "Rivedi con un ritmo",
+        "pt": "Revise em um ritmo"
+      },
+      "description": {
+        "en": "A system works only while you trust it, and you trust it by reviewing it.",
+        "de": "Ein System funktioniert nur, solange du ihm vertraust, und Vertrauen entsteht durch den Rückblick.",
+        "fr": "Un système ne fonctionne que si vous lui faites confiance, et cette confiance vient de la revue.",
+        "es": "Un sistema solo funciona mientras confías en él, y confías en él revisándolo.",
+        "it": "Un sistema funziona solo finché ti fidi, e ti fidi rivedendolo.",
+        "pt": "Um sistema só funciona enquanto você confia nele, e você confia revisando-o."
+      }
+    },
+    {
+      "id": "your-loops-your-server",
+      "name": {
+        "en": "Your loops, your server",
+        "de": "Deine Schleifen, dein Server",
+        "fr": "Vos boucles, votre serveur",
+        "es": "Tus bucles, tu servidor",
+        "it": "I tuoi cicli, il tuo server",
+        "pt": "Seus ciclos, seu servidor"
+      },
+      "description": {
+        "en": "Everything stays on your devices and your own server, private by design.",
+        "de": "Alles bleibt auf deinen Geräten und deinem eigenen Server, privat von Grund auf.",
+        "fr": "Tout reste sur vos appareils et votre propre serveur, privé par conception.",
+        "es": "Todo queda en tus dispositivos y tu propio servidor, privado por diseño.",
+        "it": "Tutto resta sui tuoi dispositivi e sul tuo server, privato per progettazione.",
+        "pt": "Tudo fica nos seus dispositivos e no seu próprio servidor, privado por design."
+      }
+    }
+  ],
+  "places": [
+    {
+      "id": "inbox",
+      "name": {
+        "en": "Inbox",
+        "de": "Eingang",
+        "fr": "Boîte de réception",
+        "es": "Bandeja de entrada",
+        "it": "In arrivo",
+        "pt": "Caixa de entrada"
+      },
+      "description": {
+        "en": "Caught, not yet decided.",
+        "de": "Erfasst, noch nicht entschieden.",
+        "fr": "Capturé, pas encore décidé.",
+        "es": "Capturado, aún sin decidir.",
+        "it": "Catturato, non ancora deciso.",
+        "pt": "Capturado, ainda não decidido."
+      }
+    },
+    {
+      "id": "next",
+      "name": {
+        "en": "Next",
+        "de": "Als Nächstes",
+        "fr": "Prochaines",
+        "es": "Siguientes",
+        "it": "Prossime",
+        "pt": "Próximas"
+      },
+      "description": {
+        "en": "The next action of every project, by context.",
+        "de": "Der nächste Schritt jedes Projekts, nach Kontext.",
+        "fr": "La prochaine action de chaque projet, par contexte.",
+        "es": "La siguiente acción de cada proyecto, por contexto.",
+        "it": "La prossima azione di ogni progetto, per contesto.",
+        "pt": "A próxima ação de cada projeto, por contexto."
+      }
+    },
+    {
+      "id": "waiting",
+      "name": {
+        "en": "Waiting",
+        "de": "Wartend",
+        "fr": "En attente",
+        "es": "En espera",
+        "it": "In attesa",
+        "pt": "Aguardando"
+      },
+      "description": {
+        "en": "Waits for someone or something else first.",
+        "de": "Wartet zuerst auf jemanden oder etwas anderes.",
+        "fr": "Attend d’abord quelqu’un ou autre chose.",
+        "es": "Espera primero a alguien o a otra cosa.",
+        "it": "Aspetta prima qualcuno o qualcos’altro.",
+        "pt": "Aguarda primeiro alguém ou outra coisa."
+      }
+    },
+    {
+      "id": "scheduled",
+      "name": {
+        "en": "Scheduled",
+        "de": "Geplant",
+        "fr": "Planifié",
+        "es": "Programado",
+        "it": "Pianificato",
+        "pt": "Agendado"
+      },
+      "description": {
+        "en": "Has a day: Today and Upcoming.",
+        "de": "Hat einen Tag: Heute und Demnächst.",
+        "fr": "A un jour : Aujourd’hui et À venir.",
+        "es": "Tiene un día: Hoy y Próximo.",
+        "it": "Ha un giorno: Oggi e In programma.",
+        "pt": "Tem um dia: Hoje e Em breve."
+      }
+    },
+    {
+      "id": "later",
+      "name": {
+        "en": "Later",
+        "de": "Später",
+        "fr": "Plus tard",
+        "es": "Más tarde",
+        "it": "Più tardi",
+        "pt": "Mais tarde"
+      },
+      "description": {
+        "en": "Not before its start date.",
+        "de": "Nicht vor dem Startdatum.",
+        "fr": "Pas avant sa date de début.",
+        "es": "No antes de su fecha de inicio.",
+        "it": "Non prima della data di inizio.",
+        "pt": "Não antes da data de início."
+      }
+    },
+    {
+      "id": "someday",
+      "name": {
+        "en": "Someday",
+        "de": "Irgendwann",
+        "fr": "Un jour",
+        "es": "Algún día",
+        "it": "Un giorno",
+        "pt": "Algum dia"
+      },
+      "description": {
+        "en": "Maybe one day: parked without a date.",
+        "de": "Vielleicht eines Tages: geparkt ohne Datum.",
+        "fr": "Peut-être un jour : mis de côté sans date.",
+        "es": "Quizá algún día: aparcado sin fecha.",
+        "it": "Forse un giorno: parcheggiato senza data.",
+        "pt": "Talvez um dia: estacionado sem data."
+      }
+    },
+    {
+      "id": "projects",
+      "name": {
+        "en": "Projects",
+        "de": "Projekte",
+        "fr": "Projets",
+        "es": "Proyectos",
+        "it": "Progetti",
+        "pt": "Projetos"
+      },
+      "description": {
+        "en": "Outcomes that take more than one step.",
+        "de": "Ergebnisse, die mehr als einen Schritt brauchen.",
+        "fr": "Des résultats qui demandent plus d’une étape.",
+        "es": "Resultados que requieren más de un paso.",
+        "it": "Risultati che richiedono più di un passo.",
+        "pt": "Resultados que exigem mais de um passo."
+      }
+    }
+  ],
+  "rhythms": [
+    {
+      "id": "daily",
+      "name": {
+        "en": "Daily check",
+        "de": "Tagescheck",
+        "fr": "Point du jour",
+        "es": "Repaso diario",
+        "it": "Controllo quotidiano",
+        "pt": "Revisão diária"
+      },
+      "description": {
+        "en": "Five minutes: the Inbox to zero, what is overdue, and today's focus.",
+        "de": "Fünf Minuten: den Eingang leeren, das Überfällige, der Fokus für heute.",
+        "fr": "Cinq minutes : la Boîte de réception à zéro, ce qui est en retard et le focus du jour.",
+        "es": "Cinco minutos: la Bandeja de entrada a cero, lo vencido y el foco de hoy.",
+        "it": "Cinque minuti: In arrivo a zero, ciò che è scaduto e il focus di oggi.",
+        "pt": "Cinco minutos: a Caixa de entrada zerada, o que está atrasado e o foco de hoje."
+      },
+      "route": "/review/daily"
+    },
+    {
+      "id": "weekly",
+      "name": {
+        "en": "Weekly review",
+        "de": "Wochenrückblick",
+        "fr": "Revue hebdomadaire",
+        "es": "Revisión semanal",
+        "it": "Revisione settimanale",
+        "pt": "Revisão semanal"
+      },
+      "description": {
+        "en": "Thirty minutes: get clear, get current, get creative.",
+        "de": "Dreißig Minuten: Klarheit schaffen, auf den Stand kommen, kreativ werden.",
+        "fr": "Trente minutes : faire le vide, se mettre à jour, être créatif.",
+        "es": "Treinta minutos: despejar, ponerte al día, ser creativo.",
+        "it": "Trenta minuti: fai chiarezza, aggiornati, sii creativo.",
+        "pt": "Trinta minutos: esvaziar a cabeça, pôr em dia, ser criativo."
+      },
+      "route": "/review"
+    },
+    {
+      "id": "monthly",
+      "name": {
+        "en": "Monthly look",
+        "de": "Monatsblick",
+        "fr": "Bilan du mois",
+        "es": "Repaso mensual",
+        "it": "Sguardo mensile",
+        "pt": "Olhar mensal"
+      },
+      "description": {
+        "en": "Twenty minutes: your areas, old someday items and the four-week trend.",
+        "de": "Zwanzig Minuten: deine Bereiche, alte Irgendwann-Einträge und der Vier-Wochen-Trend.",
+        "fr": "Vingt minutes : vos domaines, les vieux éléments « un jour » et la tendance sur quatre semaines.",
+        "es": "Veinte minutos: tus áreas, lo viejo de algún día y la tendencia de cuatro semanas.",
+        "it": "Venti minuti: le tue aree, i vecchi elementi per un giorno e l’andamento di quattro settimane.",
+        "pt": "Vinte minutos: suas áreas, itens antigos de algum dia e a tendência de quatro semanas."
+      },
+      "route": "/review/monthly"
+    }
+  ],
+  "horizons": [
+    {
+      "id": "step",
+      "name": {
+        "en": "Next step",
+        "de": "Nächster Schritt",
+        "fr": "Prochaine étape",
+        "es": "Siguiente paso",
+        "it": "Prossimo passo",
+        "pt": "Próximo passo"
+      },
+      "description": {
+        "en": "The very next physical action.",
+        "de": "Die allernächste konkrete Handlung.",
+        "fr": "La toute prochaine action concrète.",
+        "es": "La siguiente acción física concreta.",
+        "it": "La prossima azione concreta.",
+        "pt": "A próxima ação física concreta."
+      }
+    },
+    {
+      "id": "project",
+      "name": {
+        "en": "Project",
+        "de": "Projekt",
+        "fr": "Projet",
+        "es": "Proyecto",
+        "it": "Progetto",
+        "pt": "Projeto"
+      },
+      "description": {
+        "en": "An outcome you can finish.",
+        "de": "Ein Ergebnis, das du abschließen kannst.",
+        "fr": "Un résultat que vous pouvez atteindre.",
+        "es": "Un resultado que puedes terminar.",
+        "it": "Un risultato che puoi portare a termine.",
+        "pt": "Um resultado que você pode concluir."
+      }
+    },
+    {
+      "id": "area",
+      "name": {
+        "en": "Area",
+        "de": "Bereich",
+        "fr": "Domaine",
+        "es": "Área",
+        "it": "Area",
+        "pt": "Área"
+      },
+      "description": {
+        "en": "A part of life you keep up, made of projects.",
+        "de": "Ein Lebensbereich, den du pflegst, aus Projekten.",
+        "fr": "Une part de votre vie que vous entretenez, faite de projets.",
+        "es": "Una parte de tu vida que mantienes, hecha de proyectos.",
+        "it": "Una parte della vita che curi, fatta di progetti.",
+        "pt": "Uma parte da vida que você mantém, feita de projetos."
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { bundle } from '../lib/bundle';
 import { SITE } from '../lib/site';
 import { ogPathFor } from '../../scripts/lib/og.mjs';
+import { pageLanguages } from '../lib/nav';
 import { DEFAULT_LANG, LANGS, alternatesFor } from '../i18n/index.mjs';
 
 interface Props {
@@ -24,7 +25,7 @@ interface Props {
 }
 const { title, description, bareTitle = false, ogType = 'website', image, lang = DEFAULT_LANG } = Astro.props;
 // Pages that exist in every language point at each other (hreflang), English being the default.
-const alternates = alternatesFor(Astro.url.pathname);
+const alternates = alternatesFor(Astro.url.pathname, pageLanguages());
 // Every page gets its own social card (website-seo D2), drawn after the build from this
 // page's title and description; a page may pass its own image (a post's cover) instead.
 const ogImage = image ? new URL(image, SITE.url).href : `${SITE.url}${ogPathFor(Astro.url.pathname)}`;

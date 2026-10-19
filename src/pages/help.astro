@@ -11,6 +11,7 @@ import Icon from '../components/Icon.astro';
 import { SITE } from '../lib/site';
 import { TOPICS } from '../lib/topics.mjs';
 import { PLATFORMS } from '../lib/install';
+import { methodPage } from '../lib/nav';
 
 // Every how-to link here must exist; the link check catches a typo in dist.
 const howtos = new Set((await getCollection('howto', (e) => !e.data.draft)).map((e) => e.id));
@@ -30,6 +31,7 @@ const groups = [
       { q: 'make a task repeat', href: ht('make-a-task-repeat') },
       { q: 'set a reminder', href: ht('set-a-reminder') },
       { q: 'plan my day with Today and the calendar', href: ht('plan-your-day') },
+      ...(methodPage() ? [{ q: 'use the Open Loops method', href: methodPage()! }] : []),
       { q: 'save a filter as a view in the sidebar', href: ht('save-a-filter-as-a-view') },
       { q: 'turn a project into a board', href: ht('turn-a-project-into-a-board') },
       { q: 'share a list with my partner or my team', href: ht('share-a-project') },
