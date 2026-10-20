@@ -116,7 +116,7 @@ const fixes = [
       <div>
         <span class="card-icon"><Icon name="life-buoy" size={22} /></span>
         <h2 id="fix-title">Something is wrong</h2>
-        <p class="lede">The problems people actually hit, each with the things to check in order. If none of these fits, the person who runs your server can look at its logs, or you can <a href={`${SITE.appRepo}/issues`}>open an issue</a>.</p>
+        <p class="lede">The problems people actually hit, each with the things to check in order. If none of these fits, the person who runs your server can look at its logs, you can <a href={SITE.discord}>ask on Discord</a>, or you can <a href={`${SITE.appRepo}/issues`}>open an issue</a>.</p>
       </div>
       <ul class="wants">
         {fixes.map((i) => <li><a href={i.href}>{i.q} <Icon name="arrow-right" size={16} /></a></li>)}

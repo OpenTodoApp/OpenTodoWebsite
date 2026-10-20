@@ -7,6 +7,8 @@ export const SITE = {
   siteRepo: 'https://github.com/pixari/OpenTodoWebsite',
   // Optional support for the maintainer; nothing in the app is behind it.
   coffee: 'https://buymeacoffee.com/pixari',
+  // The community chat (website-discord-link): a plain link, nothing is loaded from Discord.
+  discord: 'https://discord.gg/Jmj7WuRQ',
   analytics: { src: 'https://analytics.pixari.dev/script.js', websiteId: 'c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92' },
 };
 
