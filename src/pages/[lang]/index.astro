@@ -4,6 +4,7 @@
 // screenshot stands in for the live miniature.
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
+import DiscordButton from '../../components/DiscordButton.astro';
 import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
 import LangNote from '../../components/LangNote.astro';
 import { OTHER_LANGS } from '../../i18n/index.mjs';
@@ -142,6 +143,20 @@ const reasonDocs = ['/docs/sharing/', '/docs/offline-and-sync/', '/docs/e2ee/', 
       </div>
       <ul class="checks">
         {h.how.checks.map((x) => <li><Icon name="check" size={18} /> {x}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="community" aria-labelledby="community-title">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">{h.community.kicker}</p>
+        <h2 id="community-title">{h.community.h2}</h2>
+        <p class="lede">{h.community.lede}</p>
+        <div class="cta-row"><DiscordButton label={h.community.button} /></div>
+      </div>
+      <ul class="checks">
+        {h.community.checks.map((x) => <li><Icon name="check" size={18} /> <span>{x}</span></li>)}
       </ul>
     </div>
   </section>

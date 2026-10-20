@@ -69,6 +69,7 @@ export default {
       cta2: 'Per chi sviluppa',
       checks: ['Si installa su telefoni e computer direttamente dal browser, senza store', 'I tuoi dati sono una cartella sul tuo server, con backup pianificati', 'Si collega ad app di calendario, email, webhook e a una riga di comando', 'Ogni funzione è descritta in una specifica aperta che puoi leggere'],
     },
+    community: {"kicker": "Community", "h2": "Passa a salutarci.", "lede": "OpenTodo nasce allo scoperto, e chi lo usa decide cosa viene dopo. Unisciti a noi su Discord: fai una domanda, mostra come organizzi le tue giornate o raccontaci cosa ti piacerebbe che facesse. Sono tutti benvenuti, che tu lo usi da un anno o stia ancora decidendo.", "button": "Unisciti a noi su Discord", "checks": ["Risposte da chi lo gestisce ogni giorno, e dal maintainer", "Configurazioni, modelli e abitudini condivisi da altre persone", "Le tue idee ascoltate presto, mentre la prossima versione prende forma"]},
     end: { title: 'Prima provalo, poi fallo tuo.', lede: 'La demo gira nel browser, niente da installare. Quando ti piace, mettilo sul tuo server e porta con te le tue attività.' },
   },
   cost: {

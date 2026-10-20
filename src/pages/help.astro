@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import Icon from '../components/Icon.astro';
+import DiscordButton from '../components/DiscordButton.astro';
 import { SITE } from '../lib/site';
 
 // Every how-to link here must exist; the link check catches a typo in dist.
@@ -117,6 +118,7 @@ const fixes = [
         <span class="card-icon"><Icon name="life-buoy" size={22} /></span>
         <h2 id="fix-title">Something is wrong</h2>
         <p class="lede">The problems people actually hit, each with the things to check in order. If none of these fits, the person who runs your server can look at its logs, you can <a href={SITE.discord}>ask on Discord</a>, or you can <a href={`${SITE.appRepo}/issues`}>open an issue</a>.</p>
+        <div class="cta-row"><DiscordButton /></div>
       </div>
       <ul class="wants">
         {fixes.map((i) => <li><a href={i.href}>{i.q} <Icon name="arrow-right" size={16} /></a></li>)}

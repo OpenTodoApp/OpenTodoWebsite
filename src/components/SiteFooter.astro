@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../lib/site';
 import CoffeeButton from './CoffeeButton.astro';
+import DiscordButton from './DiscordButton.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
 import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
@@ -17,7 +18,7 @@ const year = new Date().getFullYear();
       <div>
         <a class="brand" href="/"><img src="/assets/favicon.svg" width="24" height="24" alt="" /><span>OpenTodo</span></a>
         <p>An open-source task manager you host yourself. This site describes OpenTodo {versionTag}, the latest release.</p>
-        <p class="footer-coffee"><CoffeeButton small /></p>
+        <div class="footer-coffee"><CoffeeButton small /><DiscordButton small /></div>
       </div>
       <nav aria-label="Product">
         <h2>Product</h2>

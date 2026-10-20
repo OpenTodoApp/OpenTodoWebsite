@@ -15,12 +15,37 @@ const SITE = { discord: constant('discord'), appRepo: constant('appRepo') };
 const dist = path.resolve('dist');
 const built = fs.existsSync(path.join(dist, 'index.html'));
 
-test('the footer of the home page and of a translated page links to Discord', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+test('the footer of the home page and of a translated page links to Discord, as text and as the button', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
   for (const page of ['index.html', 'it/index.html']) {
     const root = load(path.join(dist, page));
     const links = root.querySelectorAll('footer a').filter((a) => a.getAttribute('href') === SITE.discord);
-    assert.equal(links.length, 1, `${page}: one footer link to ${SITE.discord}`);
-    assert.match(links[0].text, /Discord/);
+    assert.equal(links.length, 2, `${page}: a text link and a button to ${SITE.discord} in the footer`);
+    assert.ok(links.some((a) => !a.classList.contains('btn-discord') && /Discord/.test(a.text)), `${page}: footer text link`);
+    assert.ok(links.some((a) => a.classList.contains('btn-discord')), `${page}: footer button`);
+  }
+});
+
+// The Discord button (website-discord-invite): blurple, the logo hidden from assistive
+// technology, a label that names Discord, on the home pages, at the end of content
+// pages, on About and Help.
+test('the Discord button invites people on the home pages, at the end of a guide, on About and Help', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  const home = load(path.join(dist, 'index.html'));
+  const section = home.querySelector('#community');
+  assert.ok(section, 'home: a community section');
+  assert.match(section.querySelector('h2').text, /say hello/);
+  assert.ok(section.querySelector(`a.btn-discord[href="${SITE.discord}"]`), 'home: the button in the community section');
+  const de = load(path.join(dist, 'de/index.html')).querySelector('#community a.btn-discord');
+  assert.ok(de && /Discord/.test(de.text) && !/Join us/.test(de.text), 'German home: a German button label');
+  const guide = fs.readdirSync(path.join(dist, 'guides')).find((d) => fs.existsSync(path.join(dist, 'guides', d, 'index.html')) && !['tag', 'quiz'].includes(d));
+  for (const page of [`guides/${guide}/index.html`, 'about/index.html', 'help/index.html']) {
+    const root = load(path.join(dist, page));
+    const inMain = root.querySelectorAll('a.btn-discord').filter((a) => !a.closest('footer'));
+    assert.ok(inMain.length >= 1, `${page}: a Discord button outside the footer`);
+    for (const a of inMain) {
+      assert.equal(a.getAttribute('href'), SITE.discord);
+      assert.equal(a.querySelector('svg').getAttribute('aria-hidden'), 'true');
+      assert.match(a.text, /Discord/);
+    }
   }
 });
 

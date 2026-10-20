@@ -3,6 +3,7 @@
 // "Content navigation"): try the demo, self-host, import.
 import Icon from './Icon.astro';
 import CoffeeButton from './CoffeeButton.astro';
+import DiscordButton from './DiscordButton.astro';
 import { SITE } from '../lib/site';
 interface Props { title?: string; lede?: string }
 const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in your browser. When you like it, install OpenTodo on your server and import your tasks.' } = Astro.props;
@@ -17,8 +18,8 @@ const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in 
       <a class="btn btn-secondary" href="/docs/import/"><Icon name="upload" size={18} /> Bring your tasks over</a>
     </div>
     <div class="support">
-      <p class="meta">OpenTodo is free and open source, with no paid tier. If it helps you, <a href={SITE.appRepo} data-star>a star on GitHub</a> helps other people find it, and a coffee helps keep it going.</p>
-      <CoffeeButton />
+      <p class="meta">OpenTodo is free and open source, with no paid tier. If it helps you, <a href={SITE.appRepo} data-star>a star on GitHub</a> helps other people find it, and a coffee helps keep it going. Questions or ideas? Come and talk to us on Discord.</p>
+      <div class="support-buttons"><DiscordButton /><CoffeeButton /></div>
     </div>
   </div>
 </section>
