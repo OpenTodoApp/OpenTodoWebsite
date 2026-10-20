@@ -69,6 +69,7 @@ export default {
       cta2: 'Für Entwicklerinnen und Entwickler',
       checks: ['Installiert sich auf Handys und Computern direkt aus dem Browser, ohne App-Store', 'Deine Daten sind ein Ordner auf deinem Server, mit geplanten Backups', 'Verbindet sich mit Kalender-Apps, E-Mail, Webhooks und einer Kommandozeile', 'Jede Funktion ist in einer offenen Spezifikation beschrieben, die du lesen kannst'],
     },
+    community: {"kicker": "Community", "h2": "Komm vorbei und sag Hallo.", "lede": "OpenTodo entsteht offen, und die Menschen, die es nutzen, bestimmen mit, was als Nächstes kommt. Komm zu uns auf Discord: Stell eine Frage, zeig, wie du deine Tage organisierst, oder erzähl uns, was du dir wünschst. Alle sind willkommen, ob du es seit einem Jahr nutzt oder noch überlegst.", "button": "Komm zu uns auf Discord", "checks": ["Antworten von Menschen, die es selbst betreiben, und vom Maintainer", "Setups, Vorlagen und Gewohnheiten, geteilt von anderen", "Deine Ideen werden früh gehört, solange das nächste Release entsteht"]},
     end: { title: 'Erst ausprobieren, dann zu deinem machen.', lede: 'Die Demo läuft im Browser, nichts zu installieren. Wenn sie dir gefällt, bringst du sie auf deinen eigenen Server und nimmst deine Aufgaben mit.' },
   },
   cost: {

@@ -69,6 +69,7 @@ export default {
       cta2: 'Pour les développeurs',
       checks: ['S\'installe sur les téléphones et les ordinateurs directement depuis le navigateur, sans magasin d\'applications', 'Vos données sont un dossier sur votre serveur, avec des sauvegardes planifiées', 'Se connecte aux applications de calendrier, à l\'e-mail, aux webhooks et à une ligne de commande', 'Chaque fonctionnalité est décrite dans une spécification ouverte que vous pouvez lire'],
     },
+    community: {"kicker": "Communauté", "h2": "Venez dire bonjour.", "lede": "OpenTodo se construit au grand jour, et les personnes qui l’utilisent décident de la suite. Rejoignez-nous sur Discord : posez une question, montrez comment vous organisez vos journées ou dites-nous ce qui vous manque. Tout le monde est le bienvenu, que vous l’utilisiez depuis un an ou que vous hésitiez encore.", "button": "Rejoignez-nous sur Discord", "checks": ["Des réponses de personnes qui l’hébergent, et du mainteneur", "Des installations, modèles et habitudes partagés par d’autres", "Vos idées entendues tôt, pendant que la prochaine version prend forme"]},
     end: { title: 'Essayez d\'abord, puis faites-en le vôtre.', lede: 'La démo tourne dans votre navigateur, rien à installer. Quand elle vous plaît, mettez-la sur votre propre serveur et emportez vos tâches.' },
   },
   cost: {

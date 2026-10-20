@@ -69,6 +69,7 @@ export default {
       cta2: 'Para desarrolladores',
       checks: ['Se instala en teléfonos y ordenadores directamente desde el navegador, sin tienda de aplicaciones', 'Tus datos son una carpeta en tu servidor, con copias de seguridad programadas', 'Se conecta a aplicaciones de calendario, correo, webhooks y una línea de comandos', 'Cada función está descrita en una especificación abierta que puedes leer'],
     },
+    community: {"kicker": "Comunidad", "h2": "Pasa a saludar.", "lede": "OpenTodo se hace a la vista de todos, y quienes lo usan deciden lo que viene después. Únete a nosotros en Discord: haz una pregunta, enséñanos cómo organizas tus días o cuéntanos qué te gustaría que hiciera. Todo el mundo es bienvenido, tanto si lo usas desde hace un año como si aún lo estás pensando.", "button": "Únete a nosotros en Discord", "checks": ["Respuestas de quienes lo alojan, y del mantenedor", "Configuraciones, plantillas y hábitos compartidos por otras personas", "Tus ideas escuchadas pronto, mientras toma forma la próxima versión"]},
     end: { title: 'Pruébalo primero, y luego hazlo tuyo.', lede: 'La demo corre en tu navegador, sin instalar nada. Cuando te guste, ponlo en tu propio servidor y llévate tus tareas.' },
   },
   cost: {
