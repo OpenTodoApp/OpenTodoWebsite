@@ -47,7 +47,7 @@ const facts = [
       </div>
       <ul class="checks">
         <li><Icon name="check" size={18} /> Every release is listed on <a href="/whats-new/">What's new</a> with what changed; the first was {first && day(first.date)}, the latest {latest && `${latest.version} on ${day(latest.date)}`}</li>
-        <li><Icon name="check" size={18} /> Questions and bug reports go to <a href={`${SITE.appRepo}/issues`}>the issue tracker</a>; security reports go by email, see below</li>
+        <li><Icon name="check" size={18} /> <span>Questions and conversation happen on <a href={SITE.discord}>the Discord server</a>. Bug reports and ideas go to <a href={`${SITE.appRepo}/issues`}>the issue tracker</a>; security reports go by email, see below</span></li>
         <li><Icon name="check" size={18} /> The <a href="/blog/">blog</a> is written in the first person by the maintainer, dated and concrete</li>
       </ul>
     </div>
