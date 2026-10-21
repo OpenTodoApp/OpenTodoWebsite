@@ -5,7 +5,6 @@ publishedAt: 2026-10-21
 author: raffaele
 category: releases
 release: 0.9.0
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo 0.9.0 is out. Until now the app was good at telling you what to do and quiet about the doing itself: how long things take, what fits in the next two weeks, what to do with the leftovers at the end of a day. This release is about that part. It also comes out of a long list of small complaints about editing, and I fixed every one of them.
