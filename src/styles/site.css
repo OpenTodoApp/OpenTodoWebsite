@@ -76,8 +76,8 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .lede { font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem); color: var(--muted); max-width: 40rem; line-height: 1.5; }
 /* Hit areas (website-accessibility "Pointer targets"): a control drawn smaller than 44 px gains the
    difference as an invisible area around it, hit-tested as the control, never moving a pixel. */
-.hit, .lang-bar a, .footer-langs a, .nav-group > summary, .filters a, .filters button, .tag-row a, button.tag, .link-arrow, .device-list .circle, .pager a, .jump a, .faq summary, .task .circle { position: relative; }
-.hit::after, .lang-bar a::after, .footer-langs a::after, .nav-group > summary::after, .filters a::after, .filters button::after, .tag-row a::after, button.tag::after, .link-arrow::after, .device-list .circle::after, .pager a::after, .jump a::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+.hit, .lang-bar a, .footer-langs a, .nav-group > summary, .filters a, .filters button, .tag-row a, button.tag, .link-arrow, .device-list .circle, .pager a, .jump a, .faq summary, .task .circle, .blog-cats a { position: relative; }
+.hit::after, .lang-bar a::after, .footer-langs a::after, .nav-group > summary::after, .filters a::after, .filters button::after, .tag-row a::after, button.tag::after, .link-arrow::after, .device-list .circle::after, .pager a::after, .jump a::after, .blog-cats a::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 /* The FAQ summary draws its chevron with ::after, so its hit area is the ::before. */
 .faq summary::before { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .center .lede, .lede.center { margin-inline: auto; }
@@ -521,7 +521,7 @@ a.card h3 { color: var(--strong); }
 .lang-bar { border-bottom: 1px solid var(--border); background: var(--surface); font-size: 0.875rem; }
 .lang-bar ul, .footer-langs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem; }
 .lang-bar ul { min-height: 40px; align-items: center; }
-.lang-bar a, .footer-langs a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 32px; }
+.lang-bar a, .footer-langs a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 40px; }
 .lang-bar a:hover, .footer-langs a:hover { color: var(--strong); text-decoration: underline; }
 .lang-bar a[aria-current="page"], .footer-langs a[aria-current="page"] { color: var(--strong); font-weight: 600; }
 .footer-langs { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
