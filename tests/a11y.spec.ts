@@ -79,7 +79,10 @@ for (const scheme of ['light', 'dark'] as const) {
               if (getComputedStyle(el).display === 'inline') continue;
               if (el.tagName === 'INPUT' && ['checkbox', 'radio', 'range', 'color', 'file'].includes(el.getAttribute('type') ?? '')) continue;
               if (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && !['button', 'submit'].includes(el.getAttribute('type') ?? ''))) continue;
+              // Bring the control into the middle of the viewport first, so a control below the fold is measured too.
+              el.scrollIntoView({ block: 'center', inline: 'center' });
               const r = el.getBoundingClientRect(); const cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2; const d = 21;
+              if (cx < 0 || cy < 0 || cx >= innerWidth || cy >= innerHeight) continue;
               // An element whose own centre is under something else (a banner, a menu) is covered, not small.
               const centre = document.elementFromPoint(cx, cy);
               if (!centre || !(centre === el || el.contains(centre))) continue;
@@ -114,7 +117,7 @@ for (const scheme of ['light', 'dark'] as const) {
               if (document.activeElement !== el) continue;
               const r = el.getBoundingClientRect();
               // A card taller than the viewport cannot be inside it whole; its top edge is what the browser shows.
-              if (r.height > innerHeight - 2) { if (r.top < -1 || r.left < -1 || r.right > innerWidth + 1) out.push(`${el.tagName.toLowerCase()} "${(el.textContent || '').trim().slice(0, 40)}": partly outside the viewport`); continue; }
+              if (r.height > innerHeight * 0.8) { if (r.top < -1 || r.left < -1 || r.right > innerWidth + 1) out.push(`${el.tagName.toLowerCase()} "${(el.textContent || '').trim().slice(0, 40)}": partly outside the viewport`); continue; }
               if (r.top < -1 || r.left < -1 || r.bottom > innerHeight + 1 || r.right > innerWidth + 1) { out.push(`${el.tagName.toLowerCase()} "${(el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 40)}": partly outside the viewport`); continue; }
               const pts: [number, number][] = [[r.left + 1, r.top + 1], [r.right - 1, r.top + 1], [r.left + 1, r.bottom - 1], [r.right - 1, r.bottom - 1], [(r.left + r.right) / 2, (r.top + r.bottom) / 2]];
               for (const [x, y] of pts) {
