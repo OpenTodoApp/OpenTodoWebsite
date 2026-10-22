@@ -1,56 +1,95 @@
 ---
-// /accessibility (website-trust-pages D2): what this website commits to, how it is
-// checked, what is not covered, and how to report a problem. Dates and figures
-// come from the repository's own checks, not from memory.
+// /accessibility (website-trust-pages D2, website-accessibility-aaa D1): what this
+// website commits to, the exceptions it makes on purpose, how it is checked, what is not
+// covered, and how to report a problem. The target, the exceptions and the bundle facts
+// are rendered from the register (src/lib/a11y-exceptions.json) and the pinned bundle,
+// so the page cannot claim more or less than the checks prove.
+import fs from 'node:fs';
+import path from 'node:path';
 import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import Icon from '../components/Icon.astro';
-import { versionTag } from '../lib/bundle';
+import { bundle, versionTag } from '../lib/bundle';
 import { SITE } from '../lib/site';
+import register from '../lib/a11y-exceptions.json';
+import { hasHighContrast } from '../../scripts/high-contrast.mjs';
 
-const reviewed = '2026-10-15';
+const reviewed = '2026-10-22';
 const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const highContrast = hasHighContrast(fs.readFileSync(path.join(bundle.dir, 'tokens/tokens.css'), 'utf8'));
+const contrastEntries = register.filter((e) => e.criterion.startsWith('1.4.6'));
+const otherEntries = register.filter((e) => !e.criterion.startsWith('1.4.6'));
 ---
-<Base title="Accessibility statement" description="How open-todo.app meets WCAG 2.2 AA in light and dark from 360 px wide, what is checked on every change, what is not covered, and how to report a problem.">
+<Base title="Accessibility statement" description="How open-todo.app aims for WCAG 2.2 AAA where it keeps the look, in light and dark from 360 px wide, the exceptions it makes on purpose and how to reach the criterion anyway, what is checked on every change, and how to report a problem.">
   <section class="page-head">
     <div class="wrap narrow">
       <p class="kicker">Accessibility</p>
       <h1>This website is built to be used by everyone.</h1>
-      <p class="lede">We aim for WCAG 2.2 level AA on every page of open-todo.app, in light and dark, from 360 px wide, with or without JavaScript. This statement says how that is checked, what it does not cover, and how to tell us when something is wrong. Last reviewed on {day(reviewed)}.</p>
+      <p class="lede">We aim for <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2 level AAA on every page of open-todo.app. That holds in light and dark, from 360 px wide, with or without JavaScript, on one rule: the look comes first. This statement says what that means and which exceptions we make on purpose. It also says how each is checked, what it does not cover, and how to tell us when something is in your way.</p>
     </div>
   </section>
 
   <section class="section" style="padding-top: 0">
     <div class="wrap narrow prose">
+      <h2>The rule</h2>
+      <p>Where a level-AAA criterion can be met without changing how a page looks, it is met. Where meeting it would change the look (the emerald accent, the tone of a lede, a dense list), the page keeps its look. The criterion then stays reachable through a setting of your system, and the case is listed below with its measured value. Nothing is left unmet without an entry here. The list is rendered from the same file the checks read, so it cannot drift from them.</p>
+
       <h2>What we commit to</h2>
       <ul>
         <li>Every page reads and navigates without JavaScript. Menus are native disclosure elements; the interactive miniatures on the home and self-hosting pages have a readable fallback.</li>
-        <li>Light and dark follow your system preference, and both meet the contrast requirements of level AA.</li>
-        <li>Pages work from 360 px wide without horizontal scrolling, and every control is at least 44 px tall.</li>
+        <li>Light and dark follow your system preference. Text reaches 7:1 against its background in both, except the pairs listed below, which reach at least 4.5:1.</li>
+        <li>Pages work from 360 px wide without horizontal scrolling, and every control offers at least 44 × 44 px to the pointer.</li>
+        <li>Keyboard focus is always visible and never hidden under the header or a banner.</li>
+        <li>Prose has a line height of at least 1.5, paragraphs 2 em apart, at most 80 characters a line, and is never justified.</li>
+        <li>Every page below the top level shows the way back to the home page as links. Every link says where it goes in its own words, and every section has a heading.</li>
+        <li>The first use of an abbreviation on a page is spelled out. Pages are written in plain British English, in sentences of at most 25 words.</li>
         <li>Icons come from one line-icon set and are decorative; the text next to them carries the meaning. No emoji are used as icons.</li>
         <li>Screenshots have text alternatives, and the templates' screenshots describe what the template creates.</li>
-        <li>Pages are written in plain British English, one idea per paragraph.</li>
       </ul>
 
+      <h2>Exceptions, on purpose</h2>
+      <p>The site's colours are the app's own tokens, taken from the release it is pinned to ({versionTag}) and never retuned here. Each entry names the criterion, where it applies and the value measured from that release. It also says why the look wins and the way to the criterion. {highContrast ? 'This release carries the app\'s high-contrast tokens. When your system asks for more contrast, every page draws its surfaces pure white or black and every text at 7:1 or better.' : 'This release does not yet carry the app\'s high-contrast tokens. The first release that does will make every page honour your system\'s increase-contrast setting, with surfaces in pure white or black and every text at 7:1 or better.'}</p>
+      {contrastEntries.map((e) => (
+        <section aria-labelledby={`exception-${e.id}`}>
+          <h3 id={`exception-${e.id}`}>{e.where} <span class="meta">({e.criterion})</span></h3>
+          <p><strong>Measured:</strong> {e.measured.light} in light. {e.measured.dark} in dark.</p>
+          <p>{e.reason}</p>
+          <p><strong>Route:</strong> {e.route}{e.endsWhen ? ` This entry ends when ${e.endsWhen}. The build fails if it stays after that.` : ''}</p>
+        </section>
+      ))}
+      {otherEntries.map((e) => (
+        <section aria-labelledby={`exception-${e.id}`}>
+          <h3 id={`exception-${e.id}`}>{e.where} <span class="meta">({e.criterion})</span></h3>
+          <p>{e.reason} <strong>Route:</strong> {e.route}</p>
+        </section>
+      ))}
+
       <h2>How it is checked</h2>
-      <p>On every change, before it can be merged, an automated audit runs over every page of this site in light and dark at 360 and 1280 px wide, using the axe-core engine, and fails on any serious or critical issue. The same run checks that no page scrolls sideways at 360 or 768 px, that every page reads and its menus open with JavaScript disabled, and that the interactive parts still work. Keyboard operation of menus and the quiz is covered by those tests; screen-reader behaviour is reviewed by hand when a page is designed. The checks are in the open: <a href={`${SITE.siteRepo}/tree/main/tests`}>the test suite</a>.</p>
+      <p>On every change, before it can be merged:</p>
+      <ul>
+        <li>the colour pairs the stylesheet uses are measured from the pinned release's tokens in light and dark. A pair must reach 7:1, or be listed above at no less than 4.5:1. An entry whose pairs now reach 7:1 fails the build until it is removed;</li>
+        <li>every page is audited in light and dark at 360 and 1280 px wide with the axe-core engine at the WCAG 2.2 A, AA and AAA rules. An enhanced-contrast finding passes only when it matches an entry above;</li>
+        <li>every control of every page is tapped 22 px from its centre in four directions. Keyboard focus is moved through every page to see that it is visible and not hidden under the header;</li>
+        <li>no page scrolls sideways at 360 or 768 px, every page reads without JavaScript and every link resolves. No emoji is used as an icon and no third-party script is loaded. The prose is checked for bare link texts, unexplained abbreviations and sentence length.</li>
+      </ul>
 
       <h2>What this statement does not cover</h2>
       <ul>
-        <li><strong>The documentation under <code>/docs/</code></strong> is produced by the app project and served here as shipped for OpenTodo {versionTag}. It is not part of this site's automated audit. Problems with it are reported to the app project (below) and fixed there.</li>
-        <li><strong>The app itself</strong> (the demo and your own server) is a separate project with its own design system and checks. <a href="/docs/design-system/">Its design system</a> describes the colours, type and motion it uses.</li>
-        <li><strong>Automated checks miss things</strong> that only a person notices: reading order in unusual layouts, the usefulness of a text alternative, cognitive load. We review those by hand but cannot promise they are perfect.</li>
+        <li><strong>The documentation under <code>/docs/</code></strong> is produced by the app project and served here as shipped for OpenTodo {versionTag}. It has its own audit there at the same rules.</li>
+        <li><strong>The app itself</strong> (the demo and your own server) is a separate project. It has its own <a href="/docs/design-system/">design system</a>, accessibility statement and checks, published with its releases.</li>
+        <li><strong>Automated checks miss things</strong> that only a person notices: reading order in unusual layouts, the usefulness of a text alternative, cognitive load. We review those by hand but cannot promise to catch every one.</li>
       </ul>
 
       <h2>Known limitations</h2>
       <ul>
         <li>Social preview images carry the page title as text in the image; the same text is in the page's metadata as an alternative.</li>
         <li>The term tables on the switch pages scroll sideways on narrow screens inside their own region, which is reachable by keyboard.</li>
+        <li>The translated pages explain abbreviations in their own words where they use them; the English expansions in this list are not added to them.</li>
       </ul>
 
       <h2>Tell us</h2>
-      <p>If something on this site is hard or impossible for you to use, please <a href={`${SITE.siteRepo}/issues/new`}>open an issue on the website's repository</a> and say which page, which browser and assistive technology, and what happened. For the documentation or the app, use <a href={`${SITE.appRepo}/issues/new`}>the app's issue tracker</a>. We read every report, and a fix to this site ships with the next deploy.</p>
-      <p class="meta"><Icon name="calendar-check" size={16} /> This statement is reviewed with every change to the site's layout, and at least once a year.</p>
+      <p>If something on this site is hard or impossible for you to use, please <a href={`${SITE.siteRepo}/issues/new`}>open an issue on the website's repository</a>. Say which page, which browser and which assistive technology you use. We answer every report.</p>
+      <p class="meta"><Icon name="calendar-check" size={16} /> Reviewed on {day(reviewed)}. This statement is reviewed with every change to the site's layout, and at least once a year.</p>
     </div>
   </section>
   <EndCta />

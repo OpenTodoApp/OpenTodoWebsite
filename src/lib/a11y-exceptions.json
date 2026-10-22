@@ -1,0 +1,113 @@
+[
+  {
+    "id": "muted-tone",
+    "criterion": "1.4.6 Contrast (Enhanced)",
+    "where": "The muted text tone: ledes, metadata lines, card details, the footer and the miniature frames, on the canvas, on cards and on code blocks",
+    "pairs": [
+      {
+        "fg": "muted",
+        "bg": "canvas"
+      },
+      {
+        "fg": "muted",
+        "bg": "surface"
+      },
+      {
+        "fg": "muted",
+        "bg": "raised"
+      },
+      {
+        "fg": "muted",
+        "bg": "sunken"
+      }
+    ],
+    "measured": {
+      "light": "6.1:1 on the canvas, 6.4:1 on a card",
+      "dark": "7.9:1 on the canvas, 7.0:1 on a card, 5.7:1 on a raised frame"
+    },
+    "reason": "The site's colours are the app's tokens of the pinned release, never retuned here; the release that moves the muted tone to 7:1 brings it to this site with the next bundle pin.",
+    "route": "Your system's increase-contrast setting, once the pinned release carries the high-contrast tokens; until then the default text tone is used for every sentence that matters.",
+    "endsWhen": "the pinned bundle's muted tone measures 7:1 on the canvas and on cards in light"
+  },
+  {
+    "id": "accent-label",
+    "criterion": "1.4.6 Contrast (Enhanced)",
+    "where": "The white label of the primary buttons on the emerald accent, and on its hover colour",
+    "pairs": [
+      {
+        "fg": "on-accent",
+        "bg": "accent"
+      },
+      {
+        "fg": "on-accent",
+        "bg": "accent-hover"
+      }
+    ],
+    "measured": {
+      "light": "5.5:1 on the accent, 7.7:1 on its hover colour",
+      "dark": "5.5:1 on the accent"
+    },
+    "reason": "7:1 would need an accent a quarter darker than the brand's emerald, which is the colour that makes OpenTodo recognisable, on the site as in the app.",
+    "route": "Your system's increase-contrast setting, once the pinned release carries the high-contrast tokens, draws the buttons black on white or white on black."
+  },
+  {
+    "id": "accent-text",
+    "criterion": "1.4.6 Contrast (Enhanced)",
+    "where": "Links and kickers drawn in the accent colour on the canvas and on cards, and the current navigation item on its tint",
+    "pairs": [
+      {
+        "fg": "accent-text",
+        "bg": "canvas"
+      },
+      {
+        "fg": "accent-text",
+        "bg": "surface"
+      },
+      {
+        "fg": "accent-text",
+        "bg": "accent-soft"
+      }
+    ],
+    "measured": {
+      "light": "5.2:1 on the canvas and on the tint",
+      "dark": "10.5:1 on the canvas"
+    },
+    "reason": "Accent text is the accent itself; a 7:1 version would be a different, darker colour next to the buttons.",
+    "route": "Your system's increase-contrast setting, once the pinned release carries the high-contrast tokens, draws links in the text colour with an underline."
+  },
+  {
+    "id": "preview-banner",
+    "criterion": "1.4.6 Contrast (Enhanced)",
+    "where": "The preview banner shown only on a build from an unreleased app, never on the live site",
+    "pairs": [
+      {
+        "fg": "warning-soft-text",
+        "bg": "warning-soft"
+      }
+    ],
+    "measured": {
+      "light": "6.8:1",
+      "dark": "10.4:1"
+    },
+    "reason": "The banner uses the app's warning tint and text as the pinned release defines them; the production build refuses a preview, so no visitor meets it.",
+    "route": "Not on the live site; the release that retunes the warning text brings it to 7:1 with the next bundle pin.",
+    "endsWhen": "the pinned bundle's warning text measures 7:1 on its tint in light"
+  },
+  {
+    "id": "discord-button",
+    "criterion": "1.4.6 Contrast (Enhanced)",
+    "where": "The white label of the Discord button on Discord's own blurple (#5865F2), in the footer and on the pages that invite you to the server",
+    "pairs": [
+      {
+        "fg": "#ffffff",
+        "bg": "#5865f2"
+      }
+    ],
+    "measured": {
+      "light": "4.6:1",
+      "dark": "4.6:1"
+    },
+    "reason": "Discord's brand colour is what makes the button recognisable as Discord's; the community spec asks for it (website-community \"Discord button\").",
+    "route": "The same invitation is a plain text link in the footer's Project list, in the page's text colour at 7:1 or better."
+  }
+]

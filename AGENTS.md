@@ -7,7 +7,7 @@ The public website of [OpenTodo](https://github.com/pixari/opentodo), live at ht
 1. **Specs before behaviour.** Changes start as an OpenSpec change (`openspec/changes/<name>/`): `/opsx:propose`, `/opsx:apply`, `/opsx:archive`. Validate with `openspec validate --all --strict`. Constraints are in `openspec/config.yaml`.
 2. **Released facts only.** Version, docs, screenshots, tokens, icons, changelog and import formats come from the app's site bundle pinned in `bundle.json` (`src/lib/bundle.ts` reads it). Never copy them in by hand, never describe unreleased features as available.
 3. **Honest comparisons.** Show competitor strengths (`gaps` is mandatory), date every comparison (`checkedOn`, at most 180 days old), text only (no logos), link every OpenTodo claim to its docs page (`sourceDoc`). The build enforces all of it.
-4. **No emoji as icons** (use `<Icon name>` from the bundle's sprite), **no third-party scripts** (except the self-hosted analytics), pages readable without JavaScript, WCAG 2.2 AA in light and dark from 360 px.
+4. **No emoji as icons** (use `<Icon name>` from the bundle's sprite), **no third-party scripts** (except the self-hosted analytics), pages readable without JavaScript, WCAG 2.2 AAA where it keeps the look in light and dark from 360 px (OpenSpec `website-accessibility`: colours are measured from the bundle on every build, a pair below 7:1 is an entry in `src/lib/a11y-exceptions.json` or the build fails; every page below the top level shows a `Trail`; a term's first use is explained; links say where they go).
 5. **Nothing is published without the maintainer's review.** Content arrives as a pull request with a preview; nothing auto-merges.
 
 ## Layout

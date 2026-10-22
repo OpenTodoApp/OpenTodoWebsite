@@ -2,6 +2,7 @@
 // /guides/tag/<tag> (website-templates-and-methods D3): the catalogue for one tag.
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
+import Trail from '../../../components/Trail.astro';
 import EndCta from '../../../components/EndCta.astro';
 import Icon from '../../../components/Icon.astro';
 import { CONTENT_TAGS, TAG_LABELS } from '../../../content/schemas.mjs';
@@ -19,7 +20,7 @@ const templates = (await getCollection('templates')).filter((t) => t.data.tags.i
 <Base title={`Guides: ${label.toLowerCase()}`} description={`Ways of working for ${label.toLowerCase()}, each set up in OpenTodo with a template.`}>
   <section class="page-head">
     <div class="wrap">
-      <p class="breadcrumb"><a href="/guides/">Guides</a></p>
+      <Trail steps={[{ href: '/guides/', label: 'Guides' }]} />
       <h1>Guides for {label.toLowerCase()}.</h1>
       <p class="lede">{entries.length === 0 ? 'No guide carries this tag yet; the templates below do.' : `${entries.length === 1 ? 'One method' : `${entries.length} methods`} that help with ${label.toLowerCase()}, each with the OpenTodo setup and a template.`}</p>
       <ul class="jump" aria-label="Filter by tag">

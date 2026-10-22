@@ -1,0 +1,26 @@
+---
+// Where a page is (OpenSpec website-accessibility "Location, link purpose and headings",
+// WCAG 2.4.8; design D7): the path from the home page to the page's parent, each step a
+// link, as one landmark line. The separators are drawn by CSS and never read, so a
+// screen reader hears the list alone. Reads without JavaScript at 360 px.
+export interface Step { href: string; label: string }
+interface Props {
+  /** The steps after Home, outermost first; the current page is not one of them. */
+  steps: Step[];
+  /** A step for the current page's own group when it has no page of its own (a template's category). */
+  tail?: string;
+  /** The landmark's name and the home label, translated by the caller. */
+  label?: string;
+  home?: string;
+  homeHref?: string;
+  class?: string;
+}
+const { steps, tail, label = 'You are here', home = 'Home', homeHref = '/', class: cls } = Astro.props;
+const all: Step[] = [{ href: homeHref, label: home }, ...steps];
+---
+<nav class:list={['trail', cls]} aria-label={label}>
+  <ol>
+    {all.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+    {tail && <li><span>{tail}</span></li>}
+  </ol>
+</nav>

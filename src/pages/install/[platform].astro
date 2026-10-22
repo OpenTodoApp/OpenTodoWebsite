@@ -3,6 +3,7 @@
 // sharing into the app and the missing-install-option note, each line with its
 // docs link.
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import { INSTALL_DOC, NO_INSTALL_DOC, PLATFORMS, type Platform } from '../../lib/install';
@@ -16,7 +17,7 @@ const others = PLATFORMS.filter((o) => o.slug !== p.slug);
 <Base title={`Install OpenTodo on ${p.name}`} description={`How to install OpenTodo on ${p.name} from the browser, get reminders there and save pages into it. No app store involved.`} ogType="article">
   <section class="page-head">
     <div class="wrap narrow">
-      <p class="breadcrumb"><a href="/install/">Install the app</a></p>
+      <Trail steps={[{ href: '/install/', label: 'Install the app' }]} />
       <h1>Install OpenTodo on {p.name}</h1>
       <p class="lede">OpenTodo is a web app you install from your server's address, in {p.browser}. There is no app store involved. Once installed it has its own icon, opens in its own window, starts without a connection, and updates by itself when your server is updated. <a href={INSTALL_DOC}>Installing the app</a></p>
     </div>

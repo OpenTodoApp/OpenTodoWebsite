@@ -53,3 +53,45 @@ test('scripts: names the page and the third-party script', () => {
   });
   assert.deepEqual(checkScripts(dir).problems, ['/vs/: third-party script https://cdn.example.com/x.js']);
 });
+
+// OpenSpec website-accessibility "Location, link purpose and headings", "Abbreviations and reading level" (website-accessibility-aaa 4.3, 5.1).
+import { checkProse, prosePage } from '../checks/prose.mjs';
+import { parse as parseHtml } from 'node-html-parser';
+
+test('prose: a bare link text, a skipped heading and an unexplained abbreviation are named with the page', () => {
+  const root = parseHtml(page('<main><h1>T</h1><h3>Skip</h3><p>Our <a href="/x/">Learn more</a> and <a href="/y/">here</a>. Sync over CalDAV works.</p></main>'));
+  const { problems } = prosePage(root, '/p/', { CalDAV: 'the calendar sync standard' });
+  assert.ok(problems.includes('/p/: the link "Learn more" (/x/) does not say where it goes'));
+  assert.ok(problems.includes('/p/: the link "here" (/y/) does not say where it goes'));
+  assert.ok(problems.includes('/p/: a heading skips from h1 to h3'));
+  assert.ok(problems.some((p) => p.startsWith('/p/: "CalDAV" is used without its expansion')));
+});
+
+test('prose: an expansion in parentheses, an abbr element or the full phrase satisfies the first use; long sentences are reported, not failed', () => {
+  const ok = parseHtml(page('<main><h1>T</h1><p>Sync over CalDAV (the calendar sync standard) and <abbr title="Model Context Protocol">MCP</abbr>. Single sign-on, SSO, too.</p><p>This sentence has far more words than anyone would ever want to read in one single go before it finally comes around to its end today, really and truly.</p></main>'));
+  const { problems, report } = prosePage(ok, '/p/', { CalDAV: 'the calendar sync standard', MCP: 'Model Context Protocol', SSO: 'single sign-on' });
+  assert.deepEqual(problems, []);
+  assert.equal(report.length, 1);
+  assert.match(report[0], /a sentence of 2\d words/);
+});
+
+test('prose: the docs tree is skipped and a clean sample passes', () => {
+  const dir = site({ 'index.html': page('<main><h1>Home</h1><p>Read the <a href="/guides/">guides</a>.</p></main>'), 'docs/x/index.html': page('<a href="/">here</a>') });
+  assert.deepEqual(checkProse(dir, {}).problems, []);
+});
+
+// OpenSpec website-accessibility "Abbreviations and reading level" (website-accessibility-aaa 5.1): the build explains first uses.
+import { explainAbbreviations } from '../lib/abbr.mjs';
+
+test('the first prose use of a listed abbreviation gets its expansion; links, code, headings and explained terms are left alone', () => {
+  const html = page('<main><h1>The API</h1><p>Call the <a href="/x/">API</a> or <code>API</code> first. The API is open. Use the API twice. CSV (comma-separated values) imports work; CSV again.</p></main>');
+  const out = explainAbbreviations(html, { API: 'application programming interface', CSV: 'comma-separated values', MCP: 'Model Context Protocol' });
+  assert.match(out, /The <abbr title="application programming interface">API<\/abbr><span class="visually-hidden"> \(application programming interface\)<\/span> is open\. Use the API twice\./);
+  assert.match(out, /<h1>The API<\/h1>/);
+  assert.match(out, /<a href="\/x\/">API<\/a>/);
+  assert.ok(!/<abbr[^>]*>CSV/.test(out), 'CSV is already explained in parentheses');
+  assert.equal(explainAbbreviations(page('<main><p>No terms.</p></main>'), { API: 'x' }), page('<main><p>No terms.</p></main>'));
+  // The prose check accepts the result.
+  const { problems } = prosePage(parseHtml(out), '/p/', { API: 'application programming interface', CSV: 'comma-separated values' });
+  assert.deepEqual(problems, []);
+});

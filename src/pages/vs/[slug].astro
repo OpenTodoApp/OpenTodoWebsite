@@ -2,6 +2,7 @@
 // One comparison page per entry of the `compare` collection (website-switcher-pages D2, D3).
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import CompareTable from '../../components/CompareTable.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
@@ -23,7 +24,7 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
 <Base title={`OpenTodo vs ${d.competitor}`} description={d.summary} ogType="article">
   <section class="page-head">
     <div class="wrap">
-      <p class="breadcrumb"><a href="/vs/">Compare</a></p>
+      <Trail steps={[{ href: '/vs/', label: 'Compare' }]} />
       <h1>OpenTodo vs {d.competitor}</h1>
       <p class="lede">{d.audience}</p>
       <p class="updated"><Icon name="calendar-check" size={16} /> Checked on <time datetime={d.checkedOn.toISOString().slice(0, 10)}>{day}</time> against OpenTodo {versionTag}</p>

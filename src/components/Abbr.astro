@@ -1,0 +1,11 @@
+---
+// An abbreviation with its expansion (OpenSpec website-accessibility "Abbreviations and
+// reading level", WCAG 3.1.4): the expansion is in the title for a pointer and in
+// visually hidden text for everyone else, so it reads without JavaScript and on touch.
+import abbreviations from '../lib/abbreviations.json';
+interface Props { of: keyof typeof abbreviations; class?: string }
+const { of: term, class: cls } = Astro.props;
+const expansion = abbreviations[term];
+if (!expansion) throw new Error(`Abbr: "${term}" is not in src/lib/abbreviations.json`);
+---
+<abbr title={expansion} class={cls}>{term}</abbr><span class="visually-hidden"> ({expansion})</span>

@@ -3,6 +3,7 @@
 // templates the piece uses, its docs sources, and the closing calls to action.
 import { getEntries, render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Trail from './Trail.astro';
 import EndCta from './EndCta.astro';
 import Icon from './Icon.astro';
 import JsonLd from './JsonLd.astro';
@@ -26,7 +27,7 @@ const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', mo
   <article>
     <header class="page-head">
       <div class="wrap narrow">
-        <p class="breadcrumb"><a href={section.href}>{section.label}</a></p>
+        <Trail steps={[{ href: section.href, label: section.label }]} />
         <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
         <p class="lede">{d.summary}</p>
         <p class="updated"><Icon name="calendar-check" size={16} /> Last reviewed <time datetime={d.lastReviewed.toISOString().slice(0, 10)}>{reviewed}</time></p>

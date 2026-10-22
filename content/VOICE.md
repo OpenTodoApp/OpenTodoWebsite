@@ -33,6 +33,10 @@ People who use a commercial task app today and wonder whether there is something
 | share a project | collaborate, synergy |
 | import, export | migrate (except in upgrade notes) |
 
+## Sentences and abbreviations
+
+Short sentences: at most 25 words each. The prose check over the built site reports every longer one so you can split it when you next edit the page. Spell out an abbreviation the first time a page uses it ("CalDAV, the calendar sync standard", or the `<Abbr of="CalDAV" />` component); the list of abbreviations and their expansions is `src/lib/abbreviations.json`, and the check fails on a listed abbreviation a page never explains. A link says where it goes in its own words: never a bare "here", "more" or "Learn more". These keep the site at WCAG 2.2 AAA for reading level, abbreviations and link purpose (OpenSpec `website-accessibility`).
+
 ## Blog posts
 - **First person, from the maintainer.** "I" for the person who builds it, "we" only when others took part. Say what you did and why, like a note to a friend who uses the app.
 - **Concrete and dated.** Name the version, the date, the number. "Reminders arrive on iPhone since 0.3.0" beats "improved notifications".

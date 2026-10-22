@@ -4,6 +4,7 @@
 // how to use it, how to make it yours, import steps, byline, similar templates.
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import ShotPicture from '../../components/ShotPicture.astro';
@@ -45,7 +46,7 @@ const meta = (t: Task) => [t.recurrence && `repeats ${t.recurrence}`, t.estimate
   ]} />
   <section class="page-head">
     <div class="wrap">
-      <p class="breadcrumb"><a href="/templates/">Templates</a> / {d.category}</p>
+      <Trail steps={[{ href: '/templates/', label: 'Templates' }]} tail={d.category} />
       <h1>{d.title}</h1>
       <p class="lede">{d.summary}</p>
       <ul class="tag-row" aria-label="Layout, audience and topics">

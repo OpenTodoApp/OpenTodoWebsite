@@ -3,6 +3,7 @@
 // and posts that carry the topic's tags.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import PostCard from '../../components/blog/PostCard.astro';
@@ -25,7 +26,7 @@ const sections = [guides.length && 'guides', templates.length && 'templates', ho
 <Base title={topic.title} description={`${topic.lede} Guides, templates, how-tos and posts on ${topic.title.toLowerCase()}.`}>
   <section class="page-head">
     <div class="wrap">
-      <p class="breadcrumb"><a href="/topics/">Topics</a></p>
+      <Trail steps={[{ href: '/topics/', label: 'Topics' }]} />
       <h1>{topic.title}</h1>
       <p class="lede">{topic.lede}</p>
       <ul class="jump">{sections.map((s) => <li><a href={`#${s}`}>{s[0].toUpperCase() + s.slice(1)}</a></li>)}</ul>

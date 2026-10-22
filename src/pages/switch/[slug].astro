@@ -4,6 +4,7 @@
 // The one-step path appears only when the bundle ships the named importer.
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import { canImport, docExists, versionTag } from '../../lib/bundle';
@@ -24,7 +25,7 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
 <Base title={d.title} description={d.summary} ogType="article">
   <section class="page-head">
     <div class="wrap narrow">
-      <p class="breadcrumb"><a href="/switch/">Moving from another app</a></p>
+      <Trail steps={[{ href: '/switch/', label: 'Moving from another app' }]} />
       <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
       <p class="lede">{d.summary}</p>
       <p class="updated"><Icon name="calendar-check" size={16} /> {d.app}'s export checked on <time datetime={d.checkedOn.toISOString().slice(0, 10)}>{day}</time>; the import path is that of OpenTodo {versionTag}</p>
@@ -43,11 +44,11 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
     <div class="wrap narrow">
       <div class="versus" style="margin-bottom: 2rem">
         <div class="card us">
-          <h3><Icon name="check" size={20} /> What comes across</h3>
+          <h2 style="font-size: 1.2rem"><Icon name="check" size={20} /> What comes across</h2>
           <ul class="plain-list">{d.keeps.map((k) => <li>{k}</li>)}</ul>
         </div>
         <div class="card">
-          <h3><Icon name="x" size={20} /> What does not</h3>
+          <h2 style="font-size: 1.2rem"><Icon name="x" size={20} /> What does not</h2>
           <ul class="plain-list">{d.drops.map((k) => <li>{k}</li>)}</ul>
         </div>
       </div>

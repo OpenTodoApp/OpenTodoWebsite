@@ -5,3 +5,5 @@ dist/
 test-results/
 playwright-report/
 *.log
+# Written by scripts/high-contrast.mjs from the pinned bundle on every build.
+src/styles/contrast.generated.css

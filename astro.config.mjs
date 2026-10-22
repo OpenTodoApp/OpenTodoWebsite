@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { assertDeployable, resolveBundle } from './scripts/lib/bundle.mjs';
+import { abbreviations } from './scripts/lib/abbr.mjs';
 
 const bundle = resolveBundle();
 assertDeployable(bundle);
@@ -90,6 +91,8 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [
     bundleDocs(),
+    // The first use of each listed abbreviation is explained on every built page (website-accessibility D8).
+    abbreviations(),
     // Preview builds are noindex, so they get no sitemap entries beyond the structure.
     sitemap({
       customPages: docsUrls(),

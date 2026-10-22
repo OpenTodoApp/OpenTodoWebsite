@@ -1,0 +1,22 @@
+{
+  "GTD": "Getting Things Done",
+  "PWA": "progressive web app",
+  "CalDAV": "the calendar sync standard",
+  "E2EE": "end-to-end encryption",
+  "MCP": "Model Context Protocol",
+  "OIDC": "OpenID Connect",
+  "TOTP": "time-based one-time password",
+  "SSO": "single sign-on",
+  "API": "application programming interface",
+  "CLI": "command-line interface",
+  "SMTP": "the mail-sending protocol",
+  "IMAP": "the mailbox protocol",
+  "WebDAV": "the file-sharing protocol CalDAV is built on",
+  "CSV": "comma-separated values",
+  "WCAG": "Web Content Accessibility Guidelines",
+  "VAPID": "the key pair behind web push",
+  "URL": "web address",
+  "RSS": "the feed format readers subscribe to",
+  "JSON": "the data format the app exports",
+  "AGPL": "the GNU Affero General Public License"
+}

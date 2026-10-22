@@ -73,7 +73,11 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .narrow { max-width: 46rem; }
 .center { text-align: center; }
 .muted { color: var(--muted); }
-.lede { font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem); color: var(--muted); max-width: 40rem; }
+.lede { font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem); color: var(--muted); max-width: 40rem; line-height: 1.5; }
+/* Hit areas (website-accessibility "Pointer targets"): a control drawn smaller than 44 px gains the
+   difference as an invisible area around it, hit-tested as the control, never moving a pixel. */
+.hit { position: relative; }
+.hit::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .center .lede, .lede.center { margin-inline: auto; }
 .kicker { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 0.75rem; }
 .section { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6.5rem); }
@@ -90,7 +94,7 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 /* ------------------------------------------------------------------- header */
 .site-header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--border); }
 .header-inner { display: flex; align-items: center; gap: 1rem; min-height: var(--header-h); }
-.brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 700; font-size: 1.125rem; color: var(--strong); text-decoration: none; letter-spacing: -0.01em; }
+.brand { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 44px; font-weight: 700; font-size: 1.125rem; color: var(--strong); text-decoration: none; letter-spacing: -0.01em; }
 .brand img { border-radius: 7px; }
 .nav-desktop { display: none; margin-left: auto; }
 .nav-desktop ul, .nav-menu ul { list-style: none; margin: 0; padding: 0; }
@@ -366,10 +370,28 @@ a.card h3 { color: var(--strong); }
 .prose table { border-collapse: collapse; width: 100%; margin-bottom: 1em; }
 .prose td code { overflow-wrap: anywhere; }
 .prose th, .prose td { border-top: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+/* Reading blocks (OpenSpec website-accessibility "Reading blocks"; WCAG 1.4.8, technique C21): line height
+   at least 1.5, paragraphs 2em apart, at most 80 characters a line, never justified. */
+.prose { text-align: start; }
+.prose p, .prose li { line-height: 1.6; max-inline-size: 80ch; }
+.prose p { margin: 0 0 2em; }
+.prose p:last-child { margin-bottom: 0; }
+.prose ul, .prose ol { margin: 0 0 2em; }
+.prose li { margin: 0; }
+.prose li + li { margin-top: 0.4em; }
 .page-head { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) 1.5rem; }
 .page-head .lede { margin-bottom: 1.25rem; }
 .breadcrumb { font-size: 0.9375rem; margin-bottom: 1rem; }
 .breadcrumb a { color: var(--muted); }
+/* The trail (OpenSpec website-accessibility "Location, link purpose and headings"): one line
+   of links from Home; separators are drawn, so a screen reader hears the list alone. */
+.trail { font-size: 0.9375rem; margin-bottom: 1rem; color: var(--muted); }
+.trail ol { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; }
+.trail li { display: flex; align-items: center; min-width: 0; }
+.trail li + li::before { content: ''; display: inline-block; width: 0.4em; height: 0.4em; margin: 0 0.6em; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); opacity: 0.7; flex-shrink: 0; }
+.trail a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.trail a:hover { color: var(--text); text-decoration: underline; }
+.trail span { color: var(--text); }
 
 /* ---------------------------------------------- ways to get it (home) */
 .paths { list-style: none; padding: 0; margin: 0; counter-reset: path; }

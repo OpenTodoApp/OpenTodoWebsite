@@ -2,6 +2,7 @@
 // /templates/layout/<layout> (website-templates-and-methods D1): the gallery for one layout.
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
+import Trail from '../../../components/Trail.astro';
 import EndCta from '../../../components/EndCta.astro';
 import TemplateFilters from '../../../components/TemplateFilters.astro';
 import TemplateGrid from '../../../components/TemplateGrid.astro';
@@ -22,7 +23,7 @@ const i = info[layout];
 <Base title={i.title} description={`${i.lede} Download and import in Settings.`}>
   <section class="page-head">
     <div class="wrap">
-      <p class="breadcrumb"><a href="/templates/">Templates</a></p>
+      <Trail steps={[{ href: '/templates/', label: 'Templates' }]} />
       <h1>{i.title}.</h1>
       <p class="lede">{i.lede} <a href={i.doc}>{i.docLabel}</a></p>
       <TemplateFilters layout={layout} />

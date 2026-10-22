@@ -3,6 +3,7 @@
 // bundle screenshot, the docs it relies on, and the next how-tos of its group.
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
@@ -31,7 +32,7 @@ const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', mo
   <article>
     <header class="page-head">
       <div class="wrap narrow">
-        <p class="breadcrumb"><a href="/how-to/">How-tos</a> / {d.group}</p>
+        <Trail steps={[{ href: '/how-to/', label: 'How-tos' }]} tail={d.group} />
         <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
         <p class="lede">{d.summary}</p>
         <p class="updated">

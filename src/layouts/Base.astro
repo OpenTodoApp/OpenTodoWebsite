@@ -4,6 +4,8 @@
 // preview marker and the self-hosted analytics.
 import '@bundle/tokens/tokens.css';
 import '../styles/site.css';
+// The app's high-contrast tokens under the system's request for more contrast, written at build time from the bundle (website-accessibility D3).
+import '../styles/contrast.generated.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { bundle } from '../lib/bundle';

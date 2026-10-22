@@ -3,6 +3,7 @@
 import { getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import CoverImage from '../../components/blog/CoverImage.astro';
@@ -30,7 +31,7 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
   <article>
     <header class="post-head">
       <div class="wrap">
-        <p class="breadcrumb"><a href="/blog/">Blog</a> / <a href={categoryUrl(d.category)}>{CATEGORY_LABELS[d.category]}</a></p>
+        <Trail steps={[{ href: '/blog/', label: 'Blog' }, { href: categoryUrl(d.category), label: CATEGORY_LABELS[d.category] }]} />
         <h1>{d.title}</h1>
         <p class="lede">{d.summary}</p>
         <p class="post-byline">

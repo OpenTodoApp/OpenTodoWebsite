@@ -5,6 +5,8 @@ import Base from '../../layouts/Base.astro';
 import EndCta from '../EndCta.astro';
 import Icon from '../Icon.astro';
 import CategoryNav from './CategoryNav.astro';
+import Trail from '../Trail.astro';
+import { CATEGORY_LABELS } from '../../lib/blog';
 import PostCard from './PostCard.astro';
 import type { Category, Post } from '../../lib/blog';
 
@@ -17,12 +19,14 @@ const pageUrl = (n: number) => (n === 1 ? base : `${base}page/${n}/`);
 const [first, ...rest] = posts;
 const featured = featureFirst && page === 1 ? first : undefined;
 const grid = featured ? rest : posts;
+// Where the page is (website-accessibility "Location"): pages below /blog/ show the way back.
+const trail = base === '/blog/' && page === 1 ? null : [{ href: '/blog/', label: 'Blog' }, ...(category && page > 1 ? [{ href: base, label: CATEGORY_LABELS[category] }] : [])];
 ---
 <Base title={page > 1 ? `${title}, page ${page}` : title} description={description}>
   <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
   <section class="page-head blog-head">
     <div class="wrap">
-      <p class="kicker">Blog</p>
+      {trail ? <Trail steps={trail} /> : <p class="kicker">Blog</p>}
       <h1>{heading}</h1>
       <p class="lede">{lede}</p>
       <CategoryNav current={category} />

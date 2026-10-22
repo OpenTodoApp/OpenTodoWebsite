@@ -2,6 +2,7 @@
 // /guides/quiz/<a1>/ shows the second question; /guides/quiz/<a1>/<a2>/ the result.
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
+import Trail from '../../../components/Trail.astro';
 import EndCta from '../../../components/EndCta.astro';
 import Icon from '../../../components/Icon.astro';
 import { isLeaf, paths, trail } from '../../../lib/quiz';
@@ -21,7 +22,7 @@ const howtos = isLeaf(node) ? (await getCollection('howto')).filter((h) => guide
 <Base title={isLeaf(node) ? `Try ${node.method}` : 'Which method fits you?'} description={isLeaf(node) ? `${node.method}: ${node.why}` : 'Two questions, one way of working to try this week.'}>
   <section class="page-head">
     <div class="wrap narrow">
-      <p class="breadcrumb"><a href="/guides/">Guides</a> / <a href="/guides/quiz/">Which method fits you?</a></p>
+      <Trail steps={[{ href: '/guides/', label: 'Guides' }, { href: '/guides/quiz/', label: 'Which method fits you?' }]} />
       <p class="quiz-trail">{labels.map((l, i) => <span>{i > 0 && ' · '}{l}</span>)}</p>
       {isLeaf(node) ? (
         <>

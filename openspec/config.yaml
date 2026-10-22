@@ -21,8 +21,9 @@ context: |
   - One look with the app: colours, type and icons come from the bundle's tokens and
     icon set. No emoji or Unicode symbols as icons.
   - Fast, private, accessible: static output, pages readable without JavaScript, no
-    third-party scripts except the self-hosted analytics, WCAG 2.2 AA in light and
-    dark from 360 px wide.
+    third-party scripts except the self-hosted analytics, WCAG 2.2 AAA where it keeps
+    the look (the exceptions register and the statement name every exception) in light
+    and dark from 360 px wide.
   - Content is drafted by agents and approved by the maintainer; nothing is published
     without review.
 

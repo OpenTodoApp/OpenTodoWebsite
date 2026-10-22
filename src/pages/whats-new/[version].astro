@@ -2,6 +2,7 @@
 // One page per release in the bundle's changelog (website-content-hub D4). Only
 // released versions are in it, so nothing unreleased can appear.
 import Base from '../../layouts/Base.astro';
+import Trail from '../../components/Trail.astro';
 import EndCta from '../../components/EndCta.astro';
 import { releases } from '../../lib/bundle';
 import { inline } from '../../lib/changelog';
@@ -16,7 +17,7 @@ const day = new Date(`${release.date}T00:00:00Z`).toLocaleDateString('en-GB', { 
 <Base title={`What's new in OpenTodo ${release.version}`} description={`Release notes of OpenTodo ${release.version}, released on ${day}.`} ogType="article">
   <section class="page-head">
     <div class="wrap narrow">
-      <p class="breadcrumb"><a href="/whats-new/">What's new</a></p>
+      <Trail steps={[{ href: '/whats-new/', label: "What's new" }]} />
       <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">OpenTodo {release.version}</h1>
       <p class="updated">Released on <time datetime={release.date}>{day}</time></p>
       {release.summary && <p class="lede" set:html={inline(release.summary)} />}
