@@ -389,7 +389,8 @@ a.card h3 { color: var(--strong); }
 .trail ol { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; }
 .trail li { display: flex; align-items: center; min-width: 0; }
 .trail li + li::before { content: ''; display: inline-block; width: 0.4em; height: 0.4em; margin: 0 0.6em; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); opacity: 0.7; flex-shrink: 0; }
-.trail a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.trail a { position: relative; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.trail a::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .trail a:hover { color: var(--text); text-decoration: underline; }
 .trail span { color: var(--text); }
 
