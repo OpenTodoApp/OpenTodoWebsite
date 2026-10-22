@@ -76,8 +76,9 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .lede { font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem); color: var(--muted); max-width: 40rem; line-height: 1.5; }
 /* Hit areas (website-accessibility "Pointer targets"): a control drawn smaller than 44 px gains the
    difference as an invisible area around it, hit-tested as the control, never moving a pixel. */
-.hit, .lang-bar a, .footer-langs a, .nav-group > summary, .filters a, .filters button, .tag-row a, button.tag, .link-arrow, .device-list .circle, .pager a, .jump a, .faq summary, .task .circle, .blog-cats a { position: relative; }
-.hit::after, .lang-bar a::after, .footer-langs a::after, .nav-group > summary::after, .filters a::after, .filters button::after, .tag-row a::after, button.tag::after, .link-arrow::after, .device-list .circle::after, .pager a::after, .jump a::after, .blog-cats a::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+.hit, .lang-bar a, .footer-langs a, .nav-group > summary, .filters a, .filters button, .tag-row a, button.tag, .link-arrow, .device-list .circle, .pager a, .jump a, .faq summary, .task .circle, .blog-cats a, .card-link, .source, li > a:not(.btn):not(.nav-link), [data-chapter] { position: relative; }
+.task .circle { z-index: 1; }
+.hit::after, .lang-bar a::after, .footer-langs a::after, .nav-group > summary::after, .filters a::after, .filters button::after, .tag-row a::after, button.tag::after, .link-arrow::after, .device-list .circle::after, .pager a::after, .jump a::after, .blog-cats a::after, .card-link::after, .source::after, li > a:not(.btn):not(.nav-link)::after, [data-chapter]::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 /* The FAQ summary draws its chevron with ::after, so its hit area is the ::before. */
 .faq summary::before { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .center .lede, .lede.center { margin-inline: auto; }
@@ -161,7 +162,8 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .icon { flex: none; vertical-align: middle; }
 
 /* --------------------------------------------------------------------- hero */
-.hero { padding-block: clamp(2rem, 1rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 6rem); position: relative; overflow: hidden; }
+/* clip, not hidden: the glow must not make the hero a scroll container that focus or find-in-page could shift sideways. */
+.hero { padding-block: clamp(2rem, 1rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 6rem); position: relative; overflow: clip; }
 .hero::before { content: ""; position: absolute; inset: -30% -10% auto; height: 70%; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 16%, transparent), transparent); pointer-events: none; }
 .hero-grid > *, .split > *, .grid > * { min-width: 0; }
 .hero-grid { position: relative; display: grid; gap: clamp(2rem, 1rem + 3vw, 4rem); align-items: center; }
@@ -304,7 +306,8 @@ a.card h3 { color: var(--strong); }
 .task { position: relative; display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--border); border-radius: 6px; transition: opacity 300ms, transform 300ms; }
 .task.sel { background: var(--sunken); }
 .task .circle { flex: none; width: 20px; height: 20px; margin-top: 2px; border-radius: 50%; border: 2px solid var(--pc, var(--ot-p4)); background: color-mix(in srgb, var(--pc, var(--ot-p4)) 12%, transparent); cursor: pointer; padding: 0; position: relative; }
-.task .circle::after { content: ""; position: absolute; inset: -12px; }
+/* The pseudo-element sits against the padding box, inside the 2 px border, so the formula (not a fixed -12px) is what reaches 44 px. */
+.task .circle::after { content: ""; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .task.done .circle { background: var(--pc, var(--ot-p4)); }
 .task.done .t-title { text-decoration: line-through; color: var(--muted); }
 .task.leaving { opacity: 0; transform: translateX(12px); }
@@ -355,7 +358,8 @@ a.card h3 { color: var(--strong); }
 /* ----------------------------------------------------------- install tabs */
 .install-tabs [role="tablist"] { display: none; flex-wrap: wrap; gap: 0.25rem; margin-bottom: -1px; }
 .js .install-tabs [role="tablist"] { display: flex; }
-.install-tabs [role="tab"] { font: 600 0.9375rem/1 var(--font); min-height: 44px; padding: 0 0.8rem; border: 1px solid var(--border); border-bottom: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: var(--sunken); color: var(--muted); cursor: pointer; }
+/* The tabs paint above the panel that overlaps their bottom pixel, so the selected tab joins the panel and the whole 44 px answers the pointer. */
+.install-tabs [role="tab"] { position: relative; z-index: 1; font: 600 0.9375rem/1 var(--font); min-height: 44px; padding: 0 0.8rem; border: 1px solid var(--border); border-bottom: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: var(--sunken); color: var(--muted); cursor: pointer; }
 .install-tabs [role="tab"][aria-selected="true"] { background: var(--surface); color: var(--strong); }
 .install-panel { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm); padding: 1rem; margin-bottom: 1rem; }
 .no-js .install-panel { border-radius: var(--radius-sm); }

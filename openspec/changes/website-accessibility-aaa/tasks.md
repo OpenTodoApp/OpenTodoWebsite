@@ -12,13 +12,13 @@
 
 ## 3. Pointer targets and focus
 
-- [ ] 3.1 Give icon links, pagination, language links and tag chips 44 px hit areas (`min-width`/`min-height` where invisible, the `.hit` class elsewhere) and add the target pass to `tests/a11y.spec.ts`; verify `npm run test:browser` passes on every page at both widths and a fixture with a 32 px control fails naming it.
-- [ ] 3.2 Add `scroll-padding-top` for the sticky header and the focus-not-obscured pass to `tests/a11y.spec.ts`; verify tabbing backwards onto a link under the header in the test leaves it fully visible and the pass passes every page.
+- [x] 3.1 Give icon links, pagination, language links and tag chips 44 px hit areas (`min-width`/`min-height` where invisible, the `.hit` class elsewhere) and add the target pass to `tests/a11y.spec.ts`; verify `npm run test:browser` passes on every page at both widths and a fixture with a 32 px control fails naming it.
+- [x] 3.2 Add `scroll-padding-top` for the sticky header and the focus-not-obscured pass to `tests/a11y.spec.ts`; verify tabbing backwards onto a link under the header in the test leaves it fully visible and the pass passes every page.
 
 ## 4. Reading blocks, trail, links and headings
 
-- [ ] 4.1 Set the prose rhythm (line height 1.5, paragraph gap 2.25 em, 80ch measure, start alignment, lede at 1.5) in `site.css` with a stylesheet test over the built CSS; verify `npm test` and the preview shows no change outside paragraph spacing.
-- [ ] 4.2 Add `src/components/Trail.astro`, the `trail` slot in `Base.astro`, and trails in every template below the top level (guides, how-tos, blog posts and categories, templates, toolkit, switch, vs, topics, install, localized pages); verify a browser test that every page except the top level has the "You are here" landmark with working links, and `npm run check:links`.
+- [x] 4.1 Set the prose rhythm (line height 1.5, paragraph gap 2.25 em, 80ch measure, start alignment, lede at 1.5) in `site.css` with a stylesheet test over the built CSS; verify `npm test` and the preview shows no change outside paragraph spacing.
+- [x] 4.2 Add `src/components/Trail.astro`, the `trail` slot in `Base.astro`, and trails in every template below the top level (guides, how-tos, blog posts and categories, templates, toolkit, switch, vs, topics, install, localized pages); verify a browser test that every page except the top level has the "You are here" landmark with working links, and `npm run check:links`.
 - [x] 4.3 Add the bare-link-text lint and the heading-order check to `scripts/check-content.mjs` and fix what they report; verify `npm test` fails on a fixture with "Learn more" and passes on the site.
 
 ## 5. Abbreviations and reading level
@@ -28,5 +28,5 @@
 
 ## 6. AAA gate and review
 
-- [ ] 6.1 Add the AAA tags and the register filter for `color-contrast-enhanced` to `tests/a11y.spec.ts`; verify `npm run test:browser` passes on every page and a fixture with an unregistered 5:1 caption fails naming the ratio.
+- [x] 6.1 Add the AAA tags and the register filter for `color-contrast-enhanced` to `tests/a11y.spec.ts`; verify `npm run test:browser` passes on every page and a fixture with an unregistered 5:1 caption fails naming the ratio.
 - [ ] 6.2 Run `npm run check`, `npm test`, `npm run build`, `npm run check:dist` and `npm run test:browser`, set the statement's review date, and open a draft pull request with the preview link for the maintainer's review of the rendered statement and trails.
