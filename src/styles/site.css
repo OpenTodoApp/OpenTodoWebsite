@@ -76,8 +76,8 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .lede { font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem); color: var(--muted); max-width: 40rem; line-height: 1.5; }
 /* Hit areas (website-accessibility "Pointer targets"): a control drawn smaller than 44 px gains the
    difference as an invisible area around it, hit-tested as the control, never moving a pixel. */
-.hit { position: relative; }
-.hit::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+.hit, .lang-bar a, .footer-langs a, .nav-group > summary, .filters a, .filters button, .tag-row a, button.tag, .link-arrow, .device-list .circle, .pager a { position: relative; }
+.hit::after, .lang-bar a::after, .footer-langs a::after, .nav-group > summary::after, .filters a::after, .filters button::after, .tag-row a::after, button.tag::after, .link-arrow::after, .device-list .circle::after, .pager a::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .center .lede, .lede.center { margin-inline: auto; }
 .kicker { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 0.75rem; }
 .section { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6.5rem); }
@@ -133,7 +133,9 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 }
 
 /* ------------------------------------------------------------------ buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 44px; padding: 0.65rem 1.15rem; border-radius: 10px; font: 600 1rem/1.2 var(--font); text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: background 120ms, border-color 120ms, transform 120ms; text-align: center; }
+.btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 44px; padding: 0.65rem 1.15rem; border-radius: 10px; font: 600 1rem/1.2 var(--font); text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: background 120ms, border-color 120ms, transform 120ms; text-align: center; }
+/* A small button (36 px) reaches 44 px to the pointer through an invisible area (website-accessibility "Pointer targets"). */
+.btn::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .btn:active { transform: translateY(1px); }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover { background: var(--accent-hover); }

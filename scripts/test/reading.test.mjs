@@ -24,10 +24,11 @@ test('prose: line height at least 1.5, paragraphs 2em apart, at most 80 characte
 });
 
 test('hit areas: the hit class grows a control to 44 px without moving it, and the header brand link is 44 px tall', () => {
-  assert.match(rule('.hit::after {'), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
-  assert.match(rule('.hit {'), /position: relative/);
+  assert.match(rule('.hit::after, '), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
+  assert.match(rule('.hit, .lang-bar a'), /position: relative/);
   assert.match(rule('.brand {'), /min-height: 44px/);
   assert.match(rule('.trail a {'), /min-height: 44px/);
+  assert.match(rule('.btn::after {'), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
   assert.match(rule('.nav-link::after {'), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
   assert.match(rule('.trail a::after {'), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
 });

@@ -14,6 +14,8 @@ export const PAIRS = [
   ['accent-soft-text', 'accent-soft'],
   ['warning-soft-text', 'warning-soft'],
   ['on-coffee', 'coffee'],
+  // The playground miniatures' overdue date in the danger colour.
+  ['danger', 'canvas'], ['danger', 'surface'],
   // Discord's button (website-community): its brand colour, drawn by the site, not a token.
   ['#ffffff', '#5865f2'],
 ];

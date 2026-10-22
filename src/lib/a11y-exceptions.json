@@ -76,6 +76,27 @@
     "route": "Your system's increase-contrast setting, once the pinned release carries the high-contrast tokens, draws links in the text colour with an underline."
   },
   {
+    "id": "status-text",
+    "criterion": "1.4.6 Contrast (Enhanced)",
+    "where": "An overdue date in the danger colour inside the home page's filter and quick-add miniatures",
+    "pairs": [
+      {
+        "fg": "danger",
+        "bg": "canvas"
+      },
+      {
+        "fg": "danger",
+        "bg": "surface"
+      }
+    ],
+    "measured": {
+      "light": "4.6:1 on the canvas, 4.8:1 on a card",
+      "dark": "7.3:1 on the canvas, 6.5:1 on a card"
+    },
+    "reason": "The danger colour carries its meaning by hue, as in the app; at 7:1 it would read as plain text.",
+    "route": "The miniatures demonstrate the filter language and quick add; nothing in them is content to act on. Your system's increase-contrast setting takes the hue to 7:1 once the pinned release carries the high-contrast tokens."
+  },
+  {
     "id": "preview-banner",
     "criterion": "1.4.6 Contrast (Enhanced)",
     "where": "The preview banner shown only on a build from an unreleased app, never on the live site",
