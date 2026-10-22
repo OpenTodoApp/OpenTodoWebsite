@@ -99,7 +99,9 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .nav-desktop { display: none; margin-left: auto; }
 .nav-desktop ul, .nav-menu ul { list-style: none; margin: 0; padding: 0; }
 .nav-desktop ul { display: flex; gap: 0.25rem; }
-.nav-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.9688rem; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); white-space: nowrap; }
+.nav-link { position: relative; display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.9688rem; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); white-space: nowrap; }
+/* The 40 px header links reach 44 px to the pointer through an invisible area (website-accessibility "Pointer targets"). */
+.nav-link::after { content: ''; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
 .nav-link:hover { background: var(--sunken); }
 .nav-link[aria-current="page"] { color: var(--accent-text); background: var(--accent-soft); }
 .site-header .header-cta { display: none; }

@@ -28,6 +28,7 @@ test('hit areas: the hit class grows a control to 44 px without moving it, and t
   assert.match(rule('.hit {'), /position: relative/);
   assert.match(rule('.brand {'), /min-height: 44px/);
   assert.match(rule('.trail a {'), /min-height: 44px/);
+  assert.match(rule('.nav-link::after {'), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
   assert.match(rule('.trail a::after {'), /inset: min\(0px, calc\(\(100% - 44px\) \/ 2\)\)/);
 });
 
