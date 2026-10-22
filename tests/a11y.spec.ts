@@ -79,13 +79,19 @@ for (const scheme of ['light', 'dark'] as const) {
               if (getComputedStyle(el).display === 'inline') continue;
               if (el.tagName === 'INPUT' && ['checkbox', 'radio', 'range', 'color', 'file'].includes(el.getAttribute('type') ?? '')) continue;
               if (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && !['button', 'submit'].includes(el.getAttribute('type') ?? ''))) continue;
-              const r = el.getBoundingClientRect(); const cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2; const d = 21.5;
+              const r = el.getBoundingClientRect(); const cx = (r.left + r.right) / 2, cy = (r.top + r.bottom) / 2; const d = 21;
+              // An element whose own centre is under something else (a banner, a menu) is covered, not small.
+              const centre = document.elementFromPoint(cx, cy);
+              if (!centre || !(centre === el || el.contains(centre))) continue;
+              // Pinned chrome (the sticky header) claims the points it covers; a target cannot grow under it.
+              const pinned = (n: Element | null) => { for (let a = n; a && a !== document.body; a = a.parentElement) { const pos = getComputedStyle(a).position; if (pos === 'sticky' || pos === 'fixed') return true; } return false; };
               const misses: string[] = [];
               for (const [name, x, y] of [['up', cx, cy - d], ['down', cx, cy + d], ['left', cx - d, cy], ['right', cx + d, cy]] as const) {
                 if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) continue;
                 const top = document.elementFromPoint(x, y);
                 if (!top || top === el || el.contains(top)) continue;
                 if (top.matches(selector) || top.closest(selector)) continue;
+                if (!el.contains(top) && !top.contains(el) && pinned(top)) continue;
                 misses.push(name);
               }
               if (misses.length) out.push(`${desc(el)} ${Math.round(r.width)}×${Math.round(r.height)}: 22 px ${misses.join(', ')} misses`);
@@ -107,6 +113,8 @@ for (const scheme of ['light', 'dark'] as const) {
               el.focus({ preventScroll: false });
               if (document.activeElement !== el) continue;
               const r = el.getBoundingClientRect();
+              // A card taller than the viewport cannot be inside it whole; its top edge is what the browser shows.
+              if (r.height > innerHeight - 2) { if (r.top < -1 || r.left < -1 || r.right > innerWidth + 1) out.push(`${el.tagName.toLowerCase()} "${(el.textContent || '').trim().slice(0, 40)}": partly outside the viewport`); continue; }
               if (r.top < -1 || r.left < -1 || r.bottom > innerHeight + 1 || r.right > innerWidth + 1) { out.push(`${el.tagName.toLowerCase()} "${(el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 40)}": partly outside the viewport`); continue; }
               const pts: [number, number][] = [[r.left + 1, r.top + 1], [r.right - 1, r.top + 1], [r.left + 1, r.bottom - 1], [r.right - 1, r.bottom - 1], [(r.left + r.right) / 2, (r.top + r.bottom) / 2]];
               for (const [x, y] of pts) {
