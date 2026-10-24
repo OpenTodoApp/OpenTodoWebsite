@@ -21,7 +21,7 @@ const howtos = isLeaf(node) ? (await getCollection('howto')).filter((h) => guide
 <Base title={isLeaf(node) ? `Try ${node.method}` : 'Which method fits you?'} description={isLeaf(node) ? `${node.method}: ${node.why}` : 'Two questions, one way of working to try this week.'}>
   <section class="page-head">
     <div class="wrap narrow">
-      <p class="breadcrumb"><a href="/guides/">Guides</a> / <a href="/guides/quiz/">Which method fits you?</a></p>
+      <p class="breadcrumb"><a href="/learn/methods/">Methods</a> / <a href="/guides/quiz/">Which method fits you?</a></p>
       <p class="quiz-trail">{labels.map((l, i) => <span>{i > 0 && ' · '}{l}</span>)}</p>
       {isLeaf(node) ? (
         <>

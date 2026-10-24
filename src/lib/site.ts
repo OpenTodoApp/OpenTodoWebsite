@@ -16,7 +16,7 @@ export const SITE = {
 // redesign repoints one target here: /features/, /learn/ and /start/.
 export const NAV = {
   features: '/features/',
-  learn: '/help/',
+  learn: '/learn/',
   start: '/#get-it',
 };
 
