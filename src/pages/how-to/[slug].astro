@@ -3,73 +3,57 @@
 // bundle screenshot, the docs it relies on, and the next how-tos of its group.
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import ArticleLayout from '../../components/ArticleLayout.astro';
 import EndCta from '../../components/EndCta.astro';
-import Icon from '../../components/Icon.astro';
 import ScreenshotFrame from '../../components/ScreenshotFrame.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../lib/site';
 import authors from '../../content/authors.json';
 import { manifest } from '../../lib/bundle';
+import { learnEntries } from '../../lib/learn';
 
 export async function getStaticPaths() {
   return (await getCollection('howto', (e) => !e.data.draft)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 const { entry } = Astro.props;
 const d = entry.data;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 if (d.shot && !manifest.shots[d.shot]) throw new Error(`how-to "${entry.id}" names screenshot "${d.shot}", which is not in the bundle manifest`);
 const all = (await getCollection('howto', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order);
 const related = all.filter((e) => d.related.includes(e.id));
 const siblings = all.filter((e) => e.data.group === d.group && e.id !== entry.id && !d.related.includes(e.id)).slice(0, 3);
+// Where the how-to sits in the Learn list of how-tos, in their groups (website-article-layout D2).
+const href = `/how-to/${entry.id}/`;
+const list = (await learnEntries()).filter((e) => e.type === 'how-tos');
+const at = list.findIndex((e) => e.href === href);
+const position = { label: 'How-to', index: at + 1, total: list.length, prev: list[at - 1], next: list[at + 1] };
+const next = [...related, ...siblings].slice(0, 2).map((e) => ({ href: `/how-to/${e.id}/`, title: e.data.title }));
 const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title={d.title} description={d.summary} ogType="article">
   <JsonLd slot="head" data={[
     { '@type': 'TechArticle', headline: d.title, description: d.summary, dateModified: d.lastReviewed.toISOString().slice(0, 10), inLanguage: 'en', author: { '@type': 'Person', name: authors.raffaele.name, url: authors.raffaele.url }, publisher: { '@type': 'Organization', name: 'OpenTodo', url: SITE.url }, mainEntityOfPage: `${SITE.url}/how-to/${entry.id}/`, about: 'OpenTodo' },
-    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Help', item: `${SITE.url}/help/` }, { '@type': 'ListItem', position: 2, name: 'How-tos', item: `${SITE.url}/how-to/` }, { '@type': 'ListItem', position: 3, name: d.title, item: `${SITE.url}/how-to/${entry.id}/` }] },
+    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Learn', item: `${SITE.url}/learn/` }, { '@type': 'ListItem', position: 2, name: 'How-tos', item: `${SITE.url}/learn/how-tos/` }, { '@type': 'ListItem', position: 3, name: d.title, item: `${SITE.url}/how-to/${entry.id}/` }] },
   ]} />
-  <article>
-    <header class="page-head">
-      <div class="wrap narrow">
-        <p class="breadcrumb"><a href="/learn/how-tos/">How-tos</a> / {d.group}</p>
-        <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
-        <p class="lede">{d.summary}</p>
-        <p class="updated">
-          {d.minutes && <><Icon name="clock" size={16} /> About {d.minutes} {d.minutes === 1 ? 'minute' : 'minutes'} · </>}
-          {d.audience === 'operator' ? 'For the person who runs the server' : 'For everyone who uses the app'} · Last reviewed <time datetime={d.lastReviewed.toISOString().slice(0, 10)}>{reviewed}</time>
-        </p>
-      </div>
-    </header>
-    {d.shot && (
-      <div class="wrap narrow" style="margin-bottom: 2rem">
-        <ScreenshotFrame shot={d.shot} alt={`OpenTodo: ${d.title}`} eager />
-      </div>
-    )}
-    <div class="wrap narrow prose howto-body" style="padding-bottom: 3rem"><Content /></div>
-  </article>
-
-  {(related.length > 0 || siblings.length > 0) && (
-    <section class="section section-alt" aria-labelledby="next-title">
-      <div class="wrap">
-        <h2 id="next-title" style="font-size: 1.5rem">{related.length > 0 ? 'Related how-tos' : `More in ${d.group}`}</h2>
-        <ul class="grid grid-3 plain">
-          {[...related, ...siblings].slice(0, 3).map((e) => (
-            <li><a class="card" href={`/how-to/${e.id}/`}><span class="card-icon"><Icon name="list-checks" size={22} /></span><h3>{e.data.title}</h3><p>{e.data.summary}</p></a></li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )}
-
-  <section class="section" style="padding-block: 2.5rem" aria-labelledby="sources">
-    <div class="wrap narrow">
-      <h2 id="sources" style="font-size: 1.25rem">Documentation this page relies on</h2>
-      <ul class="checks">
-        {d.sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{s}</a></li>)}
-      </ul>
-      <p class="meta">The docs are also inside the app: select Help at the bottom of the sidebar. <a href="/docs/getting-started/#help-inside-the-app">Help inside the app</a></p>
-    </div>
-  </section>
+  <ArticleLayout
+    title={d.title}
+    summary={d.summary}
+    crumbs={[{ href: '/learn/', label: 'Learn' }, { href: '/learn/how-tos/', label: 'How-tos' }]}
+    position={position}
+    headings={headings}
+    facts={[
+      ...(d.minutes ? [{ label: 'Takes', value: `About ${d.minutes} ${d.minutes === 1 ? 'minute' : 'minutes'}` }] : []),
+      { label: 'Group', value: d.group },
+      { label: 'For', value: d.audience === 'operator' ? 'The person who runs the server' : 'Everyone who uses the app' },
+      { label: 'Reviewed', value: reviewed },
+    ]}
+    sources={d.sources}
+    next={next}
+  >
+    {d.shot && <div slot="before" class="article-shot"><ScreenshotFrame shot={d.shot} alt={`OpenTodo: ${d.title}`} eager /></div>}
+    <div class="howto-body"><Content /></div>
+    <p class="meta">The docs are also inside the app: select Help at the bottom of the sidebar. <a href="/docs/getting-started/#help-inside-the-app">Help inside the app</a></p>
+  </ArticleLayout>
 
   <EndCta />
 </Base>

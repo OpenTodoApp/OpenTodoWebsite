@@ -35,6 +35,14 @@ export const releases: Release[] = normalizeChangelog(JSON.parse(read('changelog
 /** True when `href` (a /docs/... path, optionally with #anchor) names a page of the bundle's docs. */
 export const docExists = (href: string): boolean => docExistsIn(bundle.dir, href);
 
+/** The title of a docs page of the bundle (`/docs/recurrence/` -> "Recurring task rules"), or its path when it has none. */
+export function docTitle(href: string): string {
+  const rel = href.split('#')[0].replace(/^\/docs\/?/, '');
+  const file = path.join(bundle.dir, 'docs', rel, 'index.html');
+  const m = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').match(/<title>([^<]+?)(?: · OpenTodo docs)?<\/title>/) : null;
+  return m ? m[1] : href;
+}
+
 /** Inner SVG markup of each icon in the bundle's sprite, by name. */
 export const icons: Record<string, string> = Object.fromEntries(
   // The bundle's sprite names its symbols "icon-<name>".

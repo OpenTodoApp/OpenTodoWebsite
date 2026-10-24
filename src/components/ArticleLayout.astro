@@ -1,0 +1,73 @@
+---
+// The article layout (website-article-layout D1): a guide, toolkit piece or how-to opened like a
+// task in the app. A bar with the breadcrumb and "n of m" with the previous and next entry, the
+// title beside a task ring, the summary, the content, and a facts column: on this page, about
+// this, the docs it relies on, what to read next. Plain HTML; below 1024 px the facts follow.
+import Icon from './Icon.astro';
+import { docTitle } from '../lib/bundle';
+import { SITE } from '../lib/site';
+
+interface Link { href: string; title: string }
+interface Props {
+  title: string;
+  summary: string;
+  crumbs: { href: string; label: string }[];
+  position?: { label: string; index: number; total: number; prev?: Link; next?: Link };
+  headings: { depth: number; slug: string; text: string }[];
+  facts: { label: string; value: string }[];
+  sources: string[];
+  next: Link[];
+}
+const { title, summary, crumbs, position, headings, facts, sources, next } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2);
+---
+<article class="article">
+  <div class="wrap">
+    <nav class="article-bar" aria-label="Where this page is">
+      <ol class="article-crumbs">
+        {crumbs.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+        <li aria-current="page">{title}</li>
+      </ol>
+      {position && (
+        <p class="article-pos">
+          <span>{position.label} {position.index} of {position.total}</span>
+          {position.prev ? <a class="article-step" href={position.prev.href} rel="prev" title={position.prev.title}><Icon name="chevron-left" size={16} /><span class="visually-hidden">Previous: {position.prev.title}</span></a> : <span class="article-step" aria-hidden="true"><Icon name="chevron-left" size={16} /></span>}
+          {position.next ? <a class="article-step" href={position.next.href} rel="next" title={position.next.title}><Icon name="chevron-right" size={16} /><span class="visually-hidden">Next: {position.next.title}</span></a> : <span class="article-step" aria-hidden="true"><Icon name="chevron-right" size={16} /></span>}
+        </p>
+      )}
+    </nav>
+    <div class="article-grid">
+      <div class="article-main">
+        <header>
+          <h1><span class="article-ring" aria-hidden="true"></span>{title}</h1>
+          <p class="lede">{summary}</p>
+        </header>
+        <slot name="before" />
+        <div class="prose article-body"><slot /></div>
+      </div>
+      <aside class="article-facts" aria-label="About this page">
+        {toc.length > 1 && (
+          <nav aria-labelledby="facts-toc">
+            <h2 id="facts-toc">On this page</h2>
+            <ul class="facts-toc">{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+          </nav>
+        )}
+        <h2>About this</h2>
+        <dl class="facts-list">{facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}</dl>
+        {sources.length > 0 && (
+          <>
+            <h2>In the docs</h2>
+            <ul class="facts-links">{sources.map((s) => <li><Icon name="book-open" size={16} /><a href={s}>{docTitle(s)}</a></li>)}</ul>
+          </>
+        )}
+        {next.length > 0 && (
+          <>
+            <h2>Next</h2>
+            <ul class="facts-links">{next.map((n) => <li><Icon name="arrow-right" size={16} /><a href={n.href}>{n.title}</a></li>)}</ul>
+          </>
+        )}
+        <a class="btn btn-secondary btn-small" href={SITE.demo}><Icon name="monitor" size={16} /> Try it in the demo</a>
+      </aside>
+    </div>
+  </div>
+</article>
