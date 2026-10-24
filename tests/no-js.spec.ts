@@ -43,3 +43,24 @@ test('the Compare link works from the phone menu without JavaScript', async ({ p
   await expect(page).toHaveURL(/\/vs\/$/);
   await expect(page.locator('h1')).toHaveText('How OpenTodo compares.');
 });
+
+// The footer on phones (website-home-languages D3): the four groups are disclosures that open
+// without JavaScript, so every footer link stays reachable while the footer stays short.
+test('the phone footer opens every group without JavaScript', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/it/');
+  const footer = page.locator('.site-footer');
+  expect((await footer.boundingBox())!.height, 'footer height at 390px').toBeLessThanOrEqual(600);
+  const wide = await footer.locator('.footer-grid > nav a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  for (const summary of await footer.locator('.footer-fold summary').all()) await summary.click();
+  const folded = await footer.locator('.footer-fold a').evaluateAll((as) => as.filter((a) => (a as HTMLElement).offsetParent).map((a) => a.getAttribute('href')));
+  expect(folded).toEqual(wide);
+});
+
+// The translated home pages tell the English page's story in the same order (website-home-languages).
+test('a translated home page has the English sections in order', async ({ page }) => {
+  const ids = async (url: string) => { await page.goto(url); return page.locator('main section[id]').evaluateAll((s) => s.map((e) => e.id)); };
+  const en = await ids('/');
+  expect(en.length).toBeGreaterThan(4);
+  for (const lang of ['de', 'fr', 'it', 'es', 'pt']) expect(await ids(`/${lang}/`), lang).toEqual(en);
+});

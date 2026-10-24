@@ -7,7 +7,7 @@ import pt from './pt.mjs';
 
 export const DICT = { de, fr, it, es, pt };
 
-/** Fills {licence}, {version}, {demo}, {minimum}, {memory} in a string. */
+/** Fills {licence}, {version}, {demo}, {minimum}, {memory}, {count}, {groups} in a string. */
 export const fill = (s, vars) => s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
 
 /** Every leaf path of an object, for the shape test: ['home.title', 'home.getIt.paths.0.when', …]. */

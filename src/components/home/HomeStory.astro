@@ -1,0 +1,166 @@
+---
+// The home page's story in every language (website-home-v2, website-home-languages D1): the
+// briefing sentence as the headline over the real Today screen; your day in three rows;
+// everything included (from the feature list of the pinned release); yours for good, with AI
+// on your terms; the three ways in; the community invitation and the latest posts. Plain HTML:
+// no island loads here. The page passes its language and that language's `home` strings.
+// Feature names, integrations, app names and posts stay English (D2) and say so with lang="en".
+import DiscordButton from '../DiscordButton.astro';
+import Icon from '../Icon.astro';
+import ScreenshotFrame from '../ScreenshotFrame.astro';
+import LangNote from '../LangNote.astro';
+import PostCard from '../blog/PostCard.astro';
+import { NAV, SITE } from '../../lib/site';
+import { publishedPosts } from '../../lib/blog';
+import { manifest } from '../../lib/bundle';
+import { featureCount, featureGroups, importApps, integrations } from '../../lib/features';
+import { DEFAULT_LANG } from '../../i18n/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+import type en from '../../i18n/en.mjs';
+
+interface Props { lang: string; s: typeof en.home }
+const { lang, s } = Astro.props;
+const translated = lang !== DEFAULT_LANG;
+// English-only content on a translated page is marked so screen readers read it as English.
+const enLang = translated ? 'en' : undefined;
+
+// The three latest posts (website-blog D7); the section is left out when there are none.
+const latestPosts = (await publishedPosts()).slice(0, 3);
+const groups = featureGroups();
+const count = featureCount();
+const SHOWN = 7;
+const licence = manifest.facts.license ?? 'AGPL-3.0';
+const groupTitle = (key: string, fallback: string) => (s.features.groups as Record<string, string>)[key] ?? fallback;
+
+const dayRows = [
+  { icon: 'sun', doc: '/docs/briefing/' },
+  { icon: 'zap', doc: '/docs/quick-add/' },
+  { icon: 'kanban', doc: '/docs/sections-and-boards/' },
+].map((d, i) => ({ ...d, ...s.day.rows[i] }));
+const yours = [
+  { icon: 'wallet', href: '/vs/#cost' },
+  { icon: 'server', href: '/docs/self-hosting/docker/' },
+  { icon: 'wifi-off', href: '/docs/offline-and-sync/' },
+  { icon: 'lock', href: '/docs/e2ee/' },
+  { icon: 'bot', href: '/toolkit/ai-on-your-terms/', accent: true },
+].map((y, i) => ({ ...y, ...s.yours.rows[i] }));
+// The three ways in (website-first-visit D1); the demo lifetime is as /docs/self-hosting/demo/ states it.
+const ways = [
+  { icon: 'monitor', href: SITE.demo, moreHref: '/docs/self-hosting/demo/' },
+  { icon: 'smartphone', href: '/install/', moreHref: '/docs/install-app/' },
+  { icon: 'server', href: '/self-host/', moreHref: '/self-host/plan/' },
+].map((w, i) => ({ ...w, ...s.ways.items[i] }));
+---
+<section class="home-hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <p class="eyebrow">{fill(s.hero.eyebrow, { licence })}</p>
+    <h1 id="hero-title" class="home-say">{s.hero.say} <span class="home-late">{s.hero.late}</span> <span class="home-soft">{s.hero.soft}</span></h1>
+    <p class="lede home-lede"><strong>{s.hero.ledeStrong}</strong> {s.hero.lede}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-large" href={SITE.demo}>{s.hero.tryDemo} <Icon name="arrow-right" size={18} /></a>
+      <a class="btn btn-secondary btn-large" href={NAV.start}>{s.hero.getStarted}</a>
+      <span class="home-note">{s.hero.note}</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="home-stage">
+      <ScreenshotFrame shot="today" alt={s.hero.alt} frame="none" eager class="home-shot" sizes="(min-width: 1200px) 1040px, 100vw" />
+    </div>
+  </div>
+</section>
+
+{translated && <LangNote lang={lang as any} />}
+
+<section class="home-sec" id="day" aria-labelledby="day-title">
+  <div class="wrap home-grid">
+    <div class="home-side"><p class="home-num">01</p><h2 id="day-title">{s.day.h2}</h2></div>
+    <div>
+      <ul class="rows">
+        {dayRows.map((d) => <li><Icon name={d.icon} size={18} /><div><h3 class="row-title"><a href={d.doc}>{d.title}</a></h3><p class="row-line">{d.text}</p></div><span class="row-prop">{d.prop}</span></li>)}
+      </ul>
+      <div class="home-duo" id="tour">
+        <figure><div class="home-crop"><ScreenshotFrame shot="quick-add" alt={s.day.quickAlt} frame="none" eager class="crop-quick" sizes="(min-width: 1024px) 700px, 100vw" /></div><figcaption>{s.day.quickCaption}</figcaption></figure>
+        <figure><div class="home-crop"><ScreenshotFrame shot="board" alt={s.day.boardAlt} frame="none" eager class="crop-board" sizes="(min-width: 1024px) 560px, 100vw" /></div><figcaption>{s.day.boardCaption}</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-sec" id="features" aria-labelledby="features-title">
+  <div class="wrap home-grid">
+    <div class="home-side"><p class="home-num">02</p><h2 id="features-title">{s.features.h2}</h2><p class="home-intro">{fill(s.features.intro, { count, groups: groups.length })}</p></div>
+    <div>
+      <p class="home-notier"><span class="pill">{s.features.pill}</span> {s.features.noTiers} <a href="/features/">{s.features.all} <Icon name="arrow-right" size={16} /></a></p>
+      <div class="home-inc home-inc-wide">
+        {groups.map((g) => (
+          <div>
+            <h3><Icon name={g.icon} size={16} /> {groupTitle(g.key, g.title)} <span class="count">{g.items.length}</span></h3>
+            <ul>
+              {g.items.slice(0, SHOWN).map((f) => <li><a href={f.doc} lang={enLang}>{f.name}</a></li>)}
+              {g.items.length > SHOWN && <li><a class="more" href={`/features/#${g.key}`}>{fill(s.features.more, { count: g.items.length - SHOWN })}</a></li>}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="home-inc home-inc-phone">
+        {groups.map((g) => (
+          <details>
+            <summary><Icon name={g.icon} size={16} /><span class="inc-title">{groupTitle(g.key, g.title)}</span><span class="count">{g.items.length}</span><Icon name="chevron-down" size={16} class="chev" /></summary>
+            <ul lang={enLang}>{g.items.map((f) => <li><a href={f.doc}>{f.name}</a></li>)}</ul>
+          </details>
+        ))}
+      </div>
+      <dl class="home-strips">
+        <div><dt>{s.features.connects}</dt><dd lang={enLang}>{integrations().join(' · ')}</dd></div>
+        <div><dt>{s.features.imports}</dt><dd lang={enLang}>{importApps().join(' · ')}</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="home-sec" id="yours" aria-labelledby="yours-title">
+  <div class="wrap home-grid">
+    <div class="home-side"><p class="home-num">03</p><h2 id="yours-title">{s.yours.h2}</h2><p class="home-intro" set:html={s.yours.intro} /></div>
+    <ul class="rows">
+      {yours.map((y) => <li class:list={[y.accent && 'row-accent']}><Icon name={y.icon} size={18} /><div><h3 class="row-title">{y.title}</h3><p class="row-line">{y.text}</p></div><a class="row-prop" href={y.href}>{y.link}<span class="visually-hidden">: {y.title}</span></a></li>)}
+    </ul>
+  </div>
+</section>
+
+<section class="home-sec" id="get-it" aria-labelledby="get-it-title">
+  <div class="wrap home-grid">
+    <div class="home-side"><p class="home-num">04</p><h2 id="get-it-title">{s.ways.h2}</h2><p class="home-intro">{s.ways.intro}</p></div>
+    <div>
+      <ol class="home-ways" id="self-host">
+        {ways.map((w) => <li><Icon name={w.icon} size={18} /><h3>{w.title}</h3><p>{w.text}</p><a class="home-way-cta" href={w.href}>{w.cta} <Icon name="arrow-right" size={16} /></a><a class="home-way-more" href={w.moreHref}>{w.more}</a></li>)}
+      </ol>
+      <p class="meta home-switch"><Icon name="folder-input" size={16} /> {s.ways.switch} <a href="/start/#switch">{s.ways.switchLink}</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="home-sec home-community" id="community" aria-labelledby="community-title">
+  <div class="wrap home-grid">
+    <div class="home-side"><p class="home-num">{s.community.kicker}</p><h2 id="community-title">{s.community.h2}</h2></div>
+    <div>
+      <p class="home-intro">{s.community.intro}</p>
+      <div class="cta-row"><DiscordButton label={s.community.button} /></div>
+    </div>
+  </div>
+</section>
+
+<section class="home-end" id="blog" aria-labelledby="end-title">
+  <div class="wrap">
+    <div class="home-end-head">
+      <h2 id="end-title">{s.end.h2}</h2>
+      <div class="cta-row"><a class="btn btn-primary btn-large" href={SITE.demo}>{s.hero.tryDemo}</a><a class="btn btn-secondary btn-large" href={NAV.start}>{s.hero.getStarted}</a></div>
+    </div>
+    {latestPosts.length > 0 && (
+      <>
+        <p class="kicker home-news-title">{s.end.news}</p>
+        <div class="post-grid" lang={enLang}>{latestPosts.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
+        <p class="meta" style="margin-top: 1rem"><a href="/blog/">{s.end.allPosts}</a> · <a href={SITE.appRepo} data-star>{s.end.star}</a></p>
+      </>
+    )}
+  </div>
+</section>

@@ -1,9 +1,12 @@
 ---
 // Footer (website-shell-v2 D4): four short groups, the brand line, one line of licence,
-// source and specification links, and the languages.
+// source and specification links, and the languages. Below 768 px the four groups show as
+// disclosures, two per row, that open without JavaScript (website-home-languages D3); each
+// version is hidden at the other widths, like the home page's feature groups.
 import { NAV, RELEASES_URL, SITE } from '../lib/site';
 import CoffeeButton from './CoffeeButton.astro';
 import DiscordButton from './DiscordButton.astro';
+import Icon from './Icon.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
 import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
@@ -39,6 +42,18 @@ const legal: [string, string][] = [
           <ul>
             {items.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
           </ul>
+        </nav>
+      ))}
+    </div>
+    <div class="footer-fold">
+      {groups.map(([title, items]) => (
+        <nav aria-label={title}>
+          <details>
+            <summary><span>{title}</span><Icon name="chevron-down" size={16} class="chev" /></summary>
+            <ul>
+              {items.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
+            </ul>
+          </details>
         </nav>
       ))}
     </div>
