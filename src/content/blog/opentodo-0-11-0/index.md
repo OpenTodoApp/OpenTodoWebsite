@@ -5,7 +5,6 @@ publishedAt: 2026-10-24
 author: raffaele
 category: releases
 release: 0.11.0
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo 0.11.0 is out, and it looks different. I called the redesign Precision: fewer boxes, fewer colours, more room for your tasks. It is the first version of the app I truly like looking at, and it gives me solid ground to build on.
