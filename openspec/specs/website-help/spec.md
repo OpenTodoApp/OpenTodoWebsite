@@ -5,19 +5,8 @@ The help layer of the site: a help landing, task-based how-tos, install pages pe
 
 ## Requirements
 
-### Requirement: Help landing
-The site SHALL have a page at `/help/` that groups entry points by audience (people who use the app, people who run the server, people who build on it) and phrases them as tasks, each linking the how-to, install page, guide or documentation page of the pinned release that answers it. It SHALL link the documentation's search. It SHALL be linked from the main navigation of every page and SHALL read and link at 360 px wide without JavaScript.
-
-#### Scenario: A task-shaped question
-- **WHEN** a visitor on the help landing looks for how to get reminders on a phone
-- **THEN** an entry in the first audience group leads to a page that answers it with steps and a link to the notifications documentation
-
-#### Scenario: Audiences without scripts
-- **WHEN** the page is opened without JavaScript
-- **THEN** all three audience groups are visible and reachable from a jump row at the top
-
 ### Requirement: How-to collection
-The site SHALL have a how-to collection rendered at `/how-to/<slug>/` with an index at `/how-to/` grouped in a fixed order. Each how-to SHALL carry a last-reviewed date, at least one documentation source of the pinned release, a group and numbered steps, and every paragraph that claims a feature SHALL link to its documentation page. A how-to MAY show one screenshot, which SHALL be a screenshot of the bundle.
+The site SHALL have a how-to collection rendered at `/how-to/<slug>/`, listed on the Learn library's how-to page `/learn/how-tos/` grouped in a fixed order. Each how-to SHALL carry a last-reviewed date, at least one documentation source of the pinned release, a group and numbered steps, and every paragraph that claims a feature SHALL link to its documentation page. A how-to MAY show one screenshot, which SHALL be a screenshot of the bundle.
 
 #### Scenario: Groups in order
 - **WHEN** the how-to index is built
@@ -64,13 +53,6 @@ The site SHALL have an index at `/switch/` with a glossary of the other apps' wo
 #### Scenario: Honest about losses
 - **WHEN** the importers of the pinned release drop something the other app has (for example comments)
 - **THEN** the page lists it under what does not come across
-
-### Requirement: FAQ page
-The site SHALL have a page at `/faq/` that answers the questions a visitor asks before deciding (whether it is free, whether there is a hosted version, whether reminders reach an iPhone, whether it works offline, how to leave, and what happens if the maintainer stops, among others), each answer linking the page that supports it. The answers SHALL be readable without JavaScript at 360 px wide.
-
-#### Scenario: Is it free
-- **WHEN** a visitor opens the FAQ
-- **THEN** the first question answers that OpenTodo is free and open source with no paid tier, linking the cost page and the licence
 
 ### Requirement: First-time operator toolkit
 The toolkit SHALL include pieces for a person who has never run a server: a first-server piece, a Raspberry Pi piece and a server-health piece, each with a last-reviewed date and documentation sources of the pinned release, and every claim linked to its documentation page.
