@@ -53,3 +53,21 @@ test('scripts: names the page and the third-party script', () => {
   });
   assert.deepEqual(checkScripts(dir).problems, ['/vs/: third-party script https://cdn.example.com/x.js']);
 });
+
+test('redirects: a target that is not built, a hidden page and a bad sample are named', async () => {
+  const { checkRedirects } = await import('../checks/redirects.mjs');
+  const dir = site({ 'learn/index.html': page('<h2 id="faq">F</h2>'), 'old/index.html': page('x') });
+  const conf = [
+    '    location = /help/ { return 301 /learn/; }',
+    '    location = /cost/ { return 301 /learn/#faq; }',
+    '    location = /gone/ { return 301 /missing/; }',
+    '    location = /old/ { return 301 /learn/; }',
+    '    location ~ ^/topics/([a-z-]+)/?$ { return 301 /learn/topic/$1/; } # e.g. /topics/x/ /nope',
+  ].join('\n');
+  const { problems } = checkRedirects(dir, conf);
+  assert.ok(problems.some((p) => p.includes('/gone/ redirects to /missing/')));
+  assert.ok(problems.some((p) => p.includes('/old/ is still built')));
+  assert.ok(problems.some((p) => p.includes('/topics/x/ redirects to /learn/topic/x/')));
+  assert.ok(problems.some((p) => p.includes('sample /nope does not match')));
+  assert.ok(!problems.some((p) => p.includes('/help/') || p.includes('/cost/')));
+});

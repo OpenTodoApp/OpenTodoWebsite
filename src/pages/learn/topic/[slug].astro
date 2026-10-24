@@ -1,0 +1,40 @@
+---
+// /learn/topic/<slug> (website-learn D2): everything that carries the topic's tags, and posts.
+import Base from '../../../layouts/Base.astro';
+import EndCta from '../../../components/EndCta.astro';
+import LearnLibrary from '../../../components/LearnLibrary.astro';
+import PostCard from '../../../components/blog/PostCard.astro';
+import { inTopic, learnEntries } from '../../../lib/learn';
+import { publishedPosts } from '../../../lib/blog';
+import { TOPICS } from '../../../lib/topics.mjs';
+
+export function getStaticPaths() {
+  return TOPICS.map((t) => ({ params: { slug: t.slug }, props: { topic: t } }));
+}
+const { topic } = Astro.props as { topic: (typeof TOPICS)[number] };
+const all = await learnEntries();
+const entries = inTopic(all, topic.slug);
+const has = (tags: string[] | undefined) => (tags ?? []).some((t) => topic.tags.includes(t));
+const posts = (await publishedPosts()).filter((p) => has(p.data.tags) || (topic.slug === 'owning-your-data' && p.data.category === 'ownership')).slice(0, 3);
+---
+<Base title={`${topic.title} · Learn`} description={`${topic.lede} Guides, templates, how-tos and posts on ${topic.title.toLowerCase()}.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/learn/">Learn</a></p>
+      <h1>{topic.title}</h1>
+      <p class="lede">{topic.lede}</p>
+    </div>
+  </section>
+  <section class="section learn-section" aria-label={topic.title}>
+    <LearnLibrary all={all} entries={entries} topic={topic.slug} />
+  </section>
+  {posts.length > 0 && (
+    <section class="section section-alt" id="posts" aria-labelledby="t-posts">
+      <div class="wrap">
+        <h2 id="t-posts">From the blog</h2>
+        <div class="post-grid">{posts.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
+      </div>
+    </section>
+  )}
+  <EndCta />
+</Base>

@@ -1,7 +1,0 @@
----
-import { getCollection } from 'astro:content';
-import ArticleIndex from '../../components/ArticleIndex.astro';
-const entries = (await getCollection('toolkit', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order);
-const items = entries.map((e) => ({ href: `/toolkit/${e.id}/`, title: e.data.title, summary: e.data.summary }));
----
-<ArticleIndex kicker="Toolkit" title="Set it up for the people around you." lede="For the person who runs the server and for everyone who just uses the app." description="For the person who runs the server and for everyone who just uses the app." items={items} icon="life-buoy" />

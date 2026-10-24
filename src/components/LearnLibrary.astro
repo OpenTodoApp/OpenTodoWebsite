@@ -1,0 +1,72 @@
+---
+// The Learn library page (website-learn D2): facets for type and topic as plain links, then
+// the entries in groups, one row each with topic, type and length. Every filter is its own
+// static page, so it works without JavaScript.
+import Icon from './Icon.astro';
+import { LEARN_TYPES, type LearnEntry, type LearnType } from '../lib/learn';
+import { TOPICS } from '../lib/topics.mjs';
+import { HOWTO_GROUPS } from '../content/schemas.mjs';
+
+interface Props {
+  all: LearnEntry[];
+  entries: LearnEntry[];
+  type?: LearnType;
+  topic?: string;
+}
+const { all, entries, type, topic } = Astro.props;
+const label = (t: LearnType) => LEARN_TYPES.find((x) => x.key === t)!;
+const topicCount = (slug: string) => {
+  const tags = TOPICS.find((t) => t.slug === slug)!.tags;
+  return all.filter((e) => e.tags.some((t) => tags.includes(t))).length;
+};
+const groups = type === 'how-tos'
+  ? HOWTO_GROUPS.map((g) => ({ id: g.toLowerCase().replace(/[^a-z]+/g, '-'), title: g, items: entries.filter((e) => e.group === g) }))
+  : LEARN_TYPES.map((t) => ({ id: t.key, title: t.title, items: entries.filter((e) => e.type === t.key) }));
+---
+<div class="wrap learn">
+  <nav class="learn-phone" aria-label="Filter the library">
+    <ul class="jump">
+      <li><a href="/learn/" aria-current={!type && !topic ? 'page' : undefined}>All</a></li>
+      {LEARN_TYPES.map((t) => <li><a href={`/learn/${t.key}/`} aria-current={type === t.key ? 'page' : undefined}>{t.label}</a></li>)}
+    </ul>
+    <details open={!!topic}>
+      <summary>Topics</summary>
+      <ul class="jump">
+        {TOPICS.map((t) => <li><a href={`/learn/topic/${t.slug}/`} aria-current={topic === t.slug ? 'page' : undefined}>{t.title}</a></li>)}
+      </ul>
+    </details>
+  </nav>
+  <nav class="learn-facets" aria-label="Filter the library by type and topic">
+    <h2>Type</h2>
+    <ul>
+      <li><a href="/learn/" aria-current={!type && !topic ? 'page' : undefined}>All <span class="count">{all.length}</span></a></li>
+      {LEARN_TYPES.map((t) => <li><a href={`/learn/${t.key}/`} aria-current={type === t.key ? 'page' : undefined}>{t.label} <span class="count">{all.filter((e) => e.type === t.key).length}</span></a></li>)}
+    </ul>
+    <h2>Topic</h2>
+    <ul>
+      {TOPICS.map((t) => <li><a href={`/learn/topic/${t.slug}/`} aria-current={topic === t.slug ? 'page' : undefined}>{t.title} <span class="count">{topicCount(t.slug)}</span></a></li>)}
+    </ul>
+    <h2>Not sure?</h2>
+    <ul><li><a href="/guides/quiz/"><Icon name="compass" size={16} /> Which method fits you?</a></li></ul>
+  </nav>
+  <div class="learn-list">
+    {groups.filter((g) => g.items.length > 0).map((g) => (
+      <section aria-labelledby={`learn-${g.id}`}>
+        <h2 id={`learn-${g.id}`} class="group-bar">{g.title} <span class="count">{g.items.length}</span>
+          {!type && !topic && <a class="see-all" href={`/learn/${g.id}/`}>See all<span class="visually-hidden"> {g.title}</span></a>}
+        </h2>
+        <ul class="learn-rows">
+          {g.items.map((e) => (
+            <li>
+              <Icon name={label(e.type).icon} size={16} />
+              <a href={e.href}>{e.title}</a>
+              <span class="learn-prop">{e.topic}</span>
+              <span class="learn-prop">{label(e.type).label}</span>
+              <span class="learn-prop learn-len">{e.length}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</div>

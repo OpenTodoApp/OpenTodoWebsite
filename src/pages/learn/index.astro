@@ -1,0 +1,48 @@
+---
+// /learn (website-learn): one library for the guidance content, with three places to start.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import Icon from '../../components/Icon.astro';
+import LearnLibrary from '../../components/LearnLibrary.astro';
+import DiscordButton from '../../components/DiscordButton.astro';
+import { SITE } from '../../lib/site';
+import { learnEntries } from '../../lib/learn';
+
+const all = await learnEntries();
+// The troubleshooting how-tos, for "Something is wrong" (website-community "Where to ask a question").
+const fixes = all.filter((e) => e.group === 'Fix it');
+const picks = [
+  { icon: 'house', title: 'Set it up for a household', text: 'One server, everyone on their own phone.', href: '/toolkit/household/' },
+  { icon: 'folder-input', title: 'Moving from another app', text: 'Todoist, Things, TickTick, Linear and more.', href: '/learn/switch/' },
+  { icon: 'compass', title: 'Which method fits you?', text: 'A few questions, one suggestion.', href: '/guides/quiz/' },
+];
+---
+<Base title="Learn" description="Guides to ways of working, how-tos, setup guides, switch guides and templates for OpenTodo, in one library you can filter by type and topic.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Learn</p>
+      <h1>What do you want to do?</h1>
+      <p class="lede">Methods, how-tos, setup guides and templates in one place. Every step links to the documentation of the current release.</p>
+      <ul class="learn-picks">
+        {picks.map((p) => <li><a href={p.href}><Icon name={p.icon} size={18} /><strong>{p.title}</strong><span>{p.text}</span></a></li>)}
+      </ul>
+    </div>
+  </section>
+  <section class="section learn-section" aria-label="The library">
+    <LearnLibrary all={all} entries={all} />
+  </section>
+  <section class="section section-alt" id="fix" aria-labelledby="fix-title">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <h2 id="fix-title">Something is wrong</h2>
+        <p class="lede">The problems people actually hit, each with the things to check in order. If none of these fits, the person who runs your server can look at its logs, you can <a href={SITE.discord}>ask on Discord</a>, or you can <a href={`${SITE.appRepo}/issues`}>open an issue</a>.</p>
+        <div class="cta-row"><DiscordButton /></div>
+      </div>
+      <ul class="rows">
+        {fixes.map((e) => <li><Icon name="life-buoy" size={16} /><a class="row-title" href={e.href}>{e.title}</a><span class="row-prop">{e.length}</span></li>)}
+        <li><Icon name="book-open" size={16} /><a class="row-title" href="/docs/troubleshooting/">Everything else, in the docs</a><span class="row-prop"></span></li>
+      </ul>
+    </div>
+  </section>
+  <EndCta />
+</Base>

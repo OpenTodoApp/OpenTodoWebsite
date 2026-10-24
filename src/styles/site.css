@@ -668,3 +668,42 @@ a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-de
 .feature-names { margin: 0; padding: 0.75rem; border-bottom: 1px solid var(--line); font-size: 0.9375rem; line-height: 1.9; }
 .feature-names .feature-doc { margin-left: 0.75rem; }
 @media (max-width: 767px) { .feature-rows li { grid-template-columns: minmax(0, 1fr) auto; } .feature-line { grid-column: 1 / -1; grid-row: 2; } }
+
+/* ------------------------------------------------------------------ learn (website-learn D2) */
+.learn-section { padding-top: 1rem; }
+/* Phones get the types as a row and the topics folded; from 1024 px the facets sit beside the list. */
+.learn-phone .jump { margin: 0; }
+.learn-phone details { margin-top: 0.6rem; }
+.learn-phone summary { cursor: pointer; min-height: 40px; display: inline-flex; align-items: center; font-weight: 550; color: var(--muted); }
+.learn-phone details .jump { margin-top: 0.4rem; }
+.learn-facets { display: none; }
+@media (min-width: 1024px) { .learn-phone { display: none; } .learn-facets { display: block; } }
+.learn { display: grid; gap: 2rem; }
+@media (min-width: 1024px) { .learn { grid-template-columns: 13rem minmax(0, 1fr); gap: 3rem; } .learn-facets { position: sticky; top: calc(var(--header-h) + 1.5rem); align-self: start; } }
+.learn-facets h2 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); margin: 1.25rem 0 0.4rem; }
+.learn-facets h2:first-child { margin-top: 0; }
+.learn-facets ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; }
+.learn-facets a { display: flex; align-items: center; gap: 0.5rem; min-height: 36px; padding: 0 0.6rem; border-radius: var(--radius-sm); color: var(--muted); text-decoration: none; font-size: 0.9375rem; }
+.learn-facets a:hover { background: var(--sel); color: var(--strong); }
+.learn-facets a[aria-current="page"] { background: var(--sel); color: var(--strong); font-weight: 550; }
+.learn-facets .count, .learn .group-bar .count { margin-left: auto; color: var(--faint); font-weight: 450; font-size: 0.8125rem; }
+.learn .group-bar .count { margin-left: 0.25rem; }
+.learn .see-all { margin-left: auto; font-weight: 450; font-size: 0.8125rem; color: var(--muted); }
+.learn-list section + section { margin-top: 2rem; }
+.learn-rows { list-style: none; margin: 0; padding: 0; }
+.learn-rows li { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr) 10rem 5.5rem 6rem; gap: 0.25rem 0.9rem; align-items: center; min-height: 44px; padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--line); font-size: 0.9375rem; }
+.learn-rows li > .icon { color: var(--faint); }
+.learn-rows a { color: var(--strong); text-decoration: none; font-weight: 500; }
+.learn-rows a:hover { text-decoration: underline; }
+.learn-prop { font-size: 0.8125rem; color: var(--muted); }
+.learn-len { text-align: right; }
+@media (max-width: 767px) {
+  .learn-rows li { grid-template-columns: 1.25rem minmax(0, 1fr) auto; }
+  .learn-rows .learn-prop:nth-of-type(1), .learn-rows .learn-prop:nth-of-type(2) { display: none; }
+}
+.learn-picks { list-style: none; margin: 1.75rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+@media (min-width: 768px) { .learn-picks { grid-template-columns: repeat(3, 1fr); } }
+.learn-picks a { display: grid; grid-template-columns: 1.5rem 1fr; gap: 0.15rem 0.5rem; padding: 1rem; border-radius: var(--radius); background: var(--band); text-decoration: none; color: var(--muted); font-size: 0.9375rem; height: 100%; }
+.learn-picks a .icon { color: var(--accent-text); grid-row: span 2; margin-top: 0.15rem; }
+.learn-picks strong { color: var(--strong); font-weight: 600; }
+.learn-picks a:hover strong { text-decoration: underline; }

@@ -1,0 +1,27 @@
+---
+// /learn/<type> (website-learn D2): one type of the library; how-tos in their fixed groups.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import LearnLibrary from '../../components/LearnLibrary.astro';
+import { LEARN_TYPES, learnEntries } from '../../lib/learn';
+
+export function getStaticPaths() {
+  return LEARN_TYPES.map((t) => ({ params: { type: t.key }, props: { t } }));
+}
+const { t } = Astro.props as { t: (typeof LEARN_TYPES)[number] };
+const all = await learnEntries();
+const entries = all.filter((e) => e.type === t.key);
+---
+<Base title={`${t.title} · Learn`} description={`${t.lede} ${entries.length} in the OpenTodo library.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="/learn/">Learn</a></p>
+      <h1>{t.title}</h1>
+      <p class="lede">{t.lede}</p>
+    </div>
+  </section>
+  <section class="section learn-section" aria-label={t.title}>
+    <LearnLibrary all={all} entries={entries} type={t.key} />
+  </section>
+  <EndCta />
+</Base>
