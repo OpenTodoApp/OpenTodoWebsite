@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { DICT, fill, leafPaths } from '../../src/i18n/dict.mjs';
+import en from '../../src/i18n/en.mjs';
 import { LANGS, OTHER_LANGS, TRANSLATED_PAGES, alternatesFor, localePath, splitLang } from '../../src/i18n/index.mjs';
 
 test('every language has the same strings as German', () => {
@@ -15,11 +16,18 @@ test('every language has the same strings as German', () => {
   assert.ok(OTHER_LANGS.length + 1 <= 10, 'at most ten languages');
 });
 
+// The translated home pages render the English page's component (website-home-languages D1),
+// so each language's home strings have exactly the English shape.
+test('every home page has the English home strings', () => {
+  const ref = leafPaths(en.home);
+  for (const lang of OTHER_LANGS) assert.deepEqual(leafPaths(DICT[lang].home), ref, `${lang}.home differs from en.home`);
+});
+
 test('links in the answers stay on this site or the docs, and placeholders are known', () => {
-  const known = new Set(['licence', 'version', 'demo', 'minimum', 'memory']);
-  for (const lang of OTHER_LANGS) {
-    for (const p of leafPaths(DICT[lang])) {
-      const v = p.split('.').reduce((o, k) => o[k], DICT[lang]);
+  const known = new Set(['licence', 'version', 'demo', 'minimum', 'memory', 'count', 'groups']);
+  for (const [lang, dict] of [...OTHER_LANGS.map((l) => [l, DICT[l]]), ['en', en]]) {
+    for (const p of leafPaths(dict)) {
+      const v = p.split('.').reduce((o, k) => o[k], dict);
       for (const m of v.matchAll(/\{(\w+)\}/g)) assert.ok(known.has(m[1]), `${lang}.${p}: unknown placeholder {${m[1]}}`);
       for (const m of v.matchAll(/href="([^"]+)"/g)) assert.ok(m[1].startsWith('/') || m[1] === '{demo}', `${lang}.${p}: external link ${m[1]}`);
     }

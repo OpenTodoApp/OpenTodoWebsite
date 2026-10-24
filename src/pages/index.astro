@@ -1,160 +1,22 @@
 ---
-// Home page (website-home-v2): one story in five parts. The briefing sentence as the headline
-// and the real Today screen; your day in three rows; everything included (from the feature list
-// of the pinned release); yours for good, with AI on your terms; the three ways in. Then the
-// community invitation and the latest posts. Plain HTML: no island loads here.
+// Home page (website-home-v2): the story lives in HomeStory, shared with the translated home
+// pages (website-home-languages); the English strings are in src/i18n/en.mjs.
 import Base from '../layouts/Base.astro';
-import DiscordButton from '../components/DiscordButton.astro';
-import Icon from '../components/Icon.astro';
-import ScreenshotFrame from '../components/ScreenshotFrame.astro';
-import PostCard from '../components/blog/PostCard.astro';
+import HomeStory from '../components/home/HomeStory.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { NAV, SITE, releaseUrl } from '../lib/site';
-import { publishedPosts } from '../lib/blog';
+import { SITE, releaseUrl } from '../lib/site';
 import { manifest, versionTag } from '../lib/bundle';
-import { featureCount, featureGroups, importApps, integrations } from '../lib/features';
+import { featureCount } from '../lib/features';
+import en from '../i18n/en.mjs';
+import { fill } from '../i18n/dict.mjs';
 
-// The three latest posts (website-blog D7); the section is left out when there are none.
-const latestPosts = (await publishedPosts()).slice(0, 3);
-const groups = featureGroups();
 const count = featureCount();
-const SHOWN = 7;
-const licence = manifest.facts.license ?? 'AGPL-3.0';
-
-const day = [
-  { icon: 'sun', title: 'Today says what matters', text: 'One sentence under the date names what is late, what is full and who replied, and each part opens what it names. Your device works it out, offline, with no AI.', doc: '/docs/briefing/', prop: 'Today, Upcoming' },
-  { icon: 'zap', title: 'Type it the way you say it', text: '“Book the plumber friday 10am #Home p1” becomes a task with its date, project and priority, in six languages.', doc: '/docs/quick-add/', prop: 'Everywhere' },
-  { icon: 'kanban', title: 'Projects as a list, a board or a timeline', text: 'Sections, deadlines and progress at a glance. Share a project and assign its tasks to the people in it.', doc: '/docs/sections-and-boards/', prop: 'Projects' },
-];
-const yours = [
-  { icon: 'wallet', title: 'Free, all of it', text: 'No tiers, no seats, no trial: every feature for everyone on your server, the whole household included.', href: '/vs/#cost', link: 'What it costs' },
-  { icon: 'server', title: 'On your server', text: 'One container and one folder of data. A Raspberry Pi or the smallest rented server is enough.', href: '/docs/self-hosting/docker/', link: 'Self-hosting' },
-  { icon: 'wifi-off', title: 'Works offline', text: 'Every device keeps a full copy. Edit on the train; changes merge field by field when you are back.', href: '/docs/offline-and-sync/', link: 'Offline and sync' },
-  { icon: 'lock', title: 'Encrypted if you want', text: 'With end-to-end encryption, task text is encrypted on your devices before it reaches the server.', href: '/docs/e2ee/', link: 'Encryption' },
-  { icon: 'bot', title: 'AI on your terms', text: 'Off unless you turn it on. Your model, local ones too; the assistant proposes changes you approve, and every change can be undone. Your own AI tools connect through MCP or the Claude Code plugin under an agent token.', href: '/toolkit/ai-on-your-terms/', link: 'How it works', accent: true },
-];
-// The three ways in (website-first-visit D1); the demo lifetime is as /docs/self-hosting/demo/ states it.
-const ways = [
-  { icon: 'monitor', title: 'Try the demo', text: 'A private sandbox in your browser with sample projects, deleted after two hours without activity.', href: SITE.demo, cta: 'Open the demo', more: { href: '/docs/self-hosting/demo/', label: 'How the demo works' } },
-  { icon: 'smartphone', title: 'Join a server', text: 'Someone runs it for your home or team? Open the invitation link they sent, then install the app from the browser.', href: '/install/', cta: 'Install the app', more: { href: '/docs/install-app/', label: 'Installing the app' } },
-  { icon: 'server', title: 'Run your own', text: 'Docker, Umbrel, Unraid, TrueNAS, a Pi or a VPS, in about twenty minutes the first time.', href: '/self-host/', cta: 'Self-host', more: { href: '/self-host/plan/', label: 'Plan your server' } },
-];
 ---
-<Base title="OpenTodo · A calm task list that runs on your own server" bareTitle description={`OpenTodo is a free, open-source task list you run on your own server: Today tells you what matters, ${count} features with no paid tier, offline on every device, shared with the people you live and work with, and AI only on your terms.`}>
+<Base title={en.home.title} bareTitle description={fill(en.home.description, { count })}>
   <JsonLd slot="head" data={[
     { '@type': 'WebSite', name: 'OpenTodo', url: SITE.url, inLanguage: 'en' },
     { '@type': 'SoftwareApplication', name: 'OpenTodo', url: SITE.url, applicationCategory: 'ProductivityApplication', operatingSystem: 'Web, iOS, Android, Windows, macOS, Linux (self-hosted server: Docker on linux/amd64 and linux/arm64)', softwareVersion: manifest.version, license: `${SITE.appRepo}/blob/main/LICENSE`, isAccessibleForFree: true, downloadUrl: SITE.appRepo, installUrl: `${SITE.url}/self-host/`, softwareHelp: `${SITE.url}/learn/`, releaseNotes: releaseUrl(manifest.version), description: `Free, open-source, self-hosted task manager ${versionTag}: tasks, projects, reminders, sharing, offline on every device.` },
   ]} />
 
-  <section class="home-hero" aria-labelledby="hero-title">
-    <div class="wrap">
-      <p class="eyebrow">Free and open source · {licence}</p>
-      <h1 id="hero-title" class="home-say">Three things matter today. <span class="home-late">Two tasks are late,</span> <span class="home-soft">Monday is full and Mia replied.</span></h1>
-      <p class="lede home-lede"><strong>OpenTodo is a calm task list that runs on your own server.</strong> Plan your day, keep projects in order and share lists with the people you live and work with.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary btn-large" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
-        <a class="btn btn-secondary btn-large" href={NAV.start}>Get started</a>
-        <span class="home-note">No account, nothing to install.</span>
-      </div>
-    </div>
-    <div class="wrap">
-      <div class="home-stage">
-        <ScreenshotFrame shot="today" alt="OpenTodo's Today: the sentence about the day under the title, then the tasks in one line each with their dates, projects and labels in aligned columns." frame="none" eager class="home-shot" sizes="(min-width: 1200px) 1040px, 100vw" />
-      </div>
-    </div>
-  </section>
-
-  <section class="home-sec" id="day" aria-labelledby="day-title">
-    <div class="wrap home-grid">
-      <div class="home-side"><p class="home-num">01</p><h2 id="day-title">Your day, your projects, one quiet screen.</h2></div>
-      <div>
-        <ul class="rows">
-          {day.map((d) => <li><Icon name={d.icon} size={18} /><div><h3 class="row-title"><a href={d.doc}>{d.title}</a></h3><p class="row-line">{d.text}</p></div><span class="row-prop">{d.prop}</span></li>)}
-        </ul>
-        <div class="home-duo" id="tour">
-          <figure><div class="home-crop"><ScreenshotFrame shot="quick-add" alt="Quick add listing the date, project, label and priority it understood in a typed line." frame="none" eager class="crop-quick" sizes="(min-width: 1024px) 700px, 100vw" /></div><figcaption>Quick add shows what it understood.</figcaption></figure>
-          <figure><div class="home-crop"><ScreenshotFrame shot="board" alt="A shared project as a board with Backlog, This week and Review columns." frame="none" eager class="crop-board" sizes="(min-width: 1024px) 560px, 100vw" /></div><figcaption>A shared project as a board.</figcaption></figure>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-sec" id="features" aria-labelledby="features-title">
-    <div class="wrap home-grid">
-      <div class="home-side"><p class="home-num">02</p><h2 id="features-title">Everything included.</h2><p class="home-intro">{count} features in {groups.length} groups, and the integrations you already use. Nothing is held back for a paid plan.</p></div>
-      <div>
-        <p class="home-notier"><span class="pill">No tiers</span> Every feature, for everyone. <a href="/features/">All features, with their docs <Icon name="arrow-right" size={16} /></a></p>
-        <div class="home-inc home-inc-wide">
-          {groups.map((g) => (
-            <div>
-              <h3><Icon name={g.icon} size={16} /> {g.title} <span class="count">{g.items.length}</span></h3>
-              <ul>
-                {g.items.slice(0, SHOWN).map((f) => <li><a href={f.doc}>{f.name}</a></li>)}
-                {g.items.length > SHOWN && <li><a class="more" href={`/features/#${g.key}`}>and {g.items.length - SHOWN} more</a></li>}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div class="home-inc home-inc-phone">
-          {groups.map((g) => (
-            <details>
-              <summary><Icon name={g.icon} size={16} /><span class="inc-title">{g.title}</span><span class="count">{g.items.length}</span><Icon name="chevron-down" size={16} class="chev" /></summary>
-              <ul>{g.items.map((f) => <li><a href={f.doc}>{f.name}</a></li>)}</ul>
-            </details>
-          ))}
-        </div>
-        <dl class="home-strips">
-          <div><dt>Connects to</dt><dd>{integrations().join(' · ')}</dd></div>
-          <div><dt>Imports from</dt><dd>{importApps().join(' · ')}</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-sec" id="yours" aria-labelledby="yours-title">
-    <div class="wrap home-grid">
-      <div class="home-side"><p class="home-num">03</p><h2 id="yours-title">Yours, for good.</h2><p class="home-intro">No OpenTodo account and no OpenTodo cloud. One server for everyone you <a href="/docs/sharing/">share lists with</a>, and you can <a href="/docs/import-export/">leave with everything</a> whenever you like.</p></div>
-      <ul class="rows">
-        {yours.map((y) => <li class:list={[y.accent && 'row-accent']}><Icon name={y.icon} size={18} /><div><h3 class="row-title">{y.title}</h3><p class="row-line">{y.text}</p></div><a class="row-prop" href={y.href}>{y.link}<span class="visually-hidden">: {y.title}</span></a></li>)}
-      </ul>
-    </div>
-  </section>
-
-  <section class="home-sec" id="get-it" aria-labelledby="get-it-title">
-    <div class="wrap home-grid">
-      <div class="home-side"><p class="home-num">04</p><h2 id="get-it-title">Three ways in.</h2><p class="home-intro">OpenTodo is not offered as a hosted service, so there is nothing to sign up for here. Move between the three later; your data comes with you.</p></div>
-      <div>
-        <ol class="home-ways" id="self-host">
-          {ways.map((w) => <li><Icon name={w.icon} size={18} /><h3>{w.title}</h3><p>{w.text}</p><a class="home-way-cta" href={w.href}>{w.cta} <Icon name="arrow-right" size={16} /></a><a class="home-way-more" href={w.more.href}>{w.more.label}</a></li>)}
-        </ol>
-        <p class="meta home-switch"><Icon name="folder-input" size={16} /> Moving from Todoist, Things, TickTick or Linear? <a href="/start/#switch">Bring your tasks</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-sec home-community" id="community" aria-labelledby="community-title">
-    <div class="wrap home-grid">
-      <div class="home-side"><p class="home-num">Community</p><h2 id="community-title">Come and say hello.</h2></div>
-      <div>
-        <p class="home-intro">OpenTodo is made in the open, and the people who use it shape what comes next. Join us on Discord: ask a question, show how you organise your days, or tell us what you wish it did. Questions are answered by people who run it and by the maintainer.</p>
-        <div class="cta-row"><DiscordButton /></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-end" id="blog" aria-labelledby="end-title">
-    <div class="wrap">
-      <div class="home-end-head">
-        <h2 id="end-title">Try it first, then make it yours.</h2>
-        <div class="cta-row"><a class="btn btn-primary btn-large" href={SITE.demo}>Try the demo</a><a class="btn btn-secondary btn-large" href={NAV.start}>Get started</a></div>
-      </div>
-      {latestPosts.length > 0 && (
-        <>
-          <p class="kicker home-news-title">News, releases and how it's built</p>
-          <div class="post-grid">{latestPosts.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
-          <p class="meta" style="margin-top: 1rem"><a href="/blog/">All posts</a> · <a href={SITE.appRepo} data-star>Star OpenTodo on GitHub</a></p>
-        </>
-      )}
-    </div>
-  </section>
+  <HomeStory lang="en" s={en.home} />
 </Base>
