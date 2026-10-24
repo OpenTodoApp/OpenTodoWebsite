@@ -707,3 +707,26 @@ a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-de
 .learn-picks a .icon { color: var(--accent-text); grid-row: span 2; margin-top: 0.15rem; }
 .learn-picks strong { color: var(--strong); font-weight: 600; }
 .learn-picks a:hover strong { text-decoration: underline; }
+
+/* -------------------------------------------------------------- get started (website-get-started D1) */
+.ways { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; border-top: 1px solid var(--strong); }
+.ways li { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+.ways li > .icon { color: var(--muted); }
+.ways h2 { font-size: 1.125rem; margin: 0.4rem 0 0; letter-spacing: -0.01em; }
+.ways p { color: var(--muted); margin: 0 0 0.5rem; font-size: 0.9375rem; flex: 1; }
+@media (min-width: 900px) {
+  .ways { grid-template-columns: repeat(3, 1fr); }
+  .ways li { padding: 1.4rem 1.5rem 1.4rem 0; border-bottom: 0; }
+  .ways li + li { padding-left: 1.5rem; border-left: 1px solid var(--line); }
+}
+.start-block h2 { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem); }
+.start-block .lede { font-size: 1rem; margin-bottom: 1.25rem; }
+.targets { list-style: none; margin: 0 0 1.25rem; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+@media (min-width: 640px) { .targets { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .targets { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.targets a { display: flex; flex-direction: column; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.targets strong { color: var(--strong); font-weight: 550; font-size: 0.9375rem; }
+.targets span { color: var(--faint); font-size: 0.8125rem; }
+.targets a:hover strong { text-decoration: underline; }
+.rows a.row-title { text-decoration: none; }
+.rows a.row-title:hover { text-decoration: underline; }

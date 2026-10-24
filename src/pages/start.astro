@@ -1,0 +1,78 @@
+---
+// /start (website-get-started): the three ways in, where the server runs, the apps for each
+// device and the switch guides, on one page. Plain HTML, so it reads without JavaScript.
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { canImport, manifest, versionTag } from '../lib/bundle';
+import { PLATFORMS } from '../lib/install';
+import { SITE } from '../lib/site';
+import { deployTargets } from '../lib/start';
+
+const targets = deployTargets();
+const port = manifest.facts.port ?? 8080;
+const image = manifest.image ?? `ghcr.io/pixari/opentodo:${manifest.version}`;
+const switches = (await getCollection('switch')).sort((a, b) => a.data.order - b.data.order);
+const ways = [
+  { icon: 'monitor', title: 'Try the demo', text: 'A private sandbox in your browser with sample projects. Nothing to install, deleted after two hours without activity.', href: SITE.demo, cta: 'Open the demo', primary: true },
+  { icon: 'smartphone', title: 'Join a server', text: 'Someone runs it for your home or team? Open the link they sent, then install the app on your phone and computer.', href: '/install/', cta: 'Install the app' },
+  { icon: 'server', title: 'Run your own', text: 'One container and one folder of data, on a NAS, a Raspberry Pi or a small VPS.', href: '#server', cta: 'Pick where it runs' },
+];
+---
+<Base title="Get started" description={`Three ways to start with OpenTodo ${versionTag}: try the demo, join a server, or run your own on Docker, Umbrel, Unraid, TrueNAS and ${targets.length - 4} more. Then install the app and bring your tasks.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Get started</p>
+      <h1>Three ways in.</h1>
+      <p class="lede">Try it, join someone’s server, or run your own. You can move between them later: your data comes with you.</p>
+      <ul class="ways">
+        {ways.map((w) => (
+          <li>
+            <Icon name={w.icon} size={20} />
+            <h2>{w.title}</h2>
+            <p>{w.text}</p>
+            <a class:list={['btn', w.primary ? 'btn-primary' : 'btn-secondary']} href={w.href}>{w.cta}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section start-block" id="server" aria-labelledby="server-title">
+    <div class="wrap">
+      <h2 id="server-title">Run your own server</h2>
+      <p class="lede">Pick where it runs. Each guide has the file to copy and the first steps after it starts.</p>
+      <ul class="targets">
+        {targets.map((t) => <li><a href={t.href}><strong>{t.name}</strong><span>{t.how}</span></a></li>)}
+      </ul>
+      <pre tabindex="0" aria-label="Run OpenTodo with Docker"><code># Docker: one container, data in a volume
+docker run -d --name opentodo -p {port}:{port} -v opentodo-data:{manifest.facts.dataDir ?? '/data'} {image}
+# then open http://localhost:{port} and create the owner account</code></pre>
+      <p class="meta">Not sure what you need? <a href="/self-host/plan/">Plan your server</a> asks where it will run and gives you the file. More on backups, updates and sign-in on <a href="/self-host/">Self-host</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section-alt start-block" id="devices" aria-labelledby="devices-title">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <h2 id="devices-title">On your devices</h2>
+        <p class="lede">OpenTodo installs from the browser on every system: its own icon and window, offline, with reminders.</p>
+        <ul class="rows">
+          {PLATFORMS.map((p) => <li><Icon name={p.icon} size={16} /><a class="row-title" href={`/install/${p.slug}/`}>{p.name}</a><span class="row-prop">{p.short}</span></li>)}
+          <li><Icon name="globe" size={16} /><a class="row-title" href="/capture/">Browser extension and share sheet</a><span class="row-prop">Save a page as a task</span></li>
+          <li><Icon name="terminal" size={16} /><a class="row-title" href="/docs/cli/">Command line</a><span class="row-prop">ot, for scripts</span></li>
+        </ul>
+      </div>
+      <div id="switch">
+        <h2>Moving from another app</h2>
+        <p class="lede">Import your export file. Each guide says what comes across and what doesn’t.</p>
+        <ul class="rows">
+          {switches.map((s) => <li><Icon name="folder-input" size={16} /><a class="row-title" href={`/switch/${s.id}/`}>From {s.data.app}</a><span class="row-prop">{canImport(s.data.importFormat) ? 'Imports its export file' : 'Through the import guide'}</span></li>)}
+          <li><Icon name="file" size={16} /><a class="row-title" href="/docs/import/">Other apps and formats</a><span class="row-prop">{manifest.importFormats.length} formats</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <EndCta />
+</Base>

@@ -32,7 +32,7 @@ const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir, { withFileTypes:
     return { slug: e.name, file, text, inDevelopment: fm.inDevelopment === true, live };
   });
 
-const pages = new Set(['/', '/about/', '/cost/', '/faq/', '/install/', '/vs/', '/self-host/', '/developers/', '/templates/', '/switch/', '/features/', '/learn/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
+const pages = new Set(['/', '/about/', '/cost/', '/faq/', '/install/', '/vs/', '/self-host/', '/developers/', '/templates/', '/switch/', '/features/', '/learn/', '/start/', '/whats-new/', '/feed.xml', '/blog/', '/blog/feed.xml']);
 for (const p of ['iphone-ipad', 'android', 'windows', 'mac', 'linux', 'chromeos']) pages.add(`/install/${p}/`);
 // Methods catalogue, quiz and topics (website-templates-and-methods): filter pages and topics are static routes.
 for (const a of TEMPLATE_AUDIENCES) pages.add(`/templates/for/${slugify(a)}/`);
