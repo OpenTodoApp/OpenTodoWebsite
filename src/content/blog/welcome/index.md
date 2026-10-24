@@ -15,7 +15,7 @@ Posts come in four kinds:
 
 <!-- no-claim -->
 - **News:** announcements and milestones.
-- **Releases:** what a new version brings and why it works the way it does. The complete list of changes is always on the [What's new](/whats-new/) pages.
+- **Releases:** what a new version brings and why it works the way it does. The complete list of changes is always in the [release notes](https://github.com/pixari/opentodo/releases).
 - **Development:** how OpenTodo is built, including work that isn't released yet. Those posts say so clearly at the top.
 - **Ownership:** essays on why your task list should live somewhere you control. The first two are already here.
 

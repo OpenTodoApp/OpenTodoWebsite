@@ -9,7 +9,7 @@ import CoverImage from '../../components/blog/CoverImage.astro';
 import DevNotice from '../../components/blog/DevNotice.astro';
 import PostCard from '../../components/blog/PostCard.astro';
 import JsonLd from '../../components/JsonLd.astro';
-import { SITE } from '../../lib/site';
+import { SITE, releaseUrl } from '../../lib/site';
 import { CATEGORY_LABELS, authorOf, categoryUrl, formatDate, isoDate, publishedPosts, readingMinutes, relatedPosts, type Post } from '../../lib/blog';
 
 export async function getStaticPaths() {
@@ -52,7 +52,7 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
         {d.release && (
           <aside class="post-notice post-notice-shipped" aria-label="Release">
             <Icon name="package" size={20} />
-            <p>The full list of changes is in <a href={`/whats-new/${d.release}/`}>What's new in OpenTodo {d.release}</a>.</p>
+            <p>The full list of changes is in <a href={releaseUrl(d.release)}>release notes of OpenTodo {d.release}</a>.</p>
           </aside>
         )}
         {toc.length >= 4 && (

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Redirect check (website-learn D4): every `return 301` in nginx.conf must lead to a page of
-// the build (and its #fragment to an id on it), and an exact redirect must not hide a page that
+// the build (and its #fragment to an id on it) or to another site, and an exact redirect must not hide a page that
 // is still built. Regex redirects are checked on the sample paths written after them in a
 // `# e.g.` comment.
 import fs from 'node:fs';
@@ -32,6 +32,8 @@ export function checkRedirects(dir, conf) {
   const built = (p) => fs.existsSync(path.join(dir, p, 'index.html')) || (fs.existsSync(path.join(dir, p)) && fs.statSync(path.join(dir, p)).isFile());
   for (const r of redirects) {
     if (r.to === null) { problems.push(`nginx.conf:${r.line}: sample ${r.from} does not match its location`); continue; }
+    // A redirect to another site (the app's release notes) is not part of the build.
+    if (/^https?:/.test(r.to)) continue;
     const [to, frag] = r.to.split('#');
     if (!built(to)) { problems.push(`nginx.conf:${r.line}: ${r.from} redirects to ${r.to}, which is not built`); continue; }
     if (frag) {
@@ -47,5 +49,5 @@ export function checkRedirects(dir, conf) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const dir = path.resolve(process.argv[2] ?? 'dist');
   const { problems, count } = checkRedirects(dir, fs.readFileSync(path.resolve(process.argv[3] ?? 'nginx.conf'), 'utf8'));
-  report('redirects', problems, `${count} redirects in nginx.conf, each to a built page`);
+  report('redirects', problems, `${count} redirects in nginx.conf, each to a built page or to another site`);
 }

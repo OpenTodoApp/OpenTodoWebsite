@@ -5,7 +5,7 @@ import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import Icon from '../components/Icon.astro';
 import { versionTag } from '../lib/bundle';
-import { SITE } from '../lib/site';
+import { RELEASES_URL, SITE } from '../lib/site';
 ---
 <Base title="Demo status" description="How the public OpenTodo demo works: private sandboxes, the nightly reset, what is switched off, and where to check that it is up right now.">
   <section class="page-head">
@@ -59,7 +59,7 @@ import { SITE } from '../lib/site';
       <ul>
         <li><strong>"Your demo sandbox has expired":</strong> that is the two-hour limit or the nightly reset, not an outage. Select <strong>Start a new sandbox</strong>. <a href="/docs/troubleshooting/#the-demo-says-my-sandbox-expired">In the troubleshooting page</a></li>
         <li><strong>The page does not load at all:</strong> open the <a href={`${SITE.demo}/healthz`}>health endpoint</a>. If it does not answer either, the demo is down or being updated; it comes back on its own after an update, usually within minutes. If it stays down, <a href={`${SITE.appRepo}/issues`}>tell us in an issue</a>.</li>
-        <li><strong>The demo looks different from the screenshots:</strong> it may run a newer or older version than the one this site describes. The health endpoint names its version; this site describes {versionTag}. <a href="/whats-new/">What changed between releases</a></li>
+        <li><strong>The demo looks different from the screenshots:</strong> it may run a newer or older version than the one this site describes. The health endpoint names its version; this site describes {versionTag}. <a href={RELEASES_URL}>What changed between releases</a></li>
       </ul>
       <p class="meta">This page is static and makes no request on your behalf. Your own server has the same health endpoint, which orchestrators use for their checks. <a href="/docs/self-hosting/docker/#health">Health</a></p>
     </div>
