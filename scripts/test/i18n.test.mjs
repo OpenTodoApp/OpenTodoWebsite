@@ -36,8 +36,9 @@ test('paths split and join by language', () => {
   assert.equal(localePath('/', 'fr'), '/fr/');
   assert.equal(localePath('/cost/', 'en'), '/cost/');
   assert.equal(alternatesFor('/about/'), null);
-  const alts = alternatesFor('/it/faq/');
+  const alts = alternatesFor('/it/');
   assert.equal(alts.length, Object.keys(LANGS).length);
-  assert.equal(alts[0].href, '/faq/');
-  assert.ok(TRANSLATED_PAGES.includes('/'));
+  assert.equal(alts[0].href, '/');
+  assert.deepEqual(TRANSLATED_PAGES, ['/']);
+  assert.equal(alternatesFor('/it/faq/'), null);
 });

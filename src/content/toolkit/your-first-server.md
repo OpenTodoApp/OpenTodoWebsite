@@ -23,7 +23,7 @@ Cheapest first:
 - **A Raspberry Pi:** a one-off purchase and a few watts. OpenTodo ships for its processor. [Running OpenTodo on a Raspberry Pi](/toolkit/raspberry-pi/)
 - **A small rented server (a VPS):** a provider gives you a computer in their data centre with a public address, for a monthly fee for the whole household. The smallest plan of any provider is more than enough; OpenTodo idles at about 20 MB of memory. [Resource usage](/docs/self-hosting/docker/#resource-usage)
 
-Prices are in words on purpose: [what it costs](/cost/).
+Prices are in words on purpose: [what it costs](/vs/#cost).
 
 ## The path with the least to learn
 
