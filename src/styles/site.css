@@ -730,3 +730,16 @@ a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-de
 .targets a:hover strong { text-decoration: underline; }
 .rows a.row-title { text-decoration: none; }
 .rows a.row-title:hover { text-decoration: underline; }
+
+/* ------------------------------------------------------------- compare (website-compare-v2 D1) */
+.cmp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+@media (min-width: 900px) { .cmp-list { grid-template-columns: repeat(3, 1fr); } }
+.cmp-list li { padding: 1.25rem; border-radius: var(--radius); background: var(--band); display: flex; flex-direction: column; }
+.cmp-list h2 { font-size: 1.125rem; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+.cmp-list h2 a { color: var(--strong); text-decoration: none; }
+.cmp-list h2 a:hover { text-decoration: underline; }
+.cmp-list p { color: var(--muted); font-size: 0.9375rem; margin: 0 0 0.6rem; }
+.cmp-list .cmp-ahead strong { color: var(--strong); font-weight: 550; }
+.cmp-list .meta { margin: auto 0 0; }
+.cost-sub { margin: 2.25rem 0 0.75rem; }
+.faq summary h3 { font-size: 1.0625rem; margin: 0; }

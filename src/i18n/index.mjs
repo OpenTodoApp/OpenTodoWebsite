@@ -15,16 +15,17 @@ export const LANGS = {
 export const OTHER_LANGS = Object.keys(LANGS).filter((l) => l !== DEFAULT_LANG);
 
 /** The English pages that exist in every language, by their English path. */
-export const TRANSLATED_PAGES = ['/', '/cost/', '/faq/'];
+// Only the home page is translated (website-compare-v2: cost and the FAQ became part of Compare).
+export const TRANSLATED_PAGES = ['/'];
 
-/** Splits a pathname into its language and the English path: /de/cost/ -> ['de', '/cost/'], /about/ -> ['en', '/about/']. */
+/** Splits a pathname into its language and the English path: /de/ -> ['de', '/'], /about/ -> ['en', '/about/']. */
 export function splitLang(pathname) {
   const m = /^\/([a-z]{2})(\/.*)?$/.exec(pathname);
   if (m && OTHER_LANGS.includes(m[1])) return [m[1], m[2] || '/'];
   return [DEFAULT_LANG, pathname];
 }
 
-/** The path of an English page in a language: ('/cost/', 'de') -> /de/cost/; English stays unprefixed. */
+/** The path of an English page in a language: ('/', 'de') -> /de/; English stays unprefixed. */
 export const localePath = (englishPath, lang) => (lang === DEFAULT_LANG ? englishPath : `/${lang}${englishPath === '/' ? '/' : englishPath}`);
 
 /** Every language's version of a page, or null when the page is English only. */

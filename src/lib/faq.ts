@@ -1,18 +1,12 @@
----
-// /faq (website-help-and-howtos D5, website-seo D3): the questions a visitor asks
-// before deciding, each answered in words and linked to the docs or site page that
-// supports it. <details open> so every answer reads without JavaScript; the same
-// list feeds the FAQPage structured data.
-import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
-import JsonLd from '../components/JsonLd.astro';
-import { manifest, versionTag } from '../lib/bundle';
-import { SITE } from '../lib/site';
+// The questions people ask before they switch (website-help-and-howtos D5, website-seo D3), now
+// part of /vs/ (website-compare-v2). Each answer links the docs or site page that backs it.
+import { manifest } from './bundle';
+import { SITE } from './site';
 
 const licence = manifest.facts.license ?? 'AGPL-3.0';
-const faq: { id: string; q: string; a: string }[] = [
-  { id: 'free', q: 'Is OpenTodo really free?', a: `Yes. All of it, for everyone on your server, for good. There is no plan, no trial, no free tier with limits and no paid feature. OpenTodo is free software under the ${licence} licence, which also means nobody can later turn it into a subscription. What you provide is a server to run it on. <a href="/cost/">What it costs, in words</a> · <a href="/about/#licence">The licence in plain words</a>` },
-  { id: 'hosted', q: 'Is there a hosted version I can sign up for?', a: `No. OpenTodo is not offered as a hosted service. You try it in the demo, you join a server someone you know runs, or you run one yourself. <a href="/#get-it">The three ways in</a>` },
+export const FAQ: { id: string; q: string; a: string }[] = [
+  { id: 'free', q: 'Is OpenTodo really free?', a: `Yes. All of it, for everyone on your server, for good. There is no plan, no trial, no free tier with limits and no paid feature. OpenTodo is free software under the ${licence} licence, which also means nobody can later turn it into a subscription. What you provide is a server to run it on. <a href="#cost">What it costs, in words</a> · <a href="/about/#licence">The licence in plain words</a>` },
+  { id: 'hosted', q: 'Is there a hosted version I can sign up for?', a: `No. OpenTodo is not offered as a hosted service. You try it in the demo, you join a server someone you know runs, or you run one yourself. <a href="/start/">The three ways in</a>` },
   { id: 'try', q: 'Do I need a server just to try it?', a: `No. The demo runs in your browser with nothing to install. You get a private sandbox with sample projects that nobody else can see; it is deleted after two hours without activity and every night, so do not keep anything personal there. <a href="${SITE.demo}">Open the demo</a> · <a href="/docs/self-hosting/demo/">How the demo works</a>` },
   { id: 'alone', q: 'Can I use it alone, without anyone else?', a: `Yes, but it still needs a server to sign in and sync, because every device keeps a copy of your tasks and the server keeps them in step. The server can be small: a single container on a Raspberry Pi, a machine already at home, or the cheapest rented server. <a href="/docs/troubleshooting/#can-i-use-opentodo-on-my-own-without-a-server">Using it on your own</a> · <a href="/toolkit/your-first-server/">Your first server</a>` },
   { id: 'family', q: 'Does everyone in my family need their own account?', a: `Yes, and each account is free. Each person has their own private tasks, and projects can be shared between them with a role per person: viewer, editor or admin. The owner invites people with a link; OpenTodo never emails anyone. <a href="/docs/sharing/">Sharing and comments</a> · <a href="/toolkit/household/">Set it up for your household</a>` },
@@ -23,28 +17,3 @@ const faq: { id: string; q: string; a: string }[] = [
   { id: 'maintainer', q: 'What happens if the maintainer stops?', a: `Your server keeps running: nothing in OpenTodo depends on a service of ours. The code, the container images and the specification of every feature are public under a licence that cannot be withdrawn, so anyone can carry on, and your data is always one export away. <a href="/about/">About and trust</a>` },
   { id: 'switch', q: 'Can I bring my tasks over from Todoist, Things, TickTick or Linear?', a: `Yes, with a file. OpenTodo imports CSV files and the JSON exports of other task apps, shows a preview before writing anything, and an import can be undone. Each app has its own page here with the export steps and what comes across. <a href="/switch/">Moving from another app</a>` },
 ];
-const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g, '. ').trim();
----
-<Base title="Frequently asked questions" description="Is OpenTodo free? Is there a hosted version? Do reminders reach an iPhone? Does it work offline? Can I leave? The questions people ask before they switch, answered plainly.">
-  <JsonLd slot="head" data={{ '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: plain(f.a) } })) }} />
-  <section class="page-head">
-    <div class="wrap narrow">
-      <p class="kicker">FAQ</p>
-      <h1>The questions people ask before they switch.</h1>
-      <p class="lede">Short answers, each with a link to the page that backs it up. Everything here describes OpenTodo {versionTag}.</p>
-    </div>
-  </section>
-
-  <section class="section faq" style="padding-top: 0">
-    <div class="wrap narrow">
-      {faq.map((f) => (
-        <details open id={f.id}>
-          <summary><h2>{f.q}</h2></summary>
-          <p set:html={f.a} />
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <EndCta title="Something else?" lede="The troubleshooting page covers the problems people actually hit, and the help page lists the rest." />
-</Base>

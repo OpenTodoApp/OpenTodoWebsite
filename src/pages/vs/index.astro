@@ -1,29 +1,111 @@
 ---
+// /vs (website-compare-v2): the dated comparisons with where each app is ahead, then what
+// OpenTodo costs (website-first-visit D2, in words and never in currency) and the questions
+// people ask before they switch. The footprint comes from the bundle manifest.
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { manifest, versionTag } from '../../lib/bundle';
+import { FAQ } from '../../lib/faq';
+import { SITE } from '../../lib/site';
 
 const entries = (await getCollection('compare')).sort((a, b) => a.data.order - b.data.order);
 const day = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const f = manifest.facts;
+const licence = f.license ?? 'AGPL-3.0';
+// Only the facts the pinned bundle carries are shown (nothing is invented).
+const facts = [
+  f.imageMB ? { label: 'Container image', value: `about ${f.imageMB} MB` } : f.binaryMB && { label: 'Server binary', value: `about ${Math.round(f.binaryMB)} MB` },
+  f.idleMemoryMB && { label: 'Memory when idle', value: `about ${f.idleMemoryMB} MB` },
+  f.minimumServer && { label: 'Enough server', value: f.minimumServer },
+  f.database && { label: 'Database', value: `one ${f.database} file` },
+  f.architectures && { label: 'Runs on', value: f.architectures.map((a) => a.replace('linux/', '')).join(' and ') },
+].filter(Boolean) as { label: string; value: string }[];
+const homes = [
+  { icon: 'house', title: 'A machine already at home', text: 'A NAS, an old laptop or a mini PC that is on anyway. It costs you nothing more than it does today, and your tasks never leave the house.' },
+  { icon: 'package', title: 'A Raspberry Pi', text: 'A one-off purchase, then a few watts of electricity. OpenTodo ships for its processor, so it runs there like anywhere else.' },
+  { icon: 'server', title: 'A small rented server', text: 'The smallest plan of any hosting provider is more than enough. That is a monthly cost, but one for the whole household or team, not per person.' },
+];
+const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g, '. ').trim();
 ---
-<Base title="Compare OpenTodo" description="Honest, dated comparisons of OpenTodo with Todoist, Things and Linear, including where they are ahead.">
+<Base title="Compare OpenTodo" description="Honest, dated comparisons of OpenTodo with Todoist, Things and Linear, including where they are ahead; what OpenTodo costs, in words; and the questions people ask before they switch.">
+  <JsonLd slot="head" data={{ '@type': 'FAQPage', mainEntity: FAQ.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: plain(q.a) } })) }} />
   <section class="page-head">
     <div class="wrap">
       <p class="kicker">Compare</p>
       <h1>How OpenTodo compares.</h1>
-      <p class="lede">Where Todoist, Things or Linear are ahead, we say so. Each page shows the date we last checked and links every OpenTodo claim to the docs of the current release, so you can see for yourself.</p>
+      <p class="lede">Where Todoist, Things or Linear are ahead, we say so. Each comparison shows the date we last checked and links every OpenTodo claim to the docs of the current release.</p>
+      <ul class="jump">
+        <li><a href="#apps">The comparisons</a></li>
+        <li><a href="#cost">What it costs</a></li>
+        <li><a href="#faq">Questions</a></li>
+      </ul>
     </div>
   </section>
-  <section class="section" style="padding-top: 1rem">
-    <div class="wrap grid grid-3">
-      {entries.map((e) => (
-        <a class="card" href={`/vs/${e.id}/`}>
-          <h2 style="font-size: 1.35rem">OpenTodo vs {e.data.competitor}</h2>
-          <p>{e.data.audience}</p>
-          <p class="meta">Checked on <time datetime={e.data.checkedOn.toISOString().slice(0, 10)}>{day(e.data.checkedOn)}</time></p>
-          <span class="card-link">Read the comparison <Icon name="arrow-right" size={16} /></span>
-        </a>
+
+  <section class="section compare-cards" id="apps" aria-label="The comparisons" style="padding-top: 1rem">
+    <div class="wrap">
+      <ul class="cmp-list">
+        {entries.map((e) => (
+          <li>
+            <h2><a href={`/vs/${e.id}/`}>OpenTodo and {e.data.competitor}</a></h2>
+            <p>{e.data.audience}</p>
+            <p class="cmp-ahead"><strong>Where {e.data.competitor} is ahead:</strong> {e.data.gaps.map((g) => g.title.toLowerCase()).join(', ')}.</p>
+            <p class="meta">Checked on <time datetime={e.data.checkedOn.toISOString().slice(0, 10)}>{day(e.data.checkedOn)}</time> · <a href={`/vs/${e.id}/`}>Read the comparison<span class="visually-hidden"> with {e.data.competitor}</span></a></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="cost" aria-labelledby="cost-title">
+    <div class="wrap">
+      <div class="split" style="align-items: start">
+        <div>
+          <p class="kicker">What it costs</p>
+          <h2 id="cost-title">Free. All of it, for everyone, for good.</h2>
+          <p class="lede">No plan, no trial, no free tier with limits, no per-person price, no paid feature. It is free software under the {licence} licence, which also means nobody can turn it into a subscription later. It asks for a server to run on, and the time of the person who runs it.</p>
+          <ul class="checks">
+            <li><Icon name="check" size={18} /><span>Every feature is in the one free version, and <a href="/docs/sharing/">every person on your server gets their own account</a> at no cost</span></li>
+            <li><Icon name="check" size={18} /><span>No account with anyone but your own server; <a href="/docs/offline-and-sync/">your devices talk only to it</a></span></li>
+            <li><Icon name="check" size={18} /><span>The optional AI assistant uses <a href="/docs/assistant/">your own key with the provider you choose</a>, so any cost there is between you and them</span></li>
+          </ul>
+        </div>
+        <div>
+          <dl class="facts" aria-label={`Footprint of OpenTodo ${versionTag}`}>
+            {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+          </dl>
+          <p class="meta" style="margin-top: 0.75rem">Figures for OpenTodo {versionTag}, from the <a href="/docs/self-hosting/docker/">self-hosting guide</a>.</p>
+        </div>
+      </div>
+      <h3 class="cost-sub">Where it can live, cheapest first</h3>
+      <ul class="rows">
+        {homes.map((h) => <li><Icon name={h.icon} size={16} /><div><p class="row-title">{h.title}</p><p class="row-line">{h.text}</p></div><span class="row-prop"></span></li>)}
+      </ul>
+      <h3 class="cost-sub">The work</h3>
+      <dl class="fine-list">
+        <div><dt>The first time</dt><dd>Starting the container and creating the owner account takes a few minutes; giving it an address and HTTPS takes longer if you have never done it. <a href="/docs/self-hosting/coolify/">Coolify</a> does that part for you.</dd></div>
+        <div><dt>Every few weeks</dt><dd>Updating is pulling the new image and restarting; <a href="/docs/self-hosting/docker/#updating">the database updates itself on start</a>.</dd></div>
+        <div><dt>Once, then never again</dt><dd>Turn on <a href="/docs/backups/">scheduled backups</a> to a folder, S3-compatible storage or WebDAV.</dd></div>
+        <div><dt>Everyone else</dt><dd>Opens the link they were sent, <a href="/docs/install-app/">installs the app from the browser</a> and uses it like any other task app.</dd></div>
+      </dl>
+      <p class="meta" style="margin-top: 1.5rem">A subscription app charges each person every month; OpenTodo is one server for everyone on it, and if you stop, <a href="/docs/import-export/">everyone downloads their data as one file</a>. OpenTodo sells nothing; <a href={SITE.appRepo}>a star</a> or <a href={SITE.coffee}>a coffee</a> is welcome and never expected. <a href="/self-host/plan/">Plan your server</a> · <a href="/start/">Get started</a></p>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap narrow">
+      <p class="kicker">Questions</p>
+      <h2 id="faq-title">The questions people ask before they switch.</h2>
+      <p class="lede">Short answers, each with a link to the page that backs it up. Everything here describes OpenTodo {versionTag}.</p>
+      {FAQ.map((q) => (
+        <details open id={q.id}>
+          <summary><h3>{q.q}</h3></summary>
+          <p set:html={q.a} />
+        </details>
       ))}
     </div>
   </section>
