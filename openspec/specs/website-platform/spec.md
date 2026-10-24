@@ -39,7 +39,7 @@ The documentation site from the bundle SHALL be served under `/docs/` without mo
 - **THEN** the search works over the bundle's index and no query leaves the browser
 
 ### Requirement: Shared layout and navigation
-Every page SHALL share one header with navigation to Features, Compare, Self-host, Developers and Docs, and one footer with licence, source and specification links. The layout SHALL follow the visitor's light or dark preference, use the colour tokens, typeface and icon set from the bundle, and collapse the navigation into a menu below 768 px that works without JavaScript.
+Every page SHALL share one header (Features, Learn, Compare, Docs, the Blog while a post exists, Try the demo and the primary Get started) and one footer of four link groups with licence, source and specification links. Targets SHALL be defined once in the site constants and checked by the link check. The layout SHALL follow the visitor's colour preference, use the bundle's tokens, typeface and icons, and collapse into a menu below 768 px that works without JavaScript.
 
 #### Scenario: Phone navigation without JavaScript
 - **WHEN** a visitor on a 360 px wide screen with JavaScript disabled opens the menu
@@ -48,6 +48,10 @@ Every page SHALL share one header with navigation to Features, Compare, Self-hos
 #### Scenario: Colours match the app
 - **WHEN** the bundle's accent token changes in a new release and the site is rebuilt
 - **THEN** buttons and links on the site use the new value without any edit in this repository
+
+#### Scenario: Header on a laptop
+- **WHEN** a visitor opens any page at 1280 px wide with JavaScript disabled
+- **THEN** the header shows Features, Learn, Compare, Docs and Blog on one line with Try the demo and Get started, and each link opens its page
 
 ### Requirement: Typed content
 Content pages that make claims (comparisons, and later templates and guides) SHALL be written as content entries whose required fields are checked at build time, including a "checked on" date and source links where the content kind requires them. A missing or malformed field SHALL fail the build and name the entry.
@@ -96,12 +100,23 @@ Every page SHALL declare a social preview image of its own, drawn at build time 
 - **THEN** its social image is the cover and no card is rendered for it
 
 ### Requirement: Structured data
-Pages SHALL carry inline schema.org JSON-LD built from their own data: the home page a WebSite and a SoftwareApplication with the bundle's version, the FAQ a FAQPage with its questions and answers, how-tos, guides, toolkit pieces and posts an article entity with author and dates, templates a Dataset with the download. No third-party script SHALL be loaded for it, and no rating, price or user count SHALL be stated.
+Pages SHALL carry inline schema.org JSON-LD built from their own data: the home page a WebSite and a SoftwareApplication with the bundle's version, the Compare page a FAQPage with its questions and answers, how-tos, guides, toolkit pieces and posts an article entity with author and dates, templates a Dataset with the download. No third-party script SHALL be loaded for it, and no rating, price or user count SHALL be stated.
 
 #### Scenario: FAQ questions follow the page
-- **WHEN** a question is added to the FAQ page
+- **WHEN** a question is added to the questions on the Compare page
 - **THEN** the FAQPage entity lists it without a second edit
 
 #### Scenario: Still no third-party scripts
 - **WHEN** the website checks scan the built pages
 - **THEN** the structured data blocks have no `src` and the script check passes
+
+### Requirement: Moved pages keep their addresses
+When a page moves or is folded into another, its old address SHALL answer with a permanent redirect to the page that now holds its content, defined in the server configuration. The website checks SHALL fail when a redirect leads to a page or fragment that is not built, or when a redirect hides a page that is still built. Redirects SHALL work without JavaScript, as they are answered by the server.
+
+#### Scenario: An old index
+- **WHEN** a visitor opens `/help/`
+- **THEN** the server answers with a permanent redirect to `/learn/`
+
+#### Scenario: A broken redirect
+- **WHEN** a redirect in the server configuration names a target that the build does not produce
+- **THEN** `npm run check:dist` fails naming the line and the target

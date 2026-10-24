@@ -32,18 +32,18 @@ The site SHALL offer method guides (for example GTD, weekly review, time blockin
 - **THEN** the content check fails and names the guide and the sentence's line
 
 ### Requirement: What's new and feed
-The site SHALL publish a "What's new" page per release from the bundle's changelog, and SHALL offer an RSS feed listing new guides, templates, essays and releases. Neither SHALL describe features that are not in a released version.
+The site SHALL offer an RSS feed listing new guides, templates, essays, posts and every release of the pinned bundle's changelog, each release linking its release post when one is published and the app's release notes otherwise. Release notes SHALL NOT be republished as separate pages; the old "What's new" addresses SHALL redirect to the release post or the release notes. Neither the feed nor the posts SHALL describe features that are not in a released version.
 
 #### Scenario: New release
 - **WHEN** the pinned bundle moves to a new release
-- **THEN** a "What's new" page for that release appears and the feed lists it
+- **THEN** the feed lists it, linking its release post once that is published and its release notes until then
 
 ### Requirement: Content navigation
-The main navigation SHALL offer Templates and Guides once at least one entry of each is published, alongside the existing navigation, and every content page SHALL end with calls to try the demo, self-host and import.
+Every page SHALL reach the templates and the guidance content through the Learn link in the main navigation and through the footer's Learn group, once at least one entry of each is published, and every content page SHALL end with calls to try the demo, self-host and import. At 360 px wide and without JavaScript these links SHALL work as on a laptop.
 
 #### Scenario: Navigation appears with content
 - **WHEN** the first template and the first guide are published
-- **THEN** every page's navigation shows Templates and Guides, and works at 360 px without JavaScript
+- **THEN** every page's footer shows Templates and Guides and how-tos, the Learn page links both, and both work at 360 px without JavaScript
 
 ### Requirement: Reviewed, sourced and fresh content
 Every published piece SHALL be approved by the maintainer through a pull request before it goes live, and SHALL carry a last-reviewed date. Content drafted by an agent SHALL follow the repository's voice guide. A piece whose last-reviewed date is older than one year at build time SHALL be reported as stale by the checks.
@@ -79,11 +79,11 @@ Every template page SHALL show how to use the template and how to adapt it (at l
 - **THEN** the build fails naming the template and the field
 
 ### Requirement: Methods catalogue
-Guides SHALL carry tags from one vocabulary shared with templates, how-tos and posts, and the guides index SHALL list every guide with its tags and offer tag filters that lead to static pages. The catalogue SHALL include at least ten methods, each setting the method up with features of the pinned release, every claim linked to its documentation page. A tag outside the vocabulary SHALL fail the build.
+Guides SHALL carry tags from one vocabulary shared with templates, how-tos and posts, and the Learn library's methods page SHALL list every guide with its topic, with the topic pages as its filters. The catalogue SHALL include at least ten methods, each setting the method up with features of the pinned release, every claim linked to its documentation page. A tag outside the vocabulary SHALL fail the build.
 
 #### Scenario: Filter by tag
-- **WHEN** a visitor chooses the procrastination tag
-- **THEN** a page lists the guides tagged procrastination and the templates carrying the tag
+- **WHEN** a visitor follows the old address of the procrastination tag, or chooses the topic that holds it
+- **THEN** the "Task management" topic page lists the guides and templates carrying the tag
 
 #### Scenario: Unknown tag
 - **WHEN** a guide declares a tag that is not in the vocabulary
@@ -101,7 +101,7 @@ The site SHALL offer a short quiz under the guides that leads, through static pa
 - **THEN** the build fails and names the slug
 
 ### Requirement: Topic pages
-The site SHALL have topic pages that collect the guides, templates, how-tos, toolkit pieces and posts carrying the topic's tags, with an index of topics linked from the Learn menu and the footer. Empty sections SHALL be left out. The pages SHALL read and link without JavaScript at 360 px wide.
+The site SHALL have topic pages at `/learn/topic/<slug>/` that collect the guides, templates, how-tos, toolkit pieces and switch guides carrying the topic's tags, and the posts that carry them, linked from the Learn library's topic facet. Empty sections SHALL be left out. The pages SHALL read and link without JavaScript at 360 px wide.
 
 #### Scenario: A tagged how-to
 - **WHEN** a how-to carries the teamwork tag
@@ -110,3 +110,39 @@ The site SHALL have topic pages that collect the guides, templates, how-tos, too
 #### Scenario: Topic with no posts
 - **WHEN** no post carries a topic's tags
 - **THEN** the topic page shows no "From the blog" section
+
+### Requirement: Learn library
+The site SHALL have a Learn library at `/learn/` that lists every published guide, how-to, toolkit piece, switch guide and template by type, one row each with its topic, type and length, built from the content collections so it follows what is published. Type and topic filters SHALL be links to static pages with their counts. Without JavaScript and at 360 px wide every filter SHALL work and every row SHALL keep its title and length.
+
+#### Scenario: Filter without JavaScript
+- **WHEN** a visitor on a 360 px wide screen without JavaScript chooses "How-to"
+- **THEN** `/learn/how-tos/` opens and lists only how-tos, in their groups
+
+#### Scenario: A new guide
+- **WHEN** a guide is published
+- **THEN** it appears on `/learn/`, on `/learn/methods/` and on the topic page of its tags, and the counts include it
+
+### Requirement: Article layout
+Guides, toolkit pieces and how-tos SHALL share one article layout: a breadcrumb through Learn, the page's position in its Learn list with links to the previous and next entry, the content, and a facts column with its sections, length, topic, review date and what to read next. The position SHALL follow the Learn library's order. At 360 px wide and without JavaScript the facts SHALL follow the content and every link SHALL work.
+
+#### Scenario: Next how-to
+- **WHEN** a visitor on a how-to follows "next" in the bar
+- **THEN** the next how-to in the Learn library's how-to order opens, and its bar shows its own position
+
+### Requirement: Articles name their documentation
+The facts column of an article SHALL list the documentation pages the article relies on, named by their titles in the pinned bundle, each linking that page.
+
+#### Scenario: Docs titles follow the release
+- **WHEN** the pinned bundle renames a documentation page that a guide relies on
+- **THEN** the guide's facts column shows the new title with no edit in this repository
+
+### Requirement: AI on your terms guide
+The toolkit SHALL include a guide that explains in plain words how AI works in OpenTodo: off until turned on, the models that can be used, changes proposed for review and undo, a person's own AI tools and their limits, and end-to-end encryption. Every statement SHALL link its documentation page of the pinned release, and an illustration of the review card SHALL be labelled as one. The guide SHALL read at 360 px wide without JavaScript.
+
+#### Scenario: Encrypted account
+- **WHEN** a visitor whose account uses end-to-end encryption reads the guide
+- **THEN** it says the in-app assistant is not available for that account and links the documentation that explains why
+
+#### Scenario: Linked from the home page
+- **WHEN** a visitor follows "AI on your terms" on the home page
+- **THEN** the guide opens

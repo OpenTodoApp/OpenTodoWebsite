@@ -6,7 +6,7 @@ The marketing pages of the website: the home page, comparisons, switch pages, th
 ## Requirements
 
 ### Requirement: Paths to get OpenTodo on the home page
-Directly below the hero, the home page SHALL show the three ways to get OpenTodo: trying the demo, joining a server someone else runs with an invitation link, and running one's own server. It SHALL state that OpenTodo is not offered as a hosted service. Each path SHALL link to the page or documentation of the pinned release that continues it. The block SHALL read and link without JavaScript at 360 px wide.
+The home page SHALL show the three ways to get OpenTodo: trying the demo, joining a server someone else runs with an invitation link, and running one's own server. It SHALL state that OpenTodo is not offered as a hosted service. Each path SHALL link to the page or documentation of the pinned release that continues it. The block SHALL read and link without JavaScript at 360 px wide.
 
 #### Scenario: A visitor who will not run a server
 - **WHEN** a visitor reads the block on a 360 px wide phone without JavaScript
@@ -19,17 +19,6 @@ Directly below the hero, the home page SHALL show the three ways to get OpenTodo
 #### Scenario: No hosted sign-up is implied
 - **WHEN** a visitor looks for a "sign up" or "start for free" path
 - **THEN** the block says OpenTodo is not offered as a hosted service and offers the demo instead
-
-### Requirement: What it costs page
-The site SHALL have a page at `/cost/` that explains the cost of using OpenTodo in words and without currency: the free licence named by the bundle manifest, the server footprint from the bundle manifest, who installs and updates, and how this compares with a plan per person. Every statement about the app SHALL link to its documentation page of the pinned release. The page SHALL be in the main navigation and SHALL read fully at 360 px wide without JavaScript.
-
-#### Scenario: Figures follow the release
-- **WHEN** a new bundle is pinned with a different image size or idle memory
-- **THEN** the cost page shows the new figures without any edit in this repository
-
-#### Scenario: No prices
-- **WHEN** the page is scanned for currency symbols or amounts
-- **THEN** none are found; costs are described in words
 
 ### Requirement: About and trust page
 The site SHALL have a page at `/about/` that says who maintains OpenTodo, when it was first and last released, what the licence means in plain words, where the security policy and the specifications are, how long the demo keeps a sandbox, what this website collects, and how to leave with one's data. Maintainer details SHALL come from the authors file and release dates from the bundle's changelog. The page SHALL be in the footer and SHALL read fully at 360 px wide without JavaScript.
@@ -46,41 +35,15 @@ The site SHALL have a page at `/about/` that says who maintains OpenTodo, when i
 - **WHEN** a visitor on the about page wants to report a vulnerability
 - **THEN** a link leads to the app's security policy
 
-### Requirement: Grouped navigation
-From 768 px wide, the header SHALL show Features, Compare, What it costs, a Learn menu, Self-host, Developers and Docs on one line. The Learn menu SHALL list Guides, Templates, Toolkit, Blog and What's new and SHALL open and close without JavaScript, by keyboard and pointer. Below 768 px the phone menu SHALL show the same links in two groups, Product and Learn, in one panel that opens without JavaScript.
-
-#### Scenario: Learn menu without JavaScript on a laptop
-- **WHEN** a visitor at 1280 px wide with JavaScript disabled activates Learn with the keyboard
-- **THEN** the links Guides, Templates, Toolkit, Blog and What's new are shown and work
-
-#### Scenario: Learn follows the content
-- **WHEN** no guide or template is published, or no post is published
-- **THEN** the Learn menu is absent, or respectively lists no Blog link, as the content and blog specifications require
-
-#### Scenario: Phone menu groups
-- **WHEN** a visitor on a 360 px wide screen without JavaScript opens the menu
-- **THEN** the Product group shows Features, Compare, What it costs, Self-host, Developers and Docs, and the Learn group shows Guides, Templates, Toolkit, Blog and What's new
-
-#### Scenario: Tablet width
-- **WHEN** the header is shown at 768 px wide
-- **THEN** every header item stays on one line and the page does not scroll sideways
-
-### Requirement: Hero demo reads cleanly without styles
-The counts in the hero demo's sidebar SHALL NOT be marked up as emphasis, so a text-only rendering or a screen reader reads "Inbox 3", not emphasised text.
-
-#### Scenario: Text rendering
-- **WHEN** the home page is rendered as plain text
-- **THEN** the sidebar reads "Inbox 3" and "Today 4" without emphasis markers
-
 ### Requirement: Outcome-first home page
-The home page SHALL open with the outcome for people who use a task app, not with implementation details. Above the first screenful it SHALL show a headline, a one-sentence promise and calls to action to try the demo, self-host and import, with the live demo of the app directly below. Architecture terms SHALL NOT appear above the fold.
+The home page SHALL open with the outcome for people who use a task app, not with implementation details. Above the first screenful it SHALL show a headline, a one-sentence promise and calls to action to try the demo and to get started, with a real screenshot of the pinned release directly below. Architecture terms SHALL NOT appear above the fold.
 
 #### Scenario: A Todoist user lands on the home page
 - **WHEN** a visitor opens the home page on a 390 px wide phone
-- **THEN** the first screenful shows the headline, the promise and the calls to action, and the live demo is reachable by scrolling once, without any mention of op logs, clocks or SQLite
+- **THEN** the first screenful shows the headline, the promise and the calls to action, and the Today screenshot is reachable by scrolling once, without any mention of op logs, clocks or SQLite
 
 ### Requirement: Differentiators and proof on the home page
-Below the hero, the home page SHALL present the differentiators (one server for a whole household, full offline use, optional end-to-end encryption, assistants with the user's own model key, leaving at any time), real screenshots, and a short teaser that links to the self-hosting page.
+The home page SHALL present the differentiators (one server for a whole household, full offline use, optional end-to-end encryption, AI only on the person's terms with their own model, leaving at any time), each linked to its documentation or guide, real screenshots of the pinned release, and a path that links to the self-hosting page.
 
 #### Scenario: Technical detail is one click away
 - **WHEN** a visitor wants to know how sync works
@@ -119,7 +82,7 @@ The site SHALL have a self-hosting page with the sync demo, footprint, container
 - **THEN** the main navigation offers Features, Compare, Self-host, Developers and Docs
 
 ### Requirement: Consistent visual language
-Every page SHALL use the app's colour palette and typeface, icons from one line-icon set, and real screenshots of the app shown in a consistent frame, in light and dark. Emoji and Unicode symbols SHALL NOT be used as icons. Every page SHALL follow the visitor's light or dark preference.
+Every page SHALL use the app's colours, typeface, line icons and real screenshots, and follow the visitor's light or dark preference; emoji and Unicode symbols SHALL NOT be icons. In plain CSS, at every width and without JavaScript, pages SHALL follow the app's flat look: surface and canvas tokens, hairlines instead of shadows except on floating panels, no decorative gradients, no imitation browser chrome, and grey for navigation state, every colour from the bundle's tokens.
 
 #### Scenario: No emoji icons
 - **WHEN** the website check scans the built pages
@@ -128,6 +91,14 @@ Every page SHALL use the app's colour palette and typeface, icons from one line-
 #### Scenario: Dark preference
 - **WHEN** a visitor whose system prefers dark opens a comparison page
 - **THEN** the page and its screenshots are shown in their dark variants
+
+#### Scenario: Flat look follows the bundle
+- **WHEN** the bundle pin moves to a release with a different canvas, surface or border token and the site is rebuilt
+- **THEN** every band, frame and hairline uses the new values with no edit in this repository, and no card, button or screenshot has a shadow
+
+#### Scenario: Current page in the navigation
+- **WHEN** a visitor opens the blog at 1280 px wide
+- **THEN** the Blog link in the header is marked with the grey selected surface and strong text, not with the accent colour
 
 ### Requirement: Fast, private and accessible pages
 Every page SHALL work without JavaScript for reading and navigation, SHALL load no third-party scripts other than the site's self-hosted analytics, and SHALL meet WCAG 2.2 AA in light and dark at widths from 360 px, without horizontal scrolling.
@@ -213,3 +184,83 @@ The site SHALL have a page at `/status/` describing the demo as the demo documen
 #### Scenario: Version differs
 - **WHEN** the demo runs a version other than the one the site describes
 - **THEN** the page says the health endpoint names the demo's version and which version the site describes
+
+### Requirement: Five-destination navigation
+From 768 px wide, the header SHALL show Features, Learn, Compare, Docs and Blog on one line, followed by the Get started action, and from 1024 px also the Try the demo action. Below 768 px the phone menu SHALL show the same links and both actions in one panel that opens without JavaScript, by keyboard and pointer. The guidance content (guides, how-tos, toolkit, templates, switch pages and topics) SHALL be reached through the Learn page and the footer rather than a menu in the header.
+
+#### Scenario: Learn without JavaScript on a laptop
+- **WHEN** a visitor at 1280 px wide with JavaScript disabled activates Learn with the keyboard
+- **THEN** the Learn page opens and links the guides, how-tos, toolkit and templates
+
+#### Scenario: Blog follows the content
+- **WHEN** no post is published
+- **THEN** the header and the phone menu list no Blog link, as the blog specification requires
+
+#### Scenario: Phone menu
+- **WHEN** a visitor on a 360 px wide screen without JavaScript opens the menu
+- **THEN** it shows Features, Learn, Compare, Docs and Blog, then Try the demo and Get started, and each works
+
+#### Scenario: Tablet width
+- **WHEN** the header is shown at 768 px wide
+- **THEN** every header item stays on one line and the page does not scroll sideways
+
+### Requirement: Features page
+The site SHALL have a features page at `/features/` that lists every feature of the pinned release in named groups, plus the apps it imports from, each feature with a one-line description and a link to its documentation page in the pinned bundle. The header's Features link SHALL open this page. The page SHALL read without JavaScript and at 360 px wide, with each description under its feature's name.
+
+#### Scenario: Phone without JavaScript
+- **WHEN** a visitor opens `/features/` at 360 px wide with JavaScript disabled
+- **THEN** every group, feature, description and Docs link is shown and works, and the page does not scroll sideways
+
+### Requirement: Feature list follows the pinned release
+The feature list SHALL come from one data module whose entries name their documentation page and the first release that has it. Entries newer than the pinned release SHALL be left out, a shipped entry whose documentation page is missing from the bundle SHALL fail the build, and the import apps SHALL come from the bundle manifest's import formats.
+
+#### Scenario: A feature from a later release
+- **WHEN** the site is built against a bundle older than a feature's first release
+- **THEN** the features page does not list it, and the count in the page head leaves it out
+
+#### Scenario: A docs page is renamed
+- **WHEN** a listed feature's documentation page no longer exists in the pinned bundle
+- **THEN** the build fails naming the feature and the missing page
+
+### Requirement: Get started page
+The site SHALL have a page at `/start/`, opened by the header's Get started action, that offers the three ways in (try the demo, join a server, run your own), lists every deploy target whose self-hosting guide the pinned bundle has with the Docker command built from the bundle manifest, links each install page and the capture page, and links each switch guide saying whether the pinned release imports that app's export. It SHALL read at 360 px wide without JavaScript.
+
+#### Scenario: A new deploy guide
+- **WHEN** the pinned bundle adds a self-hosting guide for a platform the page knows
+- **THEN** `/start/` lists that platform with a link to its guide, with no other edit
+
+#### Scenario: Phone without JavaScript
+- **WHEN** a visitor opens `/start/` at 360 px wide with JavaScript disabled
+- **THEN** the three ways in, the deploy targets, the Docker command, the device list and the switch guides are shown and their links work, and nothing scrolls sideways
+
+### Requirement: What it costs on Compare
+The Compare page `/vs/` SHALL have a "What it costs" part (`#cost`) that explains the cost of using OpenTodo in words and without currency: the free licence named by the bundle manifest, the server footprint from the bundle manifest, where it can run, who installs and updates, and how this compares with a plan per person. Every statement about the app SHALL link to its documentation page of the pinned release, and the part SHALL read fully at 360 px wide without JavaScript.
+
+#### Scenario: Figures follow the release
+- **WHEN** a new bundle is pinned with a different image size or idle memory
+- **THEN** the cost part shows the new figures without any edit in this repository
+
+#### Scenario: No prices
+- **WHEN** the page is scanned for currency symbols or amounts
+- **THEN** none are found; costs are described in words
+
+### Requirement: Comparisons name where others lead
+The Compare page SHALL list every comparison with its audience, the date it was last checked and the titles of the points where that app is ahead, taken from the comparison's own entries, so the summary changes when a comparison does. It SHALL NOT show a cross-app table with values that no comparison states.
+
+#### Scenario: A gap is added
+- **WHEN** a comparison gains a new point where the other app is ahead
+- **THEN** its card on `/vs/` names it with no other edit
+
+### Requirement: Questions before switching
+The Compare page SHALL answer the questions a visitor asks before deciding (whether it is free, whether there is a hosted version, whether reminders reach an iPhone, whether it works offline, how to leave, and what happens if the maintainer stops, among others) in a part at `#faq`, each answer linking the page that supports it. The answers SHALL be readable without JavaScript at 360 px wide.
+
+#### Scenario: Is it free
+- **WHEN** a visitor opens the questions on `/vs/`
+- **THEN** the first question answers that OpenTodo is free and open source with no paid tier, linking the cost part and the licence
+
+### Requirement: Everything included on the home page
+The home page SHALL show the breadth of the pinned release in one compact part: every feature group with its count and first items linked to their documentation, the integrations and import apps by name, and a link to the features page saying no feature is held back for a paid plan. It SHALL use the features page's data, so it follows the pinned release. At 360 px wide and without JavaScript the groups SHALL be disclosures that open to their items.
+
+#### Scenario: A new release adds a feature
+- **WHEN** the pin moves to a release that adds a listed feature
+- **THEN** its group's count on the home page grows with no edit to the home page
