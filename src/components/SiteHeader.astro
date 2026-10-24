@@ -1,47 +1,26 @@
 ---
-// Main navigation (website-platform spec "Shared layout and navigation",
-// website-first-visit D4, website-help-and-howtos D7). From 768 px: flat links plus one Learn <details>
-// menu for the guidance content. Below 768 px: one <details> menu with the
-// same links in two groups. Both open without JavaScript.
-import { getCollection } from 'astro:content';
+// Main navigation (website-platform "Shared layout and navigation", marketing-website
+// "Five-destination navigation", website-shell-v2). Five links, a secondary "Try the demo"
+// and a primary "Get started"; below 768 px one <details> menu holds the same, so it
+// opens without JavaScript.
 import Icon from './Icon.astro';
-import { SITE } from '../lib/site';
+import { NAV, SITE } from '../lib/site';
 import { publishedPosts } from '../lib/blog';
 
 const path = Astro.url.pathname;
-const published = async (c: 'templates' | 'guides') =>
-  (await getCollection(c, (e) => !('draft' in e.data) || !e.data.draft)).length > 0;
-// Templates and Guides appear once at least one of each is published (website-content spec).
-const content = (await published('templates')) && (await published('guides'));
 // Blog appears once a post is published (website-blog spec "Blog in navigation").
 const blog = (await publishedPosts()).length > 0;
 
-interface Link { href: string; label: string; match: string | null }
-const product: Link[] = [
-  { href: '/#features', label: 'Features', match: null },
-  { href: '/vs/', label: 'Compare', match: '/vs/' },
-  { href: '/cost/', label: 'What it costs', match: '/cost/' },
+interface Link { href: string; label: string; match: string[] }
+// Learn is current on the guidance pages it gathers (website-shell-v2 D1).
+const links: Link[] = [
+  { href: NAV.features, label: 'Features', match: ['/features/'] },
+  { href: NAV.learn, label: 'Learn', match: ['/learn/', '/help/', '/guides/', '/how-to/', '/toolkit/', '/topics/', '/templates/', '/switch/'] },
+  { href: '/vs/', label: 'Compare', match: ['/vs/'] },
+  { href: '/docs/', label: 'Docs', match: [] },
+  ...(blog ? [{ href: '/blog/', label: 'Blog', match: ['/blog/'] }] : []),
 ];
-const learn: Link[] = content
-  ? [
-      { href: '/guides/', label: 'Guides', match: '/guides/' },
-      { href: '/how-to/', label: 'How-tos', match: '/how-to/' },
-      { href: '/templates/', label: 'Templates', match: '/templates/' },
-      { href: '/switch/', label: 'Switch', match: '/switch/' },
-      { href: '/topics/', label: 'Topics', match: '/topics/' },
-      { href: '/toolkit/', label: 'Toolkit', match: '/toolkit/' },
-      ...(blog ? [{ href: '/blog/', label: 'Blog', match: '/blog/' }] : []),
-      { href: '/whats-new/', label: "What's new", match: '/whats-new/' },
-    ]
-  : [];
-const run: Link[] = [
-  { href: '/self-host/', label: 'Self-host', match: '/self-host/' },
-  { href: '/developers/', label: 'Developers', match: '/developers/' },
-  { href: '/help/', label: 'Help', match: '/help/' },
-  { href: '/docs/', label: 'Docs', match: null },
-];
-const current = (m: string | null) => (m && path.startsWith(m) ? 'page' : undefined);
-const inLearn = learn.some((l) => current(l.match));
+const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' : undefined);
 ---
 <header class="site-header">
   <div class="wrap header-inner">
@@ -51,41 +30,23 @@ const inLearn = learn.some((l) => current(l.match));
     </a>
     <nav class="nav-desktop" aria-label="Main">
       <ul>
-        {product.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
-        {learn.length > 0 && (
-          <li>
-            <details class="nav-group">
-              <summary class="nav-link" aria-current={inLearn ? 'page' : undefined}>Learn <Icon name="chevron-down" size={16} /></summary>
-              <ul class="nav-group-panel">
-                {learn.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
-              </ul>
-            </details>
-          </li>
-        )}
-        {run.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+        {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
       </ul>
     </nav>
     <a class="btn btn-secondary btn-small header-cta header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /> Star on GitHub</a>
-    <a class="btn btn-primary btn-small header-cta" href={SITE.demo}>Try the demo</a>
+    <a class="btn btn-secondary btn-small header-cta header-demo" href={SITE.demo}>Try the demo</a>
+    <a class="btn btn-primary btn-small header-cta" href={NAV.start}>Get started</a>
     <details class="nav-menu">
       <summary><Icon name="menu" size={18} /> Menu</summary>
       <div class="menu-panel">
         <nav aria-label="Main">
-          <p class="menu-group">Product</p>
           <ul>
-            {[...product, ...run].map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
+            {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
           </ul>
-          {learn.length > 0 && (
-            <>
-              <p class="menu-group">Learn</p>
-              <ul>
-                {learn.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l.match)}>{l.label}</a></li>)}
-              </ul>
-            </>
-          )}
         </nav>
         <div class="menu-cta">
-          <a class="btn btn-primary" href={SITE.demo}>Try the demo</a>
+          <a class="btn btn-primary" href={NAV.start}>Get started</a>
+          <a class="btn btn-secondary" href={SITE.demo}>Try the demo</a>
           <a class="btn btn-secondary" href={SITE.appRepo} data-star><Icon name="star" size={18} /> Star on GitHub</a>
         </div>
       </div>

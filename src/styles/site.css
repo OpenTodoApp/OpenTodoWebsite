@@ -98,7 +98,7 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .header-inner { display: flex; align-items: center; gap: 1rem; min-height: var(--header-h); }
 .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 650; font-size: 1.0625rem; color: var(--strong); text-decoration: none; letter-spacing: -0.01em; }
 .brand img { border-radius: 7px; }
-.nav-desktop { display: none; margin-left: auto; }
+.nav-desktop { display: none; margin-left: 1rem; flex: 1; }
 .nav-desktop ul, .nav-menu ul { list-style: none; margin: 0; padding: 0; }
 .nav-desktop ul { display: flex; gap: 0.25rem; }
 .nav-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.9375rem; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); white-space: nowrap; }
@@ -513,12 +513,17 @@ a.card h3 { color: var(--strong); }
 
 /* ------------------------------------------------------------------ footer */
 .site-footer { background: var(--band); border-top: 1px solid var(--line); padding-block: 3rem 2.5rem; font-size: 0.9375rem; color: var(--muted); }
-.footer-grid { display: grid; gap: 2rem; }
-@media (min-width: 768px) { .footer-grid { grid-template-columns: 1.4fr repeat(3, 1fr); } }
+.footer-grid { display: grid; gap: 2rem 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1024px) { .footer-grid { grid-template-columns: 1.4fr repeat(4, 1fr); } }
+.footer-grid > div:first-child { grid-column: 1 / -1; }
+@media (min-width: 1024px) { .footer-grid > div:first-child { grid-column: auto; } }
 .site-footer h2 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0; color: var(--strong); margin-bottom: 0.75rem; }
 .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
-.site-footer a { color: var(--muted); }
-.site-footer a:hover { color: var(--strong); }
+.site-footer a { color: var(--muted); text-decoration: none; }
+.site-footer .footer-langs ul { display: flex; gap: 0.25rem 1rem; }
+.site-footer .footer-legal { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); font-size: 0.875rem; }
+.footer-legal + .footer-fine { margin-top: 0.75rem; padding-top: 0; border-top: 0; }
+.site-footer a:hover { color: var(--strong); text-decoration: underline; }
 .footer-fine { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.875rem; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -615,13 +620,13 @@ a.card h3 { color: var(--strong); }
 }
 .astro-code { border: 1px solid var(--border); }
 
-/* Tablet widths: eight links must fit on one line (website-blog D7). The header's
-   demo button returns from 1024 px; every page offers the demo in its content. */
+/* Tablet widths: five links and Get started fit on one line; Try the demo joins from
+   1024 px (website-shell-v2 D1). Every page also offers the demo in its content. */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .nav-desktop ul { gap: 0; }
-  .nav-link { padding-inline: 0.4rem; font-size: 0.9375rem; }
-  .site-header .header-cta { display: none !important; }
+  .site-header .header-demo { display: none !important; }
 }
+.nav-desktop ul { gap: 0.15rem; }
+.site-header .header-cta + .header-cta { margin-left: -0.5rem; }
 
 /* Keep the coffee button black on yellow inside link-styled areas, hover included. */
 .site-footer a.btn-coffee, .site-footer a.btn-coffee:hover, .end-cta a.btn-coffee, .end-cta a.btn-coffee:hover { color: #000; text-decoration: none; }

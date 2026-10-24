@@ -12,4 +12,12 @@ export const SITE = {
   analytics: { src: 'https://analytics.pixari.dev/script.js', websiteId: 'c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92' },
 };
 
+// Where the header and footer send people (website-shell-v2 D2). Each later change of the
+// redesign repoints one target here: /features/, /learn/ and /start/.
+export const NAV = {
+  features: '/#features',
+  learn: '/help/',
+  start: '/#get-it',
+};
+
 export const specUrl = (capability: string) => `${SITE.appRepo}/tree/main/openspec/specs/${capability}`;
