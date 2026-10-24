@@ -834,6 +834,7 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 .home-say { font-size: clamp(2.05rem, 1.2rem + 4vw, 3.75rem); line-height: 1.07; letter-spacing: -0.04em; max-width: 56rem; margin: 0.25rem 0 0; }
 .home-late { color: var(--ot-danger); }
 .home-soft { color: var(--faint); }
+.home-caption { color: var(--faint); font-size: 0.9375rem; margin: 0.875rem 0 0; max-width: 38rem; }
 .home-lede { font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.2rem); max-width: 38rem; margin: 1.5rem 0 1.75rem; }
 .home-lede strong { color: var(--strong); font-weight: 600; }
 .home-hero .cta-row { align-items: center; }
