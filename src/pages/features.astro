@@ -1,0 +1,57 @@
+---
+// /features (website-features): everything the pinned release does, grouped as on the home
+// page, each line linked to its docs page. The list comes from src/lib/features.ts, which
+// leaves out what the pinned release doesn't have yet.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import { featureCount, featureGroups, importApps, integrations } from '../lib/features';
+import { versionTag } from '../lib/bundle';
+
+const groups = featureGroups();
+const count = featureCount();
+const apps = importApps();
+const links = integrations();
+---
+<Base title="Features" description={`Everything OpenTodo ${versionTag} does: ${count} features in ${groups.length} groups, every one free and open source, each linked to its documentation.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Features</p>
+      <h1>Everything OpenTodo does.</h1>
+      <p class="lede">{count} features in OpenTodo {versionTag}, every one of them in the free, open-source app you run yourself. Each links to its page in the docs.</p>
+      <ul class="jump features-jump" aria-label="Groups">
+        {groups.map((g) => <li><a href={`#${g.key}`}>{g.title} <span class="count">{g.items.length}</span></a></li>)}
+        <li><a href="#imports">Imports <span class="count">{apps.length}</span></a></li>
+      </ul>
+    </div>
+  </section>
+  <section class="section features-list" aria-label="Every feature">
+    <div class="wrap features-grid">
+      <aside class="features-aside">
+        <p><strong>No tiers.</strong> Nothing on this page costs extra, now or later.</p>
+        <p class="meta">Connects to {links.join(', ')}.</p>
+      </aside>
+      <div>
+        {groups.map((g) => (
+          <section id={g.key} aria-labelledby={`${g.key}-title`} class="features-group">
+            <h2 id={`${g.key}-title`} class="group-bar"><Icon name={g.icon} size={16} /> {g.title} <span class="count">{g.items.length}</span></h2>
+            <ul class="feature-rows">
+              {g.items.map((f) => (
+                <li>
+                  <span class="feature-name">{f.name}</span>
+                  <span class="feature-line">{f.line}</span>
+                  <a class="feature-doc" href={f.doc}>Docs<span class="visually-hidden">: {f.name}</span> <Icon name="arrow-right" size={14} /></a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+        <section id="imports" aria-labelledby="imports-title" class="features-group">
+          <h2 id="imports-title" class="group-bar"><Icon name="folder-input" size={16} /> Imports <span class="count">{apps.length}</span></h2>
+          <p class="feature-names">{apps.join(' · ')} <a class="feature-doc" href="/docs/import/">Import formats <Icon name="arrow-right" size={14} /></a></p>
+        </section>
+      </div>
+    </div>
+  </section>
+  <EndCta />
+</Base>

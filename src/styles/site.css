@@ -646,3 +646,25 @@ a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-de
 .group-bar { display: flex; align-items: center; gap: 0.5rem; min-height: 2.25rem; padding: 0 0.75rem; border-radius: var(--radius-sm); background: var(--sel); color: var(--strong); font-size: 0.875rem; font-weight: 600; margin: 1.75rem 0 0; }
 .group-bar:first-child { margin-top: 0; }
 .group-bar .count { color: var(--faint); font-weight: 450; }
+
+/* ------------------------------------------------------------- features (website-features D2) */
+.features-jump .count, .group-bar .count { color: var(--faint); font-weight: 450; margin-left: 0.25rem; }
+.features-list { padding-top: 1rem; }
+.features-grid { display: grid; gap: 2rem; }
+@media (min-width: 1024px) { .features-grid { grid-template-columns: 13rem minmax(0, 1fr); gap: 3.5rem; } .features-aside { position: sticky; top: calc(var(--header-h) + 1.5rem); align-self: start; } }
+.features-aside { font-size: 0.9375rem; color: var(--muted); background: var(--band); border-radius: var(--radius); padding: 1rem 1.1rem; }
+.features-aside p { margin: 0 0 0.6rem; }
+.features-aside p:last-child { margin: 0; }
+.features-aside strong { color: var(--strong); }
+.features-group + .features-group { margin-top: 2.25rem; }
+.features-group .group-bar { font-size: 0.9375rem; letter-spacing: 0; }
+.features-group .group-bar .icon { color: var(--accent-text); }
+.feature-rows { list-style: none; margin: 0; padding: 0; }
+.feature-rows li { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto; gap: 0.25rem 1.25rem; align-items: baseline; padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--line); font-size: 0.9375rem; }
+.feature-name { font-weight: 550; color: var(--strong); }
+.feature-line { color: var(--muted); }
+.feature-doc { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.875rem; font-weight: 550; white-space: nowrap; text-decoration: none; }
+.feature-doc:hover { text-decoration: underline; }
+.feature-names { margin: 0; padding: 0.75rem; border-bottom: 1px solid var(--line); font-size: 0.9375rem; line-height: 1.9; }
+.feature-names .feature-doc { margin-left: 0.75rem; }
+@media (max-width: 767px) { .feature-rows li { grid-template-columns: minmax(0, 1fr) auto; } .feature-line { grid-column: 1 / -1; grid-row: 2; } }

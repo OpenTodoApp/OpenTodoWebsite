@@ -53,7 +53,7 @@ GitHub Actions runs them on every pull request and on main (`.github/workflows/`
 | `src/content/blog/<slug>/index.md` | `/blog/<slug>/`: news, releases, development and ownership posts (`/essays/` redirects here) |
 | bundle `changelog.json` | `/whats-new/<version>` and `/feed.xml` |
 
-Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md`, and published only through a reviewed pull request.
+Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md`, and arrives through a pull request with a preview; posts stay drafts until the maintainer publishes them.
 
 ### Writing a blog post
 
