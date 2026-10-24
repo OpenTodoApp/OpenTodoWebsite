@@ -15,7 +15,7 @@ export const SITE = {
 // Where the header and footer send people (website-shell-v2 D2). Each later change of the
 // redesign repoints one target here: /features/, /learn/ and /start/.
 export const NAV = {
-  features: '/#features',
+  features: '/features/',
   learn: '/help/',
   start: '/#get-it',
 };
