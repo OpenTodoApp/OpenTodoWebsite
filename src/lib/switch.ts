@@ -12,11 +12,3 @@ export function switchLink(t: SwitchTarget): SwitchLink {
   if (canImport(t.importFormat) && t.switchGuide) return { href: t.switchGuide, label: `Switch from ${t.app}`, named: true };
   return { href: IMPORT_GUIDE, label: 'Import your tasks', named: false };
 }
-
-/** The apps of the home page's import strip. Their format ids are the ones the app's manifest lists in `importFormats`. */
-export const STRIP_APPS: SwitchTarget[] = [
-  { app: 'Todoist', importFormat: 'todoist-csv', switchGuide: '/docs/switch/todoist/' },
-  { app: 'Things', importFormat: 'things-db', switchGuide: '/docs/switch/things/' },
-  { app: 'TickTick', importFormat: 'ticktick-csv', switchGuide: '/docs/switch/ticktick/' },
-  { app: 'Linear', importFormat: 'linear-csv', switchGuide: '/docs/switch/linear/' },
-];
