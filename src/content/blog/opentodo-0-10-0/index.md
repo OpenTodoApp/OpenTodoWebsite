@@ -5,7 +5,6 @@ publishedAt: 2026-10-23
 author: raffaele
 category: releases
 release: 0.10.0
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo 0.10.0 is out. I started this app for myself, and most of this release comes from the people who started using it with me: the messages, the issues, the screenshots of things that felt wrong. Thank you. Two themes run through it: the app got quieter to look at, and it got better at holding more than one person's work.
