@@ -3,13 +3,14 @@
 // marked"), or, once the work shipped, where it is available since.
 import Icon from '../Icon.astro';
 import { formatDate } from '../../lib/blog';
+import { releaseUrl } from '../../lib/site';
 interface Props { publishedAt: Date; shippedIn?: string }
 const { publishedAt, shippedIn } = Astro.props;
 ---
 {shippedIn ? (
   <aside class="post-notice post-notice-shipped" aria-label="Status">
     <Icon name="circle-check-big" size={20} />
-    <p>The work in this post has shipped: it is available since <a href={`/whats-new/${shippedIn}/`}>OpenTodo {shippedIn}</a>.</p>
+    <p>The work in this post has shipped: it is available since <a href={releaseUrl(shippedIn)}>OpenTodo {shippedIn}</a>.</p>
   </aside>
 ) : (
   <aside class="post-notice post-notice-dev" aria-label="Status">

@@ -1,7 +1,7 @@
 ---
 // Footer (website-shell-v2 D4): four short groups, the brand line, one line of licence,
 // source and specification links, and the languages.
-import { NAV, SITE } from '../lib/site';
+import { NAV, RELEASES_URL, SITE } from '../lib/site';
 import CoffeeButton from './CoffeeButton.astro';
 import DiscordButton from './DiscordButton.astro';
 import { versionTag } from '../lib/bundle';
@@ -15,7 +15,7 @@ const languages = alternatesFor(Astro.url.pathname) ?? Object.keys(LANGS).map((l
 const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
   ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Moving from another app', '/switch/']]],
-  ['Learn', [['Guides and how-tos', NAV.learn], ['Templates', '/templates/'], ['Docs', '/docs/'], ['Developers', '/developers/'], ["What's new", '/whats-new/']]],
+  ['Learn', [['Guides and how-tos', NAV.learn], ['Templates', '/templates/'], ['Docs', '/docs/'], ['Developers', '/developers/'], ['Release notes', RELEASES_URL]]],
   ['Project', [['About and trust', '/about/'], ['Compare', '/vs/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : []), ['Demo status', '/status/'], ['Accessibility', '/accessibility/']]],
   ['Community', [['GitHub', SITE.appRepo], ['Discord', SITE.discord], ['Buy me a coffee', SITE.coffee], ['RSS feed', '/feed.xml']]],
 ];

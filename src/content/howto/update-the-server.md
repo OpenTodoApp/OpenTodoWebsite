@@ -13,7 +13,7 @@ related: [turn-on-backups, app-looks-out-of-date]
 
 <!-- no-claim -->
 - A recent backup, or at least a backup schedule that ran. [Turn on backups](/how-to/turn-on-backups/)
-- The release notes for what changed: [What's new](/whats-new/).
+- The release notes for what changed: [release notes](https://github.com/pixari/opentodo/releases).
 
 ## With Docker Compose
 

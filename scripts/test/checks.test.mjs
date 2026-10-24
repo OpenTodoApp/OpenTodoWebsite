@@ -62,6 +62,7 @@ test('redirects: a target that is not built, a hidden page and a bad sample are 
     '    location = /cost/ { return 301 /learn/#faq; }',
     '    location = /gone/ { return 301 /missing/; }',
     '    location = /old/ { return 301 /learn/; }',
+    '    location = /notes/ { return 301 https://example.org/releases; }',
     '    location ~ ^/topics/([a-z-]+)/?$ { return 301 /learn/topic/$1/; } # e.g. /topics/x/ /nope',
   ].join('\n');
   const { problems } = checkRedirects(dir, conf);
@@ -69,5 +70,5 @@ test('redirects: a target that is not built, a hidden page and a bad sample are 
   assert.ok(problems.some((p) => p.includes('/old/ is still built')));
   assert.ok(problems.some((p) => p.includes('/topics/x/ redirects to /learn/topic/x/')));
   assert.ok(problems.some((p) => p.includes('sample /nope does not match')));
-  assert.ok(!problems.some((p) => p.includes('/help/') || p.includes('/cost/')));
+  assert.ok(!problems.some((p) => p.includes('/help/') || p.includes('/cost/') || p.includes('/notes/')));
 });

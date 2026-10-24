@@ -7,7 +7,7 @@ import EndCta from '../components/EndCta.astro';
 import Icon from '../components/Icon.astro';
 import DiscordButton from '../components/DiscordButton.astro';
 import { manifest, releases, versionTag } from '../lib/bundle';
-import { SITE } from '../lib/site';
+import { RELEASES_URL, SITE } from '../lib/site';
 import authors from '../content/authors.json';
 
 const maintainer = authors.raffaele;
@@ -49,7 +49,7 @@ const facts = [
         <div class="cta-row"><DiscordButton /></div>
       </div>
       <ul class="checks">
-        <li><Icon name="check" size={18} /> Every release is listed on <a href="/whats-new/">What's new</a> with what changed; the first was {first && day(first.date)}, the latest {latest && `${latest.version} on ${day(latest.date)}`}</li>
+        <li><Icon name="check" size={18} /> <span>Every release is listed in the <a href={RELEASES_URL}>release notes</a> with what changed; the first was {first && day(first.date)}, the latest {latest && `${latest.version} on ${day(latest.date)}`}</span></li>
         <li><Icon name="check" size={18} /> <span>Questions and conversation happen on <a href={SITE.discord}>the Discord server</a>. Bug reports and ideas go to <a href={`${SITE.appRepo}/issues`}>the issue tracker</a>; security reports go by email, see below</span></li>
         <li><Icon name="check" size={18} /> The <a href="/blog/">blog</a> is written in the first person by the maintainer, dated and concrete</li>
       </ul>

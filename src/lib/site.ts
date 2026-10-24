@@ -20,4 +20,8 @@ export const NAV = {
   start: '/start/',
 };
 
+/** A release's notes on GitHub (website-retire-whats-new): the full list of changes of every version. */
+export const releaseUrl = (version: string) => `${SITE.appRepo}/releases/tag/v${version.replace(/^v/, '')}`;
+export const RELEASES_URL = `${SITE.appRepo}/releases`;
+
 export const specUrl = (capability: string) => `${SITE.appRepo}/tree/main/openspec/specs/${capability}`;
