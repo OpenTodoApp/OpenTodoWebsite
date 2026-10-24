@@ -19,9 +19,9 @@ test('the footer of the home page and of a translated page links to Discord, as 
   for (const page of ['index.html', 'it/index.html']) {
     const root = load(path.join(dist, page));
     const links = root.querySelectorAll('footer a').filter((a) => a.getAttribute('href') === SITE.discord);
-    assert.equal(links.length, 2, `${page}: a text link and a button to ${SITE.discord} in the footer`);
+    // The link columns exist twice (wide columns and the phone disclosures, one hidden by CSS).
     assert.ok(links.some((a) => !a.classList.contains('btn-discord') && /Discord/.test(a.text)), `${page}: footer text link`);
-    assert.ok(links.some((a) => a.classList.contains('btn-discord')), `${page}: footer button`);
+    assert.equal(links.filter((a) => a.classList.contains('btn-discord')).length, 1, `${page}: one footer button`);
   }
 });
 
