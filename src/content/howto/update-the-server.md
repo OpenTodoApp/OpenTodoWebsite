@@ -22,7 +22,7 @@ related: [turn-on-backups, app-looks-out-of-date]
 
 ## With Coolify
 
-1. If you pinned a release line such as `0.3`, patch releases arrive on the next **Deploy**; for a new minor version, change the tag in the compose file first. [One-click template](/docs/self-hosting/coolify/#one-click-template-pending-in-coolifys-service-list)
+1. If you pinned a release line such as `0.3`, patch releases arrive on the next **Deploy**; for a new minor version, change the tag in the compose file first. [One-click template](/docs/self-hosting/coolify/#one-click-template-not-yet-in-coolifys-service-list)
 2. Select **Deploy**. Coolify starts the new container before stopping the old one, which OpenTodo supports from 0.2.0 on. [Updating](/docs/self-hosting/docker/#updating)
 
 ## On Unraid

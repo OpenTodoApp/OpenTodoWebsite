@@ -31,7 +31,7 @@ Prices are in words on purpose: [what it costs](/vs/#cost).
 Coolify is a free program that turns a rented server into a place you deploy things to by clicking, and it takes care of the padlock. If you have never run a server, this is the path.
 
 1. Rent the smallest server a provider offers and follow Coolify's own install instructions on it. Give it a domain name, or a subdomain of one you own, such as `todo.example.com`, pointing at the server's address. <!-- no-claim -->
-2. In Coolify, choose **+ New → Docker Compose**, paste the OpenTodo service template, and set **Domains** to `https://todo.example.com`. [One-click template](/docs/self-hosting/coolify/#one-click-template-pending-in-coolifys-service-list)
+2. In Coolify, choose **+ New → Docker Compose**, paste the OpenTodo service template, and set **Domains** to `https://todo.example.com`. [One-click template](/docs/self-hosting/coolify/#one-click-template-not-yet-in-coolifys-service-list)
 3. Select **Deploy**, then open the domain right away: the first visitor creates the owner account, and sign-up closes after that. [Deploying on Coolify](/docs/self-hosting/coolify/)
 4. Open **Settings → Backups** and turn on a daily backup to storage that is not on the same server. [Backups](/docs/backups/#quick-start)
 5. Invite your household from **Settings → Administration → Members**, one link each. [Invite people to your server](/how-to/invite-people-to-your-server/) [Invite someone new](/docs/sharing/#invite-someone-new)
