@@ -783,3 +783,22 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 .article-facts .btn { margin-top: 1.5rem; }
 .article-body h2 { font-size: 1.3rem; margin-top: 2em; }
 .article-body h3 { font-size: 1.0625rem; }
+
+/* -------------------------------------------- the change-set illustration (website-ai-guide D2) */
+/* Drawn after web/src/app/assistant/ChangeSetReview.tsx, with its strings, in the site's tokens. */
+.changeset-figure { margin: 1.75rem 0; }
+.changeset { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); font-size: 0.875rem; overflow: hidden; }
+.cs-head, .cs-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.75rem; padding: 0.55rem 0.8rem; }
+.cs-head { border-bottom: 1px solid var(--line); }
+.cs-head span { color: var(--muted); font-size: 0.8125rem; }
+.cs-foot { border-top: 1px solid var(--line); }
+.cs-note { margin-left: auto; color: var(--faint) !important; font-size: 0.8125rem; }
+.cs-row { display: grid; grid-template-columns: 1rem minmax(0, 1fr) auto; gap: 0.75rem; align-items: baseline; padding: 0.55rem 0.8rem; border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.cs-row:first-of-type { border-top: 0; }
+.cs-box { width: 0.95rem; height: 0.95rem; border-radius: 3px; border: 1.5px solid var(--faint); transform: translateY(0.15em); }
+.cs-box.on { background: var(--accent); border-color: var(--accent); }
+.cs-title.off { color: var(--muted); }
+.cs-lines { color: var(--muted); font-size: 0.8125rem; text-align: right; }
+.cs-apply { background: var(--accent); color: var(--on-accent); border-radius: 6px; padding: 0.2rem 0.6rem; font-weight: 550; font-size: 0.8125rem; }
+.cs-discard { border: 1px solid var(--line); border-radius: 6px; padding: 0.15rem 0.6rem; font-size: 0.8125rem; }
+@media (max-width: 479px) { .cs-row { grid-template-columns: 1rem minmax(0, 1fr); } .cs-lines { grid-column: 2; text-align: left; } .cs-note { margin-left: 0; } }
