@@ -17,7 +17,7 @@ export const SITE = {
 export const NAV = {
   features: '/features/',
   learn: '/learn/',
-  start: '/#get-it',
+  start: '/start/',
 };
 
 export const specUrl = (capability: string) => `${SITE.appRepo}/tree/main/openspec/specs/${capability}`;
