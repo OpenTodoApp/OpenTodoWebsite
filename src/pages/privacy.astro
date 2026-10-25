@@ -1,0 +1,47 @@
+---
+// /privacy: the privacy policy for the Android app's store listing and for this
+// website. The app's answers mirror mobile/android/store/data-safety.md in the app
+// repository; a change there changes this page in the same release.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import { SITE } from '../lib/site';
+
+const updated = '2026-10-26';
+const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title="Privacy policy" description="What the OpenTodo apps, the demo and this website do with your data: the apps talk only to the server you choose, and nothing is sent to the developer or to third parties.">
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="kicker">Privacy</p>
+      <h1>Your tasks stay on your server.</h1>
+      <p class="lede">OpenTodo is software you run yourself. The developer runs no service that your tasks pass through, and the apps send nothing to the developer or to anyone else. This policy covers the Android app, the server software, the public demo and this website. Last updated on {day(updated)}.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap narrow prose">
+      <h2>The Android app</h2>
+      <ul>
+        <li><strong>Where your data goes:</strong> only to the OpenTodo server whose address you enter when you first open the app. That server is run by you or by your organisation, not by the developer.</li>
+        <li><strong>Collected by the developer:</strong> nothing. The app contains no analytics, no crash reporting, no advertising and no third-party SDKs.</li>
+        <li><strong>Stored on the phone:</strong> the server address; the next seven days of reminders (their titles only when you allow it and your account is not end-to-end encrypted); what the Today widget last showed; and, if you turn on fingerprint unlock, your account key, encrypted with a key in the phone's secure hardware that needs your fingerprint or face for every use. All of it is in the app's private storage, excluded from Android backup and device transfer.</li>
+        <li><strong>In transit:</strong> https. Plain http is accepted only for addresses on the phone or your local network, after a warning.</li>
+        <li><strong>Permissions:</strong> network access to reach your server, notifications and exact alarms for reminders, starting after a restart to set reminders again, and biometrics for the optional fingerprint unlock.</li>
+        <li><strong>Deleting your data:</strong> signing out, "Change server" or uninstalling removes everything the app stored on the phone. Your tasks and account live on your server, where you or its owner can delete them.</li>
+      </ul>
+
+      <h2>The server software</h2>
+      <p>The OpenTodo server stores your account and tasks in its own database on the machine you run it on. It sends no telemetry. It connects only to services that you or the server's owner configure, such as an email server, a backup destination, an AI provider you choose, or calendar feeds, and, while maps are turned on, to an OpenStreetMap-based map provider through the server's own proxy, without account data. Whoever runs a server is responsible for the data on it.</p>
+
+      <h2>The public demo</h2>
+      <p>The demo at <a href="https://demo.open-todo.app">demo.open-todo.app</a> gives each visitor a private, short-lived sandbox with sample tasks. It needs no sign-up. A session cookie keeps you in your sandbox, and sandboxes are deleted every night. Please don't enter personal information there.</p>
+
+      <h2>This website</h2>
+      <p>open-todo.app counts page views with a self-hosted instance of Umami. It sets no cookies and stores no personal data or IP addresses, and the counts never leave the developer's own server. The site loads no other third-party scripts.</p>
+
+      <h2>Changes and contact</h2>
+      <p>When this policy changes, the date above changes with it, and the history is public in <a href={SITE.siteRepo}>the website's repository</a>. For questions, open an issue on <a href={`${SITE.appRepo}/issues/new`}>the app's issue tracker</a> or write to the email address on the app's store listing.</p>
+    </div>
+  </section>
+  <EndCta />
+</Base>

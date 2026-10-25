@@ -19,7 +19,7 @@ const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
   ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Moving from another app', '/switch/']]],
   ['Learn', [['Guides and how-tos', NAV.learn], ['Templates', '/templates/'], ['Docs', '/docs/'], ['Developers', '/developers/'], ['Release notes', RELEASES_URL]]],
-  ['Project', [['About and trust', '/about/'], ['Compare', '/vs/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : []), ['Demo status', '/status/'], ['Accessibility', '/accessibility/']]],
+  ['Project', [['About and trust', '/about/'], ['Compare', '/vs/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : []), ['Demo status', '/status/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
   ['Community', [['GitHub', SITE.appRepo], ['Discord', SITE.discord], ['Buy me a coffee', SITE.coffee], ['RSS feed', '/feed.xml']]],
 ];
 const legal: [string, string][] = [

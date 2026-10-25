@@ -41,7 +41,7 @@ for (const l of TEMPLATE_LAYOUTS) pages.add(`/templates/layout/${l}/`);
 for (const t of ['setup', 'switch', 'methods', 'how-tos', 'templates']) pages.add(`/learn/${t}/`);
 for (const t of TOPICS) pages.add(`/learn/topic/${t.slug}/`);
 pages.add('/guides/quiz/');
-for (const p of ['/capture/', '/accessibility/', '/status/', '/playground/', '/self-host/plan/']) pages.add(p);
+for (const p of ['/capture/', '/accessibility/', '/privacy/', '/status/', '/playground/', '/self-host/plan/']) pages.add(p);
 const route = { compare: 'vs', howto: 'how-to' };
 for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);
