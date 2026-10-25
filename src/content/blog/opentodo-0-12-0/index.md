@@ -5,7 +5,6 @@ publishedAt: 2026-10-25
 author: raffaele
 category: releases
 release: 0.12.0
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo 0.12.0 builds on the Precision redesign of 0.11. Some of it comes straight from your comments, like a key to see a task's details without leaving the list. There are also mentions for a whole household or team, and an assistant that works even when the server can't read your tasks.
