@@ -1,7 +1,7 @@
 ---
 title: "OpenTodo is coming to Google Play, and I need 12 testers"
 summary: The Android app is in Google's review for the Play Store. Before it can be published, twelve people need to test it for fourteen days. Here is how to be one of them.
-publishedAt: 2026-10-27
+publishedAt: 2026-10-26
 author: raffaele
 category: news
 ---
