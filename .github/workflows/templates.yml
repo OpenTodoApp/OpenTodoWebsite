@@ -42,7 +42,8 @@ jobs:
       - name: Start the pinned release on a fresh volume
         run: |
           # The manifest's version carries the tag's "v" (v0.5.0); the image tags do not (0.5.0).
-          IMAGE=$(node -p "const m = require('./.bundle/manifest.json'); m.image ?? 'ghcr.io/opentodoapp/opentodo:' + String(m.version).replace(/^v/, '')")
+          # Releases up to 0.14.2 exist only as ghcr.io/pixari/opentodo (imageFor in scripts/lib/bundle.mjs).
+          IMAGE=$(node --input-type=module -e "import fs from 'node:fs'; import { imageFor } from './scripts/lib/bundle.mjs'; const m = JSON.parse(fs.readFileSync('.bundle/manifest.json', 'utf8')); const v = String(m.version).replace(/^v/, ''); console.log(m.image ?? imageFor(v) + ':' + v)")
           echo "Using $IMAGE"
           docker run -d --name opentodo -p 8080:8080 "$IMAGE"
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8080/api/v1/auth/status >/dev/null && break; sleep 1; done
