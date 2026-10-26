@@ -40,4 +40,4 @@ Most of this release is small, and you will notice it every day.
 ## Upgrading
 
 <!-- no-claim -->
-Pull the `0.9` image or the new binary and restart. One migration runs at startup, and no new setting is required. The build also moves to Go 1.27.3, which fixes a certificate-checking vulnerability in the standard library. The full list is on the What's new page and in the [0.9.0 release notes](https://github.com/pixari/opentodo/releases/tag/v0.9.0), with the binaries. If you want to try it before installing anything, the [demo](https://demo.open-todo.app) already runs it.
+Pull the `0.9` image or the new binary and restart. One migration runs at startup, and no new setting is required. The build also moves to Go 1.27.3, which fixes a certificate-checking vulnerability in the standard library. The full list is on the What's new page and in the [0.9.0 release notes](https://github.com/OpenTodoApp/OpenTodo/releases/tag/v0.9.0), with the binaries. If you want to try it before installing anything, the [demo](https://demo.open-todo.app) already runs it.

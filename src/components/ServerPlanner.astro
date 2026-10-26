@@ -8,7 +8,8 @@ import Icon from './Icon.astro';
 import { manifest } from '../lib/bundle';
 
 const line = manifest.version.split('.').slice(0, 2).join('.');
-const image = `ghcr.io/pixari/opentodo:${line}`;
+// The release line's tag, under the name the pinned release was published with.
+const image = (manifest.image ?? `ghcr.io/opentodoapp/opentodo:${manifest.version}`).replace(/:[^:]+$/, `:${line}`);
 // Only the footprint facts the pinned bundle carries are shown (nothing is invented).
 const f = manifest.facts;
 const footprint = [

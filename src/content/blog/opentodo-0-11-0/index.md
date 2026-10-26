@@ -35,4 +35,4 @@ A [Claude Code plugin](/docs/claude/) connects Claude to your server's MCP endpo
 
 ## Upgrading
 
-One migration and no new environment variables: replace the image or the binary and restart. As always, back up first; there are no down-migrations. The full list of changes is in the [release notes](https://github.com/pixari/opentodo/releases/tag/v0.11.0).
+One migration and no new environment variables: replace the image or the binary and restart. As always, back up first; there are no down-migrations. The full list of changes is in the [release notes](https://github.com/OpenTodoApp/OpenTodo/releases/tag/v0.11.0).

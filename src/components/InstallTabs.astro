@@ -4,7 +4,7 @@
 import { manifest } from '../lib/bundle';
 import { SITE } from '../lib/site';
 
-const image = manifest.image ?? `ghcr.io/pixari/opentodo:${manifest.version}`;
+const image = manifest.image ?? `ghcr.io/opentodoapp/opentodo:${manifest.version}`;
 const port = manifest.facts.port ?? 8080;
 const methods = [
   {

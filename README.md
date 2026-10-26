@@ -1,6 +1,6 @@
 # OpenTodo website
 
-The public website of [OpenTodo](https://github.com/pixari/opentodo), the open-source task manager you host yourself. Live at <https://open-todo.app>; the demo runs at <https://demo.open-todo.app>.
+The public website of [OpenTodo](https://github.com/OpenTodoApp/OpenTodo), the open-source task manager you host yourself. Live at <https://open-todo.app>; the demo runs at <https://demo.open-todo.app>.
 
 The site is built with [Astro](https://astro.build) to static files and served by nginx. Everything it says about the app (version, docs, screenshots, colours, icons, changelog, import formats) comes from the app's **site bundle** of a pinned release, never from files copied by hand. How the site is built and what it must do is specified in `openspec/` (see `AGENTS.md`).
 
@@ -82,7 +82,7 @@ Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md
 
 ## Deploy on Coolify
 
-1. **+ New Resource → Public Repository**, `https://github.com/pixari/OpenTodoWebsite`, branch `main`.
+1. **+ New Resource → Public Repository**, `https://github.com/OpenTodoApp/OpenTodoWebsite`, branch `main`.
 2. **Build pack**: Dockerfile. **Base directory**: `/`. **Port**: `80`. No environment variables.
 3. Assign the domain `open-todo.app` and deploy.
 

@@ -3,8 +3,8 @@ export const SITE = {
   name: 'OpenTodo',
   url: 'https://open-todo.app',
   demo: 'https://demo.open-todo.app',
-  appRepo: 'https://github.com/pixari/opentodo',
-  siteRepo: 'https://github.com/pixari/OpenTodoWebsite',
+  appRepo: 'https://github.com/OpenTodoApp/OpenTodo',
+  siteRepo: 'https://github.com/OpenTodoApp/OpenTodoWebsite',
   // Optional support for the maintainer; nothing in the app is behind it.
   coffee: 'https://buymeacoffee.com/pixari',
   // The community chat (website-discord-link): a plain link, nothing is loaded from Discord.

@@ -13,7 +13,7 @@ related: [turn-on-backups, app-looks-out-of-date]
 
 <!-- no-claim -->
 - A recent backup, or at least a backup schedule that ran. [Turn on backups](/how-to/turn-on-backups/)
-- The release notes for what changed: [release notes](https://github.com/pixari/opentodo/releases).
+- The release notes for what changed: [release notes](https://github.com/OpenTodoApp/OpenTodo/releases).
 
 ## With Docker Compose
 
@@ -37,5 +37,5 @@ Nothing to do. The app fetches the new version in the background and switches to
 
 ## Good to know
 
-- Pin a release line (`ghcr.io/pixari/opentodo:0.3`) rather than `latest`, which follows the main branch. [Option A: Docker Compose from the repository](/docs/self-hosting/coolify/#option-a-docker-compose-from-the-repository)
+- Pin a release line (`ghcr.io/opentodoapp/opentodo:0.3`) rather than `latest`, which follows the main branch. [Option A: Docker Compose from the repository](/docs/self-hosting/coolify/#option-a-docker-compose-from-the-repository)
 - Maintenance commands such as restore need every server process stopped. [Updating](/docs/self-hosting/docker/#updating)

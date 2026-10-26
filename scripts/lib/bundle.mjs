@@ -73,7 +73,22 @@ export function docExistsIn(dir, href) {
   return fs.existsSync(path.join(target, 'index.html'));
 }
 
-const IMAGE = 'ghcr.io/pixari/opentodo';
+export const IMAGE = 'ghcr.io/opentodoapp/opentodo';
+/** The image name before OpenTodo moved to the OpenTodoApp organization. */
+export const LEGACY_IMAGE = 'ghcr.io/pixari/opentodo';
+/** The last release published only under LEGACY_IMAGE. */
+export const LEGACY_LAST_RELEASE = '0.14.2';
+
+/** The image a release (x.y.z, or an x.y line) is published under: the legacy name up to 0.14.2. */
+export function imageFor(version) {
+  const v = String(version).replace(/^v/, '').split('-')[0].split('.').map(Number);
+  const last = LEGACY_LAST_RELEASE.split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    const a = v[i] ?? 0;
+    if (a !== last[i]) return a < last[i] ? LEGACY_IMAGE : IMAGE;
+  }
+  return LEGACY_IMAGE;
+}
 
 /**
  * The manifest in the shape the pages use (website-release-bundle D1, D2). The
@@ -91,7 +106,7 @@ export function normalizeManifest(raw) {
     version,
     tag: `v${version}`,
     releasedAt: raw.date,
-    image: `${IMAGE}:${version}`,
+    image: `${imageFor(version)}:${version}`,
     importFormats: raw.importFormats,
     ...(exportFormat ? { exportFormat: { format: exportFormat, version: exportFormatVersion } } : {}),
     facts: { ...facts, ...(dockerImageMB ? { imageMB: dockerImageMB } : {}) },

@@ -100,7 +100,9 @@ test('the published manifest converts to the shape the pages use', async () => {
   assert.equal(m.version, '0.4.0');
   assert.equal(m.tag, 'v0.4.0');
   assert.equal(m.releasedAt, '2026-10-15');
-  assert.equal(m.image, 'ghcr.io/pixari/opentodo:0.4.0');
+  assert.equal(m.image, 'ghcr.io/pixari/opentodo:0.4.0', 'releases before the move keep the legacy image name');
+  assert.equal(normalizeManifest({ version: 'v0.15.0' }).image, 'ghcr.io/opentodoapp/opentodo:0.15.0');
+  assert.equal(normalizeManifest({ version: 'v0.14.2' }).image, 'ghcr.io/pixari/opentodo:0.14.2');
   assert.deepEqual(m.shots.today, { file: 'today.webp' });
   assert.deepEqual(m.darkVariants, { today: 'today-dark' });
   assert.ok(m.shots['mobile-dark'], 'a -dark file without a base stays a shot of its own');
