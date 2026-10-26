@@ -4,7 +4,6 @@ summary: The Android app is in Google's review for the Play Store. Before it can
 publishedAt: 2026-10-27
 author: raffaele
 category: news
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo has had an Android app since 0.10. Until now you installed it by downloading it from the release page on GitHub, which works, but asks people to trust a file from the internet and to remember to update it by hand. This week I sent it to Google Play, and that brings me to the reason for this post: I need your help for the last step.
