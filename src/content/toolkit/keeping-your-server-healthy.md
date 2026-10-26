@@ -21,7 +21,7 @@ Most of this is a few minutes a month. The one thing that must not slip is the b
 
 - Open **Settings → Backups** and check that the last run succeeded. [Schedule and retention](/docs/backups/#schedule-and-retention)
 - Glance at **Settings → Activity → Audit log** for sign-ins you do not recognise. [Audit log](/docs/self-hosting/docker/#audit-log)
-- Check the [release notes](https://github.com/pixari/opentodo/releases) for a release, and update if there is one. [Update the server](/how-to/update-the-server/)
+- Check the [release notes](https://github.com/OpenTodoApp/OpenTodo/releases) for a release, and update if there is one. [Update the server](/how-to/update-the-server/)
 
 ## Twice a year
 

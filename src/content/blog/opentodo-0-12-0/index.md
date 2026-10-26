@@ -32,4 +32,4 @@ The server can't read an end-to-end encrypted account, so until now the assistan
 
 ## Upgrading
 
-No migrations and no new environment variables: replace the image or the binary and restart. As always, back up first. The full list of changes is in the [release notes](https://github.com/pixari/opentodo/releases/tag/v0.12.0).
+No migrations and no new environment variables: replace the image or the binary and restart. As always, back up first. The full list of changes is in the [release notes](https://github.com/OpenTodoApp/OpenTodo/releases/tag/v0.12.0).

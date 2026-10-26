@@ -35,4 +35,4 @@ Settings had grown long. Each section now opens as a short list of its pages, ea
 
 ## Upgrading
 
-No migrations and no new environment variables: replace the image or the binary and restart. As always, back up first. The full list of changes is in the [release notes](https://github.com/pixari/opentodo/releases/tag/v0.13.0).
+No migrations and no new environment variables: replace the image or the binary and restart. As always, back up first. The full list of changes is in the [release notes](https://github.com/OpenTodoApp/OpenTodo/releases/tag/v0.13.0).

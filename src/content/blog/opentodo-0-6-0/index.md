@@ -15,7 +15,7 @@ The interface now comes in English, German, French, Spanish, Italian and Portugu
 
 ## What did I do last week?
 
-This started as a question in [issue #86](https://github.com/pixari/opentodo/issues/86): "I'd like to construct a query that shows what I've done over last week or month." You can now. [Filter queries](/docs/filters/) take a completion date, `completed = last week` or `completed >= this month`, and every date term understands periods like `this week`, `last month` or `3 weeks ago`, starting on the first day of the week you chose. Save one as a view and it stays current.
+This started as a question in [issue #86](https://github.com/OpenTodoApp/OpenTodo/issues/86): "I'd like to construct a query that shows what I've done over last week or month." You can now. [Filter queries](/docs/filters/) take a completion date, `completed = last week` or `completed >= this month`, and every date term understands periods like `this week`, `last month` or `3 weeks ago`, starting on the first day of the week you chose. Save one as a view and it stays current.
 
 The [Completed view](/docs/built-in-views/) is now a logbook, grouped by the day you finished each task, and it no longer stops at the latest hundred.
 
@@ -42,4 +42,4 @@ For people who run OpenTodo for others, [host mode](/docs/self-hosting/host-mode
 Since 0.5.0, pointing at a task turned its circle into a selection checkbox, so clicking to complete a task selected it instead. The circle completes again; [bulk selection](/docs/bulk-actions/) starts with Ctrl or ⌘ and a click, or the <kbd>x</kbd> key.
 
 <!-- no-claim -->
-The full list, with upgrade notes, is on the What's new page and in the [0.6.0 release notes](https://github.com/pixari/opentodo/releases/tag/v0.6.0), which also have the binaries. Upgrading is a pull of the `0.6` image: one migration runs at startup, and no new setting is required.
+The full list, with upgrade notes, is on the What's new page and in the [0.6.0 release notes](https://github.com/OpenTodoApp/OpenTodo/releases/tag/v0.6.0), which also have the binaries. Upgrading is a pull of the `0.6` image: one migration runs at startup, and no new setting is required.

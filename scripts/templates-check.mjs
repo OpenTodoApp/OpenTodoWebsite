@@ -7,7 +7,7 @@
 //   OPENTODO_URL=http://127.0.0.1:8080 node scripts/templates-check.mjs [--shots] [slug ...]
 //
 // The server must be empty (the script creates the owner account) or already
-// have the owner below. CI starts ghcr.io/pixari/opentodo:<pinned version>.
+// have the owner below. CI starts the pinned release image (ghcr.io/opentodoapp/opentodo, or ghcr.io/pixari/opentodo up to 0.14.2).
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse as parseYaml } from 'yaml';

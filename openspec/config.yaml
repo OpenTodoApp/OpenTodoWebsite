@@ -3,7 +3,7 @@ schema: spec-driven
 # Project context: constraints that must guide every OpenSpec artifact in this
 # repository. Discoverable facts belong in AGENTS.md and README.md.
 context: |
-  This repository is the public website of OpenTodo (https://github.com/pixari/opentodo),
+  This repository is the public website of OpenTodo (https://github.com/OpenTodoApp/OpenTodo),
   an open-source, self-hosted, local-first task manager that replaces subscription
   task apps such as Todoist, Things and Linear. The website exists to win the people
   who pay for those apps today, and to serve self-hosters and developers second.

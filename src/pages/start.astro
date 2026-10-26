@@ -12,7 +12,7 @@ import { deployTargets } from '../lib/start';
 
 const targets = deployTargets();
 const port = manifest.facts.port ?? 8080;
-const image = manifest.image ?? `ghcr.io/pixari/opentodo:${manifest.version}`;
+const image = manifest.image ?? `ghcr.io/opentodoapp/opentodo:${manifest.version}`;
 const switches = (await getCollection('switch')).sort((a, b) => a.data.order - b.data.order);
 const ways = [
   { icon: 'monitor', title: 'Try the demo', text: 'A private sandbox in your browser with sample projects. Nothing to install, deleted after two hours without activity.', href: SITE.demo, cta: 'Open the demo', primary: true },

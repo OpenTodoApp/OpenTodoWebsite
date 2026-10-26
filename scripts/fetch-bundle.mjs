@@ -14,7 +14,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { ROOT, SOURCE_FILE, assertDeployable, layoutProblems, readPin } from './lib/bundle.mjs';
 
-const REPO = 'pixari/opentodo';
+const REPO = 'OpenTodoApp/OpenTodo';
 
 export class BundleError extends Error {}
 
