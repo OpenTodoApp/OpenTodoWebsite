@@ -21,6 +21,8 @@ const links: Link[] = [
   ...(blog ? [{ href: '/blog/', label: 'Blog', match: ['/blog/'] }] : []),
 ];
 const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' : undefined);
+// Support (website-support-page D3): last in the navigation, a soft pink pill with a heart.
+const support = { href: '/support/', label: 'Support', match: ['/support/'] };
 ---
 <header class="site-header">
   <div class="wrap header-inner">
@@ -31,6 +33,7 @@ const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' :
     <nav class="nav-desktop" aria-label="Main">
       <ul>
         {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
+        <li><a class="nav-link nav-support" href={support.href} aria-current={current(support)} data-support><Icon name="heart" size={15} /> {support.label}</a></li>
       </ul>
     </nav>
     <a class="btn btn-secondary btn-small header-cta header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /> Star on GitHub</a>
@@ -42,6 +45,7 @@ const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' :
         <nav aria-label="Main">
           <ul>
             {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
+            <li><a class="nav-link nav-support" href={support.href} aria-current={current(support)} data-support><Icon name="heart" size={18} /> {support.label}</a></li>
           </ul>
         </nav>
         <div class="menu-cta">

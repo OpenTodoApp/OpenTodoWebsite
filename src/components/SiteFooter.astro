@@ -20,7 +20,7 @@ const groups: [string, [string, string][]][] = [
   ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Moving from another app', '/switch/']]],
   ['Learn', [['Guides and how-tos', NAV.learn], ['Templates', '/templates/'], ['Docs', '/docs/'], ['Developers', '/developers/'], ['Release notes', RELEASES_URL]]],
   ['Project', [['About and trust', '/about/'], ['Compare', '/vs/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : []), ['Demo status', '/status/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
-  ['Community', [['GitHub', SITE.appRepo], ['Discord', SITE.discord], ['Buy me a coffee', SITE.coffee], ['RSS feed', '/feed.xml']]],
+  ['Community', [['Support OpenTodo', '/support/'], ['GitHub', SITE.appRepo], ['Discord', SITE.discord], ['Buy me a coffee', SITE.coffee], ['RSS feed', '/feed.xml']]],
 ];
 const legal: [string, string][] = [
   ['App: AGPL-3.0', `${SITE.appRepo}/blob/main/LICENSE`], ['Website code: MIT', `${SITE.siteRepo}/blob/main/LICENSE`],
@@ -34,7 +34,7 @@ const legal: [string, string][] = [
       <div>
         <a class="brand" href="/"><img src="/assets/favicon.svg" width="24" height="24" alt="" /><span>OpenTodo</span></a>
         <p>An open-source task manager you host yourself. This site describes OpenTodo {versionTag}, the latest release.</p>
-        <div class="footer-coffee"><CoffeeButton small /><DiscordButton small /></div>
+        <div class="footer-coffee"><CoffeeButton small /><DiscordButton small /><a class="footer-support" href="/support/" data-support><Icon name="heart" size={15} /> Support</a></div>
       </div>
       {groups.map(([title, items]) => (
         <nav aria-label={title}>
