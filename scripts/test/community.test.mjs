@@ -71,3 +71,36 @@ test('nothing on any page is loaded from Discord', { skip: !built && 'no dist/ (
   }
   assert.deepEqual(offenders, []);
 });
+
+// The support page (website-support-page): the approved text, the buttons from the
+// site-wide constants, and the ways to it from every page.
+const SUPPORT = { sponsor: constant('sponsor'), coffee: constant('coffee') };
+
+test('the support page shows the promises, the costs and the buttons', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  const root = load(path.join(dist, 'support/index.html'));
+  const main = root.querySelector('main') ?? root;
+  assert.equal(main.querySelector('h1').text.trim(), 'Support OpenTodo');
+  assert.equal(main.querySelectorAll('#promise ol > li').length, 5, 'five promises');
+  assert.equal(main.querySelectorAll('#costs tbody tr').length, 5, 'five costs');
+  assert.match(main.querySelector('#costs table').text, /about €200 a month/);
+  assert.equal(main.querySelectorAll(`a.btn-sponsor[href="${SUPPORT.sponsor}"]`).length, 2, 'two sponsor buttons');
+  assert.equal(main.querySelectorAll(`a.btn-coffee[href="${SUPPORT.coffee}"]`).length, 2, 'two coffee buttons');
+  assert.ok(main.querySelector(`#help a.btn-discord[href="${SITE.discord}"]`), 'the Discord button');
+  for (const a of main.querySelectorAll('a.btn-sponsor')) assert.equal(a.querySelector('svg').getAttribute('aria-hidden'), 'true');
+});
+
+test('every way in leads to the support page', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  for (const page of ['index.html', 'it/index.html', 'about/index.html']) {
+    const root = load(path.join(dist, page));
+    for (const nav of root.querySelectorAll('header nav')) {
+      const items = nav.querySelectorAll('li > a');
+      const last = items[items.length - 1];
+      assert.equal(last.getAttribute('href'), '/support/', `${page}: Support is the last navigation item`);
+      assert.ok(last.querySelector('svg[data-icon="heart"]'), `${page}: with a heart`);
+    }
+    assert.ok(root.querySelectorAll('footer a[href="/support/"]').length >= 2, `${page}: the footer links to it`);
+  }
+  const guide = fs.readdirSync(path.join(dist, 'guides')).find((d) => fs.existsSync(path.join(dist, 'guides', d, 'index.html')) && d !== 'quiz');
+  assert.ok(load(path.join(dist, 'guides', guide, 'index.html')).querySelector('.end-cta a[href="/support/"]'), 'end of a guide');
+  assert.ok(load(path.join(dist, 'about/index.html')).querySelector('#licence a[href="/support/"]'), 'About, licence section');
+});

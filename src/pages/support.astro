@@ -1,0 +1,121 @@
+---
+// /support (website-support-page): why OpenTodo stays free, what the maintainer
+// promises, what it costs to run, and how to help. The words are the maintainer's,
+// approved as written; only the markup is the site's. English only, like every page
+// but the home page (website-languages). The costs are the project's own, in euros
+// on purpose (design D4); the voice guide's "no currency" rule is about other apps.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import CoffeeButton from '../components/CoffeeButton.astro';
+import SponsorButton from '../components/SponsorButton.astro';
+import DiscordButton from '../components/DiscordButton.astro';
+import { SITE } from '../lib/site';
+import authors from '../content/authors.json';
+
+const maintainer = authors.raffaele;
+
+const promises = [
+  { icon: 'gift', title: 'Forever free and open source.', text: 'No paid tier, no "pro" features, no ads, ever.' },
+  { icon: 'life-buoy', title: 'Every reported bug addressed within 24 hours.' },
+  { icon: 'lightbulb', title: 'Every enhancement request addressed within 72 hours.' },
+  { icon: 'refresh-cw', title: 'Continuous development.', text: 'OpenTodo keeps getting better, release after release.' },
+  { icon: 'door-open', title: 'Always an open door.', open: true },
+];
+
+const costs: [string, string][] = [
+  ['Claude, the AI that helps me build and maintain OpenTodo', 'about €200 a month'],
+  ['The server for the website, the demo and testing', '€15 a month'],
+  ['The domain, open-todo.app', '€15 a year'],
+  ['Google Play developer account', '€25, once'],
+  ['Apple developer account, for the iOS app', '€100 a year'],
+];
+---
+<Base title="Support OpenTodo" description="OpenTodo is free, and it will stay free. What I promise, what it costs to keep OpenTodo running, and how you can help if you'd like to.">
+  <section class="support-hero" aria-labelledby="support-title">
+    <div class="wrap split">
+      <div>
+        <h1 id="support-title">Support OpenTodo</h1>
+        <p class="lede"><strong>OpenTodo is free, and it will stay free.</strong> That means the server, the web app, the Android app, the iOS app when it comes, and everything that grows out of them. No paid tier, no "pro" features, no ads.</p>
+        <div class="cta-row"><SponsorButton /><CoffeeButton /></div>
+      </div>
+      <figure class="support-note">
+        <span class="support-note-icon"><Icon name="heart" size={22} /></span>
+        <blockquote>
+          <p>For years I've taken from the open-source community: tools, libraries, answers, ideas, other people's evenings and weekends. OpenTodo is my way of giving something back. So I don't expect anything in return, and I'm happy to keep paying for it myself.</p>
+        </blockquote>
+        <figcaption><span class="support-avatar" aria-hidden="true">R</span> <a href={maintainer.url}>Raffaele</a></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="promise" aria-labelledby="promise-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="promise-title">What I promise</h2>
+      </div>
+      <ol class="promise-grid">
+        {promises.map((p) => (
+          <li class="card">
+            <span class="card-icon"><Icon name={p.icon} size={20} /></span>
+            <p>
+              <strong>{p.title}</strong>
+              {p.text && ` ${p.text}`}
+              {p.open && <> You can reach me on <a href={SITE.discord}>Discord</a>, <a href={`${SITE.appRepo}/issues`}>GitHub</a> or by email, and every message gets read.</>}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="costs" aria-labelledby="costs-title">
+    <div class="wrap split support-costs">
+      <div>
+        <h2 id="costs-title">What it costs</h2>
+        <p class="lede">I think it's fair to be open about what it takes to keep OpenTodo running:</p>
+        <p class="support-soft"><Icon name="clock" size={18} /> <span>That doesn't count the time, which I give gladly.</span></p>
+      </div>
+      <div class="card cost-card">
+        <table aria-labelledby="costs-title">
+          <thead><tr><th scope="col">What</th><th scope="col">Cost</th></tr></thead>
+          <tbody>
+            {costs.map(([what, cost]) => <tr><th scope="row">{what}</th><td>{cost}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="help" aria-labelledby="help-title">
+    <div class="wrap">
+      <div class="support-callout">
+        <span class="support-note-icon"><Icon name="heart" size={22} /></span>
+        <h2 id="help-title">If you'd like to help</h2>
+        <p class="lede">If OpenTodo makes your days a little calmer and you'd like to chip in, it is genuinely appreciated, and it goes straight into the costs above:</p>
+        <div class="cta-row center"><SponsorButton /><CoffeeButton /></div>
+      </div>
+
+      <p class="support-more">And if money isn't your thing (no judgement at all), these help just as much:</p>
+      <ul class="help-grid">
+        <li><Icon name="star" size={20} /> <span>a ⭐ on <a href={SITE.appRepo} data-star>GitHub</a>, so other people find it;</span></li>
+        <li><Icon name="send" size={20} /> <span>telling a friend, or writing about how you use it;</span></li>
+        <li><Icon name="flag" size={20} /> <span>reporting a bug, suggesting a feature, or joining the Android test;</span></li>
+        <li><Icon name="languages" size={20} /> <span>translating, improving the docs, or sending a pull request;</span></li>
+        <li><Icon name="messages-square" size={20} /> <span>saying hello on <a href={SITE.discord}>Discord</a>.</span></li>
+      </ul>
+      <div class="cta-row center support-discord"><DiscordButton /></div>
+    </div>
+  </section>
+
+  <section class="section section-alt support-end">
+    <div class="wrap narrow">
+      <div class="support-signoff">
+        <span class="support-avatar support-avatar-large" aria-hidden="true">R</span>
+        <div>
+          <p class="support-thanks">Thank you for being here. 🙏</p>
+          <p class="support-name"><a href={maintainer.url}>Raffaele</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
