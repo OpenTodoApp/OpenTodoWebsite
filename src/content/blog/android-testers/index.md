@@ -6,6 +6,9 @@ author: raffaele
 category: news
 ---
 <!-- no-claim -->
+**Update, 28 October:** the app is in internal testing and is not available on Google Play yet. Google's policy for new developer accounts means it can be published after the test period, in about two weeks (around mid-November 2026). Many apps on Google Play have names similar to OpenTodo, and none of them is this one: until the listing is public, anything you find by searching the store is someone else's app. Once it is public, this site will link to it.
+
+<!-- no-claim -->
 OpenTodo has had an Android app since 0.10. Until now you installed it by downloading it from the release page on GitHub, which works, but asks people to trust a file from the internet and to remember to update it by hand. This week I sent it to Google Play, and that brings me to the reason for this post: I need your help for the last step.
 
 ## Why twelve people

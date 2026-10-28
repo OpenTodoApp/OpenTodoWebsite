@@ -50,7 +50,7 @@ const GROUPS: FeatureGroup[] = [
   { key: 'devices', title: 'Sync and devices', icon: 'monitor-smartphone', items: [
     { name: 'Offline on every device', line: 'Edit anywhere; changes merge field by field.', doc: '/docs/offline-and-sync/' },
     { name: 'Phone, desktop and browser', line: 'Install from the browser on any system.', doc: '/docs/install-app/' },
-    { name: 'An Android app', line: 'Early, for people who want an app install.', doc: '/docs/android-app/', since: '0.10.0' },
+    { name: 'An Android app', line: 'In internal testing; on Google Play from about mid-November.', doc: '/docs/android-app/', since: '0.10.0' },
     { name: 'Six languages', line: 'English, Deutsch, Français, Español, Italiano, Português.', doc: '/docs/language/' },
     { name: 'Keyboard first', line: 'Shortcuts for everything, shown where you need them.', doc: '/docs/keyboard/' },
     { name: 'History and undo', line: 'Every change kept; restore a value or a version.', doc: '/docs/task-history/' },
