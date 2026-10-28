@@ -5,6 +5,7 @@
 import Base from '../../layouts/Base.astro';
 import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
+import AndroidNotice from '../../components/AndroidNotice.astro';
 import { INSTALL_DOC, NO_INSTALL_DOC, PLATFORMS, type Platform } from '../../lib/install';
 
 export function getStaticPaths() {
@@ -24,6 +25,7 @@ const others = PLATFORMS.filter((o) => o.slug !== p.slug);
 
   <section class="section" style="padding-top: 0">
     <div class="wrap narrow prose">
+      {p.slug === 'android' && <AndroidNotice />}
       <h2>Before you start</h2>
       <p>Sign in to your OpenTodo address in the browser once. Installing needs a secure address, one that starts with <code>https://</code>. If the browser offers no install option at all, ask whoever runs your server to set that up; the <a href={NO_INSTALL_DOC}>troubleshooting page</a> says what they need to do.</p>
 
