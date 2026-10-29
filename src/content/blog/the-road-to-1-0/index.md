@@ -6,7 +6,6 @@ author: raffaele
 category: development
 inDevelopment: true
 tags: [task-management, time-management]
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo started with a simple promise: a task manager as good as the ones you pay for every month, running on your own server. The first roadmap is done. This post is about the next one, the plan from 0.17 to 1.0.
