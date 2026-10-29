@@ -4,7 +4,6 @@ summary: This week, for the first time, a person I have never met sent a few eur
 publishedAt: 2026-10-29
 author: raffaele
 category: news
-draft: true
 ---
 <!-- no-claim -->
 This week I got an email I had never got before. Someone had pressed the yellow button on the [support page](/support/) and bought me a coffee.
