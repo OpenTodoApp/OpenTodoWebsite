@@ -1,7 +1,7 @@
 ---
 title: The road to 1.0
 summary: Six releases between now and OpenTodo 1.0, what each one is for, and the promises that do not change on the way.
-publishedAt: 2026-10-30
+publishedAt: 2026-10-29
 author: raffaele
 category: development
 inDevelopment: true
