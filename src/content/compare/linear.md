@@ -2,7 +2,7 @@
 competitor: Linear
 title: OpenTodo and Linear compared
 summary: Linear is a fast, opinionated tool for product and engineering teams. OpenTodo suits small teams who want speed without process, on their own server.
-checkedOn: 2026-10-14
+checkedOn: 2026-10-30
 audience: For small teams who want speed, not process, and would rather run their own tool than pay per seat.
 order: 3
 importFormat: linear-csv
@@ -28,11 +28,14 @@ rows:
     us: no
   - feature: GitHub and GitLab integration
     them: yes
-    us: no
-    note: OpenTodo offers webhooks and an API you can connect yourself.
+    us: partial
+    note: OpenTodo imports the open issues assigned to you as tasks that follow them (closed, reopened, renamed), and never writes back. No pull request links.
+    sourceDoc: /docs/issue-import/
   - feature: Triage and automation rules
     them: yes
-    us: no
+    us: partial
+    note: OpenTodo has automation rules that run on your server; there is no triage queue.
+    sourceDoc: /docs/automations/
   - feature: Coding agents that work on issues
     them: yes
     us: partial
@@ -54,7 +57,7 @@ gaps:
   - title: Planning for product teams
     detail: Linear has cycles, projects with roadmaps, initiatives and insights. OpenTodo has none of these.
   - title: Developer integrations
-    detail: Linear links issues to GitHub and GitLab pull requests and offers triage automation. OpenTodo has webhooks and an API, but no built-in code integration.
+    detail: Linear links issues to GitHub and GitLab pull requests and offers triage. OpenTodo reads the GitHub and GitLab issues assigned to you as tasks, one way, with no pull request links and no triage queue.
   - title: Agents on issues
     detail: Linear runs agents and coding sessions on issues. OpenTodo lets you connect an assistant you run yourself, nothing more.
 ---
