@@ -6,7 +6,6 @@ author: raffaele
 category: releases
 release: 0.17.0
 tags: [task-management, time-management]
-draft: true
 ---
 <!-- no-claim -->
 OpenTodo 0.17.0 is the first stop on [the road to 1.0](/blog/the-road-to-1-0/), and its theme is calm constraints: small limits that keep a busy list honest. Every one of them is off until you turn it on, so if you like OpenTodo the way it is, nothing changes.
