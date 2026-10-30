@@ -63,13 +63,13 @@ const platforms = [
       <div>
         <p class="kicker">The browser extension</p>
         <h2 id="ext-title">Small on purpose, and not in the stores yet</h2>
-        <p class="lede">The extension stores only your server's address. It holds no token or password, has no host permissions and no content scripts, and makes no network requests itself: the only traffic is the capture popup you open, which loads your own server. <a href="/docs/capture/#browser-extension">Privacy and permissions</a></p>
+        <p class="lede">The extension talks only to the server address you enter and has no content scripts. In its default Capture screen mode it holds no token and sends nothing itself: Save opens your server's capture screen. In Quick save mode a full-access token, kept on that device only, saves the task at once with a live preview. Access to your server's address is optional, asked for screenshots and Quick save. <a href="/docs/capture/#browser-extension">Privacy and permissions</a></p>
         <p>It is not published in the browser stores yet, so it installs as an unpacked extension from a release download. A signed Firefox build is a release task. <a href="/docs/capture/#browser-extension">In the docs</a></p>
       </div>
       <div>
         <h3>Install it</h3>
         <ol class="steps">
-          <li>Download <code>opentodo-browser-extension.zip</code> from a <a href={`${SITE.appRepo}/releases`}>release</a> and unzip it. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
+          <li>Download <code>opentodo-browser-extension-chrome.zip</code> or <code>opentodo-browser-extension-firefox.zip</code> from a <a href={`${SITE.appRepo}/releases`}>release</a> and unzip it. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
           <li><strong>Chromium browsers:</strong> open <code>chrome://extensions</code>, turn on Developer mode, choose <strong>Load unpacked</strong> and pick the unzipped folder. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
           <li><strong>Firefox:</strong> open <code>about:debugging#/runtime/this-firefox</code>, choose <strong>Load Temporary Add-on…</strong> and pick <code>manifest.json</code> from the folder. Temporary add-ons are removed when Firefox restarts. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
           <li>On first use it asks for your server's address, saves it, and continues the capture you started. <a href="/docs/capture/#browser-extension">Browser extension</a></li>
@@ -85,7 +85,7 @@ const platforms = [
       <dl class="fine-list">
         {platforms.map(([p, t]) => <div><dt>{p}</dt><dd>{t}</dd></div>)}
       </dl>
-      <p class="meta" style="margin-top: 1rem">Files and images cannot be shared yet; the app is offered for text and links only. A shared link is kept only when it starts with http or https, and the capture screen never opens it. <a href="/docs/capture/#limits-and-safety">Limits and safety</a></p>
+      <p class="meta" style="margin-top: 1rem">Photos and files shared with a page (up to ten) are listed on the capture screen and saved as attachments when you press Save. A shared link is kept only when it starts with http or https, and the capture screen never opens it. <a href="/docs/capture/#limits-and-safety">Limits and safety</a></p>
     </div>
   </section>
 
