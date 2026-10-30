@@ -10,6 +10,8 @@ export const SITE = {
   sponsor: 'https://github.com/sponsors/pixari',
   // The community chat (website-discord-link): a plain link, nothing is loaded from Discord.
   discord: 'https://discord.gg/Jmj7WuRQ',
+  // The project's account on X (website-x-link): a plain link, nothing is loaded from X.
+  x: 'https://x.com/opentodoapp',
   analytics: { src: 'https://analytics.pixari.dev/script.js', websiteId: 'c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92' },
 };
 

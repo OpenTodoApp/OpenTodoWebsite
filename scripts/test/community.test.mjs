@@ -10,7 +10,7 @@ import { htmlFiles, load } from '../checks/lib.mjs';
 // The site-wide constants, read from the source so this test needs no TypeScript loader.
 const siteSource = fs.readFileSync(path.resolve('src/lib/site.ts'), 'utf8');
 const constant = (key) => /'([^']+)'/.exec(siteSource.split(`${key}:`)[1])[1];
-const SITE = { discord: constant('discord'), appRepo: constant('appRepo') };
+const SITE = { discord: constant('discord'), appRepo: constant('appRepo'), x: constant('x') };
 
 const dist = path.resolve('dist');
 const built = fs.existsSync(path.join(dist, 'index.html'));
@@ -103,4 +103,18 @@ test('every way in leads to the support page', { skip: !built && 'no dist/ (run 
   const guide = fs.readdirSync(path.join(dist, 'guides')).find((d) => fs.existsSync(path.join(dist, 'guides', d, 'index.html')) && d !== 'quiz');
   assert.ok(load(path.join(dist, 'guides', guide, 'index.html')).querySelector('.end-cta a[href="/support/"]'), 'end of a guide');
   assert.ok(load(path.join(dist, 'about/index.html')).querySelector('#licence a[href="/support/"]'), 'About, licence section');
+});
+
+// The X account (website-x-link): a text item after Discord in every footer, and a link on About; no request to X.
+test('the footer links to the X account after Discord, and About names it', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  for (const page of ['index.html', 'it/index.html']) {
+    const root = load(path.join(dist, page));
+    const items = root.querySelectorAll('footer nav[aria-label="Community"] li a').map((a) => a.getAttribute('href'));
+    assert.ok(items.includes(SITE.x), `${page}: footer links to X`);
+    assert.equal(items.indexOf(SITE.x), items.indexOf(SITE.discord) + 1, `${page}: X follows Discord`);
+    const loaded = root.querySelectorAll('script[src], img[src], iframe[src], link[href]').map((e) => e.getAttribute('src') ?? e.getAttribute('href') ?? '');
+    assert.ok(!loaded.some((u) => /x\.com|twitter\.com/.test(u)), `${page}: nothing loaded from X`);
+  }
+  const about = load(path.join(dist, 'about/index.html'));
+  assert.ok(about.querySelector(`#who a[href="${SITE.x}"]`), 'about: "Who makes it" links to X');
 });
