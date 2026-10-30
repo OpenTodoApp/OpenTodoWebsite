@@ -23,12 +23,4 @@ When a piece ships, remove its row in the same pull request. New templates need 
 
 ## Blog
 
-| # | Working title | Category | Audience | Docs it relies on |
-| --- | --- | --- | --- | --- |
-| B1 | Welcome to the OpenTodo blog | News | everyone | (none) |
-| B2 | OpenTodo 0.3.0: bring your own AI | Releases | users and self-hosters | /docs/ai-and-agents/, /docs/assistant/, /docs/mcp/ |
-| B3 | How OpenTodo is built: specs first, then AI agents | Development | developers | /docs/architecture/ |
-| B4 | Why sync never asks "which version do you want?" | Development | developers | /docs/sync/, /docs/offline-and-sync/ |
-| B5 | Dates and times in your format (when it ships) | Releases | everyone | /docs/settings/ |
-| B6 | What the first month of OpenTodo taught me | News | everyone | (none) |
-
+Blog posts are planned in the private repository `OpenTodoApp/social` (`blog/PLAN.md`), together with the social channels; the next post there is the next one to draft. Posts still ship from here as draft pull requests (`src/content/blog/<slug>/index.md`, `draft: true`), and release posts follow every release as before.
