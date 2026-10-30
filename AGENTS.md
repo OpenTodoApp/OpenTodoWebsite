@@ -8,7 +8,7 @@ The public website of [OpenTodo](https://github.com/OpenTodoApp/OpenTodo), live 
 2. **Released facts only.** Version, docs, screenshots, tokens, icons, changelog and import formats come from the app's site bundle pinned in `bundle.json` (`src/lib/bundle.ts` reads it). Never copy them in by hand, never describe unreleased features as available.
 3. **Honest comparisons.** Show competitor strengths (`gaps` is mandatory), date every comparison (`checkedOn`, at most 180 days old), text only (no logos), link every OpenTodo claim to its docs page (`sourceDoc`). The build enforces all of it.
 4. **No emoji as icons** (use `<Icon name>` from the bundle's sprite), **no third-party scripts** (except the self-hosted analytics), pages readable without JavaScript, WCAG 2.2 AA in light and dark from 360 px.
-5. **Posts are published by the maintainer.** Changes arrive as pull requests with a preview, and agents merge their own once every check passes. Blog and release posts always stay `draft: true` until the maintainer reviews the rendered post and publishes it.
+5. **Agents publish their own posts.** Changes arrive as pull requests with a preview, and agents merge their own once every check passes. Since 2026-10-30 the maintainer lets agents publish blog and release posts without review: write them without `draft`, with `publishedAt` no later than the build day (UTC).
 
 ## Layout
 - `src/layouts/Base.astro`: header, navigation (a `<details>` menu below 768 px), footer, preview banner, analytics.
@@ -26,13 +26,13 @@ The public website of [OpenTodo](https://github.com/OpenTodoApp/OpenTodo), live 
 1. Pick the top item of `content/BACKLOG.md`.
 2. Draft it following `content/VOICE.md`: every product claim links to a docs page of the pinned release; a paragraph that only looks like a claim gets `<!-- no-claim -->` on the line above. Set `lastReviewed` to today.
 3. A new template also needs its screenshots: run `npm run templates:check` against the pinned release.
-4. Run the checks, open a pull request, and link the preview. Merge it once every check passes. A post stays `draft: true`; the maintainer reviews it on the rendered page and removes `draft` to publish it.
+4. Run the checks, open a pull request, and link the preview. Merge it once every check passes. A post is published when it merges (no `draft`); use `draft: true` only for a post that should wait.
 
 ## Blog posts
 - One folder per post: `src/content/blog/<slug>/index.md` with its images beside it; the folder name is the URL. Front matter and an example are in the README ("Writing a blog post"); the schema is `blogSchema` in `src/content/schemas.mjs`.
-- Categories: `news`, `releases`, `development`, `ownership`. A `releases` post must name a `release` in the pinned bundle's changelog, so write it as `draft: true` and publish it in the pull request that bumps `bundle.json`.
+- Categories: `news`, `releases`, `development`, `ownership`. A `releases` post must name a `release` in the pinned bundle's changelog, so publish it in the pull request that bumps `bundle.json`.
 - Work not in the pinned release is only written about with `inDevelopment: true` (the page shows a notice); set `shippedIn` once it ships.
-- Agents always open posts as `draft: true`. The maintainer removes `draft` after reviewing the rendered post.
+- Agents publish posts directly (no `draft`); `publishedAt` must not be after the build day in UTC, or the post stays hidden until then.
 
 ## Previews and bundle pins
 - A pull request's preview is the `site` artefact of the checks workflow; the workflow comments its download link on the pull request and updates the comment on every push (download, unzip, `npx serve` or `npm run serve`). A Coolify preview deployment can replace it when enabled.
