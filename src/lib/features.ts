@@ -12,18 +12,23 @@ export interface FeatureGroup { key: string; title: string; icon: string; items:
 const GROUPS: FeatureGroup[] = [
   { key: 'plan', title: 'Plan', icon: 'sun', items: [
     { name: 'Today with the briefing', line: 'A sentence that names what is late, what is full and who replied.', doc: '/docs/briefing/', since: '0.11.0' },
+    { name: 'A Today limit and Done today', line: 'Cap Today at a few tasks; see what you finished and log a win.', doc: '/docs/today-limit/', since: '0.17.0' },
+    { name: 'Morning, Afternoon and This Evening', line: 'Group Today by part of the day, for tasks and habits.', doc: '/docs/day-parts/', since: '0.17.0' },
     { name: 'Upcoming and the calendar', line: 'Day, Week and Month, with tasks placed at their time.', doc: '/docs/calendar-views/' },
     { name: 'Time blocking', line: 'Drag tasks into the day and see whether it fits.', doc: '/docs/time-blocking/' },
     { name: 'Repeat rules in plain words', line: '“every weekday”, “every 2nd tuesday”, “every week after completion”.', doc: '/docs/recurrence/' },
     { name: 'Deadlines and start dates', line: 'Separate from the day you plan to do it.', doc: '/docs/deadlines-and-start-dates/' },
     { name: 'Reminders', line: 'At a time or before the due time; they follow a repeat rule.', doc: '/docs/task-reminders/' },
-    { name: 'Focus timer', line: 'Pomodoro, Flowtime or Countdown, logged to the task.', doc: '/docs/focus/' },
+    { name: 'Default reminders', line: 'One reminder added to every task that gets a date or a time.', doc: '/docs/default-reminders/', since: '0.17.0' },
+    { name: 'Focus timer', line: 'Pomodoro, Flowtime or Countdown, started from any task and logged to it.', doc: '/docs/focus/' },
     { name: 'Time tracking', line: 'Start and stop, add past work, export as CSV.', doc: '/docs/time-tracking/' },
     { name: 'Weekly review', line: 'A guided review in seven steps, with live data.', doc: '/docs/review-and-statistics/' },
+    { name: 'Review intervals and maintenance', line: 'Review each project weekly, monthly, quarterly or not at all.', doc: '/docs/review-intervals/', since: '0.17.0' },
     { name: 'Statistics and a weekly digest', line: 'What you finished and where the time went.', doc: '/docs/statistics/' },
   ] },
   { key: 'capture', title: 'Capture', icon: 'inbox', items: [
     { name: 'Quick add in six languages', line: 'Dates, projects, labels, priority and estimate in one line.', doc: '/docs/quick-add/' },
+    { name: 'Paste a list', line: 'Pasted lines become one task each, removed with one Undo.', doc: '/docs/quick-add/#paste-a-list', since: '0.17.0' },
     { name: 'Command bar', line: 'Every action and every task from one search box.', doc: '/docs/search/' },
     { name: 'Process the Inbox', line: 'Decide where each new task goes, one at a time.', doc: '/docs/process-the-inbox/' },
     { name: 'Email to task', line: 'Forward an email to your own address.', doc: '/docs/email/' },
@@ -34,6 +39,7 @@ const GROUPS: FeatureGroup[] = [
   ] },
   { key: 'projects', title: 'Projects and teams', icon: 'kanban', items: [
     { name: 'Sections and boards', line: 'The same project as a list or as columns.', doc: '/docs/sections-and-boards/' },
+    { name: 'Sequential projects and areas', line: 'One step at a time, or an ongoing list that never finishes.', doc: '/docs/project-flows/', since: '0.17.0' },
     { name: 'Timeline', line: 'A project’s tasks as bars, with deadlines and today.', doc: '/docs/project-timeline/' },
     { name: 'All projects at a glance', line: 'Health, progress and next due date in one table.', doc: '/docs/all-projects/', since: '0.11.0' },
     { name: 'Sub-projects and project notes', line: 'Nest projects and keep their notes beside them.', doc: '/docs/projects/' },

@@ -15,6 +15,16 @@ rows:
     them: yes
     us: yes
     sourceDoc: /docs/views/
+  - feature: Areas that never finish, and projects done one step at a time
+    them: partial
+    us: yes
+    note: Things has areas; OpenTodo also has sequential projects.
+    sourceDoc: /docs/project-flows/
+  - feature: This Evening and other parts of the day in Today
+    them: partial
+    us: yes
+    note: Things has This Evening; OpenTodo adds Morning and Afternoon.
+    sourceDoc: /docs/day-parts/
   - feature: Native Apple Watch app and widgets
     them: yes
     us: no

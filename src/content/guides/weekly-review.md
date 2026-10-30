@@ -1,8 +1,8 @@
 ---
 title: How to do a weekly review
 summary: Thirty minutes every Friday that keep your task list trustworthy, with a template and a saved view to make it a habit.
-lastReviewed: 2026-10-14
-sources: [/docs/recurrence/, /docs/filters/, /docs/views/, /docs/time-blocking/]
+lastReviewed: 2026-10-30
+sources: [/docs/recurrence/, /docs/filters/, /docs/views/, /docs/time-blocking/, /docs/review-and-statistics/, /docs/review-intervals/]
 templates: [weekly-review]
 tags: [habits, task-management]
 order: 1
@@ -26,7 +26,11 @@ Download the [Weekly review template](/templates/weekly-review/) and import it. 
 
 Then create a saved view with the query `@review & due <= today` and pin it to the sidebar. When Friday comes, that view is your review checklist. [Saved views](/docs/views/) show a live count, so you can see at a glance whether the review is done.
 
+OpenTodo also has a guided weekly review of its own, in seven steps with live data. Its project walk shows one card per project, and only the projects that are due: each comes up every week unless you choose **Review every…** 2 weeks, month, quarter or paused for it (press <kbd>e</kbd> on its card). [The seven steps](/docs/review-and-statistics/#the-seven-steps) [How often a project comes up](/docs/review-intervals/#how-often-a-project-comes-up)
+
 ## Make it stick
 
 <!-- no-claim -->
 Put it in the same slot every week, ideally Friday afternoon when the week is still fresh. Keep it short: if it takes longer than thirty minutes, you are doing the work instead of reviewing it. Skip a week if you must, but never two.
+
+- If the review keeps nagging about a project you are deliberately leaving alone for a while, press <kbd>m</kbd> on its card to **put it in maintenance**: it is no longer called stalled or without a next action, and its tasks stay where they are. [Maintenance](/docs/review-intervals/#maintenance)
