@@ -1,8 +1,8 @@
 ---
 title: Set a reminder
 summary: Get a nudge at the due time, an hour before, a day before, or at a moment of your choosing, on every device.
-lastReviewed: 2026-10-15
-sources: [/docs/recurring-and-reminders/, /docs/notifications/]
+lastReviewed: 2026-10-30
+sources: [/docs/recurring-and-reminders/, /docs/notifications/, /docs/default-reminders/]
 group: Every day
 minutes: 1
 shot: reminders
@@ -29,6 +29,7 @@ related: [reminders-on-your-phone, make-a-task-repeat]
 ## Good to know
 
 - A task with a date but no time counts as 09:00 for "before" and "after". Give it a time if you need the reminder earlier. [Tips](/docs/recurring-and-reminders/#tips)
+- The same reminder on every task? Set it once in **Settings → Notifications → Default reminders**, one for tasks with a time and one for tasks with only a date. Each task that gets a date then gets that reminder, which you can still change or delete. Both start at **None**. [Default reminders](/docs/default-reminders/)
 - Reminders are personal: on a shared task, yours are yours alone. [Shared projects](/docs/recurring-and-reminders/#shared-projects)
 
 ## If it does not work
