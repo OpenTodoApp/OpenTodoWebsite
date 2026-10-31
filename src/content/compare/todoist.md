@@ -19,6 +19,20 @@ rows:
     them: yes
     us: yes
     sourceDoc: /docs/recurrence/
+  - feature: Change one occurrence of a repeating task, or the series from a date on
+    them: partial
+    us: yes
+    note: Todoist reschedules or completes the next occurrence and edits the whole rule; it has no edit of one later date alone or of the series from a date on.
+    sourceDoc: /docs/repeating-on-the-calendar/
+  - feature: Tasks that span several days on the calendar
+    them: no
+    us: yes
+    sourceDoc: /docs/tasks-that-span-days/
+  - feature: Notes that are not tasks, with their own page and search
+    them: partial
+    us: yes
+    note: Todoist keeps notes in a task's description and comments, and a project can hold a description; there is no page of standalone notes.
+    sourceDoc: /docs/notes/
   - feature: Filters and saved views
     them: partial
     us: yes
