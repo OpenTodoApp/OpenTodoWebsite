@@ -1,8 +1,8 @@
 ---
 title: Eat the frog
 summary: Pick the one task you are most likely to avoid, and do it first thing. A priority, a saved view and a reminder make the frog hard to miss.
-lastReviewed: 2026-10-30
-sources: [/docs/tasks-and-projects/, /docs/filters/, /docs/views/, /docs/recurring-and-reminders/, /docs/day-parts/]
+lastReviewed: 2026-10-31
+sources: [/docs/tasks-and-projects/, /docs/filters/, /docs/views/, /docs/recurring-and-reminders/, /docs/day-parts/, /docs/method/rhythms/]
 templates: [weekly-review]
 tags: [procrastination, prioritisation]
 order: 7
@@ -28,4 +28,5 @@ Willpower is highest early and avoidance grows through the day. One frog, chosen
 - Choosing the frog is part of the [weekly review](/templates/weekly-review/) and of each evening: a repeating task "Choose tomorrow's frog" at 17:30 does it. [Make a task repeat](/docs/recurring-and-reminders/#make-a-task-repeat)
 - A frog that keeps slipping is too big. Break it into subtasks and make the first one tomorrow's frog. [Break a task into subtasks](/docs/tasks-and-projects/#break-a-task-into-subtasks)
 - No calendar slot? With day parts on, type `tomorrow morning` in quick add, or choose **Day part → Morning** in its Actions menu, and tomorrow Today lists it under Morning without a made-up time. [Day parts](/docs/day-parts/#give-a-task-a-part)
+- Prefer the Daily check? Choose **Daily focus → Bento** there: today's focus becomes one Large, one Medium and one Small task, and the **Frog** order, the default, puts the Large one first. [Bento](/docs/method/rhythms/#bento)
 - Two frogs is none. If the Frog view shows 2, demote one to P2 tonight. [Filter queries](/docs/filters/)
