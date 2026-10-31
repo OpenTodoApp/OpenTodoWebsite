@@ -2,7 +2,7 @@
 competitor: Todoist
 title: OpenTodo and Todoist compared
 summary: Todoist is polished, everywhere and full of integrations. OpenTodo gives you most of the daily workflow on a server you own, offline on every device, without a plan per person.
-checkedOn: 2026-10-14
+checkedOn: 2026-10-31
 audience: For people who like Todoist's quick add and filters, and want their lists on their own server without a monthly plan per person.
 order: 1
 importFormat: todoist-csv
@@ -33,6 +33,16 @@ rows:
     us: yes
     note: Todoist's calendar layout is on paid plans.
     sourceDoc: /docs/time-blocking/
+  - feature: Re-plan the rest of the day around what is left
+    them: partial
+    us: yes
+    note: Todoist can move overdue tasks to a new date in one go; it does not fit them into the free hours left.
+    sourceDoc: /docs/replan-the-day/
+  - feature: Energy on a task (Deep, Medium, Low)
+    them: partial
+    us: yes
+    note: In Todoist, labels can stand in for it.
+    sourceDoc: /docs/method/set-up/#energy-levels
   - feature: Shared projects, comments and assignees
     them: yes
     us: yes
