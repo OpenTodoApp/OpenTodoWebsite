@@ -1,12 +1,12 @@
 ---
-// /privacy: the privacy policy for the Android app's store listing and for this
-// website. The app's answers mirror mobile/android/store/data-safety.md in the app
+// /privacy: the privacy policy for the Android app's and the browser extension's
+// store listings and for this website. The app's answers mirror mobile/android/store/data-safety.md in the app
 // repository; a change there changes this page in the same release.
 import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import { SITE } from '../lib/site';
 
-const updated = '2026-10-26';
+const updated = '2026-10-31';
 const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title="Privacy policy" description="What the OpenTodo apps, the demo and this website do with your data: the apps talk only to the server you choose, and nothing is sent to the developer or to third parties.">
@@ -14,7 +14,7 @@ const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB'
     <div class="wrap narrow">
       <p class="kicker">Privacy</p>
       <h1>Your tasks stay on your server.</h1>
-      <p class="lede">OpenTodo is software you run yourself. The developer runs no service that your tasks pass through, and the apps send nothing to the developer or to anyone else. This policy covers the Android app, the server software, the public demo and this website. Last updated on {day(updated)}.</p>
+      <p class="lede">OpenTodo is software you run yourself. The developer runs no service that your tasks pass through, and the apps send nothing to the developer or to anyone else. This policy covers the Android app, the browser extension, the server software, the public demo and this website. Last updated on {day(updated)}.</p>
     </div>
   </section>
 
@@ -28,6 +28,17 @@ const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB'
         <li><strong>In transit:</strong> https. Plain http is accepted only for addresses on the phone or your local network, after a warning.</li>
         <li><strong>Permissions:</strong> network access to reach your server, notifications and exact alarms for reminders, starting after a restart to set reminders again, and biometrics for the optional fingerprint unlock.</li>
         <li><strong>Deleting your data:</strong> signing out, "Change server" or uninstalling removes everything the app stored on the phone. Your tasks and account live on your server, where you or its owner can delete them.</li>
+      </ul>
+
+      <h2>The browser extension</h2>
+      <p>OpenTodo Capture, for Chrome and Firefox, adds the page you are on, a link, an image, a screenshot or the text you selected as a task on your own OpenTodo server. Its answers mirror <code>extension/store/privacy.md</code> in the app repository.</p>
+      <ul>
+        <li><strong>Where your data goes:</strong> only to the OpenTodo server address you enter in its options. Nothing goes to the developer or to anyone else.</li>
+        <li><strong>Collected by the developer:</strong> nothing. No analytics, no tracking, no advertising, no remote code.</li>
+        <li><strong>Stored in the browser:</strong> the server address and the mode you chose (synchronised by your browser's own sync, if you use it) and, only in Quick save mode, an API token from your server, kept on this device and never synchronised.</li>
+        <li><strong>What it sends:</strong> in the default Capture screen mode, nothing itself: Save opens your server's capture screen with the page's title, address and selected text. In Quick save mode, when you press Save, it sends the line you typed, the selected text and the page address (and, on a Gmail or Outlook message, its subject, sender and link) to your server with your token. Nothing is sent before you open the popup or choose "Add to OpenTodo".</li>
+        <li><strong>Permissions:</strong> the active tab and scripting to read the title, address and selection of the tab you clicked in, only at that moment (on a mail message, the sender from its header; never the message body); the context menu for "Add to OpenTodo"; storage for its settings; and, optionally, access to your own server's address only, asked for when you turn on Quick save or screenshots.</li>
+        <li><strong>Deleting your data:</strong> removing the extension deletes the stored address and token. What you saved lives on your server.</li>
       </ul>
 
       <h2>The server software</h2>
