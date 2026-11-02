@@ -14,6 +14,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Today with the briefing', line: 'A sentence that names what is late, what is full and who replied.', doc: '/docs/briefing/', since: '0.11.0' },
     { name: 'A Today limit and Done today', line: 'Cap Today at a few tasks; see what you finished and log a win.', doc: '/docs/today-limit/', since: '0.17.0' },
     { name: 'Morning, Afternoon and This Evening', line: 'Group Today by part of the day, for tasks and habits.', doc: '/docs/day-parts/', since: '0.17.0' },
+    { name: 'Upcoming that starts with Today', line: 'One list for now and next: Today’s groups, then the days after.', doc: '/docs/upcoming-with-today/', since: '0.20.0' },
     { name: 'Upcoming and the calendar', line: 'Day, Week and Month, with tasks placed at their time.', doc: '/docs/calendar-views/' },
     { name: 'Time blocking', line: 'Drag tasks into the day and see whether it fits.', doc: '/docs/time-blocking/' },
     { name: 'Meetings in the day’s capacity', line: 'Busy events of your calendars count toward a full day.', doc: '/docs/place-tasks-on-the-calendar/#see-whether-the-day-fits', since: '0.18.0' },
@@ -44,6 +45,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Email to task', line: 'Forward an email to your own address.', doc: '/docs/email/' },
     { name: 'Browser extension and share sheet', line: 'Save a page, a selection or a screenshot.', doc: '/docs/capture/' },
     { name: 'Dictation', line: 'Speak a task, transcribed on your own network.', doc: '/docs/self-hosting/speech-to-text/', since: '0.10.0' },
+    { name: 'Speak or photograph a list', line: 'Ramble or snap a whiteboard; the assistant proposes the tasks for you to review.', doc: '/docs/assistant-capture/', since: '0.20.0' },
     { name: 'Project templates', line: 'Start a project from a ready-made list.', doc: '/docs/templates/' },
     { name: 'Import from other apps', line: 'Your export file becomes projects, sections and tasks.', doc: '/docs/import/' },
   ] },
@@ -62,7 +64,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Comments and activity', line: 'Talk about a task where the task is.', doc: '/docs/comments-and-activity/' },
     { name: 'Workspaces and groups', line: 'Keep work and home apart; share with a group.', doc: '/docs/workspaces/', since: '0.10.0' },
     { name: 'Public links', line: 'A list anyone with the link can see, no account needed.', doc: '/docs/public-links/' },
-    { name: 'Automation rules', line: 'When something happens, change tasks for you.', doc: '/docs/automations/', since: '0.10.0' },
+    { name: 'Routines', line: 'A trigger and steps that find, change and create tasks; AI steps wait for your review.', doc: '/docs/routines/', since: '0.20.0' },
     { name: 'Locations and maps', line: 'An address on a task, on OpenStreetMap maps.', doc: '/docs/locations-and-places/', since: '0.10.0' },
     { name: 'Attachments and dependencies', line: 'Files on tasks; tasks that wait on others.', doc: '/docs/notes-and-subtasks/' },
   ] },
@@ -71,14 +73,18 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Phone, desktop and browser', line: 'Install from the browser on any system.', doc: '/docs/install-app/' },
     { name: 'An Android app', line: 'In internal testing; on Google Play from about mid-November.', doc: '/docs/android-app/', since: '0.10.0' },
     { name: 'Six languages', line: 'English, Deutsch, Français, Español, Italiano, Português.', doc: '/docs/language/' },
+    { name: 'Themes', line: 'Fourteen editor palettes, your own in an editor or from a VS Code theme.', doc: '/docs/themes/', since: '0.20.0' },
+    { name: 'Today’s count on the app icon', line: 'The installed app’s icon shows how many of today’s tasks are open.', doc: '/docs/app-icon-badge/', since: '0.20.0' },
     { name: 'Your own accent colour', line: 'Any colour, adjusted until it reads well in light and dark.', doc: '/docs/custom-accent/', since: '0.19.0' },
     { name: 'Keyboard first', line: 'Shortcuts for everything, shown where you need them.', doc: '/docs/keyboard/' },
     { name: 'History and undo', line: 'Every change kept; restore a value or a version.', doc: '/docs/task-history/' },
     { name: 'Command-line client', line: 'ot for scripts, with JSON output and dry runs.', doc: '/docs/cli/' },
     { name: 'Markdown vault', line: 'Two-way sync with a folder Obsidian Tasks can read.', doc: '/docs/vault/', since: '0.10.0' },
+    { name: 'Obsidian plugin', line: 'Send a line from a note as a task, and sync a folder, on a phone too.', doc: '/docs/obsidian/', since: '0.20.0' },
   ] },
   { key: 'integrations', title: 'Integrations', icon: 'webhook', items: [
     { name: 'CalDAV', line: 'Apple Reminders, Thunderbird and Android task apps.', doc: '/docs/caldav/' },
+    { name: 'Calendar sync', line: 'Dated tasks as events in Google, Outlook, Microsoft 365 or any CalDAV calendar.', doc: '/docs/calendar-sync/', since: '0.14.0' },
     { name: 'Calendar feeds', line: 'Your calendars in Day and Week; your tasks in theirs.', doc: '/docs/calendar-feeds/' },
     { name: 'GitHub and GitLab issues', line: 'Assigned issues become tasks and close with them.', doc: '/docs/issue-import/' },
     { name: 'Webhooks', line: 'Signed events for Home Assistant, n8n and Telegram.', doc: '/docs/webhooks/' },
@@ -100,10 +106,10 @@ const GROUPS: FeatureGroup[] = [
 
 // The integrations named in one line, each with the docs page that must exist for it to show.
 const INTEGRATIONS: [string, string][] = [
-  ['CalDAV', '/docs/caldav/'], ['iCal feeds', '/docs/calendar-feeds/'], ['GitHub issues', '/docs/issue-import/'], ['GitLab issues', '/docs/issue-import/'],
+  ['CalDAV', '/docs/caldav/'], ['Google Calendar', '/docs/calendar-sync/'], ['Outlook', '/docs/calendar-sync/#connect-microsoft-outlook'], ['iCal feeds', '/docs/calendar-feeds/'], ['GitHub issues', '/docs/issue-import/'], ['GitLab issues', '/docs/issue-import/'],
   ['Email to task', '/docs/email/'], ['Webhooks', '/docs/webhooks/'], ['ntfy', '/docs/notification-channels/'], ['Pushover', '/docs/notification-channels/'],
   ['Gotify', '/docs/notification-channels/'], ['Home Assistant', '/docs/webhooks/'], ['MCP', '/docs/mcp/'], ['Claude Code', '/docs/claude/'],
-  ['Browser extension', '/docs/capture/'], ['Android', '/docs/android-app/'], ['ot command line', '/docs/cli/'], ['Obsidian vault', '/docs/vault/'],
+  ['Browser extension', '/docs/capture/'], ['Android', '/docs/android-app/'], ['ot command line', '/docs/cli/'], ['Obsidian', '/docs/obsidian/'],
 ];
 
 // Apps behind the manifest's import formats (website-features D3); formats not listed here are generic.

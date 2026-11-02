@@ -34,8 +34,8 @@ rows:
   - feature: Triage and automation rules
     them: yes
     us: partial
-    note: OpenTodo has automation rules that run on your server; there is no triage queue.
-    sourceDoc: /docs/automations/
+    note: OpenTodo has routines, a trigger and steps that find, change and create tasks on your server; there is no triage queue.
+    sourceDoc: /docs/routines/
   - feature: Coding agents that work on issues
     them: yes
     us: partial
