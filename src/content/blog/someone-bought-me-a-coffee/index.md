@@ -39,4 +39,4 @@ What does change is how the evenings feel. The last few months have been a long 
 To the person who did this: thank you. I don't know whether you will read this, and I won't name you here, because you didn't ask to be named. But you should know you were the first, and that I will remember it.
 
 <!-- no-claim -->
-And to everyone else who uses OpenTodo: you don't owe me a coffee, and you never will. If the app helps you, that is already the thing I wanted. If one day you feel like saying so, the [support page](/support/) is there, and so is [Discord](https://discord.gg/Jmj7WuRQ), and so is my inbox. I read all of it.
+And to everyone else who uses OpenTodo: you don't owe me a coffee, and you never will. If the app helps you, that is already the thing I wanted. If one day you feel like saying so, the [support page](/support/) is there, and so is [Discord](https://discord.gg/mmSsuCRduD), and so is my inbox. I read all of it.

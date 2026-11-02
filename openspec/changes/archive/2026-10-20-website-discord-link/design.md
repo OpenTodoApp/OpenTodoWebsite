@@ -16,7 +16,7 @@
 
 ## Decisions
 
-- **D1. `SITE.discord = 'https://discord.gg/Jmj7WuRQ'` in `src/lib/site.ts`.** Alternative: read it from the bundle. Rejected: the bundle carries release facts and a new invite would otherwise wait for an app release.
+- **D1. `SITE.discord = 'https://discord.gg/mmSsuCRduD'` in `src/lib/site.ts`.** Alternative: read it from the bundle. Rejected: the bundle carries release facts and a new invite would otherwise wait for an app release.
 - **D2. Footer: a "Community on Discord" item in the Project list, placed first**, before "About and trust", since it is the one item a visitor acts on. Text only, like every footer link (no icon, no brand mark; no Discord glyph exists in the bundle's icon set anyway).
 - **D3. About: the "Questions and bug reports go to the issue tracker" list item becomes two sentences in one item**: questions and conversation on Discord, bug reports and ideas on the issue tracker, security by email. Keeps the list length and the `check` icon.
 - **D4. Help: the "Something is wrong" lede gains "ask on Discord" before "open an issue"**, both as links; the fixes list is unchanged.
