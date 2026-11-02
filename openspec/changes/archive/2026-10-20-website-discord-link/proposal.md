@@ -2,7 +2,7 @@
 
 ## Why
 
-OpenTodo has a Discord server (https://discord.gg/Jmj7WuRQ) where people can ask questions, compare set-ups and talk to the maintainer. The website today points only to the GitHub issue tracker for questions, in the footer's Project list, on the About page and on the Help page, so a visitor who wants to talk rather than file a report has nowhere to go.
+OpenTodo has a Discord server (https://discord.gg/mmSsuCRduD) where people can ask questions, compare set-ups and talk to the maintainer. The website today points only to the GitHub issue tracker for questions, in the footer's Project list, on the About page and on the Help page, so a visitor who wants to talk rather than file a report has nowhere to go.
 
 ## What Changes
 
