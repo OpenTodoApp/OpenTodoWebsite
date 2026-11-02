@@ -44,8 +44,20 @@ export function checkLinks(dir) {
   return { problems, pages: files.length };
 }
 
+// Broken links inside a released docs bundle, which this site serves as shipped and
+// cannot change, accepted only while that exact version is pinned. Each entry names
+// the app fix that removes it, so the list empties itself with the next pin.
+export const KNOWN_BUNDLE_PROBLEMS = {
+  // OpenTodoApp/OpenTodo#783: the docs build did not copy the theme format's schema.
+  'v0.20.0': ['/docs/themes/: broken link /docs/themes/opentodo-theme.schema.json'],
+};
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const dir = path.resolve(process.argv[2] ?? 'dist');
+  const { version } = JSON.parse(fs.readFileSync(new URL('../../bundle.json', import.meta.url), 'utf8'));
+  const known = new Set(KNOWN_BUNDLE_PROBLEMS[version] ?? []);
   const { problems, pages } = checkLinks(dir);
-  report('links', problems, `${pages} pages, no broken internal or docs links`);
+  const accepted = problems.filter((p) => known.has(p));
+  if (accepted.length) console.log(`links: ${accepted.length} known problem(s) of the ${version} docs bundle accepted`);
+  report('links', problems.filter((p) => !known.has(p)), `${pages} pages, no broken internal or docs links`);
 }

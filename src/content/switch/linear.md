@@ -22,7 +22,7 @@ drops:
   - Cycles, milestones, initiatives, SLAs and the related and duplicate links (dropped with a warning)
   - Issues assigned to other people arrive unassigned; assign them again once the people have accounts
   - Comments and attachments (not in the CSV export)
-  - Workflow automations and GitHub links (OpenTodo has its own rules and issue import)
+  - Workflow automations and GitHub links (OpenTodo has its own routines and issue import)
 terms:
   - them: "Issue"
     us: "Task"
@@ -73,5 +73,5 @@ OpenTodo recognises Linear's export as it is: no renaming, no spreadsheet. [Line
 - Switch the project to a board with <kbd>v</kbd>; the sections you imported are its columns. [Turn a project into a board](/how-to/turn-a-project-into-a-board/) [Switch to a board](/docs/sections-and-boards/#switch-to-a-board)
 - Cycles: a saved view `#Launch & due <= 14 days` pinned to the sidebar is the two-week window; a dashboard puts the team's views side by side. [Save a filter as a view](/how-to/save-a-filter-as-a-view/) [Save your own views](/docs/views/#save-your-own-views)
 - Work that lives in GitHub or GitLab: connect your account and the open issues assigned to you become tasks that close when the issue closes. Nothing is written back. [Issue import](/docs/issue-import/)
-- Automations: rules change tasks when a label is added, a date passes or on a schedule, on your server. The REST API and the `ot` command line write to the same place as the app, and webhooks fire on changes. [Automation rules](/docs/automations/) [HTTP API](/docs/api/)
+- Automations: routines run on your server when a label is added, a date passes, on a schedule or when you run them, and their steps find, change and create tasks. The REST API and the `ot` command line write to the same place as the app, and webhooks fire on changes. [Routines](/docs/routines/) [HTTP API](/docs/api/)
 - Where Linear stays ahead, the comparison says so; this page is not a reason to leave it. [OpenTodo vs Linear](/vs/linear/)
