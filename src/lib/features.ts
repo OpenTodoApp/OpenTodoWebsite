@@ -49,8 +49,10 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Browser extension and share sheet', line: 'Save a page, a selection or a screenshot.', doc: '/docs/capture/' },
     { name: 'Dictation', line: 'Speak a task, transcribed on your own network.', doc: '/docs/self-hosting/speech-to-text/', since: '0.10.0' },
     { name: 'Speak or photograph a list', line: 'Ramble or snap a whiteboard; the assistant proposes the tasks for you to review.', doc: '/docs/assistant-capture/', since: '0.20.0' },
+    { name: 'Suggestions after adding', line: 'If you turn it on, the assistant proposes a clearer title, a project and subtasks to review.', doc: '/docs/assistant-suggest-after-add/', since: '0.22.0' },
     { name: 'Project templates', line: 'Start a project from a ready-made list.', doc: '/docs/templates/' },
     { name: 'Import from other apps', line: 'Your export file becomes projects, sections and tasks.', doc: '/docs/import/' },
+    { name: 'Switching from…', line: 'Pick the app you use now: its export steps appear and the format is set.', doc: '/docs/switch/README/#switching-from', since: '0.22.0' },
   ] },
   { key: 'projects', title: 'Projects and teams', icon: 'kanban', items: [
     { name: 'Sections and boards', line: 'The same project as a list or as columns.', doc: '/docs/sections-and-boards/' },
@@ -63,6 +65,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Sub-projects and project notes', line: 'Nest projects and keep their notes beside them.', doc: '/docs/projects/' },
     { name: 'Notes', line: 'Task, project and standalone notes on one page, searched on your device.', doc: '/docs/notes/', since: '0.19.0' },
     { name: 'Custom fields', line: 'Typed columns such as a cost, a client or a stage.', doc: '/docs/custom-fields/' },
+    { name: 'Sort by custom fields', line: 'Order lists, label pages and saved views by a number or date field.', doc: '/docs/group-and-order/#order-by', since: '0.22.0' },
     { name: 'Saved views', line: 'Save a filter query and open it from the sidebar.', doc: '/docs/saved-views/' },
     { name: 'Sharing, roles and assignees', line: 'Viewers and editors; assign tasks to the people in a project.', doc: '/docs/roles-and-assignments/' },
     { name: 'Take turns on chores', line: 'A repeating task in a shared project passes to the next person each time.', doc: '/docs/take-turns/', since: '0.21.0' },
@@ -83,6 +86,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Your own accent colour', line: 'Any colour, adjusted until it reads well in light and dark.', doc: '/docs/custom-accent/', since: '0.19.0' },
     { name: 'Keyboard first', line: 'Shortcuts for everything, shown where you need them.', doc: '/docs/keyboard/' },
     { name: 'History and undo', line: 'Every change kept; restore a value or a version.', doc: '/docs/task-history/' },
+    { name: 'Fast with big accounts', line: 'Held to written budgets for a 10,000-task account, on a phone too.', doc: '/docs/performance/', since: '0.22.0' },
     { name: 'Command-line client', line: 'ot for scripts, with JSON output and dry runs.', doc: '/docs/cli/' },
     { name: 'Markdown vault', line: 'Two-way sync with a folder Obsidian Tasks can read.', doc: '/docs/vault/', since: '0.10.0' },
     { name: 'Obsidian plugin', line: 'Send a line from a note as a task, and sync a folder, on a phone too.', doc: '/docs/obsidian/', since: '0.20.0' },
@@ -95,6 +99,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Webhooks', line: 'Signed events for Home Assistant, n8n and Telegram.', doc: '/docs/webhooks/' },
     { name: 'ntfy, Pushover and Gotify', line: 'Reminders delivered where you already look.', doc: '/docs/notification-channels/', since: '0.11.0' },
     { name: 'HTTP API', line: 'Every route documented, with scoped tokens.', doc: '/docs/api/' },
+    { name: 'A stability promise', line: 'From 1.0 the API, sync, export, MCP tools and CLI only grow.', doc: '/docs/stability/', since: '0.22.0' },
     { name: 'MCP server', line: 'Your AI tools read and change tasks under an agent token.', doc: '/docs/mcp/' },
     { name: 'Claude Code plugin', line: 'Skills that teach Claude to plan your tasks safely.', doc: '/docs/claude/', since: '0.11.0' },
   ] },
@@ -121,7 +126,8 @@ const INTEGRATIONS: [string, string][] = [
 const IMPORT_APPS: [string, string][] = [
   ['todoist-csv', 'Todoist'], ['things-db', 'Things'], ['ticktick-csv', 'TickTick'], ['linear-csv', 'Linear'], ['asana-csv', 'Asana'],
   ['trello-json', 'Trello'], ['microsoft-todo-json', 'Microsoft To Do'], ['google-tasks-json', 'Google Tasks'],
-  ['apple-reminders-json', 'Apple Reminders'], ['anydo-json', 'Any.do'], ['csv', 'CSV'], ['json-generic', 'JSON'],
+  ['apple-reminders-json', 'Apple Reminders'], ['anydo-json', 'Any.do'], ['omnifocus-csv', 'OmniFocus'], ['vikunja-export', 'Vikunja'],
+  ['notion-csv', 'Notion'], ['super-productivity-json', 'Super Productivity'], ['tududi-db', 'Tududi'], ['csv', 'CSV'], ['json-generic', 'JSON'],
 ];
 
 const parts = (v: string) => v.replace(/^v/, '').split(/[.-]/).slice(0, 3).map((n) => Number.parseInt(n, 10) || 0);

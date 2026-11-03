@@ -7,8 +7,8 @@ import Icon from '../../components/Icon.astro';
 import { canImport } from '../../lib/bundle';
 
 const entries = (await getCollection('switch')).sort((a, b) => a.data.order - b.data.order);
-const apps = entries.map((e) => e.data.app);
 // Rows: the OpenTodo word first, then each app's word in the entries' order ('' when the app has no equivalent).
+// The glossary covers the first entries only; every switch page has its own word list.
 const glossary: { us: string; them: string[]; note?: string }[] = [
   { us: 'Task', them: ['Task', 'To-do', 'Task', 'Issue'] },
   { us: 'Project', them: ['Project', 'Project', 'List', 'Project'] },
@@ -34,8 +34,9 @@ const glossary: { us: string; them: string[]; note?: string }[] = [
   { us: 'Completed', them: ['Completed tasks', 'Logbook', 'Completed', 'Done'] },
   { us: 'Trash', them: ['', 'Trash', 'Trash', 'Canceled / archived'] },
 ];
+const apps = entries.slice(0, glossary[0].them.length).map((e) => e.data.app);
 ---
-<Base title="Moving from another app" description="How to move your tasks from Todoist, Things, TickTick or Linear to OpenTodo: what to export, how it imports, what comes across, and a glossary of each app's words.">
+<Base title="Moving from another app" description="How to move your tasks from Todoist, Things, TickTick, Linear, OmniFocus, Vikunja, Notion, Super Productivity or Tududi to OpenTodo: what to export, how it imports, what comes across, and a glossary of each app's words.">
   <section class="page-head">
     <div class="wrap">
       <p class="kicker">Moving from another app</p>
@@ -64,7 +65,7 @@ const glossary: { us: string; them: string[]; note?: string }[] = [
       <div class="section-head">
         <p class="kicker">Glossary</p>
         <h2 id="glossary-title">The same things, by their names in each app.</h2>
-        <p class="lede">If you know one of these apps, this is what OpenTodo calls the things you already use. Where a row says "no equivalent yet", it is not in this release.</p>
+        <p class="lede">If you know one of these apps, this is what OpenTodo calls the things you already use. Where a row says "no equivalent yet", it is not in this release. The other apps' words are on their own pages.</p>
       </div>
       <div class="table-wrap" tabindex="0" role="region" aria-labelledby="glossary-title">
         <table class="terms">
