@@ -14,8 +14,9 @@ const count = featureCount();
 ---
 <Base title={en.home.title} bareTitle description={fill(en.home.description, { count })}>
   <JsonLd slot="head" data={[
-    { '@type': 'WebSite', name: 'OpenTodo', url: SITE.url, inLanguage: 'en' },
-    { '@type': 'SoftwareApplication', name: 'OpenTodo', url: SITE.url, applicationCategory: 'ProductivityApplication', operatingSystem: 'Web, iOS, Android, Windows, macOS, Linux (self-hosted server: Docker on linux/amd64 and linux/arm64)', softwareVersion: manifest.version, license: `${SITE.appRepo}/blob/main/LICENSE`, isAccessibleForFree: true, downloadUrl: SITE.appRepo, installUrl: `${SITE.url}/self-host/`, softwareHelp: `${SITE.url}/learn/`, releaseNotes: releaseUrl(manifest.version), description: `Free, open-source, self-hosted task manager ${versionTag}: tasks, projects, reminders, sharing, offline on every device.` },
+    { '@type': 'WebSite', name: 'OpenTodo', url: SITE.url, inLanguage: 'en', publisher: { '@id': `${SITE.url}/#organization` } },
+    { '@type': 'Organization', '@id': `${SITE.url}/#organization`, name: 'OpenTodo', url: SITE.url, logo: `${SITE.url}/assets/apple-touch-icon.png`, sameAs: [SITE.appRepo, SITE.x, SITE.discord] },
+    { '@type': 'SoftwareApplication', name: 'OpenTodo', url: SITE.url, applicationCategory: 'ProductivityApplication', operatingSystem: 'Web, iOS, Android, Windows, macOS, Linux (self-hosted server: Docker on linux/amd64 and linux/arm64)', softwareVersion: manifest.version, license: `${SITE.appRepo}/blob/main/LICENSE`, isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, author: { '@id': `${SITE.url}/#organization` }, downloadUrl: SITE.appRepo, installUrl: `${SITE.url}/self-host/`, softwareHelp: `${SITE.url}/learn/`, releaseNotes: releaseUrl(manifest.version), description: `Free, open-source, self-hosted task manager ${versionTag}: tasks, projects, reminders, sharing, offline on every device.` },
   ]} />
 
   <HomeStory lang="en" s={en.home} />

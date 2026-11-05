@@ -72,10 +72,17 @@ Every pull request and every build of the main branch SHALL run checks that fail
 - a third-party script other than the self-hosted analytics
 - a page whose main text, navigation or links do not work without JavaScript
 - horizontal scrolling at 360 px wide
+- a page without a title, a meta description, a canonical link or a built social card; two pages with the same title
+- an hreflang alternate that is not built, is not reciprocal or lacks an x-default
+- a page that is not marked noindex and is missing from the sitemap
 
 #### Scenario: Third-party script added
 - **WHEN** a change adds a script loaded from another origin than the site or the self-hosted analytics
 - **THEN** the checks fail and name the page and the script URL
+
+#### Scenario: A page left out of the sitemap
+- **WHEN** a built page is missing from `sitemap-0.xml`
+- **THEN** `npm run check:dist` fails and names the page
 
 #### Scenario: Accessibility regression
 - **WHEN** a change lowers the contrast of body text below 4.5:1 in dark
@@ -104,7 +111,7 @@ Every page SHALL declare a social preview image of its own, drawn at build time 
 - **THEN** its social image is the cover and no card is rendered for it
 
 ### Requirement: Structured data
-Pages SHALL carry inline schema.org JSON-LD built from their own data: the home page a WebSite and a SoftwareApplication with the bundle's version, how-tos, guides, toolkit pieces and posts an article entity with author and dates, templates a Dataset with the download. No third-party script SHALL be loaded for it, and no rating, price or user count SHALL be stated.
+Pages SHALL carry inline schema.org JSON-LD built from their own data: the home page a WebSite, an Organization (name, address, logo, the repository, X and Discord) and a SoftwareApplication with the bundle's version, the operating systems, the licence and an offer of price 0, how-tos, guides, toolkit pieces and posts an article entity with author and dates, templates a Dataset with the download, and pages with a place in the site (posts, switch guides, how-tos, guides, toolkit pieces) a BreadcrumbList. No third-party script SHALL be loaded for it, and no rating or user count, and no price other than the free offer, SHALL be stated.
 
 #### Scenario: FAQ questions follow the page
 - **WHEN** a how-to is published
@@ -132,3 +139,14 @@ When a page moves or is folded into another, its old address SHALL answer with a
 #### Scenario: A broken redirect
 - **WHEN** a redirect in the server configuration names a target that the build does not produce
 - **THEN** `npm run check:dist` fails naming the line and the target
+
+### Requirement: Search metadata
+Every page SHALL have a unique title and a meta description of at most 160 characters (a longer description is cut at the last sentence or word that fits), a canonical link and a social card. Descriptions SHALL say what the page offers in plain words, without repeated keywords. The site SHALL emit search-engine ownership tags only when their tokens are set in the site constants. The docs' default card (`/assets/og.png`) SHALL be built from the home page's card. The quiz's steps and results SHALL have titles that name their question or the answer that led to them.
+
+#### Scenario: A long post summary
+- **WHEN** a post's summary is 230 characters long
+- **THEN** its meta description ends at the last full sentence within 160 characters
+
+#### Scenario: Verification token set
+- **WHEN** the maintainer sets `SITE.verification.google`
+- **THEN** every page carries `<meta name="google-site-verification">` with it, and no page does while it is empty

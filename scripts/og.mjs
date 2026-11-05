@@ -51,4 +51,11 @@ for (const file of pages) {
   n++;
 }
 fs.rmSync(cacheDir, { recursive: true, force: true });
+// The docs pages (built by the app repository) name /assets/og.png as their card; it is the
+// home page's card (website-seo-depth D6).
+const home = ogFileFor(dist, '/');
+if (fs.existsSync(home) && !fs.existsSync(path.join(dist, 'assets', 'og.png'))) {
+  fs.mkdirSync(path.join(dist, 'assets'), { recursive: true });
+  fs.copyFileSync(home, path.join(dist, 'assets', 'og.png'));
+}
 console.log(`social cards: ${n} rendered into ${path.relative(process.cwd(), path.join(dist, 'og'))}/`);

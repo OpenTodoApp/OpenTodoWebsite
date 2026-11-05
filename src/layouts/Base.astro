@@ -21,8 +21,23 @@ interface Props {
   image?: string;
   /** The page's language (website-languages); English unless a translated page says otherwise. */
   lang?: keyof typeof LANGS;
+  /** The page's place in the site, home excluded, for the BreadcrumbList (website-seo-depth D2). */
+  crumbs?: { name: string; href: string }[];
 }
-const { title, description, bareTitle = false, ogType = 'website', image, lang = DEFAULT_LANG } = Astro.props;
+const { title, bareTitle = false, ogType = 'website', image, lang = DEFAULT_LANG, crumbs } = Astro.props;
+// Search results show about 160 characters (website-seo-depth D1): a longer description is cut at
+// the last sentence, or the last word, that fits.
+const clamp = (s: string, max = 160) => {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max - 1);
+  const sentence = cut.lastIndexOf('. ');
+  return sentence > 80 ? cut.slice(0, sentence + 1) : `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+};
+const description = clamp(Astro.props.description);
+const breadcrumb = crumbs && crumbs.length > 0 ? {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'OpenTodo', href: '/' }, ...crumbs].map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href, SITE.url).href })),
+} : undefined;
 // Pages that exist in every language point at each other (hreflang), English being the default.
 const alternates = alternatesFor(Astro.url.pathname);
 // Every page gets its own social card (website-seo D2), drawn after the build from this
@@ -60,6 +75,9 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
     <link rel="preload" href="/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title="OpenTodo" href="/feed.xml" />
     {bundle.preview && <meta name="robots" content="noindex" />}
+    {SITE.verification.google && <meta name="google-site-verification" content={SITE.verification.google} />}
+    {SITE.verification.bing && <meta name="msvalidate.01" content={SITE.verification.bing} />}
+    {breadcrumb && <script type="application/ld+json" set:html={JSON.stringify(breadcrumb).replace(/</g, '\\u003c')} />}
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
     <!-- Analytics (Umami, self-hosted, no cookies): this website only; the app never loads analytics. -->
     <script is:inline defer data-cfasync="false" src={SITE.analytics.src} data-website-id={SITE.analytics.websiteId}></script>
