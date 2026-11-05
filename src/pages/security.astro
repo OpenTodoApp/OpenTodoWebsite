@@ -1,0 +1,45 @@
+---
+// /security (website-security-page): what OpenTodo protects, how to report a problem and how to
+// check what you run. The threat model and "how we verify" are being written in the app
+// repository (docs/security/); until they are published this page says so and links the work.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import LinkRows, { type LinkRow } from '../components/LinkRows.astro';
+import { SITE } from '../lib/site';
+
+const report: LinkRow[] = [
+  { icon: 'shield-check', title: 'Report a vulnerability privately', href: `${SITE.appRepo}/security/advisories/new`, line: 'Through GitHub’s private reporting, or by email as the security policy says. You get an answer within a few days, and fixes credit the reporter.' },
+];
+const protect: LinkRow[] = [
+  { icon: 'scroll-text', title: 'Security policy', href: `${SITE.appRepo}/blob/main/SECURITY.md`, line: 'The security model in full: accounts, sessions, tokens, roles, what the server stores and what it never sends anywhere.' },
+  { icon: 'key-round', title: 'Account security', href: '/docs/account-security/', line: 'Passkeys, two-factor authentication, and where your account is signed in.' },
+  { icon: 'lock', title: 'End-to-end encryption', href: '/docs/e2ee/#threat-model', line: 'What is encrypted on your devices, what is not, and the threat model it is built for.' },
+  { icon: 'eye-off', title: 'No telemetry', href: '/docs/locations-and-places/#maps-and-privacy', line: 'The app sends nothing to the OpenTodo project. Beyond your server it reaches only the services you configure and, while maps are on, the map provider through your server, which the owner can change or turn off.' },
+];
+const check: LinkRow[] = [
+  { icon: 'container', title: 'Verify the image and downloads', href: '/docs/self-hosting/docker/#verifying-the-image-and-downloads', line: 'Every image is signed with <code>cosign</code> and carries an SBOM and build provenance; every release file has an attestation and a checksum.' },
+  { icon: 'smartphone', title: 'Verify the Android app', href: '/docs/android-app/#check-what-you-installed', line: 'One signing certificate for Google Play, F-Droid and GitHub, and a reproducible build you can compare with the source.' },
+  { icon: 'code', title: 'Read the source', href: SITE.appRepo, line: 'Every line of the app, its specifications and its tests, under the AGPL-3.0.' },
+];
+const coming: LinkRow[] = [
+  { icon: 'file', title: 'Threat model', line: 'Who could attack an OpenTodo server, what they could reach, and what stops them.', note: 'For 1.0' },
+  { icon: 'list-checks', title: 'How we verify', line: 'The tests, fuzzing, checks and reviews every change goes through, and what they do not cover.', note: 'For 1.0' },
+  { icon: 'users', title: 'Independent review', line: 'The scope prepared for an outside security review, and its findings once there are any.', note: 'Planned' },
+];
+---
+<Base title="Security and trust" description="What OpenTodo protects, how to report a vulnerability, how to verify what you run, and what is still being written for 1.0.">
+  <section class="page-head tech-head">
+    <div class="wrap narrow">
+      <h1>Security and trust</h1>
+      <p class="lede">OpenTodo runs on your server, so you should be able to check every claim it makes. Here is where to look, and what is not written yet.</p>
+    </div>
+  </section>
+  <div class="wrap narrow tech-body">
+    <LinkRows id="report" title="Found a problem?" items={report} />
+    <LinkRows id="protect" title="What protects your data" items={protect} />
+    <LinkRows id="verify" title="Check what you run" items={check} />
+    <LinkRows id="coming" title="Being written for 1.0" items={coming} />
+    <p class="meta tech-note">The threat model and the verification notes are in review in the app repository (<a href={`${SITE.appRepo}/pull/911`}>pull request 911</a>). This page will link them once they are published.</p>
+  </div>
+  <EndCta kind="source" />
+</Base>

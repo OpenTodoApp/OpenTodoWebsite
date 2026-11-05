@@ -1024,3 +1024,12 @@ a.row-prop:hover { text-decoration: underline; }
 .release-changes h3 { font-size: 0.9375rem; margin: 1.25rem 0 0.4rem; color: var(--strong); }
 .release-changes ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; font-size: 0.9375rem; line-height: 1.6; }
 .release-changes li::marker { color: var(--faint); }
+
+/* ------------------------------------------------- technical pages (website-security-page D1) */
+.page-head.tech-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3.5rem) 0.5rem; }
+.tech-body { padding-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
+.link-rows { margin-top: 2.25rem; }
+.link-rows h2 { font-size: 1.125rem; margin-bottom: 0.5rem; }
+.link-rows .row-title a { color: var(--strong); text-decoration: none; }
+.link-rows .row-title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tech-note { margin-top: 1.5rem; }
