@@ -7,7 +7,7 @@ import EndCta from '../../components/EndCta.astro';
 import Icon from '../../components/Icon.astro';
 import CoverImage from '../../components/blog/CoverImage.astro';
 import DevNotice from '../../components/blog/DevNotice.astro';
-import PostCard from '../../components/blog/PostCard.astro';
+import PostRow from '../../components/blog/PostRow.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import { SITE, releaseUrl } from '../../lib/site';
 import { CATEGORY_LABELS, authorOf, categoryUrl, formatDate, isoDate, publishedPosts, readingMinutes, relatedPosts, type Post } from '../../lib/blog';
@@ -30,20 +30,19 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
   <article>
     <header class="post-head">
       <div class="wrap">
-        <p class="breadcrumb"><a href="/blog/">Blog</a> / <a href={categoryUrl(d.category)}>{CATEGORY_LABELS[d.category]}</a></p>
-        <h1>{d.title}</h1>
-        <p class="lede">{d.summary}</p>
         <p class="post-byline">
-          <span>By <strong>{author.name}</strong></span>
-          <span><time datetime={isoDate(d.publishedAt)}>{formatDate(d.publishedAt)}</time></span>
+          <a href={categoryUrl(d.category)}>{CATEGORY_LABELS[d.category]}</a>
+          <time datetime={isoDate(d.publishedAt)}>{formatDate(d.publishedAt)}</time>
           {d.updatedAt && <span>Updated <time datetime={isoDate(d.updatedAt)}>{formatDate(d.updatedAt)}</time></span>}
           <span>{readingMinutes(post.body)} min read</span>
         </p>
+        <h1>{d.title}</h1>
+        <p class="lede">{d.summary}</p>
       </div>
     </header>
     {d.cover && (
       <div class="post-hero">
-        <CoverImage cover={d.cover} alt={d.coverAlt} category={d.category} sizes="(min-width: 1100px) 1024px, 100vw" eager />
+        <CoverImage cover={d.cover} alt={d.coverAlt} category={d.category} sizes="(min-width: 800px) 720px, 100vw" eager />
       </div>
     )}
     <div class="post-body">
@@ -76,10 +75,10 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
     </div>
   </article>
   {related.length > 0 && (
-    <section class="section section-alt" aria-labelledby="related-title">
+    <section class="post-related" aria-labelledby="related-title">
       <div class="wrap">
-        <h2 id="related-title" style="font-size: 1.5rem">More in {CATEGORY_LABELS[d.category]}</h2>
-        <div class="post-grid">{related.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
+        <h2 id="related-title">More in {CATEGORY_LABELS[d.category]}</h2>
+        <ol class="post-rows">{related.map((p) => <PostRow post={p} headingLevel={3} />)}</ol>
       </div>
     </section>
   )}
