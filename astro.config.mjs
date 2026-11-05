@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { assertDeployable, resolveBundle } from './scripts/lib/bundle.mjs';
+import { brandIcons, touchIconPng } from './scripts/lib/brand.mjs';
 
 const bundle = resolveBundle();
 assertDeployable(bundle);
@@ -41,6 +42,36 @@ function bundleDocs() {
         const out = path.join(new URL(dir).pathname, 'docs');
         if (fs.existsSync(out)) throw new Error('dist/docs/ already exists: no page may live under /docs/, it belongs to the bundle');
         fs.cpSync(docs, out, { recursive: true });
+      },
+    },
+  };
+}
+
+/**
+ * The site's mark comes from the bundle (brand-from-bundle D1): the favicon is the
+ * bundle's brand/mark-colour.svg byte for byte and the touch icon a 180 px render of
+ * it, written to dist/assets/ after the build and served from the bundle in dev.
+ */
+/** @returns {import('astro').AstroIntegration} */
+function bundleBrand() {
+  const { favicon, touchSvg } = brandIcons(bundle.dir);
+  return {
+    name: 'opentodo:bundle-brand',
+    hooks: {
+      'astro:server:setup': ({ server }) => {
+        server.middlewares.use(async (/** @type {import('node:http').IncomingMessage} */ req, /** @type {import('node:http').ServerResponse} */ res, /** @type {() => void} */ next) => {
+          const url = (req.url ?? '').split('?')[0];
+          if (url === '/assets/favicon.svg') { res.setHeader('Content-Type', MIME['.svg']); res.end(favicon); return; }
+          if (url === '/assets/apple-touch-icon.png') { res.setHeader('Content-Type', MIME['.png']); res.end(await touchIconPng(touchSvg)); return; }
+          next();
+        });
+      },
+      'astro:build:done': async ({ dir }) => {
+        const out = path.join(new URL(dir).pathname, 'assets');
+        if (fs.existsSync(path.join(out, 'favicon.svg'))) throw new Error('dist/assets/favicon.svg already exists: the mark comes from the bundle, remove the copy in public/');
+        fs.mkdirSync(out, { recursive: true });
+        fs.writeFileSync(path.join(out, 'favicon.svg'), favicon);
+        fs.writeFileSync(path.join(out, 'apple-touch-icon.png'), await touchIconPng(touchSvg));
       },
     },
   };
@@ -90,6 +121,7 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [
     bundleDocs(),
+    bundleBrand(),
     // Preview builds are noindex, so they get no sitemap entries beyond the structure.
     sitemap({
       customPages: docsUrls(),
