@@ -39,7 +39,6 @@ const apps = entries.slice(0, glossary[0].them.length).map((e) => e.data.app);
 <Base title="Moving from another app" description="How to move your tasks from Todoist, Things, TickTick, Linear, OmniFocus, Vikunja, Notion, Super Productivity or Tududi to OpenTodo: what to export, how it imports, what comes across, and a glossary of each app's words.">
   <section class="page-head">
     <div class="wrap">
-      <p class="kicker">Moving from another app</p>
       <h1>Bring your tasks with you.</h1>
       <p class="lede">One page per app: how to get your tasks out, how they come into OpenTodo with the importers of the current release, and what does not come across, said plainly. Every import shows a <a href="/docs/import-export/">preview before anything is written</a>, and can be undone.</p>
     </div>
@@ -63,7 +62,6 @@ const apps = entries.slice(0, glossary[0].them.length).map((e) => e.data.app);
   <section class="section section-alt" id="glossary" aria-labelledby="glossary-title">
     <div class="wrap">
       <div class="section-head">
-        <p class="kicker">Glossary</p>
         <h2 id="glossary-title">The same things, by their names in each app.</h2>
         <p class="lede">If you know one of these apps, this is what OpenTodo calls the things you already use. Where a row says "no equivalent yet", it is not in this release. The other apps' words are on their own pages.</p>
       </div>
@@ -84,5 +82,5 @@ const apps = entries.slice(0, glossary[0].them.length).map((e) => e.data.app);
       <p class="meta" style="margin-top: 1rem">Other apps are named only to identify them, and their words were checked on the dates shown on each switch page. The OpenTodo column follows the <a href="/docs/tasks-and-projects/">tasks and projects</a>, <a href="/docs/views/">views</a> and <a href="/docs/sharing/">sharing</a> docs.</p>
     </div>
   </section>
-  <EndCta />
+  <EndCta kind="import" />
 </Base>

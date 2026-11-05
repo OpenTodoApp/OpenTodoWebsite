@@ -1,26 +1,29 @@
 ---
-// The calls to action every content page ends with (website-content spec
-// "Content navigation"): try the demo, self-host, import.
+// The one next step a page ends with (website-restyle-cta D1): a short title and one action
+// that fits the page, instead of a band of eight. `kind` picks the action; `title` may
+// replace the kind's title. Blog pages add one quiet line of ways to support the project.
 import Icon from './Icon.astro';
-import CoffeeButton from './CoffeeButton.astro';
-import DiscordButton from './DiscordButton.astro';
-import { SITE } from '../lib/site';
-interface Props { title?: string; lede?: string }
-const { title = 'Your to-do list, on your own server.', lede = 'Try the demo in your browser. When you like it, install OpenTodo on your server and import your tasks.' } = Astro.props;
+import { NAV, SITE } from '../lib/site';
+
+type Kind = 'demo' | 'start' | 'self-host' | 'import' | 'source' | 'follow';
+interface Props { kind?: Kind; title?: string }
+const { kind = 'demo', title } = Astro.props;
+const KINDS: Record<Kind, { title: string; label: string; href: string; icon: string; data?: string }> = {
+  demo: { title: 'See it with your own tasks.', label: 'Try the demo', href: SITE.demo, icon: 'arrow-right', data: 'data-demo' },
+  start: { title: 'Ready for your own?', label: 'Get started', href: NAV.start, icon: 'arrow-right' },
+  'self-host': { title: 'Run it on your server.', label: 'Install with Docker', href: '/docs/self-hosting/docker/', icon: 'server' },
+  import: { title: 'Bring your tasks over.', label: 'How importing works', href: '/docs/import/', icon: 'folder-input' },
+  source: { title: 'Read the code.', label: 'OpenTodo on GitHub', href: SITE.appRepo, icon: 'code' },
+  follow: { title: 'Follow along.', label: 'RSS feed', href: '/blog/feed.xml', icon: 'rss' },
+};
+const k = KINDS[kind];
 ---
 <section class="end-cta" aria-labelledby="end-cta-title">
-  <div class="wrap">
-    <h2 id="end-cta-title">{title}</h2>
-    <p class="lede">{lede}</p>
-    <div class="cta-row center">
-      <a class="btn btn-primary" href={SITE.demo}>Try the demo <Icon name="arrow-right" size={18} /></a>
-      <a class="btn btn-secondary" href="/self-host/"><Icon name="server" size={18} /> Self-host</a>
-      <a class="btn btn-secondary" href="/docs/import/"><Icon name="upload" size={18} /> Bring your tasks over</a>
-    </div>
-    <div class="support">
-      <p class="support-line">OpenTodo is free and always will be. <a class="support-link" href="/support/" data-support><Icon name="heart" size={16} /> Here's what it costs and how you can help.</a></p>
-      <p class="meta">If it helps you, <a href={SITE.appRepo} data-star>a star on GitHub</a> helps other people find it, and a coffee helps keep it going. Questions or ideas? Come and talk to us on Discord.</p>
-      <div class="support-buttons"><DiscordButton /><CoffeeButton /></div>
-    </div>
+  <div class="wrap end-cta-inner">
+    <h2 id="end-cta-title">{title ?? k.title}</h2>
+    <a class:list={['btn', kind === 'demo' || kind === 'start' ? 'btn-primary' : 'btn-secondary']} href={k.href} {...(k.data ? { [k.data]: '' } : {})}>{k.label} <Icon name={k.icon} size={18} /></a>
+    {kind === 'follow' && (
+      <p class="end-cta-support">OpenTodo is free and always will be. If it helps you: <a href={SITE.appRepo} data-star>star it</a>, <a href={SITE.sponsor} data-sponsor>sponsor</a>, <a href={SITE.coffee} data-coffee>buy a coffee</a> or <a href="/support/" data-support>see how else to help</a>.</p>
+    )}
   </div>
 </section>

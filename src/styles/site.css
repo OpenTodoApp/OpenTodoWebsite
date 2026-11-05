@@ -164,12 +164,6 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .btn-sponsor:hover { background: #eaeef2; }
 .btn-sponsor svg { color: #bf3989; }
 a.btn-sponsor, a.btn-sponsor:hover, a.btn-sponsor:visited { color: #24292f; text-decoration: none; }
-.support-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
-.end-cta .support { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; margin-top: 1.75rem; }
-.end-cta .support .meta { margin: 0; max-width: 34rem; }
-.end-cta .support-line { margin: 0; max-width: 34rem; color: var(--text); }
-.end-cta .support-link .icon { fill: currentColor; }
-.end-cta .support-link { display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 600; color: var(--ot-hue-pink-text); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 .center .cta-row, .cta-row.center { justify-content: center; }
 .link-arrow { display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; }
@@ -518,10 +512,11 @@ a.card h3 { color: var(--strong); }
 .lang-note .icon { flex: 0 0 auto; margin-top: 0.2em; color: var(--accent-text); }
 
 /* ------------------------------------------------------------ end CTA */
-.end-cta { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); text-align: center; background: var(--band); }
-.end-cta h2 { margin-bottom: 0.5rem; }
-.end-cta .lede { margin-bottom: 1.75rem; }
-
+/* One next step per page (website-restyle-cta D1): a title and one action on one line. */
+.end-cta { padding-block: clamp(2.5rem, 2rem + 2vw, 4rem); border-top: 1px solid var(--line); }
+.end-cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; }
+.end-cta h2 { margin: 0; font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem); }
+.end-cta-support { flex: 1 1 100%; margin: 0; font-size: 0.9375rem; color: var(--muted); }
 /* ------------------------------------------------------------------ footer */
 .site-footer { background: var(--band); border-top: 1px solid var(--line); padding-block: 3rem 2rem; font-size: 0.9375rem; color: var(--muted); }
 .footer-top { display: grid; gap: 2rem 1.5rem; }
@@ -566,7 +561,6 @@ a.card h3 { color: var(--strong); }
 
 /* Long labels wrap instead of widening the page at 360 px. */
 .demo-app > *, .import-inner > *, .import-apps li, .cta-row > * { min-width: 0; max-width: 100%; }
-.end-cta .lede { margin-inline: auto; }
 .install-panel pre { padding-top: 2.75rem; }
 
 /* ------------------------------------------------------------------- blog */
@@ -656,7 +650,7 @@ a.card h3 { color: var(--strong); }
 
 
 /* Keep the coffee button black on yellow inside link-styled areas, hover included. */
-.end-cta a.btn-coffee, .end-cta a.btn-coffee:hover { color: #000; text-decoration: none; }
+a.btn-coffee, a.btn-coffee:hover { color: #000; text-decoration: none; }
 /* Keep the Discord button white on blurple inside link-styled areas, hover included. */
 a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-decoration: none; }
 

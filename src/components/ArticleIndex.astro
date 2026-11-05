@@ -9,7 +9,6 @@ const { kicker, title, lede, description, items, icon } = Astro.props;
 <Base title={kicker} description={description}>
   <section class="page-head">
     <div class="wrap">
-      <p class="kicker">{kicker}</p>
       <h1>{title}</h1>
       <p class="lede">{lede}</p>
     </div>
@@ -26,5 +25,5 @@ const { kicker, title, lede, description, items, icon } = Astro.props;
     </div>
   </section>
   <slot />
-  <EndCta />
+  <EndCta title="Try it in the demo." />
 </Base>

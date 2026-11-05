@@ -11,7 +11,6 @@ import { RELEASES_URL, SITE } from '../lib/site';
   <section class="page-head">
     <div class="wrap split">
       <div>
-        <p class="kicker">Status</p>
         <h1>The demo, and whether it is up.</h1>
         <p class="lede">The public demo at <a href={SITE.demo}>demo.open-todo.app</a> is a real OpenTodo server in demo mode: every visitor gets a private sandbox with sample data, and nothing in it is kept. This page says how it behaves and where to look when it does not answer. <a href="/docs/self-hosting/demo/">How the demo works</a></p>
         <div class="cta-row">
@@ -64,5 +63,5 @@ import { RELEASES_URL, SITE } from '../lib/site';
       <p class="meta">This page is static and makes no request on your behalf. Your own server has the same health endpoint, which orchestrators use for their checks. <a href="/docs/self-hosting/docker/#health">Health</a></p>
     </div>
   </section>
-  <EndCta title="Rather have your own?" lede="Your own server keeps your data, resets never, and takes about twenty minutes to set up." />
+  <EndCta kind="start" title="Rather have your own?" />
 </Base>

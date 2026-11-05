@@ -39,7 +39,7 @@ The site SHALL draw one Discord button used everywhere it invites people to the 
 - **THEN** it shows the blurple background with the logo and "Join us on Discord", a visible focus ring, and the accessibility check of the page passes
 
 ### Requirement: Community invitation on the home page and at the end of content pages
-The home page in every language SHALL have a community section, placed after the self-hosting section and before the blog and the closing call to action, that invites visitors to join the Discord server in a friendly, first-person-plural voice (what they will find there: questions answered, set-ups shared, ideas heard by the maintainer) and shows the Discord button. The closing call to action shared by content pages SHALL show the Discord button beside the coffee button with one line inviting questions and ideas. Both SHALL read at 360 px wide without JavaScript, and their text SHALL make no claim about the app that needs a docs link.
+The home page in every language SHALL have a community section, placed after the self-hosting section and before the blog and the closing call to action, that invites visitors to join the Discord server in a friendly, first-person-plural voice (what they will find there: questions answered, set-ups shared, ideas heard by the maintainer) and shows the Discord button. The Support page and the Learn page's troubleshooting section SHALL show the Discord button; the closing call to action of content pages SHALL NOT, since every footer links Discord. Both SHALL read at 360 px wide without JavaScript, and their text SHALL make no claim about the app that needs a docs link.
 
 #### Scenario: English home page
 - **WHEN** a visitor scrolls the home page past "How it works"
@@ -51,7 +51,7 @@ The home page in every language SHALL have a community section, placed after the
 
 #### Scenario: End of a guide
 - **WHEN** a visitor reaches the end of a guide
-- **THEN** the closing call to action shows the Discord button beside the coffee button
+- **THEN** the closing call to action shows one action and no Discord or coffee button, and the footer links Discord
 
 ### Requirement: X account link
 Every page, in every language, SHALL link to the OpenTodo account on X from the footer's Community list, as a text item named "X" after the Discord item. The About page's "Who makes it" section SHALL name the account as the place to follow releases and work in progress in short form, as a link. Both SHALL be plain anchors that load nothing from X until followed: no script, image, frame or request to an X address appears in any built page. The address SHALL be defined once in the site-wide constants (not in the app bundle, since it is a fact about the project, not about a release) so that a changed handle is one edit that updates every page. The links SHALL read at 360 px wide and without JavaScript, reachable by keyboard with a visible focus state, in light and dark.
@@ -84,12 +84,12 @@ The site SHALL have an English page at `/support/` that shows the maintainer's a
 - **THEN** every Sponsor on GitHub button carries the new address
 
 ### Requirement: Ways to the support page
-Every page SHALL link to `/support/` from the footer's Project group, and the footer's Community row SHALL link the GitHub repository (Star on GitHub), GitHub Sponsors, Buy me a coffee and Discord as plain text links. The header SHALL carry no support pill or button. The closing call to action shared by content pages SHALL say that OpenTodo is free and always will be and link to `/support/`, and the About page's licence section SHALL link to it. The footer SHALL fit without sideways scrolling from 360 px.
+Every page SHALL link to `/support/` from the footer's Project group, and the footer's Community row SHALL link the GitHub repository (Star on GitHub), GitHub Sponsors, Buy me a coffee and Discord as plain text links. The header SHALL carry no support pill or button. The closing call to action of blog posts and blog listings SHALL say that OpenTodo is free and always will be, in one line of text links to the star, Sponsors, Buy me a coffee and `/support/`; other content pages SHALL NOT repeat the ask. The About page's licence section SHALL link to `/support/`, and the Support page SHALL say that both ways to give take a one-off amount or a monthly membership. The footer SHALL fit without sideways scrolling from 360 px.
 
 #### Scenario: Navigation on a phone
 - **WHEN** a visitor opens any page at 360 px wide without JavaScript and opens the footer's Project group
 - **THEN** it lists "Support OpenTodo", leading to `/support/`, and the Community row shows the star, sponsor, coffee and Discord links
 
 #### Scenario: End of a guide
-- **WHEN** a visitor reaches the end of a guide
-- **THEN** the closing call to action links to `/support/`
+- **WHEN** a visitor reaches the end of a guide, and then the end of a blog post
+- **THEN** the guide ends with one action and no support line, and the post ends with the support line linking `/support/`

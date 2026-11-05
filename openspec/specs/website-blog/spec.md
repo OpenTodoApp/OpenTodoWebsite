@@ -25,7 +25,7 @@ The blog index and each category page SHALL show at most twelve posts per page a
 - **THEN** `/blog/` shows twelve and links to `/blog/page/2/`, which shows the remaining three and links back
 
 ### Requirement: Post page
-Each published post SHALL have its own page at `/blog/<slug>/` showing its title, publish date, update date when set, reading time, author with a short bio, category, cover image when set, the full text, links to the previous and next posts, up to three related posts from the same category, and the site's closing calls to action. It SHALL read fully at 360 px wide without JavaScript.
+Each published post SHALL have its own page at `/blog/<slug>/` showing its title, publish date, update date when set, reading time, author with a short bio, category, cover image when set, the full text, links to the previous and next posts, up to three related posts from the same category, and a closing call to action that offers the RSS feed and one line of ways to support the project. It SHALL read fully at 360 px wide without JavaScript.
 
 #### Scenario: Reading a post on a phone without JavaScript
 - **WHEN** a visitor opens a post on a 360 px wide screen with JavaScript disabled
