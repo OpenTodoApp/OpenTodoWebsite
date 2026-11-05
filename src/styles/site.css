@@ -1033,3 +1033,4 @@ a.row-prop:hover { text-decoration: underline; }
 .link-rows .row-title a { color: var(--strong); text-decoration: none; }
 .link-rows .row-title a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .tech-note { margin-top: 1.5rem; }
+.uth-sample { margin: 1.25rem 0 0; font-size: 0.8125rem; }

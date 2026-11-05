@@ -125,6 +125,10 @@ When a page moves or is folded into another, its old address SHALL answer with a
 - **WHEN** a visitor opens `/vs/todoist/`
 - **THEN** the server answers with a permanent redirect to `/switch/todoist/`
 
+#### Scenario: Developers became Under the hood
+- **WHEN** a visitor opens `/developers/`
+- **THEN** the server answers with a permanent redirect to `/under-the-hood/`
+
 #### Scenario: A broken redirect
 - **WHEN** a redirect in the server configuration names a target that the build does not produce
 - **THEN** `npm run check:dist` fails naming the line and the target
