@@ -15,14 +15,23 @@ const SITE = { discord: constant('discord'), appRepo: constant('appRepo'), x: co
 const dist = path.resolve('dist');
 const built = fs.existsSync(path.join(dist, 'index.html'));
 
-test('the footer of the home page and of a translated page links to Discord, as text and as the button', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
-  for (const page of ['index.html', 'it/index.html']) {
+// The footer's Community row (website-restyle-chrome D4): text links with an icon, no brand buttons.
+test('the footer of the home page and of a translated page links to Discord as text', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  for (const page of ['index.html', 'it/index.html', 'about/index.html']) {
     const root = load(path.join(dist, page));
-    const links = root.querySelectorAll('footer a').filter((a) => a.getAttribute('href') === SITE.discord);
-    // The link columns exist twice (wide columns and the phone disclosures, one hidden by CSS).
-    assert.ok(links.some((a) => !a.classList.contains('btn-discord') && /Discord/.test(a.text)), `${page}: footer text link`);
-    assert.equal(links.filter((a) => a.classList.contains('btn-discord')).length, 1, `${page}: one footer button`);
+    const links = root.querySelectorAll('footer nav[aria-label="Community"] a').filter((a) => a.getAttribute('href') === SITE.discord);
+    assert.equal(links.length, 1, `${page}: one Discord link in the Community row`);
+    assert.match(links[0].text, /Discord/);
+    assert.equal(root.querySelectorAll('footer a.btn').length, 0, `${page}: no buttons in the footer`);
   }
+});
+
+test('the footer offers every way to support the project', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  const sponsor = /'([^']+)'/.exec(siteSource.split('sponsor:')[1])[1];
+  const coffee = /'([^']+)'/.exec(siteSource.split('coffee:')[1])[1];
+  const root = load(path.join(dist, 'index.html'));
+  const hrefs = root.querySelectorAll('footer nav[aria-label="Community"] a').map((a) => a.getAttribute('href'));
+  for (const h of [SITE.appRepo, sponsor, coffee, SITE.discord]) assert.ok(hrefs.includes(h), `footer links ${h}`);
 });
 
 // The Discord button (website-discord-invite): blurple, the logo hidden from assistive
@@ -92,13 +101,8 @@ test('the support page shows the promises, the costs and the buttons', { skip: !
 test('every way in leads to the support page', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
   for (const page of ['index.html', 'it/index.html', 'about/index.html']) {
     const root = load(path.join(dist, page));
-    for (const nav of root.querySelectorAll('header nav')) {
-      const items = nav.querySelectorAll('li > a');
-      const last = items[items.length - 1];
-      assert.equal(last.getAttribute('href'), '/support/', `${page}: Support is the last navigation item`);
-      assert.ok(last.querySelector('svg[data-icon="heart"]'), `${page}: with a heart`);
-    }
-    assert.ok(root.querySelectorAll('footer a[href="/support/"]').length >= 2, `${page}: the footer links to it`);
+    // The header stays to four destinations and the demo (website-restyle-chrome D1); Support is in the footer's Project group.
+    assert.ok(root.querySelectorAll('footer nav[aria-label="Project"] a[href="/support/"]').length >= 1, `${page}: the footer links to it`);
   }
   const guide = fs.readdirSync(path.join(dist, 'guides')).find((d) => fs.existsSync(path.join(dist, 'guides', d, 'index.html')) && d !== 'quiz');
   assert.ok(load(path.join(dist, 'guides', guide, 'index.html')).querySelector('.end-cta a[href="/support/"]'), 'end of a guide');
