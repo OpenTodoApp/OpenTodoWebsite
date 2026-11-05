@@ -32,7 +32,7 @@ const fullTitle = bareTitle ? title : `${title} · OpenTodo`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 ---
 <!doctype html>
-<html lang={lang} class="no-js">
+<html lang={LANGS[lang].hreflang} class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

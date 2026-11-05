@@ -84,8 +84,8 @@ function docsUrls() {
 export default defineConfig({
   site: 'https://open-todo.app',
   output: 'static',
-  // The site is English; a few pages exist in the other languages the app's quick add speaks (website-languages D1).
-  i18n: { defaultLocale: 'en', locales: ['en', 'de', 'fr', 'it', 'es', 'pt'], routing: { prefixDefaultLocale: false } },
+  // The site is English; the home page also exists in the other languages (website-languages D1).
+  i18n: { defaultLocale: 'en', locales: ['en', 'de', 'fr', 'it', 'es', 'pt', 'zh'], routing: { prefixDefaultLocale: false } },
   trailingSlash: 'ignore',
   build: { format: 'directory' },
   integrations: [
@@ -94,7 +94,7 @@ export default defineConfig({
     sitemap({
       customPages: docsUrls(),
       filter: (page) => !page.endsWith('/404/') && !page.endsWith('/404.html'),
-      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', it: 'it', es: 'es', pt: 'pt' } },
+      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', it: 'it', es: 'es', pt: 'pt', zh: 'zh-Hans' } },
     }),
     socialCards(),
   ],
@@ -102,7 +102,16 @@ export default defineConfig({
   // both themes, switched by the visitor's colour-scheme preference in site.css.
   markdown: { shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false } },
   vite: {
-    resolve: { alias: { '@bundle': bundle.dir } },
+    resolve: {
+      alias: {
+        '@bundle': bundle.dir,
+        // ScreenshotFrame globs this alias, not `@bundle/shots`. Vite 8 splits an
+        // alias glob where the pattern and the path share a suffix; `@bundle` and
+        // `.bundle` share `bundle`, so the leftover `/.` is normalised away and the
+        // search path becomes `…Websitebundle/shots/`. `@shot` stops on the `/`.
+        '@shot': path.join(bundle.dir, 'shots'),
+      },
+    },
     server: { fs: { allow: ['.', bundle.dir] } },
   },
 });

@@ -6,11 +6,15 @@ The site's languages: which pages exist in which languages, how they stay true t
 ## Requirements
 
 ### Requirement: Honest scope note
-Every translated page SHALL say, in its language, that the page and the app (through its language setting, as the app's language documentation of the pinned release states) are in that language while the rest of the site and the documentation are in English, and that the app's quick add understands dates and times in that language.
+Every translated page SHALL say, in its language, how this page relates to the languages in the pinned release's language documentation. When that documentation lists the page's language, the note SHALL say that the page and the app (through its language setting) are in that language, that quick add understands dates and times in it, and that the rest of the site and the documentation are in English. When it does not, the note SHALL say the page is in that language, that the rest of the site and the documentation are in English, and SHALL name the app's languages as that documentation lists them.
 
 #### Scenario: Reader expects a localised app
 - **WHEN** a visitor reads the French home page
 - **THEN** a note under the hero says the application is in French too, that quick add understands French dates, and that the rest of the site and the documentation are in English
+
+#### Scenario: A page language the app does not speak
+- **WHEN** a visitor reads the Simplified Chinese home page
+- **THEN** a note under the hero says the page is in Simplified Chinese, that the rest of the site and the documentation are in English, and names the app's languages from the pinned release's language documentation without saying the app speaks Chinese
 
 ### Requirement: Language discovery
 Every page that exists in all languages SHALL carry `hreflang` alternates for each language and an `x-default` pointing at English, its `lang` attribute and Open Graph locale SHALL match its language, the sitemap SHALL carry the alternates, and every page's footer SHALL link the languages (this page's versions when they exist, otherwise each language's home page). Translated pages SHALL also show a language bar.
@@ -31,7 +35,7 @@ The translation dictionaries SHALL share one shape, contain no empty strings, us
 - **THEN** the unit test fails naming the language and the path
 
 ### Requirement: Translated home page
-The site SHALL be English with a translated home page in the languages the app's quick add understands in the pinned release (German, French, Italian, Spanish and Portuguese), at most ten languages in all. A translated home page SHALL live under its language's prefix, SHALL render the same sections in the same order as the English home page from the same component, and SHALL state the same facts as the English page, drawn from the bundle where the English page draws them. Its strings SHALL have the same shape as the English home page's strings, enforced by the unit test. Links without a translated target SHALL lead to the English pages. It SHALL read at 360 px wide without JavaScript.
+The site SHALL be English with a translated home page in German, French, Italian, Spanish, Portuguese and Simplified Chinese, at most ten languages in all. A translated home page SHALL live under its language's prefix, SHALL render the same sections in the same order as the English home page from the same component, and SHALL state the same facts as the English page, drawn from the bundle where the English page draws them. Its strings SHALL have the same shape as the English home page's strings, enforced by the unit test. Links without a translated target SHALL lead to the English pages. It SHALL read at 360 px wide without JavaScript.
 
 #### Scenario: A language is added
 - **WHEN** a dictionary for a seventh language is added with every string of the German one

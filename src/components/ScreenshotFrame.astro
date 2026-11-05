@@ -20,7 +20,7 @@ interface Props {
 }
 const { shot, alt, frame = 'browser', caption, url = 'todo.your-server.com', eager = false, class: className, imgAttrs = {} } = Astro.props;
 
-const files = import.meta.glob<{ default: ImageMetadata }>('@bundle/shots/*.{webp,png,jpg}', { eager: true });
+const files = import.meta.glob<{ default: ImageMetadata }>('@shot/*.{webp,png,jpg}', { eager: true });
 const byName = (name: string) => {
   const entry = manifest.shots[name];
   if (!entry) throw new Error(`Screenshot "${name}" is not in the bundle manifest`);
