@@ -20,8 +20,27 @@ test('titles wrap to at most three lines and end with an ellipsis when cut', () 
 test('the card names the section and escapes markup', () => {
   assert.equal(sectionOf('/how-to/x/'), 'How-to');
   assert.equal(sectionOf('/'), 'open-todo.app');
-  const svg = cardSvg({ title: 'A <b>bold</b> & brave title', description: 'desc', section: 'Guides' });
+  const mark = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64"/></svg>';
+  const svg = cardSvg({ title: 'A <b>bold</b> & brave title', description: 'desc', section: 'Guides', mark });
   assert.ok(svg.includes('&lt;b&gt;bold&lt;/b&gt; &amp; brave'));
   assert.ok(svg.includes('· Guides'));
   assert.ok(svg.startsWith('<svg'));
+});
+
+test('the card draws the bundle\'s colour mark, not a tick of its own', () => {
+  const mark = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><!-- note --><rect width="64" height="64" rx="14" fill="#0f172a"/><path d="M1 2h3" stroke="#34d399"/></svg>';
+  const svg = cardSvg({ title: 'T', description: '', section: 'Guides', mark });
+  assert.ok(svg.includes('<svg x="80" y="76" width="44" height="44" viewBox="0 0 64 64">'), 'nested at the mark\'s place');
+  assert.ok(svg.includes('<path d="M1 2h3" stroke="#34d399"/>'));
+  assert.ok(!svg.includes('M12 23 l8 8 l13 -15'), 'the hand-drawn tick is gone');
+  assert.throws(() => cardSvg({ title: 'T', description: '', section: 'Guides' }), /mark/);
+});
+
+test('the rendered card shows the nested mark in its place', async () => {
+  const sharp = (await import('sharp')).default;
+  const mark = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0f172a"/></svg>';
+  const { data, info } = await sharp(Buffer.from(cardSvg({ title: 'T', description: '', section: 'Guides', mark }))).raw().toBuffer({ resolveWithObject: true });
+  const at = (x, y) => [...data.subarray((y * info.width + x) * info.channels, (y * info.width + x) * info.channels + 3)];
+  assert.deepEqual(at(102, 98), [0x0f, 0x17, 0x2a], 'inside the 44 px mark box: the mark');
+  assert.deepEqual(at(60, 98), [0xf8, 0xfa, 0xfc], 'left of it: the card background');
 });
