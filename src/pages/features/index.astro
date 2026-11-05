@@ -1,0 +1,24 @@
+---
+// /features (website-catalog D1): the overview of everything the pinned release does, each group's
+// first entries with a link to the group's page; every entry links its docs page.
+import Catalog from '../../components/catalog/Catalog.astro';
+import CatalogRows from '../../components/catalog/CatalogRows.astro';
+import EndCta from '../../components/EndCta.astro';
+import { featureCount, featureGroups, importApps, integrations } from '../../lib/features';
+import { featuresRail } from '../../lib/catalog';
+import { versionTag } from '../../lib/bundle';
+
+const groups = featureGroups();
+const SHOWN = 5;
+---
+<Catalog title="Features" heading="Features" description={`Everything OpenTodo ${versionTag} does: ${featureCount()} features in ${groups.length} groups, every one free and open source, each linked to its documentation.`} rail={featuresRail()}>
+  {groups.map((g) => (
+    <CatalogRows id={g.key} title={g.title} icon={g.icon} total={g.items.length} more={`/features/${g.key}/`} items={g.items.slice(0, SHOWN).map((f) => ({ title: f.name, href: f.doc, line: f.line }))} />
+  ))}
+  <dl class="catalog-strips">
+    <div><dt>Connects to</dt><dd>{integrations().join(' · ')}</dd></div>
+    <div><dt>Imports from</dt><dd>{importApps().join(' · ')} · <a href="/docs/import/">Import formats</a></dd></div>
+    <div><dt>No tiers</dt><dd>Every feature, for everyone on your server. Nothing costs extra.</dd></div>
+  </dl>
+  <EndCta slot="after" />
+</Catalog>

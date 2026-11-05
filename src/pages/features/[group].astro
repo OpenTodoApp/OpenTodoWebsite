@@ -1,0 +1,17 @@
+---
+// /features/<group> (website-catalog D1): every feature of one group, each linking its docs page.
+import Catalog from '../../components/catalog/Catalog.astro';
+import CatalogRows from '../../components/catalog/CatalogRows.astro';
+import EndCta from '../../components/EndCta.astro';
+import { featureGroups, type FeatureGroup } from '../../lib/features';
+import { featuresRail } from '../../lib/catalog';
+
+export function getStaticPaths() {
+  return featureGroups().map((g) => ({ params: { group: g.key }, props: { g } }));
+}
+const { g } = Astro.props as { g: FeatureGroup };
+---
+<Catalog title={`${g.title} · Features`} heading={g.title} crumb={{ label: 'Features', href: '/features/' }} description={`${g.items.length} OpenTodo features for ${g.title.toLowerCase()}, each linked to its documentation.`} rail={featuresRail()}>
+  <CatalogRows id={g.key} title="All features" icon={g.icon} items={g.items.map((f) => ({ title: f.name, href: f.doc, line: f.line }))} />
+  <EndCta slot="after" />
+</Catalog>

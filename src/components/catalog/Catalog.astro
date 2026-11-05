@@ -1,0 +1,39 @@
+---
+// The catalog layout Features and Learn share (website-catalog D1): the title and one search box
+// over both (and the docs), a rail of the catalog's sections, and the content. Overview pages
+// list each section's first entries; a section's page lists all of them. Without JavaScript the
+// search box is hidden and every entry is reachable through the rail.
+import Base from '../../layouts/Base.astro';
+import CatalogSearch from './CatalogSearch.astro';
+
+export interface RailItem { label: string; href: string; count?: number; icon?: string }
+export interface RailSection { title?: string; items: RailItem[] }
+interface Props { title: string; heading: string; description: string; rail: RailSection[]; crumb?: { label: string; href: string } }
+const { title, heading, description, rail, crumb } = Astro.props;
+const path = Astro.url.pathname;
+---
+<Base title={title} description={description}>
+  <section class="page-head catalog-head">
+    <div class="wrap">
+      {crumb && <p class="catalog-crumb"><a href={crumb.href}>{crumb.label}</a></p>}
+      <h1>{heading}</h1>
+      <CatalogSearch />
+    </div>
+  </section>
+  <div class="wrap catalog">
+    <nav class="catalog-rail" aria-label={`${heading}: sections`}>
+      {rail.map((s) => (
+        <div>
+          {s.title && <p class="catalog-rail-title">{s.title}</p>}
+          <ul>
+            {s.items.map((i) => <li><a href={i.href} aria-current={path === i.href ? 'page' : undefined}><span>{i.label}</span>{i.count !== undefined && <span class="count">{i.count}</span>}</a></li>)}
+          </ul>
+        </div>
+      ))}
+    </nav>
+    <div class="catalog-main" data-catalog-main>
+      <slot />
+    </div>
+  </div>
+  <slot name="after" />
+</Base>

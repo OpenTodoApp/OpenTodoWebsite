@@ -63,7 +63,7 @@ test('About and Learn link to Discord beside the issue tracker', { skip: !built 
   assert.ok(item, 'about: a "Who makes it" item links to Discord');
   assert.ok(item.querySelector(`a[href="${SITE.appRepo}/issues"]`), 'about: the same item links to the issue tracker');
   const help = load(path.join(dist, 'learn/index.html'));
-  const lede = help.querySelector('#fix .lede');
+  const lede = help.querySelector('#fix .catalog-help');
   const hrefs = lede.querySelectorAll('a').map((a) => a.getAttribute('href'));
   assert.deepEqual(hrefs, [SITE.discord, `${SITE.appRepo}/issues`], 'learn: Discord then the issue tracker');
 });

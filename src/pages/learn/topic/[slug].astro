@@ -1,11 +1,11 @@
 ---
-// /learn/topic/<slug> (website-learn D2): everything that carries the topic's tags, and posts.
-import Base from '../../../layouts/Base.astro';
+// /learn/topic/<slug> (website-catalog D1): everything that carries the topic's tags, by type, and posts.
+import Catalog from '../../../components/catalog/Catalog.astro';
+import CatalogRows from '../../../components/catalog/CatalogRows.astro';
 import EndCta from '../../../components/EndCta.astro';
-import LearnLibrary from '../../../components/LearnLibrary.astro';
-import PostCard from '../../../components/blog/PostCard.astro';
-import { inTopic, learnEntries } from '../../../lib/learn';
-import { publishedPosts } from '../../../lib/blog';
+import { LEARN_TYPES, inTopic, learnEntries, type LearnEntry } from '../../../lib/learn';
+import { learnRail } from '../../../lib/catalog';
+import { publishedPosts, CATEGORY_LABELS } from '../../../lib/blog';
 import { TOPICS } from '../../../lib/topics.mjs';
 
 export function getStaticPaths() {
@@ -16,25 +16,12 @@ const all = await learnEntries();
 const entries = inTopic(all, topic.slug);
 const has = (tags: string[] | undefined) => (tags ?? []).some((t) => topic.tags.includes(t));
 const posts = (await publishedPosts()).filter((p) => has(p.data.tags) || (topic.slug === 'owning-your-data' && p.data.category === 'ownership')).slice(0, 3);
+const row = (e: LearnEntry) => ({ title: e.title, href: e.href, line: e.summary, meta: e.length });
 ---
-<Base title={`${topic.title} · Learn`} description={`${topic.lede} Guides, templates, how-tos and posts on ${topic.title.toLowerCase()}.`}>
-  <section class="page-head">
-    <div class="wrap">
-      <p class="breadcrumb"><a href="/learn/">Learn</a></p>
-      <h1>{topic.title}</h1>
-      <p class="lede">{topic.lede}</p>
-    </div>
-  </section>
-  <section class="section learn-section" aria-label={topic.title}>
-    <LearnLibrary all={all} entries={entries} topic={topic.slug} />
-  </section>
-  {posts.length > 0 && (
-    <section class="section section-alt" id="posts" aria-labelledby="t-posts">
-      <div class="wrap">
-        <h2 id="t-posts">From the blog</h2>
-        <div class="post-grid">{posts.map((p) => <PostCard post={p} headingLevel={3} />)}</div>
-      </div>
-    </section>
-  )}
-  <EndCta title="Put it into practice." />
-</Base>
+<Catalog title={`${topic.title} · Learn`} heading={topic.title} crumb={{ label: 'Learn', href: '/learn/' }} description={`${topic.lede} Guides, templates, how-tos and posts on ${topic.title.toLowerCase()}.`} rail={learnRail(all)}>
+  {LEARN_TYPES.map((t) => ({ t, items: entries.filter((e) => e.type === t.key) })).filter((g) => g.items.length).map(({ t, items }) => (
+    <CatalogRows id={t.key} title={t.title} icon={t.icon} items={items.map(row)} />
+  ))}
+  {posts.length > 0 && <CatalogRows id="posts" title="From the blog" icon="newspaper" items={posts.map((p) => ({ title: p.data.title, href: `/blog/${p.id}/`, line: p.data.summary, meta: CATEGORY_LABELS[p.data.category] }))} />}
+  <EndCta slot="after" title="Put it into practice." />
+</Catalog>
