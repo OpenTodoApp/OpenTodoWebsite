@@ -15,7 +15,8 @@ for (const url of sitePages()) {
     const main = page.locator('main');
     await expect(main.locator('h1')).toBeVisible();
     const words = (await main.innerText()).split(/\s+/).filter(Boolean).length;
-    expect(words, 'main text is readable').toBeGreaterThan(60);
+    // The closing band is one title and one action now (website-restyle-cta), so short index pages hold fewer words.
+    expect(words, 'main text is readable').toBeGreaterThan(40);
     // The phone menu is a <details>, so it opens without scripts.
     await page.locator('details.nav-menu > summary').click();
     const nav = page.locator('details.nav-menu .menu-panel');
