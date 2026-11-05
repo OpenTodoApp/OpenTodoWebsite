@@ -73,20 +73,19 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
       </div>
     )}
     <SiteHeader />
-    {alternates && lang !== DEFAULT_LANG && (
-      <nav class="lang-bar" aria-label="Languages">
-        <div class="wrap">
-          <ul>
-            {alternates.map((a) => <li><a href={a.href} hreflang={a.hreflang} lang={a.hreflang} aria-current={a.lang === lang ? 'page' : undefined}>{a.name}</a></li>)}
-          </ul>
-        </div>
-      </nav>
-    )}
     <main id="main" tabindex="-1">
       <slot />
     </main>
     <SiteFooter lang={lang} />
     <!-- Custom events on top of Umami's page views. Served at /analytics.js because the bundle's docs load it from there too. -->
     <script is:inline src="/analytics.js" defer data-cfasync="false"></script>
+    <!-- The header menu and the language switch are <details>: they work without JavaScript; this only closes them on Escape or a click elsewhere. -->
+    <script is:inline>
+      (() => {
+        const open = () => document.querySelectorAll('details.nav-menu[open], details.lang-switch[open]');
+        document.addEventListener('click', (e) => open().forEach((d) => { if (!d.contains(e.target)) d.open = false; }));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') open().forEach((d) => { d.open = false; d.querySelector('summary').focus(); }); });
+      })();
+    </script>
   </body>
 </html>

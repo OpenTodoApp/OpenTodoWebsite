@@ -3,8 +3,9 @@ import { expect, test } from '@playwright/test';
 import fs from 'node:fs';
 import { sitePages } from './pages';
 
-// Five destinations and the two actions (website-shell-v2); Blog joins once a post is published (website-blog spec).
-const MENU = ['Features', 'Learn', 'Compare', 'Docs', ...(fs.existsSync('dist/blog/index.html') ? ['Blog'] : []), 'Get started', 'Try the demo'];
+// Four destinations, Get started and the star (website-restyle-chrome D1); Blog joins once a post is published (website-blog spec).
+// Try the demo stays in the header bar, outside the menu.
+const MENU = ['Features', 'Learn', 'Docs', ...(fs.existsSync('dist/blog/index.html') ? ['Blog'] : []), 'Get started', 'Star on GitHub'];
 
 test.use({ javaScriptEnabled: false, viewport: { width: 360, height: 800 } });
 
@@ -21,6 +22,7 @@ for (const url of sitePages()) {
     for (const label of MENU) {
       await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
+    await expect(page.locator('.site-header a.header-demo')).toBeVisible();
     // Every link in the main content is a real link.
     const hrefs = await main.locator('a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
     expect(hrefs.filter((h) => !h || h === '#'), 'links without a target').toEqual([]);
@@ -36,22 +38,14 @@ test('Learn opens the Learn page from the phone menu without JavaScript', async 
   await expect(page.locator('details.nav-menu a.nav-link', { hasText: /^Learn$/ })).toHaveAttribute('aria-current', 'page');
 });
 
-test('the Compare link works from the phone menu without JavaScript', async ({ page }) => {
-  await page.goto('/vs/todoist/');
-  await page.locator('details.nav-menu > summary').click();
-  await page.locator('details.nav-menu nav').getByRole('link', { name: 'Compare', exact: true }).click();
-  await expect(page).toHaveURL(/\/vs\/$/);
-  await expect(page.locator('h1')).toHaveText('How OpenTodo compares.');
-});
-
-// The footer on phones (website-home-languages D3): the four groups are disclosures that open
+// The footer on phones (website-restyle-chrome D3): the three groups are disclosures that open
 // without JavaScript, so every footer link stays reachable while the footer stays short.
 test('the phone footer opens every group without JavaScript', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/it/');
   const footer = page.locator('.site-footer');
   expect((await footer.boundingBox())!.height, 'footer height at 390px').toBeLessThanOrEqual(600);
-  const wide = await footer.locator('.footer-grid > nav a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  const wide = await footer.locator('.footer-group a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
   for (const summary of await footer.locator('.footer-fold summary').all()) await summary.click();
   const folded = await footer.locator('.footer-fold a').evaluateAll((as) => as.filter((a) => (a as HTMLElement).offsetParent).map((a) => a.getAttribute('href')));
   expect(folded).toEqual(wide);
@@ -63,4 +57,14 @@ test('a translated home page has the English sections in order', async ({ page }
   const en = await ids('/');
   expect(en.length).toBeGreaterThan(4);
   for (const lang of ['de', 'fr', 'it', 'es', 'pt', 'zh']) expect(await ids(`/${lang}/`), lang).toEqual(en);
+});
+
+// The language switch (website-restyle-chrome D2) is a disclosure that opens without JavaScript.
+test('the language switch opens without JavaScript and leads to a translation', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('/');
+  await page.locator('.site-header details.lang-switch > summary').click();
+  await page.locator('.site-header .lang-panel').getByRole('link', { name: 'Italiano' }).click();
+  await expect(page).toHaveURL(/\/it\/$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'it');
 });

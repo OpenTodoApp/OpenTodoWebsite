@@ -1,70 +1,71 @@
 ---
-// Footer (website-shell-v2 D4): four short groups, the brand line, one line of licence,
-// source and specification links, and the languages. Below 768 px the four groups show as
-// disclosures, two per row, that open without JavaScript (website-home-languages D3); each
-// version is hidden at the other widths, like the home page's feature groups.
+// Footer (website-restyle-chrome D3): the brand line and the language switch, three short link
+// groups, one quiet row of ways to support and follow the project, and one line of licences.
+// Below 768 px the three groups show as disclosures that open without JavaScript.
 import { NAV, RELEASES_URL, SITE } from '../lib/site';
-import CoffeeButton from './CoffeeButton.astro';
-import DiscordButton from './DiscordButton.astro';
 import Icon from './Icon.astro';
+import LangSwitch from './LangSwitch.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
-import { DEFAULT_LANG, LANGS, alternatesFor, localePath } from '../i18n/index.mjs';
-interface Props { lang?: keyof typeof LANGS }
-const { lang = DEFAULT_LANG } = Astro.props;
 const blog = (await publishedPosts()).length > 0;
-// This page in every language when it is translated; otherwise each language's home page (website-languages D4).
-const languages = alternatesFor(Astro.url.pathname) ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
 const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
-  ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Moving from another app', '/switch/']]],
-  ['Learn', [['Guides and how-tos', NAV.learn], ['Templates', '/templates/'], ['Docs', '/docs/'], ['Developers', '/developers/'], ['Release notes', RELEASES_URL]]],
-  ['Project', [['About and trust', '/about/'], ['Compare', '/vs/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : []), ['Demo status', '/status/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
-  ['Community', [['Support OpenTodo', '/support/'], ['GitHub', SITE.appRepo], ['Discord', SITE.discord], ['X', SITE.x], ['Buy me a coffee', SITE.coffee], ['RSS feed', '/feed.xml']]],
+  ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Templates', '/templates/'], ['Release notes', RELEASES_URL]]],
+  ['Learn', [['Guides and how-tos', NAV.learn], ['Docs', '/docs/'], ['Developers', '/developers/'], ['Moving from another app', '/switch/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : [])]],
+  ['Project', [['About', '/about/'], ['Support OpenTodo', '/support/'], ['Demo status', '/status/'], ['Security', `${SITE.appRepo}/blob/main/SECURITY.md`], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
 ];
-const legal: [string, string][] = [
-  ['App: AGPL-3.0', `${SITE.appRepo}/blob/main/LICENSE`], ['Website code: MIT', `${SITE.siteRepo}/blob/main/LICENSE`],
-  ['Words and images: CC BY 4.0', `${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`], ['Security', `${SITE.appRepo}/blob/main/SECURITY.md`],
-  ['App specifications', `${SITE.appRepo}/tree/main/openspec/specs`], ['This website on GitHub', SITE.siteRepo], ['Website specifications', `${SITE.siteRepo}/tree/main/openspec`],
+// Ways to help and follow (website-restyle-chrome D4): plain text links, nothing loaded from the services.
+const community: { label: string; href: string; icon: string; data: string }[] = [
+  { label: 'Star on GitHub', href: SITE.appRepo, icon: 'star', data: 'data-star' },
+  { label: 'Sponsor', href: SITE.sponsor, icon: 'heart', data: 'data-sponsor' },
+  { label: 'Buy me a coffee', href: SITE.coffee, icon: 'coffee', data: 'data-coffee' },
+  { label: 'Discord', href: SITE.discord, icon: 'messages-square', data: 'data-discord' },
+  { label: 'X', href: SITE.x, icon: 'at-sign', data: 'data-x' },
+  { label: 'RSS', href: '/feed.xml', icon: 'rss', data: 'data-rss' },
 ];
 ---
 <footer class="site-footer">
   <div class="wrap">
-    <div class="footer-grid">
-      <div>
+    <div class="footer-top">
+      <div class="footer-brand">
         <a class="brand" href="/"><img src="/assets/favicon.svg" width="24" height="24" alt="" /><span>OpenTodo</span></a>
-        <p>An open-source task manager you host yourself. This site describes OpenTodo {versionTag}, the latest release.</p>
-        <div class="footer-coffee"><CoffeeButton small /><DiscordButton small /><a class="footer-support" href="/support/" data-support><Icon name="heart" size={15} /> Support</a></div>
+        <p>The task manager you host yourself. Free and open source.</p>
+        <LangSwitch up />
       </div>
       {groups.map(([title, items]) => (
-        <nav aria-label={title}>
+        <nav aria-label={title} class="footer-group">
           <h2>{title}</h2>
           <ul>
             {items.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
           </ul>
         </nav>
       ))}
+      <div class="footer-fold">
+        {groups.map(([title, items]) => (
+          <nav aria-label={title}>
+            <details>
+              <summary><span>{title}</span><Icon name="chevron-down" size={16} class="chev" /></summary>
+              <ul>
+                {items.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
+              </ul>
+            </details>
+          </nav>
+        ))}
+      </div>
     </div>
-    <div class="footer-fold">
-      {groups.map(([title, items]) => (
-        <nav aria-label={title}>
-          <details>
-            <summary><span>{title}</span><Icon name="chevron-down" size={16} class="chev" /></summary>
-            <ul>
-              {items.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
-            </ul>
-          </details>
-        </nav>
-      ))}
-    </div>
-    <nav class="footer-langs" aria-label="Languages">
+    <nav class="footer-community" aria-label="Community">
       <ul>
-        {languages.map((l) => <li><a href={l.href} hreflang={l.hreflang} lang={l.hreflang} aria-current={l.lang === lang ? 'page' : undefined}>{l.name}</a></li>)}
+        {community.map((c) => <li><a href={c.href} {...{ [c.data]: '' }}><Icon name={c.icon} size={16} />{c.label}</a></li>)}
       </ul>
     </nav>
-    <ul class="footer-legal">
-      {legal.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
-    </ul>
-    <p class="footer-fine">© {year} the OpenTodo contributors. Product names of other apps are used to identify them only. This website (not the app) counts visits with self-hosted Umami: no cookies, no personal data.</p>
+    <p class="footer-legal">
+      <span>© {year} the OpenTodo contributors</span>
+      <span>OpenTodo {versionTag}</span>
+      <a href={`${SITE.appRepo}/blob/main/LICENSE`}>App AGPL-3.0</a>
+      <a href={`${SITE.siteRepo}/blob/main/LICENSE`}>Site MIT</a>
+      <a href={`${SITE.siteRepo}/blob/main/LICENSE-CONTENT.md`}>Content CC BY 4.0</a>
+      <a href={SITE.siteRepo}>Site source</a>
+      <span>Visits counted with self-hosted Umami, no cookies.</span>
+    </p>
   </div>
 </footer>

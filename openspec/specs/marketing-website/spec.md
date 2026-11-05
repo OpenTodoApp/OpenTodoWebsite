@@ -186,7 +186,7 @@ The site SHALL have a page at `/status/` describing the demo as the demo documen
 - **THEN** the page says the health endpoint names the demo's version and which version the site describes
 
 ### Requirement: Five-destination navigation
-From 768 px wide, the header SHALL show Features, Learn, Compare, Docs and Blog on one line, followed by the Get started action, and from 1024 px also the Try the demo action. Below 768 px the phone menu SHALL show the same links and both actions in one panel that opens without JavaScript, by keyboard and pointer. The guidance content (guides, how-tos, toolkit, templates, switch pages and topics) SHALL be reached through the Learn page and the footer rather than a menu in the header.
+From 768 px wide, the header SHALL show Features, Learn, Docs and Blog on one line, then the language switch, a "Star" link to the app repository and one primary action, Try the demo. Below 768 px the header SHALL show the logo, Try the demo and a menu button whose panel opens without JavaScript, by keyboard and pointer, and shows the same destinations, Get started, Star on GitHub and the language switch. The guidance content (guides, how-tos, toolkit, templates, switch pages and topics) SHALL be reached through the Learn page and the footer rather than a menu in the header.
 
 #### Scenario: Learn without JavaScript on a laptop
 - **WHEN** a visitor at 1280 px wide with JavaScript disabled activates Learn with the keyboard
@@ -198,7 +198,7 @@ From 768 px wide, the header SHALL show Features, Learn, Compare, Docs and Blog 
 
 #### Scenario: Phone menu
 - **WHEN** a visitor on a 360 px wide screen without JavaScript opens the menu
-- **THEN** it shows Features, Learn, Compare, Docs and Blog, then Try the demo and Get started, and each works
+- **THEN** it shows Features, Learn, Docs and Blog, then Get started and Star on GitHub, and each works, while Try the demo stays visible in the bar
 
 #### Scenario: Tablet width
 - **WHEN** the header is shown at 768 px wide
