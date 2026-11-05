@@ -48,8 +48,11 @@ export function sectionOf(pathname) {
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-/** The card as SVG. Colours are the app's slate and emerald (the bundle's tokens, light theme). */
-export function cardSvg({ title, description, section }) {
+/** The card as SVG. Colours are the app's slate and emerald (the bundle's tokens, light theme); the mark is the bundle's. */
+export function cardSvg({ title, description, section, mark }) {
+  // The bundle's colour mark (brand-from-bundle D2), nested at 44 px.
+  const m = /<svg[^>]*viewBox="([^"]+)"[^>]*>([\s\S]*)<\/svg>\s*$/.exec(mark ?? '');
+  if (!m) throw new Error('cardSvg needs the bundle\'s colour mark (brand/mark-colour.svg) as `mark`');
   const lines = wrap(title);
   const size = lines.length >= 3 ? 56 : lines.length === 2 ? 64 : 72;
   const lineHeight = size * 1.15;
@@ -59,9 +62,8 @@ export function cardSvg({ title, description, section }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">
   <rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="#f8fafc"/>
   <rect x="0" y="0" width="${OG_WIDTH}" height="10" fill="#059669"/>
+  <svg x="80" y="76" width="44" height="44" viewBox="${m[1]}">${m[2]}</svg>
   <g transform="translate(80 76)">
-    <rect width="44" height="44" rx="10" fill="#059669"/>
-    <path d="M12 23 l8 8 l13 -15" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
     <text x="60" y="31" font-family="Inter" font-weight="600" font-size="28" fill="#0f172a">OpenTodo</text>
     <text x="206" y="31" font-family="Inter" font-size="24" fill="#64748b">· ${esc(section)}</text>
   </g>
