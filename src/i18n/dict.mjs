@@ -4,8 +4,9 @@ import es from './es.mjs';
 import fr from './fr.mjs';
 import it from './it.mjs';
 import pt from './pt.mjs';
+import zh from './zh.mjs';
 
-export const DICT = { de, fr, it, es, pt };
+export const DICT = { de, fr, it, es, pt, zh };
 
 /** Fills {licence}, {version}, {demo}, {minimum}, {memory}, {count}, {groups} in a string. */
 export const fill = (s, vars) => s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));

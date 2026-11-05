@@ -62,5 +62,5 @@ test('a translated home page has the English sections in order', async ({ page }
   const ids = async (url: string) => { await page.goto(url); return page.locator('main section[id]').evaluateAll((s) => s.map((e) => e.id)); };
   const en = await ids('/');
   expect(en.length).toBeGreaterThan(4);
-  for (const lang of ['de', 'fr', 'it', 'es', 'pt']) expect(await ids(`/${lang}/`), lang).toEqual(en);
+  for (const lang of ['de', 'fr', 'it', 'es', 'pt', 'zh']) expect(await ids(`/${lang}/`), lang).toEqual(en);
 });

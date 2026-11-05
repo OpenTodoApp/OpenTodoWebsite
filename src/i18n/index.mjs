@@ -1,6 +1,6 @@
-// Site languages (website-languages design D1). English is the site; a few
-// deciding pages exist in the five other languages the app's quick add
-// understands. Plain ESM so the unit tests can check the dictionaries.
+// Site languages (website-languages design D1). English is the site; the home
+// page also exists in the other languages below. Plain ESM so the unit tests
+// can check the dictionaries.
 export const DEFAULT_LANG = 'en';
 
 /** Native name, hreflang code and Open Graph locale per language. */
@@ -11,6 +11,7 @@ export const LANGS = {
   it: { name: 'Italiano', hreflang: 'it', og: 'it_IT' },
   es: { name: 'Español', hreflang: 'es', og: 'es_ES' },
   pt: { name: 'Português', hreflang: 'pt', og: 'pt_PT' },
+  zh: { name: '简体中文', hreflang: 'zh-Hans', og: 'zh_CN' },
 };
 export const OTHER_LANGS = Object.keys(LANGS).filter((l) => l !== DEFAULT_LANG);
 
