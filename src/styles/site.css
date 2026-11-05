@@ -992,3 +992,35 @@ a.row-prop:hover { text-decoration: underline; }
   .support-hero .cta-row .btn, .support-callout .cta-row .btn { flex: 1 1 100%; }
 }
 .page-head.blog-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) 0; }
+
+/* ------------------------------------------------------------ changelog (website-changelog) */
+.page-head.changelog-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) 1rem; }
+.changelog { display: grid; gap: 1.5rem 3rem; padding-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
+@media (min-width: 900px) { .changelog { grid-template-columns: 12rem minmax(0, 1fr); } }
+.changelog-index { display: none; }
+.changelog-index-title { font-weight: 600; font-size: 0.875rem; color: var(--strong); margin: 0 0 0.25rem; }
+.changelog-index ol, .changelog-jump ol { list-style: none; margin: 0; padding: 0; }
+@media (min-width: 900px) {
+  .changelog-index { display: block; position: sticky; top: calc(var(--header-h) + 1rem); align-self: start; max-height: calc(100vh - var(--header-h) - 2rem); overflow-y: auto; }
+  .changelog-jump { display: none; }
+}
+.changelog-jump { border-block: 1px solid var(--line); }
+.changelog-jump summary { cursor: pointer; font-weight: 600; color: var(--strong); min-height: 44px; display: flex; align-items: center; }
+.changelog-jump ol { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; padding-bottom: 0.75rem; }
+.changelog-jump a { display: inline-flex; min-height: 32px; align-items: center; font-variant-numeric: tabular-nums; }
+.changelog-index a { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.3rem 0.5rem; margin-left: -0.5rem; border-radius: var(--radius-sm); color: var(--text); text-decoration: none; font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+.changelog-index a:hover { background: var(--sel); }
+.changelog-index time { color: var(--muted); }
+.changelog-list { max-width: 46rem; }
+.release { padding-block: 1.75rem; border-top: 1px solid var(--line); }
+.release:first-child { border-top: 0; padding-top: 0; }
+.release header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem; }
+.release h2 { font-size: 1.5rem; margin: 0; font-variant-numeric: tabular-nums; }
+.release h2 a { color: var(--strong); text-decoration: none; }
+.release header p { margin: 0; color: var(--muted); font-size: 0.875rem; }
+.release-summary { margin: 0.75rem 0 0; line-height: 1.65; }
+.release-changes { margin-top: 1rem; }
+.release-changes > summary { cursor: pointer; font-weight: 600; color: var(--accent-text); min-height: 36px; display: inline-flex; align-items: center; gap: 0.4rem; }
+.release-changes h3 { font-size: 0.9375rem; margin: 1.25rem 0 0.4rem; color: var(--strong); }
+.release-changes ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; font-size: 0.9375rem; line-height: 1.6; }
+.release-changes li::marker { color: var(--faint); }

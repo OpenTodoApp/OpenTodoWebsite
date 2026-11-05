@@ -2,7 +2,7 @@
 // Footer (website-restyle-chrome D3): the brand line and the language switch, three short link
 // groups, one quiet row of ways to support and follow the project, and one line of licences.
 // Below 768 px the three groups show as disclosures that open without JavaScript.
-import { NAV, RELEASES_URL, SITE } from '../lib/site';
+import { NAV, SITE } from '../lib/site';
 import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
 import { versionTag } from '../lib/bundle';
@@ -10,7 +10,7 @@ import { publishedPosts } from '../lib/blog';
 const blog = (await publishedPosts()).length > 0;
 const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
-  ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Templates', '/templates/'], ['Release notes', RELEASES_URL]]],
+  ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Templates', '/templates/'], ['Changelog', '/changelog/']]],
   ['Learn', [['Guides and how-tos', NAV.learn], ['Docs', '/docs/'], ['Developers', '/developers/'], ['Moving from another app', '/switch/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : [])]],
   ['Project', [['About', '/about/'], ['Support OpenTodo', '/support/'], ['Demo status', '/status/'], ['Security', `${SITE.appRepo}/blob/main/SECURITY.md`], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
 ];
