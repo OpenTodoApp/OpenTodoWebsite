@@ -19,6 +19,10 @@ process.env.FONTCONFIG_FILE = conf;
 const { default: sharp } = await import('sharp');
 const { parse } = await import('node-html-parser');
 const { cardSvg, ogFileFor, sectionOf } = await import('./lib/og.mjs');
+const { resolveBundle } = await import('./lib/bundle.mjs');
+const { MARK_FILE } = await import('./lib/brand.mjs');
+// The card's mark is the pinned bundle's (brand-from-bundle D2).
+const mark = fs.readFileSync(path.join(resolveBundle().dir, MARK_FILE), 'utf8');
 
 const dist = path.resolve(process.argv[2] ?? 'dist');
 const pages = [];
@@ -43,7 +47,7 @@ for (const file of pages) {
   const description = root.querySelector('meta[name="description"]')?.getAttribute('content') ?? '';
   const out = ogFileFor(dist, pathname);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  await sharp(Buffer.from(cardSvg({ title, description, section: sectionOf(pathname) }))).png({ compressionLevel: 9 }).toFile(out);
+  await sharp(Buffer.from(cardSvg({ title, description, section: sectionOf(pathname), mark }))).png({ compressionLevel: 9 }).toFile(out);
   n++;
 }
 fs.rmSync(cacheDir, { recursive: true, force: true });
