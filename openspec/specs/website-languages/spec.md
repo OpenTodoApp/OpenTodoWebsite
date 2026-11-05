@@ -51,7 +51,7 @@ The site SHALL be English with a translated home page in German, French, Italian
 
 #### Scenario: Same story in every language
 - **WHEN** a visitor opens `/it/` on a 390 px wide phone without JavaScript
-- **THEN** the page shows the briefing headline over the Today screenshot, then your day, everything included with the pinned release's feature groups and counts, yours for good with AI on your terms, the three ways in, the community invitation and the end band, in that order
+- **THEN** the page shows the headline, the two actions and the product stage with the Today screenshot and its briefing sentence, then your day, everything included with the pinned release's feature groups and counts, yours for good with AI on your terms, the three ways in, the community invitation and the end band, in that order
 
 #### Scenario: Old translated addresses
 - **WHEN** a visitor opens `/de/cost/` or `/fr/faq/`
