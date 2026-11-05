@@ -55,15 +55,18 @@ function bundleDocs() {
 /** @returns {import('astro').AstroIntegration} */
 function bundleBrand() {
   const { favicon, touchSvg } = brandIcons(bundle.dir);
+  /** Rendered once, on first use. @type {Promise<Buffer> | undefined} */
+  let touchPng;
+  const touch = () => (touchPng ??= touchIconPng(touchSvg));
   return {
     name: 'opentodo:bundle-brand',
     hooks: {
       'astro:server:setup': ({ server }) => {
-        server.middlewares.use(async (/** @type {import('node:http').IncomingMessage} */ req, /** @type {import('node:http').ServerResponse} */ res, /** @type {() => void} */ next) => {
+        server.middlewares.use((/** @type {import('node:http').IncomingMessage} */ req, /** @type {import('node:http').ServerResponse} */ res, /** @type {(err?: unknown) => void} */ next) => {
           const url = (req.url ?? '').split('?')[0];
           if (url === '/assets/favicon.svg') { res.setHeader('Content-Type', MIME['.svg']); res.end(favicon); return; }
-          if (url === '/assets/apple-touch-icon.png') { res.setHeader('Content-Type', MIME['.png']); res.end(await touchIconPng(touchSvg)); return; }
-          next();
+          if (url !== '/assets/apple-touch-icon.png') return next();
+          touch().then((png) => { res.setHeader('Content-Type', MIME['.png']); res.end(png); }, next);
         });
       },
       'astro:build:done': async ({ dir }) => {
@@ -71,7 +74,7 @@ function bundleBrand() {
         if (fs.existsSync(path.join(out, 'favicon.svg'))) throw new Error('dist/assets/favicon.svg already exists: the mark comes from the bundle, remove the copy in public/');
         fs.mkdirSync(out, { recursive: true });
         fs.writeFileSync(path.join(out, 'favicon.svg'), favicon);
-        fs.writeFileSync(path.join(out, 'apple-touch-icon.png'), await touchIconPng(touchSvg));
+        fs.writeFileSync(path.join(out, 'apple-touch-icon.png'), await touch());
       },
     },
   };

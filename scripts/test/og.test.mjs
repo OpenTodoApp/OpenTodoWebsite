@@ -35,3 +35,12 @@ test('the card draws the bundle\'s colour mark, not a tick of its own', () => {
   assert.ok(!svg.includes('M12 23 l8 8 l13 -15'), 'the hand-drawn tick is gone');
   assert.throws(() => cardSvg({ title: 'T', description: '', section: 'Guides' }), /mark/);
 });
+
+test('the rendered card shows the nested mark in its place', async () => {
+  const sharp = (await import('sharp')).default;
+  const mark = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0f172a"/></svg>';
+  const { data, info } = await sharp(Buffer.from(cardSvg({ title: 'T', description: '', section: 'Guides', mark }))).raw().toBuffer({ resolveWithObject: true });
+  const at = (x, y) => [...data.subarray((y * info.width + x) * info.channels, (y * info.width + x) * info.channels + 3)];
+  assert.deepEqual(at(102, 98), [0x0f, 0x17, 0x2a], 'inside the 44 px mark box: the mark');
+  assert.deepEqual(at(60, 98), [0xf8, 0xfa, 0xfc], 'left of it: the card background');
+});
