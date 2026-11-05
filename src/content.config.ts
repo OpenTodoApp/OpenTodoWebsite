@@ -3,7 +3,7 @@ import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docExists, releases } from './lib/bundle';
 import authors from './content/authors.json';
-import { articleSchema, blogSchema, blogSlugProblem, compareSchema, howtoSchema, switchSchema, templateSchema } from './content/schemas.mjs';
+import { articleSchema, blogSchema, blogSlugProblem, howtoSchema, switchSchema, templateSchema } from './content/schemas.mjs';
 
 const md = (base: string) => glob({ pattern: '**/[^_]*.md', base: `./src/content/${base}` });
 
@@ -23,7 +23,6 @@ const releaseExists = (v: string) => releases.some((r) => r.version === v);
 const authorKey = z.string().refine((k) => k in authors, { error: (iss) => `"author" ${iss.input} is not in src/content/authors.json` });
 
 export const collections = {
-  compare: defineCollection({ loader: md('compare'), schema: compareSchema({ docExists }) }),
   templates: defineCollection({ loader: md('templates'), schema: templateSchema({ docExists }) }),
   guides: defineCollection({ loader: md('guides'), schema: articleSchema({ docExists }) }),
   toolkit: defineCollection({ loader: md('toolkit'), schema: articleSchema({ docExists }) }),

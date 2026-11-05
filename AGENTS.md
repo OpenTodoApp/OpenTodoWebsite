@@ -1,18 +1,18 @@
 # Working on the OpenTodo website (guide for AI coding agents and humans)
 
 ## What this is
-The public website of [OpenTodo](https://github.com/OpenTodoApp/OpenTodo), live at https://open-todo.app (demo: https://demo.open-todo.app): home page, comparisons, self-hosting and developer pages, templates, guides, toolkit, blog and what's new. The app, its docs sources (`docs/*.md`) and its specs live in the app repository; this repository only builds and serves the site.
+The public website of [OpenTodo](https://github.com/OpenTodoApp/OpenTodo), live at https://open-todo.app (demo: https://demo.open-todo.app): home page, features, self-hosting and developer pages, templates, guides, toolkit, blog and what's new. The app, its docs sources (`docs/*.md`) and its specs live in the app repository; this repository only builds and serves the site.
 
 ## Non-negotiables
 1. **Specs before behaviour.** Changes start as an OpenSpec change (`openspec/changes/<name>/`): `/opsx:propose`, `/opsx:apply`, `/opsx:archive`. Validate with `openspec validate --all --strict`. Constraints are in `openspec/config.yaml`.
 2. **Released facts only.** Version, docs, screenshots, tokens, icons, changelog and import formats come from the app's site bundle pinned in `bundle.json` (`src/lib/bundle.ts` reads it). Never copy them in by hand, never describe unreleased features as available.
-3. **Honest comparisons.** Show competitor strengths (`gaps` is mandatory), date every comparison (`checkedOn`, at most 180 days old), text only (no logos), link every OpenTodo claim to its docs page (`sourceDoc`). The build enforces all of it.
+3. **Honest about others.** The site no longer compares OpenTodo with other apps (Compare was removed in 2026-11; `/vs/` redirects). Switch guides name other apps in text only (no logos), say where they stay ahead, carry `checkedOn` (at most 180 days old), and link every OpenTodo claim to its docs page.
 4. **No emoji as icons** (use `<Icon name>` from the bundle's sprite), **no third-party scripts** (except the self-hosted analytics), pages readable without JavaScript, WCAG 2.2 AA in light and dark from 360 px.
 5. **Agents publish their own posts.** Changes arrive as pull requests with a preview, and agents merge their own once every check passes. Since 2026-10-30 the maintainer lets agents publish blog and release posts without review: write them without `draft`, with `publishedAt` no later than the build day (UTC).
 
 ## Layout
 - `src/layouts/Base.astro`: header, navigation (a `<details>` menu below 768 px), footer, preview banner, analytics.
-- `src/components/`: `Icon`, `ScreenshotFrame`, `CompareTable`, `EndCta`, and the islands `HeroDemo`, `FeatureTour`, `SyncPlayground`, `InstallTabs` (each ships its script only to pages that use it, and reads without JavaScript).
+- `src/components/`: `Icon`, `ScreenshotFrame`, `EndCta`, and the islands `HeroDemo`, `FeatureTour`, `SyncPlayground`, `InstallTabs` (each ships its script only to pages that use it, and reads without JavaScript).
 - `src/content/`: collections (`compare`, `templates`, `guides`, `toolkit`, `blog`, plus `authors.json`); schemas and freshness rules in `src/content/schemas.mjs`.
 - `scripts/`: `fetch-bundle.mjs`, `check-content.mjs` (claim lint), `templates-check.mjs`, `og.mjs` (social cards per page, fonts in `og/fonts/`), `checks/` (links, emoji, scripts), `serve.mjs`.
 

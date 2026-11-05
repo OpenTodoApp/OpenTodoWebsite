@@ -5,7 +5,6 @@ summary: Download a Todoist backup and import the ZIP as it is, with a preview b
 checkedOn: 2026-10-30
 sources: [/docs/import/, /docs/import-export/, /docs/switch/todoist/, /docs/quick-add/, /docs/recurring-and-reminders/, /docs/deadlines-and-start-dates/]
 importFormat: todoist-backup
-compare: todoist
 order: 1
 keeps:
   - Projects, with their names, and sections, in the same order (boards open as boards)

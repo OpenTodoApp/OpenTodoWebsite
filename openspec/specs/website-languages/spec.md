@@ -55,4 +55,4 @@ The site SHALL be English with a translated home page in German, French, Italian
 
 #### Scenario: Old translated addresses
 - **WHEN** a visitor opens `/de/cost/` or `/fr/faq/`
-- **THEN** the server redirects to the cost part or the questions on the English Compare page
+- **THEN** the server redirects to the server plan or to Learn

@@ -32,7 +32,7 @@ const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir, { withFileTypes:
     return { slug: e.name, file, text, inDevelopment: fm.inDevelopment === true, live };
   });
 
-const pages = new Set(['/', '/about/', '/install/', '/vs/', '/self-host/', '/developers/', '/templates/', '/switch/', '/features/', '/learn/', '/start/', '/feed.xml', '/blog/', '/blog/feed.xml']);
+const pages = new Set(['/', '/about/', '/install/', '/self-host/', '/developers/', '/templates/', '/switch/', '/features/', '/learn/', '/start/', '/feed.xml', '/blog/', '/blog/feed.xml']);
 for (const p of ['iphone-ipad', 'android', 'windows', 'mac', 'linux', 'chromeos']) pages.add(`/install/${p}/`);
 // Methods catalogue, quiz and topics (website-templates-and-methods): filter pages and topics are static routes.
 for (const a of TEMPLATE_AUDIENCES) pages.add(`/templates/for/${slugify(a)}/`);
@@ -42,8 +42,8 @@ for (const t of ['setup', 'switch', 'methods', 'how-tos', 'templates']) pages.ad
 for (const t of TOPICS) pages.add(`/learn/topic/${t.slug}/`);
 pages.add('/guides/quiz/');
 for (const p of ['/capture/', '/accessibility/', '/privacy/', '/status/', '/playground/', '/self-host/plan/', '/support/']) pages.add(p);
-const route = { compare: 'vs', howto: 'how-to' };
-for (const c of [...COLLECTIONS, 'compare']) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
+const route = { howto: 'how-to' };
+for (const c of COLLECTIONS) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);
 for (const c of BLOG_CATEGORIES) pages.add(`/blog/category/${c}/`);
 for (const p of posts) if (p.live) pages.add(`/blog/${p.slug}/`);

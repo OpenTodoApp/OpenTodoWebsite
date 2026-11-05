@@ -16,7 +16,7 @@ export const LANGS = {
 export const OTHER_LANGS = Object.keys(LANGS).filter((l) => l !== DEFAULT_LANG);
 
 /** The English pages that exist in every language, by their English path. */
-// Only the home page is translated (website-compare-v2: cost and the FAQ became part of Compare).
+// Only the home page is translated.
 export const TRANSLATED_PAGES = ['/'];
 
 /** Splits a pathname into its language and the English path: /de/ -> ['de', '/'], /about/ -> ['en', '/about/']. */

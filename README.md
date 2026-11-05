@@ -47,7 +47,6 @@ GitHub Actions runs them on every pull request and on main (`.github/workflows/`
 
 | Folder | Pages |
 | --- | --- |
-| `src/content/compare/` | `/vs/<app>`: honest, dated comparisons |
 | `src/content/templates/` | `/templates/<slug>`: a template tree, turned into a downloadable `opentodo-export` file at build time |
 | `src/content/guides/`, `toolkit/` | Guides and setup toolkits |
 | `src/content/blog/<slug>/index.md` | `/blog/<slug>/`: news, releases, development and ownership posts (`/essays/` redirects here) |
