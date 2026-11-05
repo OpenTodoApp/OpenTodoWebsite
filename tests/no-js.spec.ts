@@ -63,8 +63,8 @@ test('a translated home page has the English sections in order', async ({ page }
 test('the language switch opens without JavaScript and leads to a translation', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/');
-  await page.locator('.site-header details.lang-switch > summary').click();
-  await page.locator('.site-header .lang-panel').getByRole('link', { name: 'Italiano' }).click();
+  await page.locator('.header-lang > summary').click();
+  await page.locator('.header-lang .lang-panel').getByRole('link', { name: 'Italiano' }).click();
   await expect(page).toHaveURL(/\/it\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'it');
 });
