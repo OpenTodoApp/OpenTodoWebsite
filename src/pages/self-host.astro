@@ -16,7 +16,7 @@ const facts = [
   f.architectures && { label: 'Runs on', value: f.architectures.map((a) => a.replace('linux/', '')).join(' and ') },
 ].filter(Boolean) as { label: string; value: string }[];
 ---
-<Base title="Self-host OpenTodo" description={`Run OpenTodo on your own server in minutes: one container, one folder of data, ${f.minimumServer ?? 'a small server'} is enough.`}>
+<Base title="Self-hosted task manager: run OpenTodo" description={`Run OpenTodo on your own server in minutes: one container, one folder of data, ${f.minimumServer ?? 'a small server'} is enough.`}>
   <section class="page-head">
     <div class="wrap split">
       <div>

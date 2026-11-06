@@ -25,7 +25,7 @@ const author = authorOf(post);
 const related = relatedPosts(post, all);
 const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
 ---
-<Base title={d.title} description={d.summary} ogType="article" image={og}>
+<Base title={d.title} description={d.summary} ogType="article" image={og} crumbs={[{ name: 'Blog', href: '/blog/' }, { name: CATEGORY_LABELS[d.category], href: categoryUrl(d.category) }, { name: d.title, href: `/blog/${post.id}/` }]}>
   <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
   <JsonLd slot="head" data={{ '@type': 'BlogPosting', headline: d.title, description: d.summary, datePublished: isoDate(d.publishedAt), ...(d.updatedAt && { dateModified: isoDate(d.updatedAt) }), inLanguage: 'en', author: { '@type': 'Person', name: author.name, url: author.url }, publisher: { '@type': 'Organization', name: 'OpenTodo', url: SITE.url }, mainEntityOfPage: `${SITE.url}/blog/${post.id}/`, ...(og && { image: new URL(og, SITE.url).href }), articleSection: CATEGORY_LABELS[d.category] }} />
   <article>

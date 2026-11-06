@@ -12,6 +12,9 @@ export const SITE = {
   discord: 'https://discord.gg/mmSsuCRduD',
   // The project's account on X (website-x-link): a plain link, nothing is loaded from X.
   x: 'https://x.com/opentodoapp',
+  // Search engine ownership tokens (website-seo-depth D5): the maintainer pastes the value from
+  // Google Search Console or Bing Webmaster Tools here; empty means no tag.
+  verification: { google: '', bing: '' },
   analytics: { src: 'https://analytics.pixari.dev/script.js', websiteId: 'c7bcfbcc-b1cc-4168-b49b-8a4bb5e47f92' },
 };
 

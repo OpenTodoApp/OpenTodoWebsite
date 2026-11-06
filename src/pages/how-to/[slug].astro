@@ -30,7 +30,7 @@ const position = { label: 'How-to', index: at + 1, total: list.length, prev: lis
 const next = [...related, ...siblings].slice(0, 2).map((e) => ({ href: `/how-to/${e.id}/`, title: e.data.title }));
 const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
-<Base title={d.title} description={d.summary} ogType="article">
+<Base title={d.title} description={d.summary} ogType="article" crumbs={[{ name: 'How-tos', href: '/learn/how-tos/' }, { name: d.title, href: Astro.url.pathname }]}>
   <JsonLd slot="head" data={[
     { '@type': 'TechArticle', headline: d.title, description: d.summary, dateModified: d.lastReviewed.toISOString().slice(0, 10), inLanguage: 'en', author: { '@type': 'Person', name: authors.raffaele.name, url: authors.raffaele.url }, publisher: { '@type': 'Organization', name: 'OpenTodo', url: SITE.url }, mainEntityOfPage: `${SITE.url}/how-to/${entry.id}/`, about: 'OpenTodo' },
     { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Learn', item: `${SITE.url}/learn/` }, { '@type': 'ListItem', position: 2, name: 'How-tos', item: `${SITE.url}/learn/how-tos/` }, { '@type': 'ListItem', position: 3, name: d.title, item: `${SITE.url}/how-to/${entry.id}/` }] },

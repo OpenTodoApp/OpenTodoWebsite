@@ -501,7 +501,7 @@ a.card h3 { color: var(--strong); }
 .planner-form input[type="number"], .planner-form input[type="text"] { flex: 1; min-width: 0; min-height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0 0.6rem; background: var(--bg); color: var(--strong); font: inherit; }
 .planner-form input[type="radio"], .planner-form input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex: 0 0 auto; }
 .planner-out { display: grid; gap: 1rem; min-width: 0; }
-.planner-out h3 { margin: 0; }
+.planner-out .as-h3 { margin: 0; }
 .planner-file { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
 .planner-file-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: 1px solid var(--border); font-size: 0.875rem; color: var(--muted); }
 .planner-file-head span { display: inline-flex; align-items: center; gap: 0.4rem; }
@@ -988,3 +988,6 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 .catalog-strips dt { font-weight: 600; color: var(--strong); }
 .catalog-strips dd { margin: 0; color: var(--muted); }
 .catalog-search input:not(:placeholder-shown) + kbd { display: none; }
+/* A section heading at the size of an h3, where the outline needs an h2 (website-seo-depth D4). */
+h2.as-h3 { font-size: 1.0625rem; letter-spacing: -0.01em; font-weight: 600; }
+.versus .card h2.as-h3 { display: flex; align-items: center; gap: 0.5rem; }
