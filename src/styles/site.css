@@ -690,10 +690,11 @@ a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-de
 .ways { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; border-top: 1px solid var(--strong); }
 .ways li { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
 .ways li > .icon { color: var(--muted); }
-.ways h2 { font-size: 1.125rem; margin: 0.4rem 0 0; letter-spacing: -0.01em; }
+.ways h2, .ways h3 { font-size: 1.125rem; margin: 0.4rem 0 0; letter-spacing: -0.01em; }
 .ways p { color: var(--muted); margin: 0 0 0.5rem; font-size: 0.9375rem; flex: 1; }
 @media (min-width: 900px) {
   .ways { grid-template-columns: repeat(3, 1fr); }
+  .ways.ways-2 { grid-template-columns: repeat(2, 1fr); }
   .ways li { padding: 1.4rem 1.5rem 1.4rem 0; border-bottom: 0; }
   .ways li + li { padding-left: 1.5rem; border-left: 1px solid var(--line); }
 }
@@ -870,6 +871,8 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 @media (min-width: 1024px) { .promise-grid { grid-template-columns: repeat(6, 1fr); } .promise-grid > :nth-child(-n+3) { grid-column: span 2; } .promise-grid > :nth-child(n+4) { grid-column: span 3; } }
 .support-soft { display: flex; gap: 0.5rem; align-items: flex-start; color: var(--muted); font-style: italic; margin: 0; }
 .support-soft .icon { flex: none; margin-top: 0.25em; color: var(--faint); }
+.support-pikapods { display: flex; justify-content: center; gap: 0.5rem; align-items: flex-start; margin: 1rem 0 0; }
+.support-pikapods .icon { flex: none; margin-top: 0.25em; color: var(--accent-text); }
 .cost-card { padding: 0.25rem 0; }
 .cost-card table { width: 100%; border-collapse: collapse; font-size: 0.9688rem; }
 .cost-card th, .cost-card td { text-align: left; padding: 0.85rem 1.5rem; border-top: 1px solid var(--border); vertical-align: top; }

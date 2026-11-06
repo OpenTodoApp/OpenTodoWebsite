@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import Icon from '../components/Icon.astro';
+import RunChoice from '../components/RunChoice.astro';
 import { canImport, manifest, versionTag } from '../lib/bundle';
 import { PLATFORMS } from '../lib/install';
 import { SITE } from '../lib/site';
@@ -17,7 +18,7 @@ const switches = (await getCollection('switch')).sort((a, b) => a.data.order - b
 const ways = [
   { icon: 'monitor', title: 'Try the demo', text: 'A private sandbox in your browser with sample projects. Nothing to install, deleted after two hours without activity.', href: SITE.demo, cta: 'Open the demo', primary: true },
   { icon: 'smartphone', title: 'Join a server', text: 'Someone runs it for your home or team? Open the link they sent, then install the app on your phone and computer.', href: '/install/', cta: 'Install the app' },
-  { icon: 'server', title: 'Run your own', text: 'One container and one folder of data, on a NAS, a Raspberry Pi or a small VPS.', href: '#server', cta: 'Pick where it runs' },
+  { icon: 'server', title: 'Run your own', text: 'On your own hardware, or hosted for you by PikaPods.', href: '#run', cta: 'Choose how it runs' },
 ];
 ---
 <Base title="Get started" description={`Three ways to start with OpenTodo ${versionTag}: try the demo, join a server, or run your own on Docker, Umbrel, Unraid, TrueNAS and ${targets.length - 4} more. Then install the app and bring your tasks.`}>
@@ -38,9 +39,11 @@ const ways = [
     </div>
   </section>
 
-  <section class="section start-block" id="server" aria-labelledby="server-title">
+  <RunChoice start="" />
+
+  <section class="section section-alt start-block" id="server" aria-labelledby="server-title">
     <div class="wrap">
-      <h2 id="server-title">Run your own server</h2>
+      <h2 id="server-title">On your own hardware</h2>
       <p class="lede">Pick where it runs. Each guide has the file to copy and the first steps after it starts.</p>
       <ul class="targets">
         {targets.map((t) => <li><a href={t.href}><strong>{t.name}</strong><span>{t.how}</span></a></li>)}
@@ -52,7 +55,7 @@ docker run -d --name opentodo -p {port}:{port} -v opentodo-data:{manifest.facts.
     </div>
   </section>
 
-  <section class="section section-alt start-block" id="devices" aria-labelledby="devices-title">
+  <section class="section start-block" id="devices" aria-labelledby="devices-title">
     <div class="wrap split" style="align-items: start">
       <div>
         <h2 id="devices-title">On your devices</h2>

@@ -12,6 +12,8 @@ export const SITE = {
   discord: 'https://discord.gg/mmSsuCRduD',
   // The project's account on X (website-x-link): a plain link, nothing is loaded from X.
   x: 'https://x.com/opentodoapp',
+  // Managed hosting (hosting-choice): a plain link; PikaPods shares part of its revenue with the project.
+  pikapods: 'https://www.pikapods.com/apps/opentodo',
   // Search engine ownership tokens (website-seo-depth D5): the maintainer pastes the value from
   // Google Search Console or Bing Webmaster Tools here; empty means no tag.
   verification: { google: '', bing: '' },
