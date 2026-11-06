@@ -1,5 +1,5 @@
 ---
-// Main navigation (website-restyle-chrome D1): four destinations, the language switch, a
+// Main navigation (website-restyle-chrome D1, hosting-page D3): five destinations, the language switch, a
 // GitHub star and one primary action, Try the demo. Below 768 px one <details> menu holds the
 // links and the language switch, so it opens without JavaScript; the demo stays visible.
 import { BRAND } from '../lib/brand';
@@ -19,6 +19,8 @@ const links: Link[] = [
   { href: NAV.learn, label: 'Learn', match: ['/learn/', '/help/', '/guides/', '/how-to/', '/toolkit/', '/topics/', '/templates/', '/switch/'] },
   { href: '/docs/', label: 'Docs', match: [] },
   ...(blog ? [{ href: '/blog/', label: 'Blog', match: ['/blog/'] }] : []),
+  // Managed hosting (hosting-page): the site's own page, never PikaPods itself.
+  { href: '/hosting/', label: 'Hosting', match: ['/hosting/'] },
 ];
 const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' : undefined);
 ---

@@ -1,0 +1,66 @@
+---
+// /hosting (hosting-page): OpenTodo on a managed PikaPods pod. What you get, how to set it up,
+// the arrangement, and your own server instead. One primary action, to PikaPods. The facts are
+// PikaPods' own (PIKAPODS_FACTS, with the day they were checked). English only, like every
+// page but the home page (website-languages). Plain HTML, so it reads without JavaScript.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
+import { PIKAPODS_FACTS as f, PIKAPODS_NOTE } from '../lib/hosting';
+
+const points = [
+  { icon: 'wallet', title: `${f.price}`, text: `Billed by the hour from prepaid credit. The smallest pod has ${f.minimum}.` },
+  { icon: 'refresh-cw', title: 'Updates and HTTPS', text: 'Handled for you. Every update is tested before it reaches your pod.' },
+  { icon: 'database', title: 'Nightly backups', text: 'Encrypted, to your own S3 storage. PikaPods’ server backups can’t restore a single pod, so keep your own.' },
+  { icon: 'gift', title: `${f.credit} to start`, text: 'Welcome credit when you sign up.' },
+];
+---
+<Base title="Hosted OpenTodo on PikaPods" description={`Run OpenTodo without a server of your own: a managed PikaPods pod ${f.price.toLowerCase()}, with tested updates, HTTPS and nightly backups to your own storage. ${f.credit} welcome credit.`}>
+  <section class="page-head" aria-labelledby="hosting-title">
+    <div class="wrap">
+      <h1 id="hosting-title">Don’t want to run a server? Let PikaPods run it.</h1>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-large" href={SITE.pikapods}>Run it on PikaPods <Icon name="arrow-right" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section start-block hosting-get" id="get" aria-labelledby="get-title">
+    <div class="wrap">
+      <h2 id="get-title">What you get</h2>
+      <ul class="ways ways-4">
+        {points.map((p) => (
+          <li>
+            <Icon name={p.icon} size={20} />
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt start-block" id="setup" aria-labelledby="setup-title">
+    <div class="wrap hosting-narrow">
+      <h2 id="setup-title">Set it up</h2>
+      <ol class="steps">
+        <li>Add OpenTodo on PikaPods and start the pod.</li>
+        <li>Open it right away and create the owner account. Whoever finishes that screen first becomes the owner, so do it before you share the address.</li>
+        <li>If it asks for a setup code, use the one in the pod’s logs or the setup token you configured.</li>
+        <li>Registration is closed by default. Invite people from Settings, then People.</li>
+      </ol>
+      <p class="hosting-note">{PIKAPODS_NOTE}</p>
+    </div>
+  </section>
+
+  <section class="section start-block" id="own" aria-labelledby="own-title">
+    <div class="wrap hosting-narrow">
+      <h2 id="own-title">Prefer your own server?</h2>
+      <p class="lede">It’s free: Docker, a Raspberry Pi, a NAS or a server app store.</p>
+      <div class="cta-row">
+        <a class="btn btn-secondary" href="/self-host/">Self-host</a>
+        <a class="btn btn-secondary" href="/install/">Install the app</a>
+      </div>
+    </div>
+  </section>
+</Base>

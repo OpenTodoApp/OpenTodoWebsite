@@ -1,6 +1,6 @@
 // How do you want to run it? (hosting-choice): /start/ and /install/ offer your own hardware and
 // managed hosting side by side, own hardware first; PikaPods always comes with the disclosure and
-// is never called recommended or the easiest way. Runs over dist/ after a build.
+// is never called recommended or the easiest. Runs over dist/ after a build.
 import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -37,12 +37,59 @@ test('Support names hosting on PikaPods as a way to help', { skip }, () => {
   assert.ok(line && line.querySelector(`a[href="${PIKAPODS}"]`));
 });
 
-test('no page calls PikaPods recommended or the easiest way', { skip }, () => {
+test('no page calls PikaPods recommended or the easiest', { skip }, () => {
+  const checked = [];
   for (const file of htmlFiles(dist)) {
     const body = load(file).querySelector('main');
     if (!body || !text(body).includes('PikaPods')) continue;
-    assert.doesNotMatch(text(body), /recommended|easiest way/i, path.relative(dist, file));
+    assert.doesNotMatch(text(body), /recommended|easiest/i, path.relative(dist, file));
+    checked.push(path.relative(dist, file));
   }
+  for (const page of ['hosting/index.html', 'start/index.html', 'install/index.html', 'index.html']) assert.ok(checked.includes(page), `${page} is checked`);
+});
+
+// The hosting page (hosting-page): headline, what you get, the steps, the disclosure, your own
+// server instead, and one primary action, to PikaPods.
+test('/hosting/ says what you get, how to set it up and the arrangement, with one primary action', { skip }, () => {
+  const root = load(path.join(dist, 'hosting/index.html'));
+  const main = root.querySelector('main');
+  assert.match(text(root.querySelector('head title')), /PikaPods/);
+  assert.ok(root.querySelector('meta[name="description"]').getAttribute('content').includes('PikaPods'));
+  assert.equal(text(main.querySelector('h1')), 'Don’t want to run a server? Let PikaPods run it.');
+  const points = main.querySelectorAll('#get li');
+  assert.ok(points.length >= 3 && points.length <= 4, 'three or four points');
+  for (const fact of [/\$2/, /HTTPS/, /backups/, /\$5/]) assert.ok(points.some((li) => fact.test(text(li))), `a point matching ${fact}`);
+  const steps = main.querySelectorAll('#setup ol > li');
+  assert.ok(steps.length >= 3 && steps.length <= 4, 'three or four steps');
+  assert.ok(text(main).includes(NOTE), 'the disclosure');
+  const own = main.querySelector('#own');
+  assert.equal(text(own.querySelector('h2')), 'Prefer your own server?');
+  for (const href of ['/self-host/', '/install/']) assert.ok(own.querySelector(`a[href="${href}"]`), `links ${href}`);
+  const primary = main.querySelectorAll('a.btn-primary');
+  assert.equal(primary.length, 1, 'one primary button');
+  assert.equal(primary[0].getAttribute('href'), PIKAPODS);
+  assert.equal(text(primary[0]), 'Run it on PikaPods');
+});
+
+test('the header lists Features, Learn, Docs, Blog, Hosting, with Hosting current only on /hosting/', { skip }, () => {
+  for (const page of ['index.html', 'de/index.html', 'blog/index.html', 'start/index.html', 'hosting/index.html']) {
+    const header = load(path.join(dist, page)).querySelector('header.site-header');
+    for (const nav of [header.querySelector('.nav-desktop'), header.querySelector('.nav-menu nav')]) {
+      const links = nav.querySelectorAll('a.nav-link').map((a) => text(a));
+      assert.deepEqual(links.slice(0, 5), ['Features', 'Learn', 'Docs', 'Blog', 'Hosting'], page);
+      const hosting = nav.querySelectorAll('a.nav-link')[4];
+      assert.equal(hosting.getAttribute('href'), '/hosting/');
+      assert.equal(hosting.getAttribute('aria-current'), page === 'hosting/index.html' ? 'page' : undefined, `${page}: Hosting current`);
+    }
+    assert.equal(header.querySelectorAll('a[href*="pikapods"]').length, 0, `${page}: the header never links PikaPods`);
+  }
+});
+
+test('the search index and the sitemap list /hosting/', { skip }, () => {
+  const index = JSON.parse(fs.readFileSync(path.join(dist, 'search.json'), 'utf8'));
+  assert.ok(index.some((e) => e.u === '/hosting/'), 'search.json');
+  const maps = fs.readdirSync(dist).filter((n) => /^sitemap-\d+\.xml$/.test(n)).map((n) => fs.readFileSync(path.join(dist, n), 'utf8')).join('');
+  assert.ok(maps.includes('<loc>https://open-todo.app/hosting/</loc>'), 'sitemap');
 });
 
 // The home page's ways in (landing-hosted-card): four equal cards in every language, the hosted
