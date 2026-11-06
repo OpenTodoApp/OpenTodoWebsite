@@ -1,0 +1,37 @@
+---
+// How do you want to run it? (hosting-choice): your own hardware or managed hosting, side by
+// side with the same weight, own hardware first. Used on /start/ and /install/. The disclosure
+// is the maintainer's wording and appears wherever PikaPods is offered. Plain HTML.
+import Icon from './Icon.astro';
+import { RELEASES_URL, SITE } from '../lib/site';
+import { PIKAPODS_NOTE } from '../lib/hosting';
+
+interface Props { start?: string; tight?: boolean }
+const { start = '/start/', tight = false } = Astro.props;
+const own = [
+  ['Docker', '/docs/self-hosting/docker/'],
+  ['the binary', RELEASES_URL],
+  ['Raspberry Pi', '/toolkit/raspberry-pi/'],
+  ['NAS', '/self-host/plan/'],
+  ['server app stores', `${start}#server`],
+];
+---
+<section class="section start-block" id="run" aria-labelledby="run-title" style={tight ? 'padding-top: 1rem' : undefined}>
+  <div class="wrap">
+    <h2 id="run-title">How do you want to run it?</h2>
+    <ul class="ways ways-2">
+      <li>
+        <Icon name="house" size={20} />
+        <h3>On your own hardware</h3>
+        <p>Free, with full control. {own.map(([name, href], i) => <>{i === 0 ? '' : i === own.length - 1 ? ' or ' : ', '}<a href={href}>{name}</a></>)}.</p>
+        <a class="btn btn-secondary" href={`${start}#server`}>Pick where it runs</a>
+      </li>
+      <li>
+        <Icon name="globe" size={20} />
+        <h3>Managed hosting</h3>
+        <p>Updates and HTTPS handled for you. {PIKAPODS_NOTE}</p>
+        <a class="btn btn-secondary" href={SITE.pikapods}>Run it on PikaPods</a>
+      </li>
+    </ul>
+  </div>
+</section>

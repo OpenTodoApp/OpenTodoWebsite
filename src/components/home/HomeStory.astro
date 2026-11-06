@@ -1,7 +1,7 @@
 ---
 // The landing page in every language (website-landing): a claim, two actions and the real app
 // moving through Today, quick add and a board; then why it is different, everything included,
-// yours for good, the three ways in, the community and the latest posts. Plain HTML and CSS: the
+// yours for good, the four ways in, the community and the latest posts. Plain HTML and CSS: the
 // product stage is a CSS crossfade of the pinned release's screenshots that stays on Today when
 // the visitor prefers reduced motion. Strings come from src/i18n/<lang>.mjs; feature names,
 // integrations, app names and posts stay English (lang="en").
@@ -47,6 +47,7 @@ const yours = [
 ].map((y, i) => ({ ...y, ...s.yours.rows[i] }));
 const ways = [
   { icon: 'monitor', href: SITE.demo, moreHref: '/docs/self-hosting/demo/', primary: true },
+  { icon: 'globe', href: SITE.pikapods, moreHref: '/start/#run' },
   { icon: 'smartphone', href: '/install/', moreHref: '/docs/install-app/' },
   { icon: 'server', href: '/self-host/', moreHref: '/self-host/plan/' },
 ].map((w, i) => ({ ...w, ...s.ways.items[i] }));

@@ -55,10 +55,11 @@ export default {
       ],
     },
     ways: {
-      h2: 'Três formas de entrar.',
-      intro: 'O OpenTodo não é oferecido como serviço alojado, por isso não há aqui nada em que te registares. Mais tarde podes passar de uma para outra; os teus dados vão contigo.',
+      h2: 'Quatro formas de entrar.',
+      intro: 'O OpenTodo não tem uma nuvem própria, por isso não há aqui nada em que te registares. Mais tarde podes mudar; os teus dados vão contigo.',
       items: [
         { title: 'Experimentar a demo', text: 'Uma sandbox privada no browser com projetos de exemplo, apagada ao fim de duas horas sem atividade.', cta: 'Abrir a demo', more: 'Como funciona a demo' },
+        { title: 'Alojado para ti', text: 'O PikaPods mantém-no por ti a partir de 2 $ por mês, com as atualizações e o HTTPS tratados. Parte do que pagas apoia o OpenTodo.', cta: 'Usar no PikaPods', more: 'Alojado ou no teu servidor' },
         { title: 'Entrar num servidor', text: 'Alguém o mantém para a tua casa ou equipa? Abre a ligação de convite que te enviaram e depois instala a aplicação a partir do browser.', cta: 'Instalar a aplicação', more: 'Instalar a aplicação' },
         { title: 'Corre o teu', text: 'Docker, Umbrel, Unraid, TrueNAS, um Pi ou um VPS, em cerca de vinte minutos da primeira vez.', cta: 'Alojar tu mesmo', more: 'Planear o teu servidor' },
       ],
