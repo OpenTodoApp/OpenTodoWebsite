@@ -57,11 +57,11 @@ A "Switch from <app>" call to action SHALL appear only for apps whose named impo
 - **THEN** the Linear switch guide links to the general import guide and shows no "Switch from Linear" button
 
 ### Requirement: Audience pages
-The site SHALL have a self-hosting page with the sync demo, footprint, container, Coolify and one-click install instructions, and a developers page with the API, command-line client, MCP, webhooks and open specifications. Both SHALL be linked from the footer of every page.
+The site SHALL have a self-hosting page with the sync demo, footprint, container, Coolify and one-click install instructions, and a technical entry point, "Under the hood" at `/under-the-hood/`, with groups of link rows: how it works (architecture, sync protocol, offline and sync, shared contracts), building on it (the API, the command line, MCP, webhooks, CalDAV), what it promises (stability, performance budgets, the roadmap, the changelog), security (the Security page, end-to-end encryption) and releases and source (verifying the image, downloads and Android app, the repository, the open specifications). Every row SHALL link the pinned docs or the repository, read at 360 px wide without JavaScript, and add nothing to the home page. Both SHALL be linked from the footer of every page.
 
 #### Scenario: Navigation
 - **WHEN** a visitor is on any page
-- **THEN** the footer links Self-host and Developers
+- **THEN** the footer links Self-host and Under the hood
 
 ### Requirement: Consistent visual language
 Every page SHALL use the app's colours, typeface, line icons and real screenshots, and follow the visitor's light or dark preference; emoji and Unicode symbols SHALL NOT be icons. In plain CSS, at every width and without JavaScript, pages SHALL follow the app's flat look: surface and canvas tokens, hairlines instead of shadows except on floating panels, no decorative gradients, no imitation browser chrome, and grey for navigation state, every colour from the bundle's tokens.

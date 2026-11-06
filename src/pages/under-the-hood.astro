@@ -1,0 +1,60 @@
+---
+// /under-the-hood (website-under-the-hood): the technical entry point. How OpenTodo works, how to
+// build on it, what it promises, how it is secured and how to check a release, as rows of links
+// into the pinned docs and the repository. Replaces /developers/ (redirected).
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import LinkRows, { type LinkRow } from '../components/LinkRows.astro';
+import { SITE } from '../lib/site';
+
+const works: LinkRow[] = [
+  { icon: 'layers', title: 'Architecture', href: '/docs/architecture/', line: 'How data flows from a tap on the screen to every device: server packages, tables, client modules and the build.' },
+  { icon: 'refresh-cw', title: 'Sync protocol', href: '/docs/sync/', line: 'Operations, the schema, the winner rule, the exchange, sharing scopes, live updates, purge and history.' },
+  { icon: 'wifi-off', title: 'Offline and sync', href: '/docs/offline-and-sync/', line: 'Working without a connection, and what happens when two devices change the same task.' },
+  { icon: 'git-branch', title: 'Shared contracts', href: '/docs/contracts/', line: 'The logic that exists in both Go and TypeScript, and the shared fixtures that keep each pair in step.' },
+];
+const build: LinkRow[] = [
+  { icon: 'braces', title: 'HTTP API', href: '/docs/api/', line: 'Authentication, every route, entity fields, error codes and examples.' },
+  { icon: 'terminal', title: 'The ot command line', href: '/docs/cli/', line: 'JSON output, exit codes and dry runs, for scripts and AI agents.' },
+  { icon: 'bot', title: 'MCP for AI assistants', href: '/docs/mcp/', line: 'Read-only by default; changes only when you allow them, and every one can be undone.' },
+  { icon: 'webhook', title: 'Webhooks', href: '/docs/webhooks/', line: 'Signed events with retries, and recipes for Home Assistant, n8n and Telegram.' },
+  { icon: 'calendar-sync', title: 'CalDAV', href: '/docs/caldav/', line: 'Apple Reminders, Thunderbird and Android task apps, with an app password per device.' },
+];
+const promises: LinkRow[] = [
+  { icon: 'anchor', title: 'Stability and compatibility', href: '/docs/stability/', line: 'What every 1.x release keeps: the v1 API, the sync protocol, the export format, the MCP tools and the ot command.' },
+  { icon: 'gauge', title: 'Performance budgets', href: '/docs/performance/', line: 'How fast OpenTodo is held to be with 10,000 tasks, how it is checked, and the latest results.' },
+  { icon: 'flag', title: 'Roadmap', href: `${SITE.appRepo}/blob/main/ROADMAP.md`, line: 'What comes next, and what ships in 1.0.' },
+  { icon: 'history', title: 'Changelog', href: '/changelog/', line: 'Every release, with its upgrade notes.' },
+];
+const trust: LinkRow[] = [
+  { icon: 'shield-check', title: 'Security and trust', href: '/security/', line: 'How to report a vulnerability, what protects your data, and the threat model being written for 1.0.' },
+  { icon: 'lock', title: 'End-to-end encryption', href: '/docs/e2ee/', line: 'What encryption hides from the server and what it does not, devices, recovery and limits.' },
+];
+const releases: LinkRow[] = [
+  { icon: 'container', title: 'Verify the image and downloads', href: '/docs/self-hosting/docker/#verifying-the-image-and-downloads', line: 'cosign signatures, an SBOM and build provenance on every image; attestations and checksums on every release file.' },
+  { icon: 'smartphone', title: 'Verify the Android app', href: '/docs/android-app/#check-what-you-installed', line: 'One signing certificate everywhere, and a reproducible build.' },
+  { icon: 'code', title: 'Source on GitHub', href: SITE.appRepo, line: 'The server, the apps, the docs and their tests, under the AGPL-3.0.' },
+  { icon: 'book-open', title: 'Open specifications', href: `${SITE.appRepo}/tree/main/openspec/specs`, line: 'Every feature’s behaviour, written as testable scenarios before it was built.' },
+];
+---
+<Base title="Under the hood" description="How OpenTodo works, how to build on it, what it promises, how it is secured and how to verify a release.">
+  <section class="page-head tech-head">
+    <div class="wrap narrow">
+      <h1>Under the hood</h1>
+      <pre class="uth-sample" tabindex="0" aria-label="Example: add a task with curl or the ot command"><code>curl -X POST "$OPENTODO/api/v1/tasks" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '&#123;"title":"Renew passport","priority":1&#125;'
+
+ot add "Renew passport" --priority 1 --due tomorrow</code></pre>
+    </div>
+  </section>
+  <div class="wrap narrow tech-body">
+    <LinkRows id="how-it-works" title="How it works" items={works} />
+    <LinkRows id="build" title="Build on it" items={build} />
+    <LinkRows id="promises" title="What it promises" items={promises} />
+    <LinkRows id="security" title="Security" items={trust} />
+    <LinkRows id="releases" title="Releases and source" items={releases} />
+  </div>
+  <EndCta kind="source" />
+</Base>
