@@ -2,7 +2,7 @@
 // unit tests. A post here is { id, data, body }, as Astro's content layer gives it.
 
 export const WORDS_PER_MINUTE = 220;
-export const PAGE_SIZE = 12;
+export const PAGE_SIZE = 20;
 
 const day = (d) => Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
 
