@@ -829,7 +829,8 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 .lp-strips dt { font-weight: 600; color: var(--strong); }
 .lp-strips dd { margin: 0.15rem 0 0; color: var(--muted); line-height: 1.6; }
 .lp-ways { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 1rem; }
-@media (min-width: 768px) { .lp-ways { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .lp-ways { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .lp-ways { grid-template-columns: repeat(4, 1fr); } }
 .lp-ways li { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
 .lp-ways .icon { color: var(--accent-text); }
 .lp-ways h3 { margin: 0.4rem 0 0; font-size: 1.125rem; }

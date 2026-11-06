@@ -44,3 +44,17 @@ test('no page calls PikaPods recommended or the easiest way', { skip }, () => {
     assert.doesNotMatch(text(body), /recommended|easiest way/i, path.relative(dist, file));
   }
 });
+
+// The home page's ways in (landing-hosted-card): four equal cards in every language, the hosted
+// one second, and no PikaPods link in the header or navigation.
+test('every home page shows four ways in, hosted for you second', { skip }, () => {
+  for (const page of ['index.html', ...['de', 'fr', 'it', 'es', 'pt', 'zh'].map((l) => `${l}/index.html`)]) {
+    const root = load(path.join(dist, page));
+    const cards = root.querySelectorAll('#get-it .lp-ways > li');
+    assert.equal(cards.length, 4, `${page}: four cards`);
+    assert.ok(cards[1].querySelector(`a.btn[href="${PIKAPODS}"]`), `${page}: the second card links PikaPods`);
+    const classes = cards.map((li) => li.querySelector('a.btn').getAttribute('class'));
+    assert.deepEqual(classes.slice(1), [classes[1], classes[1], classes[1]], `${page}: the hosted card weighs the same as join and run your own`);
+    assert.equal(root.querySelectorAll(`header a[href*="pikapods"], nav a[href*="pikapods"]`).length, 0, `${page}: no PikaPods link in the header or navigation`);
+  }
+});
