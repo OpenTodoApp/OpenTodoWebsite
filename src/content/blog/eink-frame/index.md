@@ -12,7 +12,7 @@ tags: [task-management]
 A few weeks ago I built an e-ink frame for my kids. They can't read yet, so it tells them the weather with drawings, and at night the bear on it goes to sleep. I wrote the whole story on my [personal blog](https://pixari.dev/posts/i-built-an-e-ink-weather-frame-for-kids-who-cant-read-yet/), including my fight with the board's memory.
 
 <!-- no-claim -->
-It sits by the door, and everyone looks at it on the way out. After a while I caught myself thinking: what if it showed the day as well? Not the weather, the actual day. What's overdue, what's today, what's coming this weekend.
+It sits by the door, and everyone looks at it on the way out. After a while I caught myself thinking: what if it showed the day as well? Not the weather, the actual day. What's overdue, what's today, what's coming this weekend. (CI timing test, do not merge.)
 
 <!-- no-claim -->
 I happen to build a task manager. So that is what it does now, at least for the photos above and below, which show the [OpenTodo demo](https://demo.open-todo.app) and its sample tasks.
