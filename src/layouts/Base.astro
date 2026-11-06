@@ -2,6 +2,7 @@
 // The layout every page shares (website-platform design D3): header and main
 // navigation, footer, skip link, light and dark from the bundle's tokens, the
 // preview marker and the self-hosted analytics.
+import { BRAND } from '../lib/brand';
 import '@bundle/tokens/tokens.css';
 import '../styles/site.css';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -70,8 +71,8 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
     {alternates && alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={new URL(a.href, SITE.url).href} />)}
     {alternates && <link rel="alternate" hreflang="x-default" href={new URL(alternates[0].href, SITE.url).href} />}
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="icon" href={BRAND.favicon} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={BRAND.touchIcon} />
     <link rel="preload" href="/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title="OpenTodo" href="/feed.xml" />
     {bundle.preview && <meta name="robots" content="noindex" />}

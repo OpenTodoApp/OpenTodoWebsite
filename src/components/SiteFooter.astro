@@ -2,6 +2,7 @@
 // Footer (website-restyle-chrome D3): the brand line and the language switch, three short link
 // groups, one quiet row of ways to support and follow the project, and one line of licences.
 // Below 768 px the three groups show as disclosures that open without JavaScript.
+import { BRAND } from '../lib/brand';
 import { NAV, SITE } from '../lib/site';
 import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
@@ -28,7 +29,7 @@ const community: { label: string; href: string; icon: string; data: string }[] =
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <a class="brand" href="/"><img src="/assets/favicon.svg" width="24" height="24" alt="" /><span>OpenTodo</span></a>
+        <a class="brand" href="/"><img src={BRAND.favicon} width="24" height="24" alt="" /><span>OpenTodo</span></a>
         <p>The task manager you host yourself. Free and open source.</p>
         <LangSwitch up />
       </div>

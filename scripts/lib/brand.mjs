@@ -1,5 +1,6 @@
 // The site's mark, from the pinned bundle's brand/ folder (brand-from-bundle D1).
 // The site keeps no copy of its own: a new mark arrives with the next bundle pin.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -15,6 +16,15 @@ export function brandIcons(bundleDir) {
   const favicon = fs.readFileSync(file);
   const touchSvg = favicon.toString().replace(/ rx="[^"]*"/, '').replace('<svg ', '<svg width="180" height="180" ');
   return { favicon, touchSvg };
+}
+
+/**
+ * A short content hash of the mark, the `?v=` of every URL that points at the favicon or the
+ * touch icon (versioned-brand-assets). A new mark in a new bundle changes the URLs, so neither
+ * browsers nor the CDN keep showing the old one from their caches.
+ */
+export function brandVersion(bundleDir) {
+  return crypto.createHash('sha256').update(brandIcons(bundleDir).favicon).digest('hex').slice(0, 10);
 }
 
 /** The touch icon as an opaque PNG. */

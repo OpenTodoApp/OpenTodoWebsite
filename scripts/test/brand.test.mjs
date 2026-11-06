@@ -51,3 +51,13 @@ test('the site keeps no copy of the mark of its own', () => {
   walk(path.join(root, 'public'));
   assert.deepEqual(copies, [], `the mark comes from the bundle's brand/ folder; remove ${copies.join(', ')}`);
 });
+
+test('pages refer to the mark through URLs versioned by its hash', { skip: !fs.existsSync(path.resolve('dist/index.html')) && 'no dist/ (run npm run build first)' }, async () => {
+  const { brandVersion } = await import('../lib/brand.mjs');
+  const { resolveBundle } = await import('../lib/bundle.mjs');
+  const v = brandVersion(resolveBundle().dir);
+  const html = fs.readFileSync(path.resolve('dist/index.html'), 'utf8');
+  assert.ok(html.includes(`rel="icon" href="/assets/favicon.svg?v=${v}"`), 'favicon link');
+  assert.ok(html.includes(`rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=${v}"`), 'touch icon link');
+  assert.ok(!/(src|href)="\/assets\/(favicon\.svg|apple-touch-icon\.png)"/.test(html), 'no unversioned reference');
+});
