@@ -72,3 +72,18 @@ test('redirects: a target that is not built, a hidden page and a bad sample are 
   assert.ok(problems.some((p) => p.includes('sample /nope does not match')));
   assert.ok(!problems.some((p) => p.includes('/help/') || p.includes('/cost/') || p.includes('/notes/')));
 });
+
+test('the SEO check names a missing description, a one-way hreflang and a page missing from the sitemap', async () => {
+  const { checkSeo } = await import('../checks/seo.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'seo-'));
+  const page = (rel, head) => { fs.mkdirSync(path.join(dir, rel), { recursive: true }); fs.writeFileSync(path.join(dir, rel, 'index.html'), `<html><head>${head}</head><body><h1>x</h1></body></html>`); };
+  const alt = (hs) => hs.map(([h, u]) => `<link rel="alternate" hreflang="${h}" href="https://open-todo.app${u}">`).join('');
+  page('', `<title>Home</title><meta name="description" content="d"><link rel="canonical" href="https://open-todo.app/">${alt([['en', '/'], ['de', '/de/'], ['x-default', '/']])}`);
+  page('de', `<title>Start</title><meta name="description" content="d"><link rel="canonical" href="https://open-todo.app/de/">${alt([['de', '/de/'], ['x-default', '/']])}`);
+  page('about', '<title>About</title><link rel="canonical" href="https://open-todo.app/about/">');
+  fs.writeFileSync(path.join(dir, 'sitemap-0.xml'), '<urlset><url><loc>https://open-todo.app/</loc></url><url><loc>https://open-todo.app/de/</loc></url></urlset>');
+  const { problems } = checkSeo(dir);
+  assert.ok(problems.includes('/about/: no meta description'));
+  assert.ok(problems.includes('/about/: not in the sitemap'));
+  assert.ok(problems.some((p) => p.startsWith('/: hreflang de (/de/) does not list the same alternates back')));
+});

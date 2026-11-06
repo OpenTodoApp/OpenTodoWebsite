@@ -3,8 +3,8 @@
 // inline links carries them as HTML, links within this site only.
 export default {
   home: {
-    title: 'OpenTodo · A calm task list that runs on your own server',
-    description: 'OpenTodo is a free, open-source task list you run on your own server: Today tells you what matters, {count} features with no paid tier, offline on every device, shared with the people you live and work with, and AI only on your terms.',
+    title: 'OpenTodo · The open-source task manager you host yourself',
+    description: 'A free, open-source task manager you host yourself: offline-first on every device, CalDAV sync, shared lists, {count} features and no paid tier.',
     hero: {
       eyebrow: 'Free and open source · {licence}',
       say: 'Three things matter today.',

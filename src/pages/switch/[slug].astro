@@ -19,7 +19,7 @@ const guide = `/docs/switch/${entry.id}/`;
 const oneStep = canImport(d.importFormat) && docExists(guide);
 const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
-<Base title={d.title} description={d.summary} ogType="article">
+<Base title={`Open-source ${d.app} alternative`} description={`OpenTodo is a free, open-source ${d.app} alternative you host yourself. ${d.summary}`} ogType="article" crumbs={[{ name: 'Moving from another app', href: '/switch/' }, { name: d.app, href: `/switch/${entry.id}/` }]}>
   <section class="page-head">
     <div class="wrap narrow">
       <p class="breadcrumb"><a href="/switch/">Moving from another app</a></p>
@@ -40,11 +40,11 @@ const day = d.checkedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'lo
     <div class="wrap narrow">
       <div class="versus" style="margin-bottom: 2rem">
         <div class="card us">
-          <h3><Icon name="check" size={20} /> What comes across</h3>
+          <h2 class="as-h3"><Icon name="check" size={20} /> What comes across</h2>
           <ul class="plain-list">{d.keeps.map((k) => <li>{k}</li>)}</ul>
         </div>
         <div class="card">
-          <h3><Icon name="x" size={20} /> What does not</h3>
+          <h2 class="as-h3"><Icon name="x" size={20} /> What does not</h2>
           <ul class="plain-list">{d.drops.map((k) => <li>{k}</li>)}</ul>
         </div>
       </div>
