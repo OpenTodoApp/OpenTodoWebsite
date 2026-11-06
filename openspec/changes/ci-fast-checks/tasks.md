@@ -8,7 +8,7 @@
 ## 2. Workflow
 
 - [x] 2.1 Add the `changes` job, the page choice, the hashes, the caches, the Docker condition, `schedule`, `workflow_dispatch` and the nightly alert to `.github/workflows/checks.yml`; add `scripts/ci/nightly-alert.sh`. Verify the alert with `DRY_RUN=1` for a red and a green result.
-- [ ] 2.2 Verify on the pull request: the template set runs, the image builds (the workflow changed), and a manual run checks every page and saves the hashes.
+- [x] 2.2 Verify on the pull request: the template set runs, the image builds (the workflow changed), and a manual run checks every page and saves the hashes.
 - [ ] 2.3 After merging, measure a content-only pull request (a blog post) and a layout pull request against the timings in design.md.
 
 ## 3. Docs and checks
