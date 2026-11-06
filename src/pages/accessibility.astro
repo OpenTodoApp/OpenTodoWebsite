@@ -3,7 +3,6 @@
 // checked, what is not covered, and how to report a problem. Dates and figures
 // come from the repository's own checks, not from memory.
 import Base from '../layouts/Base.astro';
-import EndCta from '../components/EndCta.astro';
 import Icon from '../components/Icon.astro';
 import { versionTag } from '../lib/bundle';
 import { SITE } from '../lib/site';
@@ -14,7 +13,6 @@ const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB'
 <Base title="Accessibility statement" description="How open-todo.app meets WCAG 2.2 AA in light and dark from 360 px wide, what is checked on every change, what is not covered, and how to report a problem.">
   <section class="page-head">
     <div class="wrap narrow">
-      <p class="kicker">Accessibility</p>
       <h1>This website is built to be used by everyone.</h1>
       <p class="lede">We aim for WCAG 2.2 level AA on every page of open-todo.app, in light and dark, from 360 px wide, with or without JavaScript. This statement says how that is checked, what it does not cover, and how to tell us when something is wrong. Last reviewed on {day(reviewed)}.</p>
     </div>
@@ -53,5 +51,4 @@ const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB'
       <p class="meta"><Icon name="calendar-check" size={16} /> This statement is reviewed with every change to the site's layout, and at least once a year.</p>
     </div>
   </section>
-  <EndCta />
 </Base>

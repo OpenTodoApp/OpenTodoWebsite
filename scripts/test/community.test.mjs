@@ -37,7 +37,7 @@ test('the footer offers every way to support the project', { skip: !built && 'no
 // The Discord button (website-discord-invite): blurple, the logo hidden from assistive
 // technology, a label that names Discord, on the home pages, at the end of content
 // pages, on About and Learn (which took over Help, website-learn).
-test('the Discord button invites people on the home pages, at the end of a guide, on About and Learn', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+test('the Discord button invites people on the home pages, on Support and Learn', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
   const home = load(path.join(dist, 'index.html'));
   const section = home.querySelector('#community');
   assert.ok(section, 'home: a community section');
@@ -45,8 +45,7 @@ test('the Discord button invites people on the home pages, at the end of a guide
   assert.ok(section.querySelector(`a.btn-discord[href="${SITE.discord}"]`), 'home: the button in the community section');
   const de = load(path.join(dist, 'de/index.html')).querySelector('#community a.btn-discord');
   assert.ok(de && /Discord/.test(de.text) && !/Join us/.test(de.text), 'German home: a German button label');
-  const guide = fs.readdirSync(path.join(dist, 'guides')).find((d) => fs.existsSync(path.join(dist, 'guides', d, 'index.html')) && d !== 'quiz');
-  for (const page of [`guides/${guide}/index.html`, 'about/index.html', 'learn/index.html']) {
+  for (const page of ['support/index.html', 'learn/index.html']) {
     const root = load(path.join(dist, page));
     const inMain = root.querySelectorAll('a.btn-discord').filter((a) => !a.closest('footer'));
     assert.ok(inMain.length >= 1, `${page}: a Discord button outside the footer`);
@@ -104,8 +103,12 @@ test('every way in leads to the support page', { skip: !built && 'no dist/ (run 
     // The header stays to four destinations and the demo (website-restyle-chrome D1); Support is in the footer's Project group.
     assert.ok(root.querySelectorAll('footer nav[aria-label="Project"] a[href="/support/"]').length >= 1, `${page}: the footer links to it`);
   }
+  // One action per page end (website-restyle-cta D1): a guide ends with the demo, a post with the support line.
   const guide = fs.readdirSync(path.join(dist, 'guides')).find((d) => fs.existsSync(path.join(dist, 'guides', d, 'index.html')) && d !== 'quiz');
-  assert.ok(load(path.join(dist, 'guides', guide, 'index.html')).querySelector('.end-cta a[href="/support/"]'), 'end of a guide');
+  const end = load(path.join(dist, 'guides', guide, 'index.html')).querySelector('.end-cta');
+  assert.equal(end.querySelectorAll('a').length, 1, 'end of a guide: one action');
+  const post = fs.readdirSync(path.join(dist, 'blog')).find((d) => fs.existsSync(path.join(dist, 'blog', d, 'index.html')) && !['page', 'category'].includes(d));
+  assert.ok(load(path.join(dist, 'blog', post, 'index.html')).querySelector('.end-cta a[href="/support/"]'), 'end of a post');
   assert.ok(load(path.join(dist, 'about/index.html')).querySelector('#licence a[href="/support/"]'), 'About, licence section');
 });
 

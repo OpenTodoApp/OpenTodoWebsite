@@ -22,7 +22,6 @@ const grid = featured ? rest : posts;
   <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
   <section class="page-head blog-head">
     <div class="wrap">
-      <p class="kicker">Blog</p>
       <h1>{heading}</h1>
       <p class="lede">{lede}</p>
       <CategoryNav current={category} />
@@ -47,5 +46,5 @@ const grid = featured ? rest : posts;
       <p class="meta" style="margin-top: 2rem"><a class="link-arrow" href="/blog/feed.xml"><Icon name="rss" size={16} /> Follow the blog with RSS</a></p>
     </div>
   </section>
-  <EndCta />
+  <EndCta kind="follow" />
 </Base>

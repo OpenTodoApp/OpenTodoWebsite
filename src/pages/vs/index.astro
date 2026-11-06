@@ -35,7 +35,6 @@ const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g
   <JsonLd slot="head" data={{ '@type': 'FAQPage', mainEntity: FAQ.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: plain(q.a) } })) }} />
   <section class="page-head">
     <div class="wrap">
-      <p class="kicker">Compare</p>
       <h1>How OpenTodo compares.</h1>
       <p class="lede">Where Todoist, Things or Linear are ahead, we say so. Each comparison shows the date we last checked and links every OpenTodo claim to the docs of the current release.</p>
       <ul class="jump">
@@ -65,7 +64,6 @@ const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g
     <div class="wrap">
       <div class="split" style="align-items: start">
         <div>
-          <p class="kicker">What it costs</p>
           <h2 id="cost-title">Free. All of it, for everyone, for good.</h2>
           <p class="lede">No plan, no trial, no free tier with limits, no per-person price, no paid feature. It is free software under the {licence} licence, which also means nobody can turn it into a subscription later. It asks for a server to run on, and the time of the person who runs it.</p>
           <ul class="checks">
@@ -98,7 +96,6 @@ const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+·\s+/g
 
   <section class="section faq" id="faq" aria-labelledby="faq-title">
     <div class="wrap narrow">
-      <p class="kicker">Questions</p>
       <h2 id="faq-title">The questions people ask before they switch.</h2>
       <p class="lede">Short answers, each with a link to the page that backs it up. Everything here describes OpenTodo {versionTag}.</p>
       {FAQ.map((q) => (

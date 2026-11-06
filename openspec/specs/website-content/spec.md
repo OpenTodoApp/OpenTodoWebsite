@@ -39,11 +39,15 @@ The site SHALL offer an RSS feed listing new guides, templates, essays, posts an
 - **THEN** the feed lists it, linking its release post once that is published and its release notes until then
 
 ### Requirement: Content navigation
-Every page SHALL reach the templates and the guidance content through the Learn link in the main navigation and through the footer's Learn group, once at least one entry of each is published, and every content page SHALL end with calls to try the demo, self-host and import. At 360 px wide and without JavaScript these links SHALL work as on a laptop.
+Every page SHALL reach the templates and the guidance content through the Learn link in the main navigation and through the footer's Learn group, once at least one entry of each is published. Every content page except the legal and accessibility pages SHALL end with one next step: a short title and one action chosen for the page (try the demo, get started, install with Docker, import, read the source, or follow the blog), never more than one button. At 360 px wide and without JavaScript these links SHALL work as on a laptop.
 
 #### Scenario: Navigation appears with content
 - **WHEN** the first template and the first guide are published
 - **THEN** every page's footer shows Templates and Guides and how-tos, the Learn page links both, and both work at 360 px without JavaScript
+
+#### Scenario: End of a guide
+- **WHEN** a visitor reaches the end of a guide at 360 px wide without JavaScript
+- **THEN** the page ends with one title and one link, Try the demo, which works
 
 ### Requirement: Reviewed, sourced and fresh content
 Every published piece SHALL be approved by the maintainer through a pull request before it goes live, and SHALL carry a last-reviewed date. Content drafted by an agent SHALL follow the repository's voice guide. A piece whose last-reviewed date is older than one year at build time SHALL be reported as stale by the checks.
