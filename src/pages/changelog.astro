@@ -1,0 +1,55 @@
+---
+// /changelog (website-changelog): every release in the pinned bundle's changelog.json (the app's
+// CHANGELOG.md), newest first, one anchor per version. The latest release is open; older ones
+// show their summary with the full list of changes in a disclosure that opens without JavaScript.
+import Base from '../layouts/Base.astro';
+import EndCta from '../components/EndCta.astro';
+import { releases, versionTag } from '../lib/bundle';
+import { changelogAnchor as anchor, inline } from '../lib/changelog';
+import { releaseUrl } from '../lib/site';
+
+const fmt = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const count = (r: (typeof releases)[number]) => r.sections.reduce((n, s) => n + s.items.length, 0);
+---
+<Base title="Changelog" description={`Every OpenTodo release up to ${versionTag}, newest first, with its date, summary and full list of changes.`}>
+  <section class="page-head changelog-head">
+    <div class="wrap">
+      <h1>Changelog</h1>
+    </div>
+  </section>
+  <div class="wrap changelog">
+    <nav class="changelog-index" aria-label="Versions">
+      <p class="changelog-index-title">Versions</p>
+      <ol>
+        {releases.map((r) => <li><a href={`#${anchor(r.version)}`}><span>{r.version}</span><time datetime={r.date}>{r.date}</time></a></li>)}
+      </ol>
+    </nav>
+    <details class="changelog-jump">
+      <summary>Jump to a version</summary>
+      <ol>{releases.map((r) => <li><a href={`#${anchor(r.version)}`}>{r.version}</a></li>)}</ol>
+    </details>
+    <div class="changelog-list">
+      {releases.map((r, i) => (
+        <section class="release" id={anchor(r.version)} aria-labelledby={`${anchor(r.version)}-title`}>
+          <header>
+            <h2 id={`${anchor(r.version)}-title`}><a href={`#${anchor(r.version)}`}>{r.version}</a></h2>
+            <p><time datetime={r.date}>{fmt(r.date)}</time> · <a href={releaseUrl(r.version)}>On GitHub</a></p>
+          </header>
+          {r.summary && <p class="release-summary" set:html={inline(r.summary)} />}
+          {r.sections.length > 0 && (
+            <details class="release-changes" open={i === 0}>
+              <summary>All changes <span class="count">{count(r)}</span></summary>
+              {r.sections.map((s) => (
+                <section>
+                  <h3>{s.title}</h3>
+                  <ul>{s.items.map((item) => <li set:html={inline(item)} />)}</ul>
+                </section>
+              ))}
+            </details>
+          )}
+        </section>
+      ))}
+    </div>
+  </div>
+  <EndCta kind="source" />
+</Base>
