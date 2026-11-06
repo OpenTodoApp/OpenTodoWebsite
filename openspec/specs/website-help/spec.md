@@ -36,7 +36,7 @@ The site SHALL have an index at `/install/` and one page per platform (iPhone an
 - **THEN** the page says the server needs a secure address and to ask whoever runs it, with a link to the documentation
 
 ### Requirement: Switch pages per app
-The site SHALL have an index at `/switch/` with a glossary of the other apps' words, and one page per app (Todoist, Things, TickTick, Linear) with the export steps, the import path of the pinned release, what comes across and what does not, a term map and a first-week checklist. Facts about the other app SHALL carry a "checked on" date no older than 180 days at build time. A page SHALL NOT promise a one-step import unless the app's import format is in the pinned bundle's manifest.
+The site SHALL have an index at `/switch/` with a glossary of the other apps' words, and one page per app (at least Todoist, Things, TickTick, Linear and Microsoft To Do) with the export steps, the import path of the pinned release, what comes across and what does not, a term map and a first-week checklist. Its title SHALL name it as an open-source alternative to the app ("Open-source Todoist alternative") and its description SHALL say that OpenTodo is free, open source and self-hosted before the page's summary; its heading stays "Moving from <app>". It SHALL carry a BreadcrumbList. Facts about the other app SHALL carry a "checked on" date no older than 180 days at build time. A page SHALL NOT promise a one-step import unless the app's import format is in the pinned bundle's manifest.
 
 #### Scenario: Named importer released
 - **WHEN** the pinned bundle's manifest lists the app's import format and its docs contain the app's switch guide

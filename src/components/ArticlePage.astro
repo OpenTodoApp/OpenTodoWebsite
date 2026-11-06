@@ -27,7 +27,7 @@ const templates = await getEntries(d.templates.map((id) => ({ collection: 'templ
 templates.forEach((t, i) => { if (!t) throw new Error(`${entry.collection}/${entry.id} lists template "${d.templates[i]}", which does not exist`); });
 const reviewed = d.lastReviewed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
-<Base title={d.title} description={d.summary} ogType="article">
+<Base title={d.title} description={d.summary} ogType="article" crumbs={[{ name: section.label, href: section.href }, { name: d.title, href: Astro.url.pathname }]}>
   <JsonLd slot="head" data={[
     { '@type': 'Article', headline: d.title, description: d.summary, dateModified: d.lastReviewed.toISOString().slice(0, 10), inLanguage: 'en', author: { '@type': 'Person', name: authors.raffaele.name, url: authors.raffaele.url }, publisher: { '@type': 'Organization', name: 'OpenTodo', url: SITE.url }, mainEntityOfPage: `${SITE.url}${href}` },
     { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Learn', item: `${SITE.url}/learn/` }, { '@type': 'ListItem', position: 2, name: section.label, item: `${SITE.url}${section.href}` }, { '@type': 'ListItem', position: 3, name: d.title, item: `${SITE.url}${href}` }] },
