@@ -19,6 +19,7 @@
     "check:redirects": "node scripts/checks/redirects.mjs dist nginx.conf",
     "check:dist": "npm run check:links && npm run check:emoji && npm run check:scripts && npm run check:redirects && npm run check:seo",
     "test:browser": "playwright test",
+    "test:browser:full": "BROWSER_PAGES=all playwright test",
     "templates:check": "node scripts/templates-check.mjs --shots",
     "serve": "node scripts/serve.mjs 4321",
     "og": "node scripts/og.mjs dist",

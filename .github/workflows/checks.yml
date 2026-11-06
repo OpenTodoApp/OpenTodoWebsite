@@ -1,10 +1,18 @@
-# Website checks (website-platform design D6) on every pull request and on main.
+# Website checks (website-platform design D6, ci-fast-checks).
+#
+# Every page in the browser on main, nightly and on demand; on a pull request one page
+# of every template and every home page (D1), or for a change to content alone the
+# pages it changed (D2). The image only builds on a pull request that touches what
+# goes into it (D3). A failed night opens or updates one issue labelled ci-nightly (D4).
 name: Website checks
 
 on:
   pull_request:
   push:
     branches: [main]
+  schedule:
+    - cron: "41 4 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,11 +20,48 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: checks-${{ github.ref }}
-  cancel-in-progress: true
+  group: checks-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'schedule' }}
 
 jobs:
+  # What the pull request touches: content alone (D2), and whether the image needs
+  # building (D3). Outside pull requests everything runs.
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      content_only: ${{ steps.files.outputs.content_only }}
+      docker: ${{ steps.files.outputs.docker }}
+    steps:
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          # The merge commit and its first parent, the base branch.
+          fetch-depth: 2
+      - name: Changed files
+        id: files
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != pull_request ]; then
+            echo "content_only=false" >> "$GITHUB_OUTPUT"; echo "docker=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git diff --name-only HEAD^1 HEAD > "$RUNNER_TEMP/files.txt"
+          sed 's/^/  /' "$RUNNER_TEMP/files.txt"
+          # Markdown and images under src/content/; bundle.json and everything else is not content.
+          if [ -s "$RUNNER_TEMP/files.txt" ] && ! grep -qvE '^src/content/.+\.(md|mdx|png|jpe?g|webp|avif|gif|svg)$' "$RUNNER_TEMP/files.txt"; then
+            echo "content_only=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "content_only=false" >> "$GITHUB_OUTPUT"
+          fi
+          # What goes into the image: its build, the server configuration, the packages and the build configuration.
+          if grep -qE '^(Dockerfile|\.dockerignore|nginx\.conf|package(-lock)?\.json|bundle\.json|astro\.config\.mjs|og/|scripts/(fetch-bundle\.mjs|og\.mjs|og/|lib/bundle\.mjs|lib/brand\.mjs)|\.github/workflows/checks\.yml)' "$RUNNER_TEMP/files.txt"; then
+            echo "docker=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "docker=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat "$GITHUB_OUTPUT"
+
   site:
+    needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -28,6 +73,31 @@ jobs:
       - run: npm ci
       - name: Unit tests (bundle scripts, template generator, content rules, checks)
         run: npm test
+      # D5: the pinned release's bundle, keyed by its version and download address.
+      - name: Bundle cache key
+        id: pin
+        run: |
+          node -e '
+            const crypto = require("node:crypto");
+            const { version } = require("./bundle.json");
+            if (!version) process.exit(0);
+            const url = `https://github.com/OpenTodoApp/OpenTodo/releases/download/${version}/opentodo-site-bundle-${version}.tar.gz`;
+            console.log(`key=site-bundle-${version}-${crypto.createHash("sha256").update(url).digest("hex").slice(0, 12)}`);
+          ' >> "$GITHUB_OUTPUT"
+      - name: Restore the pinned bundle
+        if: steps.pin.outputs.key != ''
+        uses: actions/cache@v4
+        with:
+          path: .bundle
+          key: ${{ steps.pin.outputs.key }}
+      # D5: the build spends its time optimising images, not rendering pages. Astro keys
+      # each optimised image by its source and options, so an older cache is safe to reuse.
+      - name: Restore optimised images
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro/assets
+          key: astro-assets-v1-${{ hashFiles('package-lock.json') }}-${{ hashFiles('bundle.json', 'astro.config.mjs', 'src/**/*.png', 'src/**/*.jpg', 'src/**/*.jpeg', 'src/**/*.webp', 'src/**/*.avif', 'src/**/*.gif', 'src/**/*.svg') }}
+          restore-keys: astro-assets-v1-${{ hashFiles('package-lock.json') }}-
       - name: Build (fetches the pinned bundle, checks content, fails on a page that does not render)
         run: npm run build
         env:
@@ -36,10 +106,51 @@ jobs:
         run: npm run check
       - name: Links, emoji icons, third-party scripts
         run: npm run check:dist
+      # D2: a content-only pull request compares each page's HTML with the last build of main.
+      - name: Restore the page hashes of main
+        id: hashes
+        if: needs.changes.outputs.content_only == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/page-hashes.json
+          # The build of the pull request's base when it has one, else the latest build of main.
+          key: page-hashes-${{ github.event.pull_request.base.sha }}
+          restore-keys: |
+            page-hashes-${{ github.event.pull_request.base.sha }}-
+            page-hashes-
+      - name: Choose the pages for the browser checks
+        env:
+          EVENT: ${{ github.event_name }}
+          CONTENT_ONLY: ${{ needs.changes.outputs.content_only }}
+          HASHES: ${{ runner.temp }}/page-hashes.json
+        run: |
+          if [ "$EVENT" != pull_request ]; then
+            mode=all; why="every page"
+          elif [ "$CONTENT_ONLY" = true ] && [ -f "$HASHES" ]; then
+            node scripts/checks/pages.mjs changed "$HASHES" > "$RUNNER_TEMP/pages.txt"
+            echo "BROWSER_PAGES_FILE=$RUNNER_TEMP/pages.txt" >> "$GITHUB_ENV"
+            mode=list; why="the pages this content change touches"
+          else
+            mode=sample; why="one page of every template and every home page"
+            node scripts/checks/pages.mjs sample > "$RUNNER_TEMP/pages.txt"
+          fi
+          echo "BROWSER_PAGES=$mode" >> "$GITHUB_ENV"
+          { echo "### Browser checks: $why"; echo; [ "$mode" = all ] || sed 's/^/- /' "$RUNNER_TEMP/pages.txt"; } >> "$GITHUB_STEP_SUMMARY"
+          echo "$why"; [ "$mode" = all ] || cat "$RUNNER_TEMP/pages.txt"
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Accessibility (light and dark, 360 and 1280 px), horizontal scroll, no-JS pass, islands
         run: npm run test:browser
+      # D2: the hashes a content-only pull request compares against.
+      - name: Record the page hashes
+        if: github.event_name != 'pull_request'
+        run: node scripts/checks/pages.mjs hashes > "$RUNNER_TEMP/page-hashes.json"
+      - name: Save the page hashes
+        if: github.event_name != 'pull_request'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/page-hashes.json
+          key: page-hashes-${{ github.sha }}-${{ github.run_id }}
       - name: Upload the built site (pull request preview)
         id: site
         if: always()
@@ -69,6 +180,8 @@ jobs:
           retention-days: 14
 
   docker:
+    needs: changes
+    if: needs.changes.outputs.docker == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -86,3 +199,23 @@ jobs:
           curl -sS -o /dev/null -w "%{http_code} %{redirect_url}\n" http://127.0.0.1:8080/essays/your-tasks-on-your-server/ | grep -q "301 http://127.0.0.1:8080/blog/your-tasks-on-your-server/"
           curl -fsS http://127.0.0.1:8080/blog/ | grep -q 'class="post-rows"'
           sleep 35 && test "$(docker inspect -f '{{.State.Health.Status}}' site)" = healthy
+
+  # D4: a failed night opens (or comments on) one issue labelled ci-nightly; the next
+  # green night closes it.
+  nightly-alert:
+    name: Report the nightly result
+    needs: [site, docker]
+    if: always() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Open, update or close the ci-nightly issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RESULTS: ${{ toJSON(needs) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: scripts/ci/nightly-alert.sh

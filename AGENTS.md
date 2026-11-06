@@ -18,7 +18,7 @@ The public website of [OpenTodo](https://github.com/OpenTodoApp/OpenTodo), live 
 
 ## Commands
 - `npm ci`, then `npm run dev` (http://localhost:4321) or `npm run build`.
-- Checks: `npm run check`, `npm test`, `npm run check:dist`, `npm run test:browser` (after a build).
+- Checks: `npm run check`, `npm test`, `npm run check:dist`, `npm run test:browser` (after a build; one page per template and every home page, as on pull requests), `npm run test:browser:full` (every page, as on main and nightly).
 - Templates: start the pinned app image (`docker run -p 8080:8080 ghcr.io/opentodoapp/opentodo:<version>`, or `ghcr.io/pixari/opentodo` for 0.14.2 and earlier, on a fresh volume), then `OPENTODO_URL=http://127.0.0.1:8080 npm run templates:check` to import every template and refresh its screenshots.
 - Container: `docker build -t opentodo-website . && docker run -p 8080:80 opentodo-website`.
 
