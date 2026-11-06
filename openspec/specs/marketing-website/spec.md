@@ -1,7 +1,7 @@
 # marketing-website Specification
 
 ## Purpose
-The marketing pages of the website: the home page, comparisons, switch pages, the cost and trust pages and the tools, which give a first-time visitor what they need to decide about OpenTodo and the ways to get it.
+The marketing pages of the website: the home page, features, switch pages, the trust pages and the tools, which give a first-time visitor what they need to decide about OpenTodo and the ways to get it.
 
 ## Requirements
 
@@ -49,37 +49,19 @@ The home page SHALL present the differentiators (one server for a whole househol
 - **WHEN** a visitor wants to know how sync works
 - **THEN** a link from the home page leads to the self-hosting page with the interactive sync demo
 
-### Requirement: Honest comparison pages
-The site SHALL have one comparison page each for Todoist, Things and Linear. Each SHALL contain a feature table with rows where the competitor is ahead as well as rows where OpenTodo is ahead, the date the comparison was last checked, the cost difference in words without exact prices, and a link to the matching switch guide.
-
-#### Scenario: A gap is shown
-- **WHEN** a visitor reads the Things comparison
-- **THEN** the table shows that Things has native Apple Watch and widget support and OpenTodo does not
-
-#### Scenario: Stale comparison
-- **WHEN** a comparison page's "checked on" date is older than six months at build time
-- **THEN** the website check reports the page as stale
-
-### Requirement: Comparisons are fair and sourced
-Competitor names SHALL appear as text only, without their logos or visual identity, and every claim about OpenTodo on a comparison page SHALL link to the documentation page of the pinned release that supports it.
-
-#### Scenario: Unsourced claim
-- **WHEN** a comparison row claims an OpenTodo feature without a documentation link
-- **THEN** the build fails and names the page and the row
-
 ### Requirement: Switch calls to action follow the importers
 A "Switch from <app>" call to action SHALL appear only for apps whose named import format is released in the version the site describes, and SHALL lead to that app's switch guide. For other apps the site SHALL link to the general import guide instead and SHALL NOT promise a one-step switch.
 
 #### Scenario: Importer not yet released
 - **WHEN** the site is built while the Linear import format is not in the released version
-- **THEN** the Linear comparison links to the general import guide and shows no "Switch from Linear" button
+- **THEN** the Linear switch guide links to the general import guide and shows no "Switch from Linear" button
 
 ### Requirement: Audience pages
-The site SHALL have a self-hosting page with the sync demo, footprint, container, Coolify and one-click install instructions, and a developers page with the API, command-line client, MCP, webhooks and open specifications. Both SHALL be linked from the main navigation of every page.
+The site SHALL have a self-hosting page with the sync demo, footprint, container, Coolify and one-click install instructions, and a developers page with the API, command-line client, MCP, webhooks and open specifications. Both SHALL be linked from the footer of every page.
 
 #### Scenario: Navigation
-- **WHEN** a visitor is on any comparison page
-- **THEN** the main navigation offers Features, Compare, Self-host, Developers and Docs
+- **WHEN** a visitor is on any page
+- **THEN** the footer links Self-host and Developers
 
 ### Requirement: Consistent visual language
 Every page SHALL use the app's colours, typeface, line icons and real screenshots, and follow the visitor's light or dark preference; emoji and Unicode symbols SHALL NOT be icons. In plain CSS, at every width and without JavaScript, pages SHALL follow the app's flat look: surface and canvas tokens, hairlines instead of shadows except on floating panels, no decorative gradients, no imitation browser chrome, and grey for navigation state, every colour from the bundle's tokens.
@@ -89,7 +71,7 @@ Every page SHALL use the app's colours, typeface, line icons and real screenshot
 - **THEN** it reports any emoji or symbol used as an icon in navigation, feature lists or buttons
 
 #### Scenario: Dark preference
-- **WHEN** a visitor whose system prefers dark opens a comparison page
+- **WHEN** a visitor whose system prefers dark opens a switch guide
 - **THEN** the page and its screenshots are shown in their dark variants
 
 #### Scenario: Flat look follows the bundle
@@ -104,8 +86,8 @@ Every page SHALL use the app's colours, typeface, line icons and real screenshot
 Every page SHALL work without JavaScript for reading and navigation, SHALL load no third-party scripts other than the site's self-hosted analytics, and SHALL meet WCAG 2.2 AA in light and dark at widths from 360 px, without horizontal scrolling.
 
 #### Scenario: Reading without scripts
-- **WHEN** a visitor opens the Todoist comparison with JavaScript disabled
-- **THEN** the full text, table and links are readable and work
+- **WHEN** a visitor opens the Todoist switch guide with JavaScript disabled
+- **THEN** the full text and links are readable and work
 
 #### Scenario: Accessibility check
 - **WHEN** the website check runs an automated accessibility audit on every page in light and dark
@@ -232,31 +214,6 @@ The site SHALL have a page at `/start/`, opened by the header's Get started acti
 #### Scenario: Phone without JavaScript
 - **WHEN** a visitor opens `/start/` at 360 px wide with JavaScript disabled
 - **THEN** the three ways in, the deploy targets, the Docker command, the device list and the switch guides are shown and their links work, and nothing scrolls sideways
-
-### Requirement: What it costs on Compare
-The Compare page `/vs/` SHALL have a "What it costs" part (`#cost`) that explains the cost of using OpenTodo in words and without currency: the free licence named by the bundle manifest, the server footprint from the bundle manifest, where it can run, who installs and updates, and how this compares with a plan per person. Every statement about the app SHALL link to its documentation page of the pinned release, and the part SHALL read fully at 360 px wide without JavaScript.
-
-#### Scenario: Figures follow the release
-- **WHEN** a new bundle is pinned with a different image size or idle memory
-- **THEN** the cost part shows the new figures without any edit in this repository
-
-#### Scenario: No prices
-- **WHEN** the page is scanned for currency symbols or amounts
-- **THEN** none are found; costs are described in words
-
-### Requirement: Comparisons name where others lead
-The Compare page SHALL list every comparison with its audience, the date it was last checked and the titles of the points where that app is ahead, taken from the comparison's own entries, so the summary changes when a comparison does. It SHALL NOT show a cross-app table with values that no comparison states.
-
-#### Scenario: A gap is added
-- **WHEN** a comparison gains a new point where the other app is ahead
-- **THEN** its card on `/vs/` names it with no other edit
-
-### Requirement: Questions before switching
-The Compare page SHALL answer the questions a visitor asks before deciding (whether it is free, whether there is a hosted version, whether reminders reach an iPhone, whether it works offline, how to leave, and what happens if the maintainer stops, among others) in a part at `#faq`, each answer linking the page that supports it. The answers SHALL be readable without JavaScript at 360 px wide.
-
-#### Scenario: Is it free
-- **WHEN** a visitor opens the questions on `/vs/`
-- **THEN** the first question answers that OpenTodo is free and open source with no paid tier, linking the cost part and the licence
 
 ### Requirement: Everything included on the home page
 The home page SHALL show the breadth of the pinned release in one compact part: every feature group with its count and first items linked to their documentation, the integrations and import apps by name, and a link to the features page saying no feature is held back for a paid plan. It SHALL use the features page's data, so it follows the pinned release. At 360 px wide and without JavaScript the groups SHALL be disclosures that open to their items.

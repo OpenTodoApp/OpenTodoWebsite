@@ -5,7 +5,6 @@ summary: Things has no export button, but OpenTodo reads a copy of its database,
 checkedOn: 2026-10-15
 sources: [/docs/import/, /docs/import-export/, /docs/project-flows/, /docs/deadlines-and-start-dates/, /docs/day-parts/, /docs/views/]
 importFormat: things-db
-compare: things
 order: 2
 keeps:
   - To-dos, with their notes
@@ -78,4 +77,4 @@ The file is read on your server from a private copy, read-only, and deleted righ
 - To group Today the way Things does, turn on **Group by day part** in **Settings → General → Start view and briefing**: Today then lists **Morning**, **Afternoon** and **This Evening**. [Day parts](/docs/day-parts/#turn-them-on)
 - Someday is a list of its own, and <kbd>n</kbd> parks a task there or brings it back. A start date defers a task until its day, like a Things When date in the future. [When a task starts](/docs/deadlines-and-start-dates/#when-a-task-starts)
 - Quick add replaces Things' Magic Plus: `Buy stamps tomorrow #Errands @town`. [Quick add syntax](/docs/quick-add/)
-- On your iPhone, install the app from Safari and turn on notifications in it; Things' native polish is one of the places it stays ahead, as the comparison says. [Put OpenTodo on your phone](/how-to/install-on-your-phone/) [On iPhone and iPad](/docs/notifications/#on-iphone-and-ipad)
+- On your iPhone, install the app from Safari and turn on notifications in it; Things' native polish is one of the places it stays ahead. [Put OpenTodo on your phone](/how-to/install-on-your-phone/) [On iPhone and iPad](/docs/notifications/#on-iphone-and-ipad)

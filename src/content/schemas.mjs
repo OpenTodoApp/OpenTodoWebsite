@@ -30,43 +30,6 @@ const docPath = (docExists) =>
   z.string().refine((p) => p.startsWith('/docs/'), { message: 'must be a site path starting with /docs/' })
     .refine((p) => !p.startsWith('/docs/') || docExists(p), { error: (iss) => `${iss.input} is not a page of the pinned bundle's docs` });
 
-const verdict = z.enum(['yes', 'partial', 'no']);
-
-export function compareSchema({ docExists, today = () => new Date() }) {
-  const row = z.object({
-    feature: z.string().min(1),
-    them: verdict,
-    us: verdict,
-    note: z.string().optional(),
-    sourceDoc: docPath(docExists).optional(),
-  });
-  return z.object({
-    competitor: z.string().min(1),
-    title: z.string().min(1),
-    summary: z.string().min(1),
-    checkedOn: freshDate('checkedOn', COMPARE_MAX_AGE_DAYS, today),
-    audience: z.string().min(1),
-    cost: z.object({ them: z.string().min(1), us: z.string().min(1) }),
-    rows: z.array(row).min(4),
-    gaps: z.array(z.object({ title: z.string().min(1), detail: z.string().min(1) })).min(1, { message: 'every comparison lists where the competitor is ahead ("gaps")' }),
-    importFormat: z.string().min(1),
-    switchGuide: z.string().startsWith('/docs/').optional(),
-    order: z.number().default(0),
-  }).superRefine((data, ctx) => {
-    data.rows.forEach((r, i) => {
-      if (r.us !== 'no' && !r.sourceDoc) {
-        ctx.addIssue({ code: 'custom', path: ['rows', i, 'sourceDoc'], message: `row "${r.feature}" claims an OpenTodo feature without a documentation link (sourceDoc)` });
-      }
-    });
-    if (!data.rows.some((r) => rank(r.them) > rank(r.us))) {
-      ctx.addIssue({ code: 'custom', path: ['rows'], message: `the table needs at least one row where ${data.competitor} is ahead` });
-    }
-    if (!data.rows.some((r) => rank(r.us) > rank(r.them))) {
-      ctx.addIssue({ code: 'custom', path: ['rows'], message: 'the table needs at least one row where OpenTodo is ahead' });
-    }
-  });
-}
-const rank = (v) => ({ no: 0, partial: 1, yes: 2 })[v];
 
 /**
  * Tags shared by guides, templates, how-tos and posts (website-templates-and-methods
@@ -127,7 +90,6 @@ export function switchSchema({ docExists, today = () => new Date() }) {
     checkedOn: freshDate('checkedOn', COMPARE_MAX_AGE_DAYS, today),
     sources: z.array(docPath(docExists)).min(1),
     importFormat: z.string().min(1),
-    compare: z.string().optional(),
     terms: z.array(z.object({ them: z.string().min(1), us: z.string().min(1), note: z.string().optional() })).min(3, { message: 'a switch page maps at least three terms' }),
     keeps: z.array(z.string().min(1)).min(1),
     drops: z.array(z.string().min(1)).min(1, { message: 'say honestly what does not come across ("drops")' }),

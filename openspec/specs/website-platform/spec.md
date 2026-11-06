@@ -58,10 +58,10 @@ Every page SHALL share one header (Features, Learn, Docs, the Blog while a post 
 - **THEN** the footer is at most 600 px tall, and opening its three groups shows every link of the wider footer
 
 ### Requirement: Typed content
-Content pages that make claims (comparisons, and later templates and guides) SHALL be written as content entries whose required fields are checked at build time, including a "checked on" date and source links where the content kind requires them. A missing or malformed field SHALL fail the build and name the entry.
+Content pages that make claims (switch guides, templates, guides and how-tos) SHALL be written as content entries whose required fields are checked at build time, including a "checked on" date and source links where the content kind requires them. A missing or malformed field SHALL fail the build and name the entry.
 
 #### Scenario: Comparison without a date
-- **WHEN** a comparison entry has no "checked on" date
+- **WHEN** a switch guide has no "checked on" date
 - **THEN** the build fails and names the entry and the missing field
 
 ### Requirement: Website checks
@@ -104,11 +104,11 @@ Every page SHALL declare a social preview image of its own, drawn at build time 
 - **THEN** its social image is the cover and no card is rendered for it
 
 ### Requirement: Structured data
-Pages SHALL carry inline schema.org JSON-LD built from their own data: the home page a WebSite and a SoftwareApplication with the bundle's version, the Compare page a FAQPage with its questions and answers, how-tos, guides, toolkit pieces and posts an article entity with author and dates, templates a Dataset with the download. No third-party script SHALL be loaded for it, and no rating, price or user count SHALL be stated.
+Pages SHALL carry inline schema.org JSON-LD built from their own data: the home page a WebSite and a SoftwareApplication with the bundle's version, how-tos, guides, toolkit pieces and posts an article entity with author and dates, templates a Dataset with the download. No third-party script SHALL be loaded for it, and no rating, price or user count SHALL be stated.
 
 #### Scenario: FAQ questions follow the page
-- **WHEN** a question is added to the questions on the Compare page
-- **THEN** the FAQPage entity lists it without a second edit
+- **WHEN** a how-to is published
+- **THEN** its page carries an article entity with its author and dates without a second edit
 
 #### Scenario: Still no third-party scripts
 - **WHEN** the website checks scan the built pages
@@ -120,6 +120,10 @@ When a page moves or is folded into another, its old address SHALL answer with a
 #### Scenario: An old index
 - **WHEN** a visitor opens `/help/`
 - **THEN** the server answers with a permanent redirect to `/learn/`
+
+#### Scenario: Compare is gone
+- **WHEN** a visitor opens `/vs/todoist/`
+- **THEN** the server answers with a permanent redirect to `/switch/todoist/`
 
 #### Scenario: A broken redirect
 - **WHEN** a redirect in the server configuration names a target that the build does not produce

@@ -5,7 +5,6 @@ summary: Export your workspace's issues as CSV and import the file as it is, wit
 checkedOn: 2026-10-30
 sources: [/docs/import/, /docs/import-export/, /docs/switch/linear/, /docs/sections-and-boards/, /docs/sharing/, /docs/issue-import/]
 importFormat: linear-csv
-compare: linear
 order: 4
 keeps:
   - Issues, with their descriptions, which start with the identifier (ENG-123)
@@ -74,4 +73,3 @@ OpenTodo recognises Linear's export as it is: no renaming, no spreadsheet. [Line
 - Cycles: a saved view `#Launch & due <= 14 days` pinned to the sidebar is the two-week window; a dashboard puts the team's views side by side. [Save a filter as a view](/how-to/save-a-filter-as-a-view/) [Save your own views](/docs/views/#save-your-own-views)
 - Work that lives in GitHub or GitLab: connect your account and the open issues assigned to you become tasks that close when the issue closes. Nothing is written back. [Issue import](/docs/issue-import/)
 - Automations: routines run on your server when a label is added, a date passes, on a schedule or when you run them, and their steps find, change and create tasks. The REST API and the `ot` command line write to the same place as the app, and webhooks fire on changes. [Routines](/docs/routines/) [HTTP API](/docs/api/)
-- Where Linear stays ahead, the comparison says so; this page is not a reason to leave it. [OpenTodo vs Linear](/vs/linear/)

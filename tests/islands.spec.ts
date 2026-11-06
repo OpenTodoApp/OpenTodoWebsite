@@ -69,6 +69,6 @@ test('islands load only where they are used', async ({ page }) => {
   // The home page has no island since website-home-v2.
   await page.goto('/');
   expect(await page.locator('script[type="module"]').count()).toBe(0);
-  await page.goto('/vs/things/');
+  await page.goto('/switch/things/');
   expect(await page.locator('script[type="module"]').count()).toBe(0);
 });

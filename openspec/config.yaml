@@ -11,9 +11,10 @@ context: |
   - Outcome first: lead with what a person gets (clarity, calm, ownership, no
     subscription), never with implementation details. Technical depth lives on the
     self-hosting and developer pages.
-  - Honest: comparisons show where competitors are ahead, carry a "checked on" date,
-    name competitors in text only (no logos), and every claim about OpenTodo links to
-    the documentation that supports it. No invented testimonials or numbers.
+  - Honest: no comparison pages; switch guides say where the other app stays ahead,
+    carry a "checked on" date, name other apps in text only (no logos), and every
+    claim about OpenTodo links to the documentation that supports it. No invented
+    testimonials or numbers.
   - Released facts only: version, docs, screenshots, tokens, icons, changelog and the
     import formats come from the app's site bundle of a release
     (opentodo-site-bundle-<version>.tar.gz); the website never describes unreleased
