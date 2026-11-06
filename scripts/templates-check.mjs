@@ -31,8 +31,12 @@ export function readTemplate(file) {
 }
 
 let cookie = '';
+// The script acts as a page of the server it checks, so it sends that server's Origin: since
+// 0.23.0 a cookie write with no Origin and a non-JSON body (the import's multipart upload) is
+// refused with 403 bad_origin.
+const ORIGIN = new URL(BASE).origin;
 async function api(method, url, body, headers = {}) {
-  const res = await fetch(BASE + url, { method, headers: { ...(cookie && { Cookie: cookie }), ...headers }, body });
+  const res = await fetch(BASE + url, { method, headers: { Origin: ORIGIN, ...(cookie && { Cookie: cookie }), ...headers }, body });
   const set = res.headers.getSetCookie?.() ?? [];
   const session = set.find((c) => c.startsWith('opentodo_session='));
   if (session) cookie = session.split(';')[0];

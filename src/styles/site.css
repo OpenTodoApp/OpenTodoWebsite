@@ -898,7 +898,10 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 
 /* ------------------------------------------------------------ changelog (website-changelog) */
 .page-head.changelog-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) 1rem; }
-.changelog { display: grid; gap: 1.5rem 3rem; padding-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
+.changelog { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 3rem; padding-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
+/* A long unbroken token in a release's notes (a URL, a rule such as FREQ=MONTHLY;BYDAY=…) wraps
+   instead of widening the column at phone width. */
+.changelog-list code, .changelog-list a { overflow-wrap: anywhere; }
 @media (min-width: 900px) { .changelog { grid-template-columns: 12rem minmax(0, 1fr); } }
 .changelog-index { display: none; }
 .changelog-index-title { font-weight: 600; font-size: 0.875rem; color: var(--strong); margin: 0 0 0.25rem; }
