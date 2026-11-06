@@ -1,0 +1,26 @@
+---
+// One section of a catalog (website-catalog D1): a heading with its count and, on overview
+// pages, a link to the whole section; then one row per entry with its line and a property.
+import Icon from '../Icon.astro';
+
+export interface CatalogItem { title: string; href: string; line?: string; meta?: string }
+interface Props { id: string; title: string; icon?: string; items: CatalogItem[]; total?: number; more?: string; headingLevel?: 2 | 3 }
+const { id, title, icon, items, total, more, headingLevel = 2 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+const count = total ?? items.length;
+---
+<section class="catalog-rows" id={id} aria-labelledby={`${id}-title`}>
+  <H id={`${id}-title`} class="catalog-rows-title">
+    {icon && <Icon name={icon} size={16} />}<span>{title}</span><span class="count">{count}</span>
+    {more && count > items.length && <a class="catalog-more" href={more}>All {count}<span class="visually-hidden"> in {title}</span> <Icon name="arrow-right" size={14} /></a>}
+  </H>
+  <ul>
+    {items.map((i) => (
+      <li>
+        <a href={i.href}>{i.title}</a>
+        {i.line && <p>{i.line}</p>}
+        {i.meta && <span class="catalog-meta">{i.meta}</span>}
+      </li>
+    ))}
+  </ul>
+</section>

@@ -1,9 +1,11 @@
 ---
-// /learn/<type> (website-learn D2): one type of the library; how-tos in their fixed groups.
-import Base from '../../layouts/Base.astro';
+// /learn/<type> (website-catalog D1): one type of the library; how-tos in their fixed groups.
+import Catalog from '../../components/catalog/Catalog.astro';
+import CatalogRows from '../../components/catalog/CatalogRows.astro';
 import EndCta from '../../components/EndCta.astro';
-import LearnLibrary from '../../components/LearnLibrary.astro';
-import { LEARN_TYPES, learnEntries } from '../../lib/learn';
+import { LEARN_TYPES, learnEntries, type LearnEntry } from '../../lib/learn';
+import { learnRail } from '../../lib/catalog';
+import { HOWTO_GROUPS } from '../../content/schemas.mjs';
 
 export function getStaticPaths() {
   return LEARN_TYPES.map((t) => ({ params: { type: t.key }, props: { t } }));
@@ -11,17 +13,12 @@ export function getStaticPaths() {
 const { t } = Astro.props as { t: (typeof LEARN_TYPES)[number] };
 const all = await learnEntries();
 const entries = all.filter((e) => e.type === t.key);
+const row = (e: LearnEntry) => ({ title: e.title, href: e.href, line: e.summary, meta: e.length });
+const groups = t.key === 'how-tos'
+  ? HOWTO_GROUPS.map((g) => ({ id: g.toLowerCase().replace(/[^a-z]+/g, '-'), title: g, items: entries.filter((e) => e.group === g) })).filter((g) => g.items.length)
+  : [{ id: t.key, title: 'All', items: entries }];
 ---
-<Base title={`${t.title} · Learn`} description={`${t.lede} ${entries.length} in the OpenTodo library.`}>
-  <section class="page-head">
-    <div class="wrap">
-      <p class="breadcrumb"><a href="/learn/">Learn</a></p>
-      <h1>{t.title}</h1>
-      <p class="lede">{t.lede}</p>
-    </div>
-  </section>
-  <section class="section learn-section" aria-label={t.title}>
-    <LearnLibrary all={all} entries={entries} type={t.key} />
-  </section>
-  <EndCta title="Put it into practice." />
-</Base>
+<Catalog title={`${t.title} · Learn`} heading={t.title} crumb={{ label: 'Learn', href: '/learn/' }} description={`${t.lede} ${entries.length} in the OpenTodo library.`} rail={learnRail(all)}>
+  {groups.map((g) => <CatalogRows id={g.id} title={g.title} items={g.items.map(row)} />)}
+  <EndCta slot="after" title="Put it into practice." />
+</Catalog>

@@ -72,3 +72,19 @@ test('islands load only where they are used', async ({ page }) => {
   await page.goto('/switch/things/');
   expect(await page.locator('script[type="module"]').count()).toBe(0);
 });
+
+// One search over Features, Learn and the docs (website-catalog D2).
+test('the catalog search finds features, how-tos and docs, and clears with Escape', async ({ page }) => {
+  await page.goto('/learn/');
+  await page.keyboard.press('/');
+  await expect(page.locator('#catalog-q')).toBeFocused();
+  await page.keyboard.type('repeat');
+  const results = page.locator('#catalog-results li');
+  await expect(results.first()).toBeVisible();
+  const kinds = await page.locator('#catalog-results .catalog-meta').allTextContents();
+  for (const k of ['Feature', 'How-to', 'Docs']) expect(kinds.some((x) => x.startsWith(k)), k).toBe(true);
+  await expect(page.locator('[data-catalog-main]')).toBeHidden();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#catalog-results')).toBeHidden();
+  await expect(page.locator('[data-catalog-main]')).toBeVisible();
+});

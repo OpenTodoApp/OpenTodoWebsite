@@ -1,0 +1,66 @@
+---
+// One search over Features, Learn and the docs (website-catalog D2). The index is built with the
+// site (/search.json) and fetched on first use; nothing is sent anywhere while typing. Hidden
+// without JavaScript, where the rail and the docs' own search cover the same ground.
+---
+<div class="catalog-search" role="search">
+  <label class="visually-hidden" for="catalog-q">Search features, guides and docs</label>
+  <input id="catalog-q" type="search" placeholder="Search features, guides and docs" autocomplete="off" spellcheck="false" aria-controls="catalog-results" />
+  <kbd aria-hidden="true">/</kbd>
+  <p class="visually-hidden" aria-live="polite" data-catalog-status></p>
+</div>
+<ol id="catalog-results" class="catalog-results" hidden></ol>
+<script>
+  type Entry = { t: string; s: string; u: string; k: string };
+  const input = document.getElementById('catalog-q') as HTMLInputElement | null;
+  const list = document.getElementById('catalog-results') as HTMLOListElement | null;
+  const status = document.querySelector<HTMLElement>('[data-catalog-status]');
+  const main = document.querySelector<HTMLElement>('[data-catalog-main]');
+  let index: Promise<Entry[]> | null = null;
+  const load = () => (index ??= fetch('/search.json').then((r) => r.json()).catch(() => []));
+  const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  function rank(entries: Entry[], q: string): Entry[] {
+    const terms = fold(q).split(/\s+/).filter(Boolean);
+    const scored: [number, Entry][] = [];
+    for (const e of entries) {
+      const t = fold(e.t);
+      const s = fold(e.s);
+      let score = 0;
+      for (const term of terms) {
+        if (t.startsWith(term)) score += 6;
+        else if (new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`).test(t)) score += 4;
+        else if (t.includes(term)) score += 3;
+        else if (s.includes(term)) score += 1;
+        else { score = 0; break; }
+      }
+      if (score) scored.push([score, e]);
+    }
+    return scored.sort((a, b) => b[0] - a[0] || a[1].t.length - b[1].t.length).slice(0, 20).map(([, e]) => e);
+  }
+
+  async function update() {
+    if (!input || !list || !main) return;
+    const q = input.value.trim();
+    if (!q) { list.hidden = true; main.hidden = false; list.innerHTML = ''; if (status) status.textContent = ''; return; }
+    const found = rank(await load(), q);
+    if (input.value.trim() !== q) return;
+    list.innerHTML = found.length
+      ? found.map((e) => `<li><a href="${esc(e.u)}">${esc(e.t)}</a><span class="catalog-meta">${esc(e.k)}</span>${e.s ? `<p>${esc(e.s)}</p>` : ''}</li>`).join('')
+      : `<li class="catalog-empty">Nothing matches “${esc(q)}”. Try fewer words, or <a href="/docs/?q=${encodeURIComponent(q)}">search the docs</a>.</li>`;
+    list.hidden = false;
+    main.hidden = true;
+    if (status) status.textContent = found.length ? `${found.length} results` : 'No results';
+  }
+
+  input?.addEventListener('focus', () => { load(); }, { once: true });
+  input?.addEventListener('input', update);
+  input?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { input.value = ''; update(); }
+    if (e.key === 'ArrowDown') { (list?.querySelector('a') as HTMLElement | null)?.focus(); e.preventDefault(); }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') { e.preventDefault(); input?.focus(); }
+  });
+</script>
