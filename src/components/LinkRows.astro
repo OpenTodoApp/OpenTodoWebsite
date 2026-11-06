@@ -1,0 +1,24 @@
+---
+// A titled group of links as hairline rows (website-security-page D1): an icon, the link, one
+// line about what is behind it, and an optional note on the right. Shared by the technical pages.
+import Icon from './Icon.astro';
+
+export interface LinkRow { icon: string; title: string; href?: string; line: string; note?: string }
+interface Props { id: string; title: string; items: LinkRow[] }
+const { id, title, items } = Astro.props;
+---
+<section class="link-rows" id={id} aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`}>{title}</h2>
+  <ul class="rows">
+    {items.map((r) => (
+      <li>
+        <Icon name={r.icon} size={18} />
+        <div>
+          <h3 class="row-title">{r.href ? <a href={r.href}>{r.title}</a> : r.title}</h3>
+          <p class="row-line" set:html={r.line} />
+        </div>
+        {r.note ? <span class="row-prop">{r.note}</span> : <span />}
+      </li>
+    ))}
+  </ul>
+</section>
