@@ -11,9 +11,13 @@ const built = (p) => fs.existsSync(path.join(dist, p, 'index.html'));
 
 test('the Security page has its four groups and the footer links it', { skip: !built('security') && 'no dist/ (run npm run build first)' }, () => {
   const root = load(path.join(dist, 'security/index.html'));
-  for (const id of ['report', 'protect', 'verify', 'coming']) assert.ok(root.querySelector(`#${id} .rows li`), `#${id}`);
+  for (const id of ['report', 'protect', 'verify', 'model']) assert.ok(root.querySelector(`#${id} .rows li`), `#${id}`);
   assert.ok(root.querySelector('#report a[href$="/security/advisories/new"]'), 'private reporting');
   assert.ok(root.querySelector('#verify a[href="/docs/self-hosting/docker/#verifying-the-image-and-downloads"]'), 'image verification');
+  for (const href of ['/docs/security/threat-model/', '/docs/security/how-we-verify/', '/docs/security/limits/', '/docs/security/review-scope/']) {
+    assert.ok(root.querySelector(`#model a[href="${href}"]`), href);
+  }
+  assert.ok(root.querySelector('#model a[href$="/SECURITY.md#what-to-expect"]'), 'disclosure policy');
   assert.ok(load(path.join(dist, 'index.html')).querySelector('footer a[href="/security/"]'), 'footer');
 });
 

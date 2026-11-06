@@ -1,7 +1,8 @@
 ---
-// /security (website-security-page): what OpenTodo protects, how to report a problem and how to
-// check what you run. The threat model and "how we verify" are being written in the app
-// repository (docs/security/); until they are published this page says so and links the work.
+// /security (website-security-page): what OpenTodo protects, how to report a problem, how to
+// check what you run, and the security documents the app publishes under docs/security/ (since
+// 0.23.0): the threat model, how it is verified, its limits, the review scope and the disclosure
+// policy.
 import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import LinkRows, { type LinkRow } from '../components/LinkRows.astro';
@@ -21,25 +22,26 @@ const check: LinkRow[] = [
   { icon: 'smartphone', title: 'Verify the Android app', href: '/docs/android-app/#check-what-you-installed', line: 'One signing certificate for Google Play, F-Droid and GitHub, and a reproducible build you can compare with the source.' },
   { icon: 'code', title: 'Read the source', href: SITE.appRepo, line: 'Every line of the app, its specifications and its tests, under the AGPL-3.0.' },
 ];
-const coming: LinkRow[] = [
-  { icon: 'file', title: 'Threat model', line: 'Who could attack an OpenTodo server, what they could reach, and what stops them.', note: 'For 1.0' },
-  { icon: 'list-checks', title: 'How we verify', line: 'The tests, fuzzing, checks and reviews every change goes through, and what they do not cover.', note: 'For 1.0' },
-  { icon: 'users', title: 'Independent review', line: 'The scope prepared for an outside security review, and its findings once there are any.', note: 'Planned' },
+const model: LinkRow[] = [
+  { icon: 'file', title: 'Threat model', href: '/docs/security/threat-model/', line: 'Who could attack an OpenTodo server, what they could reach, what stops them and which tests would fail if it broke, and what is not defended.' },
+  { icon: 'list-checks', title: 'How we verify security', href: '/docs/security/how-we-verify/', line: 'The tests, fuzzing, static analysis and checks behind each claim, every past security fix, and the gaps still open.' },
+  { icon: 'circle-alert', title: 'Security limits', href: '/docs/security/limits/', line: 'What OpenTodo does not protect, in one place: what the operator can see, what is unencrypted at rest, what backups hold, and how far host mode and the demo isolate.' },
+  { icon: 'users', title: 'Independent review scope', href: '/docs/security/review-scope/', line: 'The brief prepared for an outside security review. No external review has taken place yet, and none is claimed.' },
+  { icon: 'scroll-text', title: 'Disclosure policy', href: `${SITE.appRepo}/blob/main/SECURITY.md#what-to-expect`, line: 'An answer within 3 business days, an assessment within 10, fix targets per severity, coordinated disclosure within 90 days with an advisory and a CVE, and a safe harbour for research on your own server.' },
 ];
 ---
-<Base title="Security and trust" description="What OpenTodo protects, how to report a vulnerability, how to verify what you run, and what is still being written for 1.0.">
+<Base title="Security and trust" description="What OpenTodo protects, how to report a vulnerability, how to verify what you run, and its threat model, verification, limits and disclosure policy.">
   <section class="page-head tech-head">
     <div class="wrap narrow">
       <h1>Security and trust</h1>
-      <p class="lede">OpenTodo runs on your server, so you should be able to check every claim it makes. Here is where to look, and what is not written yet.</p>
+      <p class="lede">OpenTodo runs on your server, so you should be able to check every claim it makes. Here is where to look, including what it does not protect.</p>
     </div>
   </section>
   <div class="wrap narrow tech-body">
     <LinkRows id="report" title="Found a problem?" items={report} />
     <LinkRows id="protect" title="What protects your data" items={protect} />
     <LinkRows id="verify" title="Check what you run" items={check} />
-    <LinkRows id="coming" title="Being written for 1.0" items={coming} />
-    <p class="meta tech-note">The threat model and the verification notes are in review in the app repository (<a href={`${SITE.appRepo}/pull/911`}>pull request 911</a>). This page will link them once they are published.</p>
+    <LinkRows id="model" title="Threat model and limits" items={model} />
   </div>
   <EndCta kind="source" />
 </Base>
