@@ -18,11 +18,12 @@ process.env.FONTCONFIG_FILE = conf;
 
 const { default: sharp } = await import('sharp');
 const { parse } = await import('node-html-parser');
-const { cardSvg, ogFileFor, sectionOf } = await import('./lib/og.mjs');
+const { cardSvg, defaultCardSource, ogFileFor, sectionOf } = await import('./lib/og.mjs');
 const { resolveBundle } = await import('./lib/bundle.mjs');
 const { MARK_FILE } = await import('./lib/brand.mjs');
 // The card's mark is the pinned bundle's (brand-from-bundle D2).
-const mark = fs.readFileSync(path.join(resolveBundle().dir, MARK_FILE), 'utf8');
+const bundleDir = resolveBundle().dir;
+const mark = fs.readFileSync(path.join(bundleDir, MARK_FILE), 'utf8');
 
 const dist = path.resolve(process.argv[2] ?? 'dist');
 const pages = [];
@@ -51,11 +52,12 @@ for (const file of pages) {
   n++;
 }
 fs.rmSync(cacheDir, { recursive: true, force: true });
-// The docs pages (built by the app repository) name /assets/og.png as their card; it is the
-// home page's card (website-seo-depth D6).
-const home = ogFileFor(dist, '/');
-if (fs.existsSync(home) && !fs.existsSync(path.join(dist, 'assets', 'og.png'))) {
+// The site's default card, /assets/og.png, named by the docs pages of bundles before 0.23.0 and
+// by links shared earlier: the bundle's brand kit card when it has one, else the home page's
+// card (website-seo-depth D6, default-card-from-kit D1).
+const card = defaultCardSource(bundleDir, dist);
+if (card && !fs.existsSync(path.join(dist, 'assets', 'og.png'))) {
   fs.mkdirSync(path.join(dist, 'assets'), { recursive: true });
-  fs.copyFileSync(home, path.join(dist, 'assets', 'og.png'));
+  fs.copyFileSync(card, path.join(dist, 'assets', 'og.png'));
 }
 console.log(`social cards: ${n} rendered into ${path.relative(process.cwd(), path.join(dist, 'og'))}/`);
