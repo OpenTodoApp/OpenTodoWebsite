@@ -9,6 +9,9 @@ import { docExists, manifest } from './bundle';
 export interface Feature { name: string; line: string; doc: string; since?: string }
 export interface FeatureGroup { key: string; title: string; icon: string; items: Feature[] }
 
+// 简体中文 ships after 0.22.0: the languages entry follows the pinned release (released facts only).
+const ZH_SHIPPED = ((v) => v[0] > 0 || v[1] >= 23)(manifest.version.replace(/^v/, '').split('.').map(Number));
+
 const GROUPS: FeatureGroup[] = [
   { key: 'plan', title: 'Plan', icon: 'sun', items: [
     { name: 'Today with the briefing', line: 'A sentence that names what is late, what is full and who replied.', doc: '/docs/briefing/', since: '0.11.0' },
@@ -79,8 +82,10 @@ const GROUPS: FeatureGroup[] = [
   { key: 'devices', title: 'Sync and devices', icon: 'monitor-smartphone', items: [
     { name: 'Offline on every device', line: 'Edit anywhere; changes merge field by field.', doc: '/docs/offline-and-sync/' },
     { name: 'Phone, desktop and browser', line: 'Install from the browser on any system.', doc: '/docs/install-app/' },
-    { name: 'An Android app', line: 'In internal testing; on Google Play from about mid-November.', doc: '/docs/android-app/', since: '0.10.0' },
-    { name: 'Six languages', line: 'English, Deutsch, Français, Español, Italiano, Português.', doc: '/docs/language/' },
+    { name: 'An Android app', line: 'Available from GitHub as an APK; Google Play and F-Droid are coming.', doc: '/docs/android-app/#install-the-app', since: '0.10.0' },
+    ZH_SHIPPED
+      ? { name: 'Seven languages', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文.', doc: '/docs/language/' }
+      : { name: 'Six languages', line: 'English, Deutsch, Français, Español, Italiano, Português; 简体中文 in the next release.', doc: '/docs/language/' },
     { name: 'Themes', line: 'Fourteen editor palettes, your own in an editor or from a VS Code theme.', doc: '/docs/themes/', since: '0.20.0' },
     { name: 'Today’s count on the app icon', line: 'The installed app’s icon shows how many of today’s tasks are open.', doc: '/docs/app-icon-badge/', since: '0.20.0' },
     { name: 'Your own accent colour', line: 'Any colour, adjusted until it reads well in light and dark.', doc: '/docs/custom-accent/', since: '0.19.0' },
