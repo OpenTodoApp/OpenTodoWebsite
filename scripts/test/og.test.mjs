@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { cardSvg, ogFileFor, ogPathFor, sectionOf, wrap } from '../../scripts/lib/og.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { KIT_CARD, cardSvg, defaultCardSource, ogFileFor, ogPathFor, sectionOf, wrap } from '../../scripts/lib/og.mjs';
 
 test('every page maps to its own card path', () => {
   assert.equal(ogPathFor('/'), '/og/index.png');
@@ -43,4 +46,20 @@ test('the rendered card shows the nested mark in its place', async () => {
   const at = (x, y) => [...data.subarray((y * info.width + x) * info.channels, (y * info.width + x) * info.channels + 3)];
   assert.deepEqual(at(102, 98), [0x0f, 0x17, 0x2a], 'inside the 44 px mark box: the mark');
   assert.deepEqual(at(60, 98), [0xf8, 0xfa, 0xfc], 'left of it: the card background');
+});
+
+test('the default card is the bundle\'s brand kit card, else the home page\'s card', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'og-default-'));
+  const bundle = path.join(tmp, 'bundle');
+  const dist = path.join(tmp, 'dist');
+  fs.mkdirSync(bundle, { recursive: true });
+  assert.equal(defaultCardSource(bundle, dist), null);
+  const home = ogFileFor(dist, '/');
+  fs.mkdirSync(path.dirname(home), { recursive: true });
+  fs.writeFileSync(home, 'home');
+  assert.equal(defaultCardSource(bundle, dist), home);
+  fs.mkdirSync(path.dirname(path.join(bundle, KIT_CARD)), { recursive: true });
+  fs.writeFileSync(path.join(bundle, KIT_CARD), 'kit');
+  assert.equal(defaultCardSource(bundle, dist), path.join(bundle, KIT_CARD));
+  fs.rmSync(tmp, { recursive: true, force: true });
 });

@@ -2,6 +2,7 @@
 // from the page's own <title> and description with the app's typeface, so every
 // link shared from the site carries its page's name rather than one generic card.
 // Pure helpers here (unit-tested); scripts/og.mjs renders with sharp.
+import fs from 'node:fs';
 import path from 'node:path';
 
 export const OG_WIDTH = 1200;
@@ -71,4 +72,18 @@ export function cardSvg({ title, description, section, mark }) {
   ${descLines.map((l, i) => `<text x="80" y="${(descTop + i * 38).toFixed(1)}" font-family="Inter" font-size="27" fill="#475569">${esc(l)}</text>`).join('\n  ')}
   <text x="80" y="574" font-family="Inter" font-size="24" fill="#64748b">open-todo.app · free, open source, on your own server</text>
 </svg>`;
+}
+
+/** The brand kit's default social card in the bundle (from app 0.23.0, bundle-brand-kit). */
+export const KIT_CARD = 'brand/kit/png/og-default-1200x630.png';
+
+/**
+ * The site's default card, /assets/og.png (default-card-from-kit D1): the pinned bundle's
+ * brand kit card when the bundle has one, else the home page's own card; null when neither exists.
+ */
+export function defaultCardSource(bundleDir, dist) {
+  const kit = path.join(bundleDir, KIT_CARD);
+  if (fs.existsSync(kit)) return kit;
+  const home = ogFileFor(dist, '/');
+  return fs.existsSync(home) ? home : null;
 }
