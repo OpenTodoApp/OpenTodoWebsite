@@ -2,6 +2,7 @@
 // Main navigation (website-restyle-chrome D1): four destinations, the language switch, a
 // GitHub star and one primary action, Try the demo. Below 768 px one <details> menu holds the
 // links and the language switch, so it opens without JavaScript; the demo stays visible.
+import { BRAND } from '../lib/brand';
 import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
 import { NAV, SITE } from '../lib/site';
@@ -24,7 +25,7 @@ const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' :
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="/">
-      <img src="/assets/favicon.svg" width="28" height="28" alt="" />
+      <img src={BRAND.favicon} width="28" height="28" alt="" />
       <span>OpenTodo</span>
     </a>
     <nav class="nav-desktop" aria-label="Main">
