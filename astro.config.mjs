@@ -13,7 +13,7 @@ assertDeployable(bundle);
 process.env.OPENTODO_BUNDLE = JSON.stringify(bundle);
 
 /** @type {Record<string, string>} */
-const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.md': 'text/markdown; charset=utf-8' };
 
 /**
  * The bundle's docs site is served under /docs/ exactly as shipped (spec
@@ -50,11 +50,13 @@ function bundleDocs() {
 /**
  * The site's mark comes from the bundle (brand-from-bundle D1): the favicon is the
  * bundle's brand/mark-colour.svg byte for byte and the touch icon a 180 px render of
- * it, written to dist/assets/ after the build and served from the bundle in dev.
+ * it, written to dist/assets/ after the build and served from the bundle in dev. The
+ * whole brand/ folder is copied to dist/brand/ for the press kit's downloads (press-kit D1).
  */
 /** @returns {import('astro').AstroIntegration} */
 function bundleBrand() {
   const { favicon, touchSvg } = brandIcons(bundle.dir);
+  const brandDir = path.join(bundle.dir, 'brand');
   /** Rendered once, on first use. @type {Promise<Buffer> | undefined} */
   let touchPng;
   const touch = () => (touchPng ??= touchIconPng(touchSvg));
@@ -63,8 +65,16 @@ function bundleBrand() {
     hooks: {
       'astro:server:setup': ({ server }) => {
         server.middlewares.use((/** @type {import('node:http').IncomingMessage} */ req, /** @type {import('node:http').ServerResponse} */ res, /** @type {(err?: unknown) => void} */ next) => {
-          const url = (req.url ?? '').split('?')[0];
+          const url = decodeURIComponent((req.url ?? '').split('?')[0]);
           if (url === '/assets/favicon.svg') { res.setHeader('Content-Type', MIME['.svg']); res.end(favicon); return; }
+          // The press kit's downloads: the bundle's brand/ folder at /brand/ (press-kit D1).
+          if (url.startsWith('/brand/')) {
+            const file = path.join(brandDir, url.slice('/brand/'.length));
+            if (!file.startsWith(brandDir + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return next();
+            res.setHeader('Content-Type', MIME[path.extname(file)] ?? 'application/octet-stream');
+            fs.createReadStream(file).pipe(res);
+            return;
+          }
           if (url !== '/assets/apple-touch-icon.png') return next();
           touch().then((png) => { res.setHeader('Content-Type', MIME['.png']); res.end(png); }, next);
         });
@@ -75,6 +85,9 @@ function bundleBrand() {
         fs.mkdirSync(out, { recursive: true });
         fs.writeFileSync(path.join(out, 'favicon.svg'), favicon);
         fs.writeFileSync(path.join(out, 'apple-touch-icon.png'), await touch());
+        const brandOut = path.join(new URL(dir).pathname, 'brand');
+        if (fs.existsSync(brandOut)) throw new Error('dist/brand/ already exists: it belongs to the bundle, no page or file may live under /brand/');
+        fs.cpSync(brandDir, brandOut, { recursive: true });
       },
     },
   };

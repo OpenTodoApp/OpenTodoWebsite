@@ -1,0 +1,78 @@
+---
+// /press-kit (press-kit): the files someone writing about OpenTodo needs, starting with
+// the brand assets. Every file is the pinned bundle's own (brand/, served at /brand/ by
+// bundleBrand); scripts/lib/presskit.mjs lists only what that bundle has. English only,
+// like every page but the home page (website-languages).
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { bundle, versionTag } from '../lib/bundle';
+import { SITE } from '../lib/site';
+import { pressKit } from '../../scripts/lib/presskit.mjs';
+
+const kit = pressKit(bundle.dir);
+const folder = `${SITE.appRepo}/tree/${versionTag}/brand`;
+// Worded for any mark, since the files are the pinned release's: the shape can change with a release.
+const rules = [
+  'Keep the mark in its own colours, except where you use a one-colour file.',
+  'Don\'t put the mark inside a checkbox or a shape of your own; for a tile, use the app icon or avatar files as they are. Never draw the name inside the mark.',
+  'Leave clear space around the mark of at least a third of its height.',
+  'Don\'t stretch, rotate, outline or add effects to it; scale it as a whole.',
+];
+---
+<Base title="Press kit" description={`OpenTodo's logo and brand assets for articles, catalogues and slides, in SVG and PNG, from release ${versionTag}.`}>
+  <section class="page-head">
+    <div class="wrap">
+      <h1>Press kit</h1>
+      <p class="lede">Writing about OpenTodo, listing it in a catalogue or putting it on a slide? Everything here is free to use for that. This page starts with the brand assets: the logo of OpenTodo {versionTag}, in the forms you are most likely to need.</p>
+      {kit.full && <p><a href={folder}>All files in one folder on GitHub</a></p>}
+    </div>
+  </section>
+
+  {kit.groups.map((group, n) => (
+    <section class:list={['section', n % 2 === 1 && 'section-alt']} id={group.id} aria-labelledby={`${group.id}-title`}>
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id={`${group.id}-title`}>{group.title}</h2>
+          <p class="lede">{group.use}</p>
+        </div>
+        <div class:list={['grid', group.items.length > 2 ? 'grid-3' : 'grid-2']}>
+          {group.items.map((item) => (
+            <article class="card asset">
+              {item.preview && (
+                <div class:list={['asset-preview', item.background]}>
+                  <img src={item.preview} alt={item.alt} loading="lazy" decoding="async" />
+                </div>
+              )}
+              <h3>{item.title}</h3>
+              <ul class="downloads" aria-label={`Download ${item.title}`}>
+                {item.files.map((f) => (
+                  <li><a href={f.href} download><Icon name="download" size={16} />{f.label}</a> <span class="meta">{f.size}</span></li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section" id="use" aria-labelledby="use-title">
+    <div class="wrap narrow">
+      <h2 id="use-title">Using the logo</h2>
+      <ul class="checks">
+        {rules.map((r) => <li><Icon name="check" size={18} /> <span>{r}</span></li>)}
+      </ul>
+      <p class="muted">The mark is part of OpenTodo, free and open source under the AGPL-3.0, so you may use, share and adapt it.{kit.full && ' The name in the logo files is drawn from Inter, under the SIL Open Font License 1.1.'} For anything else, ask on <a href={SITE.discord}>Discord</a> or open an issue on <a href={`${SITE.appRepo}/issues`}>GitHub</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .asset { display: flex; flex-direction: column; }
+  .asset-preview { display: grid; place-items: center; min-height: 9rem; padding: 1.25rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border: 1px solid var(--line); }
+  .asset-preview.light { background: #ffffff; }
+  .asset-preview.dark { background: #0f172a; border-color: #0f172a; }
+  .asset-preview img { max-width: 100%; max-height: 7rem; width: auto; height: auto; }
+  .downloads { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+  .downloads a { display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; font-size: 0.9375rem; }
+</style>

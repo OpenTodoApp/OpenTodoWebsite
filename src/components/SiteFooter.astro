@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
   ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Self-host', '/self-host/'], ['Templates', '/templates/'], ['Changelog', '/changelog/']]],
   ['Learn', [['Guides and how-tos', NAV.learn], ['Docs', '/docs/'], ['Under the hood', '/under-the-hood/'], ['Moving from another app', '/switch/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : [])]],
-  ['Project', [['About', '/about/'], ['Support OpenTodo', '/support/'], ['Demo status', '/status/'], ['Security', '/security/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
+  ['Project', [['About', '/about/'], ['Press kit', '/press-kit/'], ['Support OpenTodo', '/support/'], ['Demo status', '/status/'], ['Security', '/security/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
 ];
 // Ways to help and follow (website-restyle-chrome D4): plain text links, nothing loaded from the services.
 const community: { label: string; href: string; icon: string; data: string }[] = [
