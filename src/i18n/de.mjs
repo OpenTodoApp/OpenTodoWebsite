@@ -55,11 +55,10 @@ export default {
       ],
     },
     ways: {
-      h2: 'Vier Wege hinein.',
-      intro: 'OpenTodo hat keine eigene Cloud, hier gibt es also nichts, wofür du dich anmelden müsstest. Du kannst später wechseln; deine Daten kommen mit.',
+      h2: 'Drei Wege hinein.',
+      intro: 'OpenTodo wird nicht als gehosteter Dienst angeboten, hier gibt es also nichts, wofür du dich anmelden müsstest. Du kannst später zwischen den dreien wechseln; deine Daten kommen mit.',
       items: [
         { title: 'Demo ausprobieren', text: 'Eine private Sandbox im Browser mit Beispielprojekten, gelöscht nach zwei Stunden ohne Aktivität.', cta: 'Demo öffnen', more: 'So funktioniert die Demo' },
-        { title: 'Für dich gehostet', text: 'PikaPods betreibt es für dich ab 2 $ im Monat, Updates und HTTPS inklusive. Ein Teil davon unterstützt OpenTodo.', cta: 'Auf PikaPods starten', more: 'Gehostet oder selbst betrieben' },
         { title: 'Einem Server beitreten', text: 'Jemand betreibt es für deinen Haushalt oder dein Team? Öffne den Einladungslink, den du bekommen hast, und installiere die App dann aus dem Browser.', cta: 'App installieren', more: 'Die App installieren' },
         { title: 'Selbst betreiben', text: 'Docker, Umbrel, Unraid, TrueNAS, ein Pi oder ein VPS, beim ersten Mal in etwa zwanzig Minuten.', cta: 'Selbst hosten', more: 'Deinen Server planen' },
       ],

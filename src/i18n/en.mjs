@@ -53,11 +53,10 @@ export default {
       ],
     },
     ways: {
-      h2: 'Four ways in.',
-      intro: 'OpenTodo has no cloud of its own, so there is nothing to sign up for here. Move between them later; your data comes with you.',
+      h2: 'Three ways in.',
+      intro: 'OpenTodo is not offered as a hosted service, so there is nothing to sign up for here. Move between the three later; your data comes with you.',
       items: [
         { title: 'Try the demo', text: 'A private sandbox in your browser with sample projects, deleted after two hours without activity.', cta: 'Open the demo', more: 'How the demo works' },
-        { title: 'Hosted for you', text: 'PikaPods runs it for you from $2 a month, with updates and HTTPS handled. Part of what you pay supports OpenTodo.', cta: 'Run it on PikaPods', more: 'Hosted or your own' },
         { title: 'Join a server', text: 'Someone runs it for your home or team? Open the invitation link they sent, then install the app from the browser.', cta: 'Install the app', more: 'Installing the app' },
         { title: 'Run your own', text: 'Docker, Umbrel, Unraid, TrueNAS, a Pi or a VPS, in about twenty minutes the first time.', cta: 'Self-host', more: 'Plan your server' },
       ],

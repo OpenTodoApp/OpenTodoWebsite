@@ -55,11 +55,10 @@ export default {
       ],
     },
     ways: {
-      h2: 'Quatre façons d’entrer.',
-      intro: 'OpenTodo n’a pas de cloud à lui : il n’y a donc rien à quoi s’inscrire ici. Vous pourrez changer plus tard ; vos données vous suivent.',
+      h2: 'Trois façons d’entrer.',
+      intro: 'OpenTodo n’est pas proposé comme service hébergé : il n’y a donc rien à quoi s’inscrire ici. Vous pourrez passer de l’une à l’autre plus tard ; vos données vous suivent.',
       items: [
         { title: 'Essayer la démo', text: 'Un bac à sable privé dans votre navigateur avec des projets d’exemple, supprimé après deux heures sans activité.', cta: 'Ouvrir la démo', more: 'Comment fonctionne la démo' },
-        { title: 'Hébergé pour vous', text: 'PikaPods le fait tourner pour vous à partir de 2 $ par mois, mises à jour et HTTPS compris. Une partie de ce que vous payez soutient OpenTodo.', cta: 'Lancer sur PikaPods', more: 'Hébergé ou chez vous' },
         { title: 'Rejoindre un serveur', text: 'Quelqu’un le fait tourner pour votre foyer ou votre équipe ? Ouvrez le lien d’invitation reçu, puis installez l’application depuis le navigateur.', cta: 'Installer l’application', more: 'Installer l’application' },
         { title: 'Faire tourner le vôtre', text: 'Docker, Umbrel, Unraid, TrueNAS, un Pi ou un VPS, en une vingtaine de minutes la première fois.', cta: 'Auto-héberger', more: 'Prévoir votre serveur' },
       ],
