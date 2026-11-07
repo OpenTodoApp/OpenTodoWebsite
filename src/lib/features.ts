@@ -104,7 +104,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Webhooks', line: 'Signed events for Home Assistant, n8n and Telegram.', doc: '/docs/webhooks/' },
     { name: 'ntfy, Pushover and Gotify', line: 'Reminders delivered where you already look.', doc: '/docs/notification-channels/', since: '0.11.0' },
     { name: 'HTTP API', line: 'Every route documented, with scoped tokens.', doc: '/docs/api/' },
-    { name: 'A stability promise', line: 'From 1.0 the API, sync, export, MCP tools and CLI only grow.', doc: '/docs/stability/', since: '0.22.0' },
+    { name: 'A stability promise', line: 'Since 1.0 the API, sync, export, MCP tools and CLI only grow.', doc: '/docs/stability/', since: '0.22.0' },
     { name: 'MCP server', line: 'Your AI tools read and change tasks under an agent token.', doc: '/docs/mcp/' },
     { name: 'Claude Code plugin', line: 'Skills that teach Claude to plan your tasks safely.', doc: '/docs/claude/', since: '0.11.0' },
   ] },
