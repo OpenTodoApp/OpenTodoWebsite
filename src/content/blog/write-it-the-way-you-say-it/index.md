@@ -1,7 +1,7 @@
 ---
 title: "Write it the way you'd say it"
 summary: "Quick add reads \"Call Sarah next Wednesday at 3pm #work @call +30m\" and fills in the date, time, project, label and estimate. Paste six lines and you get six tasks, with one Undo for all of them."
-publishedAt: 2026-11-19
+publishedAt: 2026-11-09
 author: raffaele
 category: news
 cover: ./cover.png
@@ -9,7 +9,7 @@ coverAlt: "Today in OpenTodo with the line \"Call Sarah next Wednesday at 3pm #w
 tags: [task-management]
 series: in-practice
 part: 1
-draft: true
+draft: false
 ---
 <!-- no-claim -->
 A task arrives while you are doing something else. Someone mentions a call, a bill turns up, a colleague asks for an invoice. If writing it down means a form with a date picker, a project menu and a label field, you put it off, and then it is gone. The first post of this series is about the one habit that makes the rest possible: getting things out of your head in the time it takes to say them.
