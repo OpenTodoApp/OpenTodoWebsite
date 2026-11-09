@@ -19,6 +19,7 @@ export default {
       tryDemo: '体验演示',
       getStarted: '开始使用',
       note: '无需账号，无需安装。',
+      iosApp: '新：iPhone 和 iPad 应用，首个版本。',
       alt: 'OpenTodo 的“今天”视图：标题下方是对今天的一句话总结，接着是每行一个的任务，它们的日期、项目和标签在列中整齐排列。',
     },
     day: {
