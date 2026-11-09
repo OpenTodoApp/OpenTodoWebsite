@@ -17,7 +17,7 @@ Pages affected: every post of a series, the new series pages. Out of scope: the 
 
 ### Modified Capabilities
 
-- `website-blog`: post page (the label and the part links), checked post metadata (series and part), a new series page requirement.
+- `website-blog`: checked post metadata (series and part); new requirements for the parts of a series (the label and the part links) and the series pages.
 
 ## Impact
 
