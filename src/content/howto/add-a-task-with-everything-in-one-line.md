@@ -1,7 +1,7 @@
 ---
 title: Add a task with its date, project and label in one line
 summary: "Type \"Call Sam tomorrow 3pm #Work @call p2 +30m\" and OpenTodo fills in everything. In six languages."
-lastReviewed: 2026-10-15
+lastReviewed: 2026-11-09
 sources: [/docs/quick-add/, /docs/tasks-and-projects/]
 group: Every day
 minutes: 2
@@ -27,7 +27,7 @@ related: [make-a-task-repeat, set-a-reminder]
 - Dates work in English, German, French, Italian, Spanish and Portuguese, all at once: `demain à 15h` and `morgen um 15 Uhr` both work. [Languages](/docs/quick-add/#languages)
 - Text in double quotes is never interpreted: `Read "Next Friday" tomorrow`. [Preview chips](/docs/quick-add/#preview-chips)
 - Where you are matters: a task typed in Today is due today, one typed in a project goes into that project, unless the line says otherwise. [Views and defaults](/docs/quick-add/#views-and-defaults)
-- Repeat rules are not read here. Add the task, then open it and set **Repeat**. [Make a task repeat](/docs/recurring-and-reminders/#make-a-task-repeat)
+- Repeats are read too: `Water plants every monday` repeats every Monday. For rules a line can't say, open the task and set **Repeat**. [Make a task repeat](/docs/recurring-and-reminders/#make-a-task-repeat)
 
 ## If it does not work
 
