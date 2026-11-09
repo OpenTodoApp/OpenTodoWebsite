@@ -36,3 +36,32 @@ export const postUrl = (post) => `/blog/${post.id}/`;
 export const feedItem = (post) => ({ title: post.data.title, description: post.data.summary, link: postUrl(post), pubDate: post.data.publishedAt });
 
 export const CATEGORY_LABELS = { news: 'News', releases: 'Releases', development: 'Development', ownership: 'Ownership' };
+
+// Series (website-blog-series D1, D2): a post's `series` names a key of
+// src/content/series.json and its `part` orders it within the series.
+
+export const seriesUrl = (id) => `/blog/series/${id}/`;
+
+/** Two posts of one series with the same part number, drafts included (they publish later). */
+export function seriesProblems(posts) {
+  const seen = new Map();
+  const problems = [];
+  for (const p of [...posts].sort((a, b) => a.id.localeCompare(b.id))) {
+    if (!p.data.series) continue;
+    const key = `${p.data.series}#${p.data.part}`;
+    if (seen.has(key)) problems.push(`blog posts "${seen.get(key)}" and "${p.id}" are both part ${p.data.part} of series "${p.data.series}"; give each part its own number`);
+    else seen.set(key, p.id);
+  }
+  return problems;
+}
+
+/** The parts of a series among `posts` (pass published posts), in part order. */
+export const seriesParts = (id, posts) => posts.filter((p) => p.data.series === id).sort((a, b) => a.data.part - b.data.part);
+
+/** The published parts before and after `post` in its series. */
+export function seriesNeighbours(post, posts) {
+  if (!post.data.series) return {};
+  const parts = seriesParts(post.data.series, posts);
+  const i = parts.findIndex((p) => p.id === post.id);
+  return { previous: i > 0 ? parts[i - 1] : undefined, next: i >= 0 ? parts[i + 1] : undefined };
+}

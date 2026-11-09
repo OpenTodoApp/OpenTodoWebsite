@@ -29,7 +29,7 @@ const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir, { withFileTypes:
     const text = fs.readFileSync(path.join(ROOT, file), 'utf8');
     const fm = frontMatter(text);
     const live = fm.publishedAt ? isPublished({ data: { draft: !!fm.draft, publishedAt: new Date(fm.publishedAt) } }) : false;
-    return { slug: e.name, file, text, inDevelopment: fm.inDevelopment === true, live };
+    return { slug: e.name, file, text, inDevelopment: fm.inDevelopment === true, live, series: fm.series };
   });
 
 const pages = new Set(['/', '/about/', '/install/', '/self-host/', '/under-the-hood/', '/security/', '/changelog/', '/templates/', '/switch/', '/features/', '/learn/', '/start/', '/feed.xml', '/blog/', '/blog/feed.xml']);
@@ -47,6 +47,8 @@ for (const c of COLLECTIONS) for (const s of slugs(c)) pages.add(`/${route[c] ??
 for (const s of slugs('templates')) pages.add(`/templates/${s}.json`);
 for (const c of BLOG_CATEGORIES) pages.add(`/blog/category/${c}/`);
 for (const p of posts) if (p.live) pages.add(`/blog/${p.slug}/`);
+// A series page exists once one of its parts is published (website-blog-series D3).
+for (const p of posts) if (p.live && p.series) pages.add(`/blog/series/${p.series}/`);
 const pageExists = (href) => pages.has(href.split('#')[0]);
 const docExists = (h) => docExistsIn(bundle.dir, h);
 

@@ -3,6 +3,7 @@ import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docExists, releases } from './lib/bundle';
 import authors from './content/authors.json';
+import series from './content/series.json';
 import { articleSchema, blogSchema, blogSlugProblem, howtoSchema, switchSchema, templateSchema } from './content/schemas.mjs';
 
 const md = (base: string) => glob({ pattern: '**/[^_]*.md', base: `./src/content/${base}` });
@@ -34,6 +35,6 @@ export const collections = {
   }),
   blog: defineCollection({
     loader: blogLoader,
-    schema: ({ image }) => blogSchema({ releaseExists, image, author: authorKey }),
+    schema: ({ image }) => blogSchema({ releaseExists, seriesIds: Object.keys(series), image, author: authorKey }),
   }),
 };

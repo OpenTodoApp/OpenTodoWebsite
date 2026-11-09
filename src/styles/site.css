@@ -625,6 +625,10 @@ a.card h3 { color: var(--strong); }
 .post-byline { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: center; font-size: 0.875rem; color: var(--muted); margin: 0; }
 .post-byline a { color: var(--accent-text); font-weight: 600; text-decoration: none; }
 .post-byline strong { color: var(--strong); font-weight: 600; }
+.post-series { font-size: 0.875rem; font-weight: 600; margin: 1.25rem 0 0; }
+.post-series a { color: var(--accent-text); text-decoration: none; }
+.post-series a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.post-series + h1 { margin-top: 0.35rem; }
 .post-hero { max-width: 46rem; margin: 0 auto 2rem; padding-inline: var(--gutter); }
 .post-hero .post-cover { border-radius: var(--radius); border: 1px solid var(--border); }
 .post-prose { font-size: 1.0625rem; line-height: 1.7; max-width: 68ch; }
@@ -909,6 +913,7 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
   .support-hero .cta-row .btn, .support-callout .cta-row .btn { flex: 1 1 100%; }
 }
 .page-head.blog-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) 0; }
+.series-head .lede { font-size: 1.0625rem; margin-bottom: 0.5rem; }
 
 /* ------------------------------------------------------------ changelog (website-changelog) */
 .page-head.changelog-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) 1rem; }

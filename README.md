@@ -56,7 +56,7 @@ Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md
 
 ### Writing a blog post
 
-1. Create a folder `src/content/blog/<slug>/` with an `index.md`. The folder name is the URL (`/blog/<slug>/`); `page`, `category` and `feed.xml` are reserved. Put the post's images in the same folder.
+1. Create a folder `src/content/blog/<slug>/` with an `index.md`. The folder name is the URL (`/blog/<slug>/`); `page`, `category`, `series` and `feed.xml` are reserved. Put the post's images in the same folder.
 2. Start it with front matter:
 
    ```yaml
@@ -72,6 +72,8 @@ Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md
    coverAlt: What the cover shows # required with a cover
    inDevelopment: false           # true for work that is not in a release yet
    shippedIn: 0.4.0               # optional, once an in-development post's work is released
+   series: in-practice            # optional: a key in src/content/series.json
+   part: 3                        # required with a series: its number there, used once
    draft: true                    # drafts never render; remove it once the maintainer approves
    ---
    ```

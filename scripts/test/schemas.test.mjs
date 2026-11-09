@@ -54,9 +54,19 @@ test('blog: a cover without alt text fails', () => {
   assert.ok(messages(bs.safeParse(post({ cover: 'cover.png' }))).some((m) => m.startsWith('coverAlt:')));
 });
 
+test('blog: a series is a known id with a positive whole part number', () => {
+  const ss = blogSchema({ releaseExists: () => false, seriesIds: ['in-practice'] });
+  assert.equal(ss.safeParse(post({ series: 'in-practice', part: 1 })).success, true);
+  assert.ok(messages(ss.safeParse(post({ series: 'elsewhere', part: 1 }))).some((m) => m.includes('"series" elsewhere is not in src/content/series.json')));
+  assert.ok(messages(ss.safeParse(post({ series: 'in-practice' }))).some((m) => m.startsWith('part: a post in a series needs')));
+  assert.ok(messages(ss.safeParse(post({ part: 2 }))).some((m) => m.startsWith('part: "part" is only for posts in a "series"')));
+  for (const part of [0, -1, 1.5, '2']) assert.ok(messages(ss.safeParse(post({ series: 'in-practice', part }))).some((m) => m.startsWith('part:')), `part ${part}`);
+});
+
 test('blog: unknown category and reserved slugs are refused', () => {
   assert.ok(messages(bs.safeParse(post({ category: 'misc' }))).some((m) => m.startsWith('category:')));
   assert.match(blogSlugProblem('page'), /collides/);
+  assert.match(blogSlugProblem('series'), /collides/);
   assert.equal(blogSlugProblem('hello-world'), null);
 });
 

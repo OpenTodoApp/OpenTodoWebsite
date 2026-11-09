@@ -152,16 +152,17 @@ export function templateSchema({ docExists, today = () => new Date() }) {
 /** @type {['news', 'releases', 'development', 'ownership']} */
 export const BLOG_CATEGORIES = ['news', 'releases', 'development', 'ownership'];
 /** Slugs that collide with blog routes (website-blog design D1). */
-export const RESERVED_BLOG_SLUGS = ['page', 'category', 'feed.xml'];
+export const RESERVED_BLOG_SLUGS = ['page', 'category', 'series', 'feed.xml'];
 const VERSION = /^\d+\.\d+\.\d+$/;
 
 /**
  * Blog posts (website-blog design D1). `releaseExists(version)` answers whether
- * the version is in the pinned bundle's changelog; `image` is Astro's image()
+ * the version is in the pinned bundle's changelog; `seriesIds` are the keys of
+ * src/content/series.json (website-blog-series D1); `image` is Astro's image()
  * helper for covers (a plain string is accepted in unit tests).
- * @param {{ releaseExists: (v: string) => boolean, image?: () => import('astro/zod').ZodType, author?: import('astro/zod').ZodType }} opts
+ * @param {{ releaseExists: (v: string) => boolean, seriesIds?: string[], image?: () => import('astro/zod').ZodType, author?: import('astro/zod').ZodType }} opts
  */
-export function blogSchema({ releaseExists, image = () => z.string(), author = z.string().min(1) }) {
+export function blogSchema({ releaseExists, seriesIds = [], image = () => z.string(), author = z.string().min(1) }) {
   const version = (field) =>
     z.string().regex(VERSION, `"${field}" must be a version like 0.3.0`)
       .refine((v) => releaseExists(v), { error: (iss) => `"${field}" ${iss.input} is not a release in the pinned bundle's changelog` });
@@ -181,8 +182,12 @@ export function blogSchema({ releaseExists, image = () => z.string(), author = z
     inDevelopment: z.boolean().default(false),
     shippedIn: version('shippedIn').optional(),
     tags: tags(),
+    series: z.string().refine((id) => seriesIds.includes(id), { error: (iss) => `"series" ${iss.input} is not in src/content/series.json` }).optional(),
+    part: z.number({ error: () => '"part" must be a whole number from 1' }).int({ error: () => '"part" must be a whole number from 1' }).positive({ error: () => '"part" must be a whole number from 1' }).optional(),
     draft: z.boolean().default(false),
   }).superRefine((d, ctx) => {
+    if (d.series && d.part === undefined) ctx.addIssue({ code: 'custom', path: ['part'], message: 'a post in a series needs its "part" number' });
+    if (d.part !== undefined && !d.series) ctx.addIssue({ code: 'custom', path: ['part'], message: '"part" is only for posts in a "series"' });
     if (d.cover && !d.coverAlt) ctx.addIssue({ code: 'custom', path: ['coverAlt'], message: 'a cover image needs "coverAlt" (its text alternative)' });
     if (d.category === 'releases' && !d.release) ctx.addIssue({ code: 'custom', path: ['release'], message: 'a Releases post must name the released version in "release"' });
     if (d.category !== 'releases' && d.release) ctx.addIssue({ code: 'custom', path: ['release'], message: '"release" is only for posts in the Releases category' });
