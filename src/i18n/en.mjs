@@ -16,6 +16,7 @@ export default {
       tryDemo: 'Try the demo',
       getStarted: 'Get started',
       note: 'No account, nothing to install.',
+      iosApp: 'New: the iPhone and iPad app, a first release.',
       alt: 'OpenTodo\'s Today: the sentence about the day under the title, then the tasks in one line each with their dates, projects and labels in aligned columns.',
     },
     day: {

@@ -18,6 +18,7 @@ export default {
       tryDemo: 'Experimentar a demo',
       getStarted: 'Começar',
       note: 'Sem conta, sem nada para instalar.',
+      iosApp: 'Novo: o app para iPhone e iPad, uma primeira versão.',
       alt: 'A vista Hoje do OpenTodo: a frase sobre o dia por baixo do título e, a seguir, as tarefas numa linha cada, com as datas, os projetos e as etiquetas em colunas alinhadas.',
     },
     day: {
