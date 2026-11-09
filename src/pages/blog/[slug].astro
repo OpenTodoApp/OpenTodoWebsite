@@ -1,5 +1,5 @@
 ---
-// One post (website-blog design D3, D4).
+// One post (website-blog design D3, D4; website-blog-series D2).
 import { getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
@@ -11,7 +11,7 @@ import PostRow from '../../components/blog/PostRow.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../lib/site';
 import { changelogUrl } from '../../lib/changelog';
-import { CATEGORY_LABELS, authorOf, categoryUrl, formatDate, isoDate, publishedPosts, readingMinutes, relatedPosts, type Post } from '../../lib/blog';
+import { CATEGORY_LABELS, SERIES, authorOf, categoryUrl, formatDate, isoDate, publishedPosts, readingMinutes, relatedPosts, seriesNeighbours, seriesUrl, type Post } from '../../lib/blog';
 
 export async function getStaticPaths() {
   const all = await publishedPosts();
@@ -23,6 +23,12 @@ const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth === 2);
 const author = authorOf(post);
 const related = relatedPosts(post, all);
+// A part of a series links to its neighbouring parts instead of the neighbouring posts (website-blog-series D2).
+const series = d.series ? SERIES[d.series] : undefined;
+const parts = seriesNeighbours(post, all);
+const inSeries = !!(parts.previous || parts.next);
+const prevLink = inSeries ? parts.previous : older;
+const nextLink = inSeries ? parts.next : newer;
 const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src : undefined;
 ---
 <Base title={d.title} description={d.summary} ogType="article" image={og} crumbs={[{ name: 'Blog', href: '/blog/' }, { name: CATEGORY_LABELS[d.category], href: categoryUrl(d.category) }, { name: d.title, href: `/blog/${post.id}/` }]}>
@@ -37,6 +43,7 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
           {d.updatedAt && <span>Updated <time datetime={isoDate(d.updatedAt)}>{formatDate(d.updatedAt)}</time></span>}
           <span>{readingMinutes(post.body)} min read</span>
         </p>
+        {series && d.series && <p class="post-series"><a href={seriesUrl(d.series)}>{series.title} · Part {d.part}</a></p>}
         <h1>{d.title}</h1>
         <p class="lede">{d.summary}</p>
       </div>
@@ -66,10 +73,10 @@ const og = d.cover ? (await getImage({ src: d.cover, width: 1200, height: 630, f
           <strong>{author.name}</strong>
           <p>{author.bio} <a href={author.url}>More about {author.name.split(' ')[0]}</a></p>
         </footer>
-        {(newer || older) && (
-          <nav class="post-nav" aria-label="More posts">
-            {older ? <a class="prev" href={`/blog/${older.id}/`} rel="prev"><span>Previous post</span><strong>{older.data.title}</strong></a> : <span />}
-            {newer ? <a class="next" href={`/blog/${newer.id}/`} rel="next"><span>Next post</span><strong>{newer.data.title}</strong></a> : <span />}
+        {(prevLink || nextLink) && (
+          <nav class="post-nav" aria-label={inSeries ? `More of ${series?.title}` : 'More posts'}>
+            {prevLink ? <a class="prev" href={`/blog/${prevLink.id}/`} rel="prev"><span>{inSeries ? `Part ${prevLink.data.part}` : 'Previous post'}</span><strong>{prevLink.data.title}</strong></a> : <span />}
+            {nextLink ? <a class="next" href={`/blog/${nextLink.id}/`} rel="next"><span>{inSeries ? `Part ${nextLink.data.part}` : 'Next post'}</span><strong>{nextLink.data.title}</strong></a> : <span />}
           </nav>
         )}
       </div>

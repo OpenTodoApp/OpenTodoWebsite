@@ -1,10 +1,11 @@
 ---
 // One post as a row (website-blog-compact D1): the date, the title with its one-line summary,
-// and the category. Used by the index, the category pages and a post's related posts.
+// and the category (or `label`, a series page's part number). Used by the index, the category
+// pages, a series page and a post's related posts.
 import { CATEGORY_LABELS, formatDate, isoDate, type Post } from '../../lib/blog';
 
-interface Props { post: Post; headingLevel?: 2 | 3 }
-const { post, headingLevel = 2 } = Astro.props;
+interface Props { post: Post; headingLevel?: 2 | 3; label?: string }
+const { post, headingLevel = 2, label } = Astro.props;
 const d = post.data;
 const H = `h${headingLevel}` as 'h2' | 'h3';
 const dev = d.inDevelopment && !d.shippedIn;
@@ -15,5 +16,5 @@ const dev = d.inDevelopment && !d.shippedIn;
     <H class="post-row-title"><a href={`/blog/${post.id}/`}>{d.title}</a></H>
     <p>{d.summary}</p>
   </div>
-  <span class="post-row-cat">{dev ? 'In development' : CATEGORY_LABELS[d.category]}</span>
+  <span class="post-row-cat">{label ?? (dev ? 'In development' : CATEGORY_LABELS[d.category])}</span>
 </li>

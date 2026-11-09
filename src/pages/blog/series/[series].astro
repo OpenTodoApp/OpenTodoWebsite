@@ -1,0 +1,31 @@
+---
+// /blog/series/<id>/: the published parts of one series in order (website-blog-series D3).
+// A series with no published part has no page, so nothing links to an empty one.
+import Base from '../../../layouts/Base.astro';
+import EndCta from '../../../components/EndCta.astro';
+import PostRow from '../../../components/blog/PostRow.astro';
+import { SERIES, publishedPosts, seriesParts, seriesUrl, type Post, type Series } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const all = await publishedPosts();
+  return Object.entries(SERIES)
+    .map(([id, series]) => ({ params: { series: id }, props: { id, series, parts: seriesParts(id, all) } }))
+    .filter((p) => p.props.parts.length > 0);
+}
+const { id, series, parts } = Astro.props as { id: string; series: Series; parts: Post[] };
+---
+<Base title={`${series.title} · Blog`} description={`OpenTodo blog: ${series.title}. ${series.summary}`} crumbs={[{ name: 'Blog', href: '/blog/' }, { name: series.title, href: seriesUrl(id) }]}>
+  <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
+  <section class="page-head blog-head series-head">
+    <div class="wrap">
+      <h1>{series.title}</h1>
+      <p class="lede">{series.summary}</p>
+    </div>
+  </section>
+  <section class="blog-list" aria-label="Parts">
+    <div class="wrap">
+      <ol class="post-rows">{parts.map((p) => <PostRow post={p} label={`Part ${p.data.part}`} />)}</ol>
+    </div>
+  </section>
+  <EndCta kind="follow" />
+</Base>
