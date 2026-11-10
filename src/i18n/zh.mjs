@@ -81,4 +81,13 @@ export default {
       star: '在 GitHub 上为 OpenTodo 点亮星标',
     },
   },
+  // The phone apps page (phone-apps-page): store names and the badge's text stay English.
+  apps: {
+    title: '手机应用',
+    description: 'OpenTodo 的 iPhone 和 iPad 应用已上架 App Store。Google Play 版本正在封闭测试中，F-Droid 收录申请已提交。',
+    googlePlay: '封闭测试中',
+    fdroid: '已申请收录',
+    version: '这个应用的首个版本是在原生外壳（WebView）中显示网页应用。它的质量还没有达到我们的要求：用起来不像原生应用，也有一些小故障。我们正在用 React Native 开发一个全新的、完全原生的版本，大约一到两周内完成。在此之前，现有应用可以正常使用，从浏览器安装的网页应用也是一个不错的选择。<a href="/install/">安装网页应用</a>',
+    android: '在 Android 上，目前请从 GitHub 获取应用。<a href="/docs/android-app/#install-the-app">安装 Android 应用</a>',
+  },
 };

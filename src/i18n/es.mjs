@@ -80,4 +80,13 @@ export default {
       star: 'Dale una estrella a OpenTodo en GitHub',
     },
   },
+  // The phone apps page (phone-apps-page): store names and the badge's text stay English.
+  apps: {
+    title: 'Apps para el móvil',
+    description: 'OpenTodo para iPhone y iPad está en el App Store. Google Play está en pruebas cerradas, y se ha solicitado su inclusión en F-Droid.',
+    googlePlay: 'En pruebas cerradas',
+    fdroid: 'Inclusión solicitada',
+    version: 'Esta primera versión de la app muestra la app web dentro de un contenedor nativo, una vista web. Su calidad no es la que queremos: no se siente nativa y tiene fallos. Estamos creando una nueva versión totalmente nativa con React Native, que probablemente estará lista en una o dos semanas. Hasta entonces, esta app funciona, y la app web instalada desde tu navegador es una buena alternativa. <a href="/install/">Instalar la app web</a>',
+    android: 'En Android, por ahora la app se descarga de GitHub. <a href="/docs/android-app/#install-the-app">Instalar la app de Android</a>',
+  },
 };

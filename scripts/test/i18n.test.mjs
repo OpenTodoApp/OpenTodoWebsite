@@ -23,6 +23,12 @@ test('every home page has the English home strings', () => {
   for (const lang of OTHER_LANGS) assert.deepEqual(leafPaths(DICT[lang].home), ref, `${lang}.home differs from en.home`);
 });
 
+// The phone apps page renders one component in every language (phone-apps-page D1).
+test('every phone apps page has the English apps strings', () => {
+  const ref = leafPaths(en.apps);
+  for (const lang of OTHER_LANGS) assert.deepEqual(leafPaths(DICT[lang].apps), ref, `${lang}.apps differs from en.apps`);
+});
+
 test('links in the answers stay on this site or the docs, and placeholders are known', () => {
   const known = new Set(['licence', 'version', 'demo', 'minimum', 'memory', 'count', 'groups']);
   for (const [lang, dict] of [...OTHER_LANGS.map((l) => [l, DICT[l]]), ['en', en]]) {
@@ -47,6 +53,7 @@ test('paths split and join by language', () => {
   const alts = alternatesFor('/it/');
   assert.equal(alts.length, Object.keys(LANGS).length);
   assert.equal(alts[0].href, '/');
-  assert.deepEqual(TRANSLATED_PAGES, ['/']);
+  assert.deepEqual(TRANSLATED_PAGES, ['/', '/apps/']);
+  assert.equal(alternatesFor('/de/apps/').find((a) => a.lang === 'fr').href, '/fr/apps/');
   assert.equal(alternatesFor('/it/faq/'), null);
 });

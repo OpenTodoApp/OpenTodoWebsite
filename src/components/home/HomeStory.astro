@@ -13,7 +13,7 @@ import PostRow from '../blog/PostRow.astro';
 import { NAV, SITE } from '../../lib/site';
 import { publishedPosts } from '../../lib/blog';
 import { featureCount, featureGroups, importApps, integrations } from '../../lib/features';
-import { DEFAULT_LANG } from '../../i18n/index.mjs';
+import { DEFAULT_LANG, localePath } from '../../i18n/index.mjs';
 import { fill } from '../../i18n/dict.mjs';
 import type en from '../../i18n/en.mjs';
 
@@ -61,7 +61,7 @@ const ways = [
       <a class="btn btn-secondary btn-large" href={NAV.start}>{s.hero.getStarted}</a>
     </div>
     <p class="lp-note">{s.hero.note}</p>
-    <p class="lp-app"><a href="https://apps.apple.com/us/app/opentodo/id6832200428"><img src="/badges/app-store.svg" width="120" height="40" alt="Download on the App Store" /></a><span>{s.hero.iosApp}</span></p>
+    <p class="lp-app"><a href={localePath('/apps/', lang)}><img src="/badges/app-store.svg" width="120" height="40" alt="Download on the App Store" /></a><span>{s.hero.iosApp}</span></p>
   </div>
   <div class="wrap">
     <div class="lp-stage" id="tour">
