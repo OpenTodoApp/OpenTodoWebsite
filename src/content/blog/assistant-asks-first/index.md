@@ -1,8 +1,7 @@
 ---
 title: "An assistant that asks first"
 summary: "From OpenTodo 1.4, the assistant answers with your tasks, days and projects drawn as the app draws them, proposes every change for you to edit and apply, and one Undo takes it back. It works with the model you choose, even one on your own network."
-# Placeholder: set on release day of OpenTodo 1.4, then remove `draft`.
-publishedAt: 2099-12-31
+publishedAt: 2026-11-10
 author: raffaele
 category: news
 cover: ./cover.png
@@ -10,7 +9,6 @@ coverAlt: "Today in OpenTodo with the assistant panel open on the right. Under t
 tags: [task-management, time-management]
 series: in-practice
 part: 14
-draft: true
 ---
 <!-- no-claim -->
 An assistant that changes your tasks on its own is hard to trust: you find out what it did afterwards. One that only talks leaves the moving to you. From version 1.4, OpenTodo's assistant takes the middle way: it reads, shows and proposes, and you decide.
