@@ -16,8 +16,8 @@ export const LANGS = {
 export const OTHER_LANGS = Object.keys(LANGS).filter((l) => l !== DEFAULT_LANG);
 
 /** The English pages that exist in every language, by their English path. */
-// Only the home page is translated.
-export const TRANSLATED_PAGES = ['/'];
+// The home page and the phone apps page (phone-apps-page) are translated.
+export const TRANSLATED_PAGES = ['/', '/apps/'];
 
 /** Splits a pathname into its language and the English path: /de/ -> ['de', '/'], /about/ -> ['en', '/about/']. */
 export function splitLang(pathname) {

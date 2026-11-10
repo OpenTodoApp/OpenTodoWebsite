@@ -14,7 +14,9 @@ for (const url of sitePages()) {
     await page.goto(url);
     const main = page.locator('main');
     await expect(main.locator('h1')).toBeVisible();
-    const words = (await main.innerText()).split(/\s+/).filter(Boolean).length;
+    // Chinese is written without spaces, so two Han characters count as one word.
+    const text = await main.innerText();
+    const words = text.split(/\s+/).filter(Boolean).length + (text.match(/\p{Script=Han}/gu)?.length ?? 0) / 2;
     // The closing band is one title and one action now (website-restyle-cta), so short index pages hold fewer words.
     expect(words, 'main text is readable').toBeGreaterThan(40);
     // The phone menu is a <details>, so it opens without scripts.

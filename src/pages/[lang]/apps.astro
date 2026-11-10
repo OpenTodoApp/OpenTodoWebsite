@@ -1,0 +1,16 @@
+---
+// The phone apps page in the other languages (phone-apps-page D1).
+import Base from '../../layouts/Base.astro';
+import AppsPage from '../../components/AppsPage.astro';
+import { OTHER_LANGS } from '../../i18n/index.mjs';
+import { DICT } from '../../i18n/dict.mjs';
+
+export function getStaticPaths() {
+  return OTHER_LANGS.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as keyof typeof DICT;
+const s = DICT[lang].apps;
+---
+<Base title={s.title} description={s.description} lang={lang}>
+  <AppsPage lang={lang} s={s} />
+</Base>

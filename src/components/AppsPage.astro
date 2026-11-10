@@ -1,0 +1,39 @@
+---
+// The phone apps page in every language (phone-apps-page D1): the App Store badge, Google Play
+// and F-Droid as unavailable buttons (D2), and one paragraph about this first version. Every
+// other App Store badge on the site leads here. A translated page ends with the language note,
+// in the page's column. Strings come from src/i18n/<lang>.mjs; the
+// store names and the badge's text stay English, as on the artwork.
+import Icon from './Icon.astro';
+import { SITE } from '../lib/site';
+import { DEFAULT_LANG } from '../i18n/index.mjs';
+import { DICT } from '../i18n/dict.mjs';
+import type en from '../i18n/en.mjs';
+
+interface Props { lang: string; s: typeof en.apps }
+const { lang, s } = Astro.props;
+const translated = lang !== DEFAULT_LANG;
+const soon = [
+  { name: 'Google Play', status: s.googlePlay },
+  { name: 'F-Droid', status: s.fdroid },
+];
+---
+<section class="page-head" aria-labelledby="apps-title">
+  <div class="wrap narrow">
+    <h1 id="apps-title">{s.title}</h1>
+    <ul class="stores plain">
+      <li><a class="store-badge" href={SITE.appStore} lang={translated ? 'en' : undefined}><img src="/badges/app-store.svg" width="132" height="44" alt="Download on the App Store" /></a></li>
+      {soon.map((st) => (
+        <li><span class="store-soon" role="link" aria-disabled="true"><span lang={translated ? 'en' : undefined}>{st.name}</span><span class="store-status">{st.status}</span></span></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="section apps-about">
+  <div class="wrap narrow">
+    <p set:html={s.version} />
+    <p class="meta" set:html={s.android} />
+    {translated && <p class="lang-note" role="note"><Icon name="globe" size={16} /> <span>{DICT[lang as keyof typeof DICT].common.langNote}</span></p>}
+  </div>
+</section>

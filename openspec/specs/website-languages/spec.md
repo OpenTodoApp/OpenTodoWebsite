@@ -39,7 +39,7 @@ The translation dictionaries SHALL share one shape, contain no empty strings, us
 - **THEN** the unit test fails naming the language and the path
 
 ### Requirement: Translated home page
-The site SHALL be English with a translated home page in German, French, Italian, Spanish, Portuguese and Simplified Chinese, at most ten languages in all. A translated home page SHALL live under its language's prefix, SHALL render the same sections in the same order as the English home page from the same component, and SHALL state the same facts as the English page, drawn from the bundle where the English page draws them. Its strings SHALL have the same shape as the English home page's strings, enforced by the unit test. Links without a translated target SHALL lead to the English pages. It SHALL read at 360 px wide without JavaScript.
+The site SHALL be English with a translated home page and a translated phone apps page (`/apps/`) in German, French, Italian, Spanish, Portuguese and Simplified Chinese, at most ten languages in all. A translated page SHALL live under its language's prefix, SHALL render the same sections in the same order as the English page from the same component, and SHALL state the same facts as the English page, drawn from the bundle where the English page draws them. Its strings SHALL have the same shape as the English page's strings, enforced by the unit test. Links without a translated target SHALL lead to the English pages. It SHALL read at 360 px wide without JavaScript.
 
 #### Scenario: A language is added
 - **WHEN** a dictionary for a seventh language is added with every string of the German one
@@ -56,3 +56,7 @@ The site SHALL be English with a translated home page in German, French, Italian
 #### Scenario: Old translated addresses
 - **WHEN** a visitor opens `/de/cost/` or `/fr/faq/`
 - **THEN** the server redirects to the server plan or to Learn
+
+#### Scenario: Phone apps page in a language
+- **WHEN** a visitor opens `/fr/apps/`
+- **THEN** the page is in French with the language note, and its hreflang alternates list every language's `/apps/`

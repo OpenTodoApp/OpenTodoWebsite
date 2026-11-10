@@ -1,0 +1,9 @@
+---
+// /apps (phone-apps-page): the phone apps; the page itself is AppsPage, shared with /<lang>/apps/.
+import Base from '../layouts/Base.astro';
+import AppsPage from '../components/AppsPage.astro';
+import en from '../i18n/en.mjs';
+---
+<Base title={en.apps.title} description={en.apps.description}>
+  <AppsPage lang="en" s={en.apps} />
+</Base>
