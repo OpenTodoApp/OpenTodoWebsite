@@ -74,9 +74,9 @@ The server is also ready for the sign-in of a native OpenTodo app that is coming
 Nothing to do: the database migrates by itself, and every new value stays readable by 1.x apps. Pull the new image and restart, for example `docker compose pull && docker compose up -d` with the `stable` or `1` tag. See [Updating](/docs/self-hosting/docker/#updating).
 
 <!-- no-claim -->
-1.4.1 is the same as 1.4.0 for a server. It publishes what the 1.4.0 release left out: the iPhone build to TestFlight, the Android build to Google Play's internal track, and the Claude and Obsidian plugins. Upgrading from 1.4.0 is optional.
+1.4.1 is the same as 1.4.0 for a server. It publishes what the 1.4.0 release left out: the iPhone build for TestFlight and the App Store, and the Claude and Obsidian plugins. Upgrading from 1.4.0 is optional.
 
-OpenTodo for iPhone and iPad is now in the App Store, as a first release: it connects to your server and adds reminders on the phone, the share sheet, a Today widget and Face ID unlock. On Android, the app comes from Google Play, F-Droid or GitHub. See [Install on your phone](/docs/install-phone/).
+OpenTodo for iPhone and iPad is now in the App Store, as a first release: it connects to your server and adds reminders on the phone, the share sheet, a Today widget and Face ID unlock. On Android, the app is available from the release page on GitHub for now; Google Play and F-Droid are on the way. See [Install on your phone](/docs/install-phone/).
 
 ## Thank you
 
