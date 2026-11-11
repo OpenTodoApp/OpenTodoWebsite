@@ -1,6 +1,6 @@
 ---
 // Main navigation (website-restyle-chrome D1, hosting-page D3): five destinations, the language switch, a
-// GitHub star and one primary action, Try the demo. Below 768 px one <details> menu holds the
+// GitHub star and one primary action, Try the demo. Below 960 px one <details> menu holds the
 // links and the language switch, so it opens without JavaScript; the demo stays visible.
 import { BRAND } from '../lib/brand';
 import Icon from './Icon.astro';
@@ -21,6 +21,7 @@ const links: Link[] = [
   ...(blog ? [{ href: '/blog/', label: 'Blog', match: ['/blog/'] }] : []),
   // Managed hosting (hosting-page): the site's own page, never PikaPods itself.
   { href: '/hosting/', label: 'Hosting', match: ['/hosting/'] },
+  { href: '/ecosystem/', label: 'Ecosystem', match: ['/ecosystem/'] },
 ];
 const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' : undefined);
 ---
