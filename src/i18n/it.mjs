@@ -82,11 +82,20 @@ export default {
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
-    title: 'App per il telefono',
-    description: 'OpenTodo per iPhone e iPad è nell’App Store. Google Play è in test chiuso, e l’inclusione in F-Droid è stata richiesta.',
+    title: 'App',
+    description: 'Installa OpenTodo dal browser su qualsiasi telefono o computer, oppure scaricalo dall’App Store. Google Play è in test chiuso, e l’inclusione in F-Droid è stata richiesta.',
     googlePlay: 'In test chiuso',
     fdroid: 'Inclusione richiesta',
     version: 'Questa prima versione dell’app mostra l’app web dentro un guscio nativo, una web view. La qualità non è quella che vogliamo: non sembra un’app nativa e ha dei difetti. Stiamo costruendo una nuova versione completamente nativa con React Native, probabilmente pronta tra una o due settimane. Fino ad allora questa app funziona, e l’app web installata dal browser è una buona alternativa. <a href="/install/">Installa l’app web</a>',
     android: 'Su Android, per ora l’app arriva da GitHub. <a href="/docs/android-app/#install-the-app">Installa l’app Android</a>',
+    webTitle: 'L’app web',
+    webIntro: 'Finché le app native non sono pronte, è il modo che consigliamo su telefoni e computer. È l’app completa, installata dal browser: funziona offline, si sincronizza e si aggiorna da sola. <a href="/docs/install-app/">Installare l’app</a>',
+    webIos: '<strong>iPhone e iPad</strong>: in Safari tocca Condividi, poi Aggiungi alla schermata Home.',
+    webAndroid: '<strong>Android</strong>: in Chrome apri il menu e tocca Installa app.',
+    webDesktop: '<strong>Computer</strong>: in Chrome o Edge fai clic sull’icona di installazione nella barra degli indirizzi.',
+    webPush: 'I promemoria arrivano come notifiche push dove il browser lo permette. Su iPhone e iPad servono iOS 16.4 o successivo e l’app installata. <a href="/docs/push-notifications/">Notifiche push</a>',
+    webInstall: 'Installa l’app web',
+    storesTitle: 'App negli store',
+    more: 'Plugin, integrazioni e modi per ospitarlo: <a href="/ecosystem/">Ecosistema</a>',
   },
 };

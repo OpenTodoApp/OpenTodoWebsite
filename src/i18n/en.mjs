@@ -80,11 +80,20 @@ export default {
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
-    title: 'Phone apps',
-    description: 'OpenTodo for iPhone and iPad is in the App Store. Google Play is in closed testing, and F-Droid inclusion has been requested.',
+    title: 'Apps',
+    description: 'Install OpenTodo from your browser on any phone or computer, or get it from the App Store. Google Play is in closed testing, and F-Droid inclusion has been requested.',
     googlePlay: 'In closed testing',
     fdroid: 'Inclusion requested',
     version: 'This first version of the app shows the web app inside a native shell, a web view. It isn’t the quality we want: it doesn’t feel native, and it has glitches. We’re building a new, fully native version with React Native, likely ready in one to two weeks. Until then this app works, and the web app installed from your browser is a good alternative. <a href="/install/">Install the web app</a>',
     android: 'On Android, the app comes from GitHub for now. <a href="/docs/android-app/#install-the-app">Install the Android app</a>',
+    webTitle: 'The web app',
+    webIntro: 'Until the native apps are ready, this is the way we recommend on phones and computers. It’s the full app, installed from your browser: it works offline, syncs, and updates itself. <a href="/docs/install-app/">Installing the app</a>',
+    webIos: '<strong>iPhone and iPad</strong>: in Safari, tap Share, then Add to Home Screen.',
+    webAndroid: '<strong>Android</strong>: in Chrome, open the menu and tap Install app.',
+    webDesktop: '<strong>Computer</strong>: in Chrome or Edge, click the install icon in the address bar.',
+    webPush: 'Reminders arrive as push notifications wherever the browser allows it. On iPhone and iPad that needs iOS 16.4 or later and the installed app. <a href="/docs/push-notifications/">Push notifications</a>',
+    webInstall: 'Install the web app',
+    storesTitle: 'Store apps',
+    more: 'Plugins, integrations and ways to host it: <a href="/ecosystem/">Ecosystem</a>',
   },
 };

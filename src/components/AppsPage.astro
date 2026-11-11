@@ -1,5 +1,6 @@
 ---
-// The phone apps page in every language (phone-apps-page D1): the App Store badge, Google Play
+// The apps page in every language (phone-apps-page D1, apps-and-ecosystem D1): the installable
+// web app first, with its steps per platform, then the store apps: the App Store badge, Google Play
 // and F-Droid as unavailable buttons (D2), and one paragraph about this first version. Every
 // other App Store badge on the site leads here. A translated page ends with the language note,
 // in the page's column. Strings come from src/i18n/<lang>.mjs; the
@@ -21,19 +22,35 @@ const soon = [
 <section class="page-head" aria-labelledby="apps-title">
   <div class="wrap narrow">
     <h1 id="apps-title">{s.title}</h1>
+  </div>
+</section>
+
+<section class="section apps-web" aria-labelledby="apps-web-title">
+  <div class="wrap narrow">
+    <h2 id="apps-web-title">{s.webTitle}</h2>
+    <p set:html={s.webIntro} />
+    <ul class="rows apps-steps">
+      {[s.webIos, s.webAndroid, s.webDesktop].map((step, i) => (
+        <li><Icon name={['smartphone', 'smartphone', 'monitor'][i]} size={18} /><p set:html={step} /></li>
+      ))}
+    </ul>
+    <p class="meta" set:html={s.webPush} />
+    <p><a class="btn btn-primary" href="/install/">{s.webInstall}</a></p>
+  </div>
+</section>
+
+<section class="section apps-stores" aria-labelledby="apps-stores-title">
+  <div class="wrap narrow">
+    <h2 id="apps-stores-title">{s.storesTitle}</h2>
     <ul class="stores plain">
       <li><a class="store-badge" href={SITE.appStore} lang={translated ? 'en' : undefined}><img src="/badges/app-store.svg" width="132" height="44" alt="Download on the App Store" /></a></li>
       {soon.map((st) => (
         <li><span class="store-soon" role="link" aria-disabled="true"><span lang={translated ? 'en' : undefined}>{st.name}</span><span class="store-status">{st.status}</span></span></li>
       ))}
     </ul>
-  </div>
-</section>
-
-<section class="section apps-about">
-  <div class="wrap narrow">
     <p set:html={s.version} />
     <p class="meta" set:html={s.android} />
+    <p class="meta" set:html={s.more} />
     {translated && <p class="lang-note" role="note"><Icon name="globe" size={16} /> <span>{DICT[lang as keyof typeof DICT].common.langNote}</span></p>}
   </div>
 </section>

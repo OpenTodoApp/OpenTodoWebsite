@@ -83,11 +83,20 @@ export default {
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
-    title: '手机应用',
-    description: 'OpenTodo 的 iPhone 和 iPad 应用已上架 App Store。Google Play 版本正在封闭测试中，F-Droid 收录申请已提交。',
+    title: '应用',
+    description: '在任何手机或电脑上通过浏览器安装 OpenTodo，或从 App Store 下载。Google Play 版本正在封闭测试中，F-Droid 收录申请已提交。',
     googlePlay: '封闭测试中',
     fdroid: '已申请收录',
     version: '这个应用的首个版本是在原生外壳（WebView）中显示网页应用。它的质量还没有达到我们的要求：用起来不像原生应用，也有一些小故障。我们正在用 React Native 开发一个全新的、完全原生的版本，大约一到两周内完成。在此之前，现有应用可以正常使用，从浏览器安装的网页应用也是一个不错的选择。<a href="/install/">安装网页应用</a>',
     android: '在 Android 上，目前请从 GitHub 获取应用。<a href="/docs/android-app/#install-the-app">安装 Android 应用</a>',
+    webTitle: '网页应用',
+    webIntro: '在原生应用准备好之前，我们推荐在手机和电脑上使用它。它是完整的应用，从浏览器安装：可离线使用、会同步，并自动更新。<a href="/docs/install-app/">安装应用</a>',
+    webIos: '<strong>iPhone 和 iPad</strong>：在 Safari 中轻点“共享”，再轻点“添加到主屏幕”。',
+    webAndroid: '<strong>Android</strong>：在 Chrome 中打开菜单，轻点“安装应用”。',
+    webDesktop: '<strong>电脑</strong>：在 Chrome 或 Edge 中点击地址栏里的安装图标。',
+    webPush: '在浏览器允许的地方，提醒会以推送通知送达。在 iPhone 和 iPad 上需要 iOS 16.4 或更高版本，并使用已安装的应用。<a href="/docs/push-notifications/">推送通知</a>',
+    webInstall: '安装网页应用',
+    storesTitle: '应用商店中的应用',
+    more: '插件、集成和托管方式：<a href="/ecosystem/">生态</a>',
   },
 };

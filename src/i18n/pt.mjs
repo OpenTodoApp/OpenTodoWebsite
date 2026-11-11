@@ -82,11 +82,20 @@ export default {
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
-    title: 'Aplicações para telemóvel',
-    description: 'O OpenTodo para iPhone e iPad está na App Store. O Google Play está em testes fechados, e a inclusão no F-Droid foi pedida.',
+    title: 'Aplicações',
+    description: 'Instale o OpenTodo a partir do navegador em qualquer telemóvel ou computador, ou descarregue-o da App Store. O Google Play está em testes fechados, e a inclusão no F-Droid foi pedida.',
     googlePlay: 'Em testes fechados',
     fdroid: 'Inclusão pedida',
     version: 'Esta primeira versão da aplicação mostra a aplicação web dentro de uma camada nativa, uma vista web. A qualidade não é a que queremos: não parece nativa e tem falhas. Estamos a criar uma nova versão totalmente nativa com React Native, provavelmente pronta dentro de uma a duas semanas. Até lá, esta aplicação funciona, e a aplicação web instalada a partir do browser é uma boa alternativa. <a href="/install/">Instalar a aplicação web</a>',
     android: 'No Android, por agora a aplicação vem do GitHub. <a href="/docs/android-app/#install-the-app">Instalar a aplicação Android</a>',
+    webTitle: 'A aplicação web',
+    webIntro: 'Até as aplicações nativas estarem prontas, é a forma que recomendamos em telemóveis e computadores. É a aplicação completa, instalada a partir do navegador: funciona sem ligação, sincroniza e atualiza-se sozinha. <a href="/docs/install-app/">Instalar a aplicação</a>',
+    webIos: '<strong>iPhone e iPad</strong>: no Safari, toque em Partilhar e depois em Adicionar ao ecrã principal.',
+    webAndroid: '<strong>Android</strong>: no Chrome, abra o menu e toque em Instalar aplicação.',
+    webDesktop: '<strong>Computador</strong>: no Chrome ou no Edge, clique no ícone de instalação na barra de endereço.',
+    webPush: 'Os lembretes chegam como notificações push onde o navegador o permite. No iPhone e no iPad é preciso o iOS 16.4 ou posterior e a aplicação instalada. <a href="/docs/push-notifications/">Notificações push</a>',
+    webInstall: 'Instalar a aplicação web',
+    storesTitle: 'Aplicações das lojas',
+    more: 'Plugins, integrações e formas de o alojar: <a href="/ecosystem/">Ecossistema</a>',
   },
 };
