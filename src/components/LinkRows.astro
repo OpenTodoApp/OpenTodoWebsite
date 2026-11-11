@@ -3,7 +3,10 @@
 // line about what is behind it, and an optional note on the right. Shared by the technical pages.
 import Icon from './Icon.astro';
 
-export interface LinkRow { icon: string; title: string; href?: string; line: string; note?: string }
+// actions: where a visitor installs or follows it (a store page, a one-click link), most useful first;
+// a row with actions also shows its guide (href) as the last link.
+export interface LinkAction { href: string; label: string }
+export interface LinkRow { icon: string; title: string; href?: string; line: string; note?: string; actions?: LinkAction[] }
 interface Props { id: string; title: string; items: LinkRow[] }
 const { id, title, items } = Astro.props;
 ---
@@ -16,6 +19,12 @@ const { id, title, items } = Astro.props;
         <div>
           <h3 class="row-title">{r.href ? <a href={r.href}>{r.title}</a> : r.title}</h3>
           <p class="row-line" set:html={r.line} />
+          {r.actions?.length ? (
+            <p class="row-actions">
+              {r.actions.map((a, i) => <a class={i === 0 ? 'btn btn-secondary btn-small' : 'row-action'} href={a.href} rel="noopener">{a.label}</a>)}
+              {r.href ? <a class="row-action" href={r.href}>Guide</a> : null}
+            </p>
+          ) : null}
         </div>
         {r.note ? <span class="row-prop">{r.note}</span> : <span />}
       </li>

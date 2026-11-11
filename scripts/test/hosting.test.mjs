@@ -71,12 +71,12 @@ test('/hosting/ says what you get, how to set it up and the arrangement, with on
   assert.equal(text(primary[0]), 'Run it on PikaPods');
 });
 
-test('the header lists Features, Learn, Docs, Blog, Hosting, with Hosting current only on /hosting/', { skip }, () => {
+test('the header lists Features, Learn, Docs, Blog, Hosting, Ecosystem, with Hosting current only on /hosting/', { skip }, () => {
   for (const page of ['index.html', 'de/index.html', 'blog/index.html', 'start/index.html', 'hosting/index.html']) {
     const header = load(path.join(dist, page)).querySelector('header.site-header');
     for (const nav of [header.querySelector('.nav-desktop'), header.querySelector('.nav-menu nav')]) {
       const links = nav.querySelectorAll('a.nav-link').map((a) => text(a));
-      assert.deepEqual(links.slice(0, 5), ['Features', 'Learn', 'Docs', 'Blog', 'Hosting'], page);
+      assert.deepEqual(links.slice(0, 6), ['Features', 'Learn', 'Docs', 'Blog', 'Hosting', 'Ecosystem'], page);
       const hosting = nav.querySelectorAll('a.nav-link')[4];
       assert.equal(hosting.getAttribute('href'), '/hosting/');
       assert.equal(hosting.getAttribute('aria-current'), page === 'hosting/index.html' ? 'page' : undefined, `${page}: Hosting current`);
