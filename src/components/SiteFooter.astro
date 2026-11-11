@@ -11,7 +11,7 @@ import { publishedPosts } from '../lib/blog';
 const blog = (await publishedPosts()).length > 0;
 const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
-  ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Phone apps', '/apps/'], ['Self-host', '/self-host/'], ['Templates', '/templates/'], ['Changelog', '/changelog/']]],
+  ['Product', [['Features', NAV.features], ['Get started', NAV.start], ['Install the app', '/install/'], ['Apps', '/apps/'], ['Self-host', '/self-host/'], ['Ecosystem', '/ecosystem/'], ['Templates', '/templates/'], ['Changelog', '/changelog/']]],
   ['Learn', [['Guides and how-tos', NAV.learn], ['Docs', '/docs/'], ['Under the hood', '/under-the-hood/'], ['Moving from another app', '/switch/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : [])]],
   ['Project', [['About', '/about/'], ['Press kit', '/press-kit/'], ['Support OpenTodo', '/support/'], ['Demo status', '/status/'], ['Security', '/security/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
 ];

@@ -82,11 +82,20 @@ export default {
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
-    title: 'Applications mobiles',
-    description: 'OpenTodo pour iPhone et iPad est sur l’App Store. Google Play est en test fermé, et l’inclusion dans F-Droid a été demandée.',
+    title: 'Applications',
+    description: 'Installez OpenTodo depuis votre navigateur sur n’importe quel téléphone ou ordinateur, ou depuis l’App Store. Google Play est en test fermé, et l’inclusion dans F-Droid a été demandée.',
     googlePlay: 'En test fermé',
     fdroid: 'Inclusion demandée',
     version: 'Cette première version de l’app affiche l’application web dans une coque native, une vue web. Sa qualité n’est pas celle que nous voulons : elle ne donne pas l’impression d’une app native, et elle a des défauts. Nous préparons une nouvelle version entièrement native avec React Native, sans doute prête d’ici une à deux semaines. D’ici là, cette app fonctionne, et l’application web installée depuis votre navigateur est une bonne alternative. <a href="/install/">Installer l’application web</a>',
     android: 'Sur Android, l’app vient de GitHub pour l’instant. <a href="/docs/android-app/#install-the-app">Installer l’app Android</a>',
+    webTitle: 'L’application web',
+    webIntro: 'En attendant les applications natives, c’est ce que nous recommandons sur téléphone et ordinateur. C’est l’application complète, installée depuis le navigateur : elle fonctionne hors ligne, se synchronise et se met à jour toute seule. <a href="/docs/install-app/">Installer l’application</a>',
+    webIos: '<strong>iPhone et iPad</strong> : dans Safari, touchez Partager, puis Sur l’écran d’accueil.',
+    webAndroid: '<strong>Android</strong> : dans Chrome, ouvrez le menu et touchez Installer l’application.',
+    webDesktop: '<strong>Ordinateur</strong> : dans Chrome ou Edge, cliquez sur l’icône d’installation dans la barre d’adresse.',
+    webPush: 'Les rappels arrivent en notifications push là où le navigateur le permet. Sur iPhone et iPad, il faut iOS 16.4 ou plus récent et l’application installée. <a href="/docs/push-notifications/">Notifications push</a>',
+    webInstall: 'Installer l’application web',
+    storesTitle: 'Applications des stores',
+    more: 'Plugins, intégrations et façons de l’héberger : <a href="/ecosystem/">Écosystème</a>',
   },
 };

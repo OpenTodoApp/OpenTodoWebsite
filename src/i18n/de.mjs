@@ -82,11 +82,20 @@ export default {
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
-    title: 'Smartphone-Apps',
-    description: 'OpenTodo für iPhone und iPad ist im App Store. Google Play ist im geschlossenen Test, die Aufnahme in F-Droid ist beantragt.',
+    title: 'OpenTodo-Apps',
+    description: 'Installiere OpenTodo aus dem Browser auf jedem Smartphone oder Computer, oder hol es dir aus dem App Store. Google Play ist im geschlossenen Test, die Aufnahme in F-Droid ist beantragt.',
     googlePlay: 'Im geschlossenen Test',
     fdroid: 'Aufnahme beantragt',
     version: 'Diese erste Version der App zeigt die Web-App in einer nativen Hülle, einer Web-Ansicht. Sie hat noch nicht die Qualität, die wir wollen: Sie fühlt sich nicht nativ an und hat Macken. Wir bauen eine neue, vollständig native Version mit React Native, die voraussichtlich in ein bis zwei Wochen fertig ist. Bis dahin funktioniert diese App, und die im Browser installierte Web-App ist eine gute Alternative. <a href="/install/">Web-App installieren</a>',
     android: 'Unter Android kommt die App vorerst von GitHub. <a href="/docs/android-app/#install-the-app">Android-App installieren</a>',
+    webTitle: 'Die Web-App',
+    webIntro: 'Bis die nativen Apps fertig sind, empfehlen wir diesen Weg auf Smartphones und Computern. Es ist die vollständige App, aus dem Browser installiert: Sie funktioniert offline, synchronisiert und aktualisiert sich selbst. <a href="/docs/install-app/">Die App installieren</a>',
+    webIos: '<strong>iPhone und iPad</strong>: In Safari auf Teilen tippen, dann Zum Home-Bildschirm.',
+    webAndroid: '<strong>Android</strong>: In Chrome das Menü öffnen und App installieren tippen.',
+    webDesktop: '<strong>Computer</strong>: In Chrome oder Edge auf das Installationssymbol in der Adressleiste klicken.',
+    webPush: 'Erinnerungen kommen als Push-Benachrichtigungen, wo der Browser es erlaubt. Auf iPhone und iPad braucht das iOS 16.4 oder neuer und die installierte App. <a href="/docs/push-notifications/">Push-Benachrichtigungen</a>',
+    webInstall: 'Web-App installieren',
+    storesTitle: 'Apps aus den Stores',
+    more: 'Plugins, Integrationen und Wege zum Hosten: <a href="/ecosystem/">Ökosystem</a>',
   },
 };

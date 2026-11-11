@@ -1024,6 +1024,13 @@ h2.as-h3 { font-size: 1.0625rem; letter-spacing: -0.01em; font-weight: 600; }
 .store-badge img { height: 44px; width: auto; }
 .store-soon { display: inline-flex; flex-direction: column; justify-content: center; min-height: 44px; padding: 0.25rem 1rem; border: 1px dashed var(--ot-border-input); border-radius: 9px; color: var(--muted); font-size: 0.9375rem; font-weight: 600; line-height: 1.2; cursor: not-allowed; user-select: none; }
 .store-status { font-size: 0.75rem; font-weight: 400; }
-.apps-about { padding-top: 1rem; }
-.apps-about p { max-width: 40rem; }
-.apps-about .lang-note { margin-top: 2rem; }
+/* apps-and-ecosystem D1: the web app first, its steps as hairline rows, then the store apps. */
+.apps-web, .apps-stores { padding-top: 1rem; }
+.apps-web p, .apps-stores p { max-width: 40rem; }
+.apps-web h2, .apps-stores h2 { margin: 0 0 0.75rem; }
+.apps-steps { margin: 1.25rem 0; }
+.apps-steps > li { grid-template-columns: 1.25rem minmax(0, 1fr); }
+.apps-steps > li > p { margin: 0; }
+.apps-steps strong { color: var(--strong); font-weight: 600; }
+.apps-stores .stores { margin: 0 0 1.25rem; }
+.apps-stores .lang-note { margin-top: 2rem; }
