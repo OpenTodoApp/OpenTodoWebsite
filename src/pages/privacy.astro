@@ -5,7 +5,7 @@
 import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
 
-const updated = '2026-10-31';
+const updated = '2026-11-13';
 const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title="Privacy policy" description="What the OpenTodo apps, the demo and this website do with your data: the apps talk only to the server you choose, and nothing is sent to the developer or to third parties.">
@@ -40,7 +40,7 @@ const day = (s: string) => new Date(`${s}T00:00:00Z`).toLocaleDateString('en-GB'
       </ul>
 
       <h2>The server software</h2>
-      <p>The OpenTodo server stores your account and tasks in its own database on the machine you run it on. It sends no telemetry. It connects only to services that you or the server's owner configure, such as an email server, a backup destination, an AI provider you choose, or calendar feeds, and, while maps are turned on, to an OpenStreetMap-based map provider through the server's own proxy, without account data. Whoever runs a server is responsible for the data on it.</p>
+      <p>The OpenTodo server stores your account and tasks in its own database on the machine you run it on. It sends no telemetry. It connects only to services that you or the server's owner configure, such as an email server, a backup destination, an AI provider you choose, or calendar feeds, and, while maps are turned on, to an OpenStreetMap-based map provider through the server's own proxy, without account data. With the owner's own speech service, dictation never reaches a cloud vendor: each spoken phrase goes through your server to that service and comes back as text, and the server writes neither the audio nor the text anywhere. Whoever runs a server is responsible for the data on it.</p>
 
       <h2>The public demo</h2>
       <p>The demo at <a href="https://demo.open-todo.app">demo.open-todo.app</a> gives each visitor a private, short-lived sandbox with sample tasks. It needs no sign-up. A session cookie keeps you in your sandbox, and sandboxes are deleted every night. Please don't enter personal information there.</p>
