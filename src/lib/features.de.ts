@@ -81,9 +81,7 @@ export const FEATURES_DE: Record<string, { name: string; line: string }> = {
   '/docs/offline-and-sync/': { name: 'Offline auf jedem Gerät', line: 'Bearbeite überall; Änderungen werden Feld für Feld zusammengeführt.' },
   '/docs/install-app/': { name: 'Smartphone, Computer und Browser', line: 'Aus dem Browser installieren, auf jedem System.' },
   '/docs/android-app/#install-the-app': { name: 'Eine Android-App', line: 'Als APK von GitHub erhältlich; Google Play und F-Droid folgen.' },
-  // The English entry depends on ZH_SHIPPED and both branches share this doc; this is the branch the
-  // pinned release has (ZH_SHIPPED true). Before 简体中文 shipped it read:
-  '/docs/language/': { name: 'Sieben Sprachen', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文.' },
+  '/docs/language/': { name: 'Acht Sprachen', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文, Nederlands.' },
   '/docs/themes/': { name: 'Designs', line: 'Vierzehn Editor-Paletten, deine eigene im Editor oder aus einem VS-Code-Design.' },
   '/docs/app-icon-badge/': { name: 'Die Zahl für Heute auf dem App-Symbol', line: 'Das Symbol der installierten App zeigt, wie viele Aufgaben von heute offen sind.' },
   '/docs/custom-accent/': { name: 'Deine eigene Akzentfarbe', line: 'Jede Farbe, angepasst, bis sie hell und dunkel gut lesbar ist.' },
@@ -115,10 +113,6 @@ export const FEATURES_DE: Record<string, { name: string; line: string }> = {
   '/docs/self-hosting/branding/': { name: 'Dein Name und Logo', line: 'Gestalte den Server für dein Zuhause oder deine Firma.' },
   '/docs/architecture/': { name: 'Keine Telemetrie', line: 'Der Server kontaktiert nur, was du einrichtest.' },
 };
-
-// The languages entry has two English versions (features.ts, ZH_SHIPPED); this is the German of
-// the one for releases before 简体中文 shipped.
-export const LANGUAGES_BEFORE_ZH_DE = { name: 'Sechs Sprachen', line: 'English, Deutsch, Français, Español, Italiano, Português; 简体中文 im nächsten Release.' };
 
 // The integrations whose names are words, not product names (the home page's "Verbindet sich mit"
 // row and /de/features/). Product names stay as they are.

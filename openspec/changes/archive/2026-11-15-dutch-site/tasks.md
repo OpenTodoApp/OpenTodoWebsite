@@ -12,4 +12,4 @@
 ## 3. Check and publish
 
 - [x] 3.1 Run `npm run check`, `npm test`, `npm run build`, `npm run check:dist`. Verify all pass.
-- [ ] 3.2 Merge together with the pin of the first release whose language documentation lists Nederlands; before that the pull request stays a draft. Verify the pinned bundle's `docs/language/` names Nederlands before merging.
+- [x] 3.2 Merge together with the pin of the first release whose language documentation lists Nederlands; before that the pull request stays a draft. Verify the pinned bundle's `docs/language/` names Nederlands before merging.
