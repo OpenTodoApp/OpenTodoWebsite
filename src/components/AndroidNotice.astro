@@ -2,8 +2,13 @@
 // Where the Android app comes from today (GitHub, as the pinned docs say), and a warning about
 // apps with similar names. Update once the store listings are public.
 import Icon from './Icon.astro';
+import { p as strings } from '../i18n/path/index.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).notices;
 ---
-<aside class="post-notice post-notice-dev" aria-label="Android app status">
+<aside class="post-notice post-notice-dev" aria-label={s.androidLabel}>
   <Icon name="flag" size={20} />
-  <p><strong>Install the Android app from GitHub for now.</strong> The APK is the same app that will come from Google Play and F-Droid, signed with the same certificate, so you can switch to a store later. <a href="/docs/android-app/#install-the-app">Install the app</a>. Many apps on Google Play have names similar to OpenTodo; none of them is this one. You can also install OpenTodo from the browser as described below.</p>
+  <p set:html={s.android} />
 </aside>

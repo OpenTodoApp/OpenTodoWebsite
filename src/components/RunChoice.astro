@@ -4,33 +4,38 @@
 // is the maintainer's wording and appears wherever PikaPods is offered. Plain HTML.
 import Icon from './Icon.astro';
 import { RELEASES_URL, SITE } from '../lib/site';
-import { PIKAPODS_NOTE } from '../lib/hosting';
+import { PIKAPODS_NOTE, PIKAPODS_NOTE_DE } from '../lib/hosting';
+import { p as strings, href as hrefIn } from '../i18n/path/index.mjs';
 
-interface Props { start?: string; tight?: boolean }
-const { start = '/start/', tight = false } = Astro.props;
+interface Props { start?: string; tight?: boolean; lang?: 'en' | 'de' }
+const { start: startProp, tight = false, lang = 'en' } = Astro.props;
+const s = strings(lang).runChoice;
+const to = hrefIn(lang);
+const start = startProp ?? to('/start/');
+const note = lang === 'de' ? PIKAPODS_NOTE_DE : PIKAPODS_NOTE;
 const own = [
-  ['Docker', '/docs/self-hosting/docker/'],
-  ['the binary', RELEASES_URL],
-  ['Raspberry Pi', '/toolkit/raspberry-pi/'],
-  ['NAS', '/self-host/plan/'],
-  ['server app stores', `${start}#server`],
+  [s.ownLinks.docker, '/docs/self-hosting/docker/'],
+  [s.ownLinks.binary, RELEASES_URL],
+  [s.ownLinks.pi, '/toolkit/raspberry-pi/'],
+  [s.ownLinks.nas, '/self-host/plan/'],
+  [s.ownLinks.stores, `${start}#server`],
 ];
 ---
 <section class="section start-block" id="run" aria-labelledby="run-title" style={tight ? 'padding-top: 1rem' : undefined}>
   <div class="wrap">
-    <h2 id="run-title">How do you want to run it?</h2>
+    <h2 id="run-title">{s.h2}</h2>
     <ul class="ways ways-2">
       <li>
         <Icon name="house" size={20} />
-        <h3>On your own hardware</h3>
-        <p>Free, with full control. {own.map(([name, href], i) => <>{i === 0 ? '' : i === own.length - 1 ? ' or ' : ', '}<a href={href}>{name}</a></>)}.</p>
-        <a class="btn btn-secondary" href={`${start}#server`}>Pick where it runs</a>
+        <h3>{s.ownTitle}</h3>
+        <p>{s.ownLead} {own.map(([name, href], i) => <>{i === 0 ? '' : i === own.length - 1 ? ` ${s.or} ` : ', '}<a href={href}>{name}</a></>)}.</p>
+        <a class="btn btn-secondary" href={`${start}#server`}>{s.ownCta}</a>
       </li>
       <li>
         <Icon name="globe" size={20} />
-        <h3>Managed hosting</h3>
-        <p>Updates and HTTPS handled for you. {PIKAPODS_NOTE}</p>
-        <a class="btn btn-secondary" href={SITE.pikapods}>Run it on PikaPods</a>
+        <h3>{s.hostedTitle}</h3>
+        <p>{s.hostedLead} {note}</p>
+        <a class="btn btn-secondary" href={SITE.pikapods}>{s.hostedCta}</a>
       </li>
     </ul>
   </div>

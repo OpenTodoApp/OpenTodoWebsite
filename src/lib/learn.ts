@@ -39,7 +39,7 @@ const LAYOUT: Record<string, string> = { list: 'List', board: 'Board', calendar:
 export async function learnEntries(): Promise<LearnEntry[]> {
   const live = <T extends { data: { draft?: boolean } }>(e: T) => !e.data.draft;
   const [toolkit, switches, guides, howtos, templates] = await Promise.all([
-    getCollection('toolkit', live), getCollection('switch'), getCollection('guides', live), getCollection('howto', live), getCollection('templates'),
+    getCollection('toolkit', live), getCollection('switch', (e) => e.data.lang === 'en'), getCollection('guides', live), getCollection('howto', live), getCollection('templates'),
   ]);
   const entry = (type: LearnType, href: string, d: { title: string; summary: string; order: number; tags?: string[] }, length: string, group?: string): LearnEntry =>
     ({ type, href, title: d.title, summary: d.summary, order: d.order, tags: d.tags ?? [], topic: topicOf(d.tags)?.title ?? '', length, group });

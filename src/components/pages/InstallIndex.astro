@@ -1,0 +1,37 @@
+---
+// /install and /de/install (website-help-and-howtos D3, german-pages D2): one card per platform.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import LangNote from '../LangNote.astro';
+import RunChoice from '../RunChoice.astro';
+import { INSTALL_DOC } from '../../lib/install';
+import { platforms } from '../../lib/platforms';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).install;
+const to = hrefIn(lang);
+---
+<Base title={s.title} description={s.description} lang={lang}>
+  <section class="page-head">
+    <div class="wrap">
+      <h1>{s.h1}</h1>
+      <p class="lede"><Fragment set:html={s.lede} /> <a href={INSTALL_DOC}>{s.howLink}</a></p>
+    </div>
+  </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap">
+      <ul class="grid grid-3 plain">
+        {platforms(lang).map((p) => (
+          <li><a class="card" href={to(`/install/${p.slug}/`)}><span class="card-icon"><Icon name={p.icon} size={22} /></span><h2 style="font-size: 1.2rem">{p.name}</h2><p>{p.short}</p></a></li>
+        ))}
+      </ul>
+      <p class="meta" style="margin-top: 1.5rem">{s.firefox} <a href="/docs/install-app/#windows-macos-linux-and-chromeos">{s.details}</a></p>
+    </div>
+  </section>
+  <RunChoice tight lang={lang} />
+  <EndCta title={s.end} lang={lang} />
+</Base>

@@ -4,17 +4,20 @@
 // replace the kind's title. Blog pages add one quiet line of ways to support the project.
 import Icon from './Icon.astro';
 import { NAV, SITE } from '../lib/site';
+import { p as strings, href as hrefIn } from '../i18n/path/index.mjs';
 
 type Kind = 'demo' | 'start' | 'self-host' | 'import' | 'source' | 'follow';
-interface Props { kind?: Kind; title?: string }
-const { kind = 'demo', title } = Astro.props;
+interface Props { kind?: Kind; title?: string; lang?: 'en' | 'de' }
+const { kind = 'demo', title, lang = 'en' } = Astro.props;
+const s = strings(lang).endCta;
+const to = hrefIn(lang);
 const KINDS: Record<Kind, { title: string; label: string; href: string; icon: string; data?: string }> = {
-  demo: { title: 'See it with your own tasks.', label: 'Try the demo', href: SITE.demo, icon: 'arrow-right', data: 'data-demo' },
-  start: { title: 'Ready for your own?', label: 'Get started', href: NAV.start, icon: 'arrow-right' },
-  'self-host': { title: 'Run it on your server.', label: 'Install with Docker', href: '/docs/self-hosting/docker/', icon: 'server' },
-  import: { title: 'Bring your tasks over.', label: 'How importing works', href: '/docs/import/', icon: 'folder-input' },
-  source: { title: 'Read the code.', label: 'OpenTodo on GitHub', href: SITE.appRepo, icon: 'code' },
-  follow: { title: 'Follow along.', label: 'RSS feed', href: '/blog/feed.xml', icon: 'rss' },
+  demo: { ...s.demo, href: SITE.demo, icon: 'arrow-right', data: 'data-demo' },
+  start: { ...s.start, href: to(NAV.start), icon: 'arrow-right' },
+  'self-host': { ...s.selfHost, href: '/docs/self-hosting/docker/', icon: 'server' },
+  import: { ...s.import, href: '/docs/import/', icon: 'folder-input' },
+  source: { ...s.source, href: SITE.appRepo, icon: 'code' },
+  follow: { ...s.follow, href: '/blog/feed.xml', icon: 'rss' },
 };
 const k = KINDS[kind];
 ---

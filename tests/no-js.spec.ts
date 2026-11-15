@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test';
 import fs from 'node:fs';
 import { sitePages } from './pages';
+import de from '../src/i18n/path/de.mjs';
 
 // Four destinations, Get started and the star (website-restyle-chrome D1); Blog joins once a post is published (website-blog spec).
 // Try the demo stays in the header bar, outside the menu.
@@ -22,7 +23,8 @@ for (const url of sitePages()) {
     // The phone menu is a <details>, so it opens without scripts.
     await page.locator('details.nav-menu > summary').click();
     const nav = page.locator('details.nav-menu .menu-panel');
-    for (const label of MENU) {
+    // German pages have a German header (german-pages D7).
+    for (const label of MENU.map((l) => (url.startsWith('/de/') ? (de.chrome as Record<string, string>)[l] ?? l : l))) {
       await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
     await expect(page.locator('.site-header a.header-demo')).toBeVisible();

@@ -13,7 +13,7 @@ import PostRow from '../blog/PostRow.astro';
 import { NAV, SITE } from '../../lib/site';
 import { publishedPosts } from '../../lib/blog';
 import { featureCount, featureGroups, importApps, integrations } from '../../lib/features';
-import { DEFAULT_LANG, localePath } from '../../i18n/index.mjs';
+import { DEFAULT_LANG, localePath, localHref } from '../../i18n/index.mjs';
 import { fill } from '../../i18n/dict.mjs';
 import type en from '../../i18n/en.mjs';
 
@@ -58,7 +58,7 @@ const ways = [
     <p class="lp-lede">{s.hero.lede}</p>
     <div class="cta-row lp-ctas">
       <a class="btn btn-primary btn-large" href={SITE.demo} data-demo>{s.hero.tryDemo} <Icon name="arrow-right" size={18} /></a>
-      <a class="btn btn-secondary btn-large" href={NAV.start}>{s.hero.getStarted}</a>
+      <a class="btn btn-secondary btn-large" href={localHref(NAV.start, lang)}>{s.hero.getStarted}</a>
     </div>
     <p class="lp-note">{s.hero.note}</p>
     <p class="lp-app"><a href={localePath('/apps/', lang)}><img src="/badges/app-store.svg" width="120" height="40" alt="Download on the App Store" /></a><span>{s.hero.iosApp}</span></p>
@@ -103,11 +103,11 @@ const ways = [
       <div>
         <h2 id="features-title">{s.features.h2}</h2>
         <p class="lp-intro">{fill(s.features.intro, { count, groups: groups.length })}</p>
-        <a class="link-arrow" href="/features/">{s.features.all} <Icon name="arrow-right" size={16} /></a>
+        <a class="link-arrow" href={localHref('/features/', lang)}>{s.features.all} <Icon name="arrow-right" size={16} /></a>
       </div>
       <div>
         <ul class="lp-groups">
-          {groups.map((g) => <li><a href={`/features/${g.key}/`}><Icon name={g.icon} size={18} /><span>{groupTitle(g.key, g.title)}</span><span class="count">{g.items.length}</span></a></li>)}
+          {groups.map((g) => <li><a href={localHref(`/features/${g.key}/`, lang)}><Icon name={g.icon} size={18} /><span>{groupTitle(g.key, g.title)}</span><span class="count">{g.items.length}</span></a></li>)}
         </ul>
         <dl class="lp-strips">
           <div><dt>{s.features.connects}</dt><dd lang={enLang}>{integrations().join(' · ')}</dd></div>
@@ -125,7 +125,7 @@ const ways = [
       <p class="lp-intro" set:html={s.yours.intro} />
     </div>
     <ul class="rows">
-      {yours.map((y) => <li><Icon name={y.icon} size={18} /><div><h3 class="row-title"><a href={y.href}>{y.title}</a></h3><p class="row-line">{y.text}</p></div><span /></li>)}
+      {yours.map((y) => <li><Icon name={y.icon} size={18} /><div><h3 class="row-title"><a href={localHref(y.href, lang)}>{y.title}</a></h3><p class="row-line">{y.text}</p></div><span /></li>)}
     </ul>
   </div>
 </section>
@@ -140,12 +140,12 @@ const ways = [
           <Icon name={w.icon} size={20} />
           <h3>{w.title}</h3>
           <p>{w.text}</p>
-          <a class:list={['btn', w.primary ? 'btn-primary' : 'btn-secondary']} href={w.href}>{w.cta}</a>
-          <a class="lp-more" href={w.moreHref}>{w.more}</a>
+          <a class:list={['btn', w.primary ? 'btn-primary' : 'btn-secondary']} href={localHref(w.href, lang)}>{w.cta}</a>
+          <a class="lp-more" href={localHref(w.moreHref, lang)}>{w.more}</a>
         </li>
       ))}
     </ol>
-    <p class="lp-switch"><Icon name="folder-input" size={16} /> {s.ways.switch} <a href="/start/#switch">{s.ways.switchLink}</a></p>
+    <p class="lp-switch"><Icon name="folder-input" size={16} /> {s.ways.switch} <a href={localHref('/start/#switch', lang)}>{s.ways.switchLink}</a></p>
   </div>
 </section>
 
@@ -162,7 +162,7 @@ const ways = [
 <section class="lp-end" id="blog" aria-labelledby="end-title">
   <div class="wrap">
     <h2 id="end-title">{s.end.h2}</h2>
-    <div class="cta-row lp-ctas"><a class="btn btn-primary btn-large" href={SITE.demo} data-demo>{s.hero.tryDemo} <Icon name="arrow-right" size={18} /></a><a class="btn btn-secondary btn-large" href={NAV.start}>{s.hero.getStarted}</a></div>
+    <div class="cta-row lp-ctas"><a class="btn btn-primary btn-large" href={SITE.demo} data-demo>{s.hero.tryDemo} <Icon name="arrow-right" size={18} /></a><a class="btn btn-secondary btn-large" href={localHref(NAV.start, lang)}>{s.hero.getStarted}</a></div>
     {latestPosts.length > 0 && (
       <div class="lp-news" lang={enLang}>
         <h3>{s.end.news}</h3>

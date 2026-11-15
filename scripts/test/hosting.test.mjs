@@ -6,6 +6,9 @@ import path from 'node:path';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { htmlFiles, load } from '../checks/lib.mjs';
+import { PATH } from '../../src/i18n/path/index.mjs';
+
+const deChrome = PATH.de.chrome;
 
 const dist = path.resolve('dist');
 const built = fs.existsSync(path.join(dist, 'index.html'));
@@ -76,7 +79,9 @@ test('the header lists Features, Learn, Docs, Blog, Hosting, Ecosystem, with Hos
     const header = load(path.join(dist, page)).querySelector('header.site-header');
     for (const nav of [header.querySelector('.nav-desktop'), header.querySelector('.nav-menu nav')]) {
       const links = nav.querySelectorAll('a.nav-link').map((a) => text(a));
-      assert.deepEqual(links.slice(0, 6), ['Features', 'Learn', 'Docs', 'Blog', 'Hosting', 'Ecosystem'], page);
+      // German pages have a German header (german-pages D7).
+      const names = ['Features', 'Learn', 'Docs', 'Blog', 'Hosting', 'Ecosystem'];
+      assert.deepEqual(links.slice(0, 6), page.startsWith('de/') ? names.map((n) => deChrome[n]) : names, page);
       const hosting = nav.querySelectorAll('a.nav-link')[4];
       assert.equal(hosting.getAttribute('href'), '/hosting/');
       assert.equal(hosting.getAttribute('aria-current'), page === 'hosting/index.html' ? 'page' : undefined, `${page}: Hosting current`);

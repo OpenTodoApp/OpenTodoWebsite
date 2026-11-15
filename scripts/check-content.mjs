@@ -41,6 +41,8 @@ for (const l of TEMPLATE_LAYOUTS) pages.add(`/templates/layout/${l}/`);
 for (const t of ['setup', 'switch', 'methods', 'how-tos', 'templates']) pages.add(`/learn/${t}/`);
 for (const t of TOPICS) pages.add(`/learn/topic/${t.slug}/`);
 pages.add('/guides/quiz/');
+// The German path (german-pages): its pages, so German content may link them.
+for (const p of (await import('../src/i18n/index.mjs')).GERMAN_PAGES) pages.add(`/de${p}`);
 for (const p of ['/apps/', '/ecosystem/', '/capture/', '/accessibility/', '/privacy/', '/status/', '/playground/', '/self-host/plan/', '/support/', '/hosting/']) pages.add(p);
 const route = { howto: 'how-to' };
 for (const c of COLLECTIONS) for (const s of slugs(c)) pages.add(`/${route[c] ?? c}/${s}/`);
@@ -53,7 +55,8 @@ const pageExists = (href) => pages.has(href.split('#')[0]);
 const docExists = (h) => docExistsIn(bundle.dir, h);
 
 const problems = [];
-for (const c of COLLECTIONS) {
+// German twins of switch guides live in switch/de/ (german-pages D4) and are held to the same claim rules.
+for (const c of [...COLLECTIONS, 'switch/de']) {
   for (const s of slugs(c)) {
     const file = path.join('src/content', c, `${s}.md`);
     problems.push(...lint(fs.readFileSync(path.join(ROOT, file), 'utf8'), { docExists, pageExists, file }));
@@ -67,4 +70,4 @@ if (problems.length) {
   console.error(`Content check failed:\n${problems.map((p) => `  ${p}`).join('\n')}`);
   process.exit(1);
 }
-console.log(`content check: ${COLLECTIONS.map((c) => `${slugs(c).length} ${c}`).join(', ')}, ${posts.length} blog posts ok`);
+console.log(`content check: ${[...COLLECTIONS, 'switch/de'].map((c) => `${slugs(c).length} ${c}`).join(', ')}, ${posts.length} blog posts ok`);

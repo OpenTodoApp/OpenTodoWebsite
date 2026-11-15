@@ -2,6 +2,7 @@
 // pinned bundle has its self-hosting guide, so a new guide appears with the release that
 // ships it and a removed one disappears.
 import { docExists } from './bundle';
+import { TARGETS_DE } from './install.de';
 
 const TARGETS: [string, string, string][] = [
   ['Docker', 'docker', 'docker run or Compose'], ['Podman', 'podman', 'Quadlet or a pod'], ['Umbrel', 'umbrel', 'App store'],
@@ -12,6 +13,6 @@ const TARGETS: [string, string, string][] = [
   ['Fly.io', 'fly', 'fly.toml'], ['Render', 'render', 'Blueprint'],
 ];
 
-export const deployTargets = () => TARGETS
-  .map(([name, slug, how]) => ({ name, how, href: `/docs/self-hosting/${slug}/` }))
+export const deployTargets = (lang: 'en' | 'de' = 'en') => TARGETS
+  .map(([name, slug, how]) => ({ name, how: lang === 'de' ? TARGETS_DE[slug] ?? how : how, href: `/docs/self-hosting/${slug}/` }))
   .filter((t) => docExists(t.href));

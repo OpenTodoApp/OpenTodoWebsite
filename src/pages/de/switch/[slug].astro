@@ -1,0 +1,10 @@
+---
+// /de/switch/<id> (german-pages D4): the German guides, entries switch/de/<id>.md.
+import { getCollection } from 'astro:content';
+import SwitchPage from '../../../components/pages/SwitchPage.astro';
+
+export async function getStaticPaths() {
+  return (await getCollection('switch', (e) => e.data.lang === 'de')).map((entry) => ({ params: { slug: entry.id.replace(/^de\//, '') }, props: { entry } }));
+}
+---
+<SwitchPage entry={Astro.props.entry} />

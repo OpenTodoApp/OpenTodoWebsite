@@ -2,10 +2,15 @@
 // One search over Features, Learn and the docs (website-catalog D2). The index is built with the
 // site (/search.json) and fetched on first use; nothing is sent anywhere while typing. Hidden
 // without JavaScript, where the rail and the docs' own search cover the same ground.
+import { p as strings } from '../../i18n/path/index.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).catalog;
 ---
-<div class="catalog-search" role="search">
-  <label class="visually-hidden" for="catalog-q">Search features, guides and docs</label>
-  <input id="catalog-q" type="search" placeholder="Search features, guides and docs" autocomplete="off" spellcheck="false" aria-controls="catalog-results" />
+<div class="catalog-search" role="search" data-results={s.results} data-none={s.noResults}>
+  <label class="visually-hidden" for="catalog-q">{s.searchLabel}</label>
+  <input id="catalog-q" type="search" placeholder={s.searchLabel} autocomplete="off" spellcheck="false" aria-controls="catalog-results" />
   <kbd aria-hidden="true">/</kbd>
   <p class="visually-hidden" aria-live="polite" data-catalog-status></p>
 </div>
@@ -51,7 +56,7 @@
       : `<li class="catalog-empty">Nothing matches “${esc(q)}”. Try fewer words, or <a href="/docs/?q=${encodeURIComponent(q)}">search the docs</a>.</li>`;
     list.hidden = false;
     main.hidden = true;
-    if (status) status.textContent = found.length ? `${found.length} results` : 'No results';
+    if (status) { const box = status.closest<HTMLElement>('[data-results]')!; status.textContent = found.length ? box.dataset.results!.replace('{n}', String(found.length)) : box.dataset.none!; }
   }
 
   input?.addEventListener('focus', () => { load(); }, { once: true });

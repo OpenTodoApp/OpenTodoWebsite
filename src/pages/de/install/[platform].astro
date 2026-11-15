@@ -1,0 +1,10 @@
+---
+// /de/install/<platform> (german-pages): one install page per platform in German.
+import InstallPlatform from '../../../components/pages/InstallPlatform.astro';
+import { PLATFORMS } from '../../../lib/install';
+
+export function getStaticPaths() {
+  return PLATFORMS.map((p) => ({ params: { platform: p.slug } }));
+}
+---
+<InstallPlatform slug={Astro.params.platform!} lang="de" />

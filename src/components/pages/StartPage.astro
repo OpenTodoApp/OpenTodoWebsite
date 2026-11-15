@@ -1,0 +1,87 @@
+---
+// /start and /de/start (website-get-started, german-pages D2): the three ways in, where the server
+// runs, the apps for each device and the switch guides, on one page. Plain HTML, so it reads
+// without JavaScript.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import LangNote from '../LangNote.astro';
+import RunChoice from '../RunChoice.astro';
+import { canImport, manifest, versionTag } from '../../lib/bundle';
+import { platforms } from '../../lib/platforms';
+import { SITE } from '../../lib/site';
+import { deployTargets } from '../../lib/start';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).start;
+const to = hrefIn(lang);
+const targets = deployTargets(lang);
+const port = manifest.facts.port ?? 8080;
+const image = manifest.image ?? `ghcr.io/opentodoapp/opentodo:${manifest.version}`;
+const switches = (await getCollection('switch', (e) => e.data.lang === 'en')).sort((a, b) => a.data.order - b.data.order);
+const hrefs = [SITE.demo, to('/install/'), '#run'];
+const icons = ['monitor', 'smartphone', 'server'];
+const ways = s.ways.map((w, i) => ({ ...w, icon: icons[i], href: hrefs[i], primary: i === 0 }));
+---
+<Base title={s.title} description={fill(s.description, { version: versionTag, more: targets.length - 4 })} lang={lang}>
+  <section class="page-head">
+    <div class="wrap">
+      <h1>{s.h1}</h1>
+      <p class="lede">{s.lede}</p>
+      <ul class="ways">
+        {ways.map((w) => (
+          <li>
+            <Icon name={w.icon} size={20} />
+            <h2>{w.title}</h2>
+            <p>{w.text}</p>
+            <a class:list={['btn', w.primary ? 'btn-primary' : 'btn-secondary']} href={w.href}>{w.cta}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
+
+  <RunChoice start="" lang={lang} />
+
+  <section class="section section-alt start-block" id="server" aria-labelledby="server-title">
+    <div class="wrap">
+      <h2 id="server-title">{s.serverH2}</h2>
+      <p class="lede">{s.serverLede}</p>
+      <ul class="targets">
+        {targets.map((t) => <li><a href={t.href}><strong>{t.name}</strong><span>{t.how}</span></a></li>)}
+      </ul>
+      <pre tabindex="0" aria-label={s.dockerLabel}><code>{s.dockerComment}
+docker run -d --name opentodo -p {port}:{port} -v opentodo-data:{manifest.facts.dataDir ?? '/data'} {image}
+{fill(s.dockerThen, { port })}</code></pre>
+      <p class="meta" set:html={s.notSure} />
+    </div>
+  </section>
+
+  <section class="section start-block" id="devices" aria-labelledby="devices-title">
+    <div class="wrap split" style="align-items: start">
+      <div>
+        <h2 id="devices-title">{s.devicesH2}</h2>
+        <p class="lede">{s.devicesLede}</p>
+        <ul class="rows">
+          {platforms(lang).map((p) => <li><Icon name={p.icon} size={16} /><a class="row-title" href={to(`/install/${p.slug}/`)}>{p.name}</a><span class="row-prop">{p.short}</span></li>)}
+          <li><Icon name="globe" size={16} /><a class="row-title" href="/capture/">{s.capture}</a><span class="row-prop">{s.captureProp}</span></li>
+          <li><Icon name="terminal" size={16} /><a class="row-title" href="/docs/cli/">{s.cli}</a><span class="row-prop">{s.cliProp}</span></li>
+        </ul>
+      </div>
+      <div id="switch">
+        <h2>{s.switchH2}</h2>
+        <p class="lede">{s.switchLede}</p>
+        <ul class="rows">
+          {switches.map((e) => <li><Icon name="folder-input" size={16} /><a class="row-title" href={to(`/switch/${e.id}/`)}>{fill(s.from, { app: e.data.app })}</a><span class="row-prop">{canImport(e.data.importFormat) ? s.importsExport : s.throughGuide}</span></li>)}
+          <li><Icon name="file" size={16} /><a class="row-title" href="/docs/import/">{s.otherApps}</a><span class="row-prop">{fill(s.formats, { n: manifest.importFormats.length })}</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <EndCta lang={lang} />
+</Base>

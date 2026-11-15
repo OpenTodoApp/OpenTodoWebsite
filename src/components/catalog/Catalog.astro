@@ -5,23 +5,28 @@
 // search box is hidden and every entry is reachable through the rail.
 import Base from '../../layouts/Base.astro';
 import CatalogSearch from './CatalogSearch.astro';
+import LangNote from '../LangNote.astro';
+import { p as strings } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
 
 export interface RailItem { label: string; href: string; count?: number; icon?: string }
 export interface RailSection { title?: string; items: RailItem[] }
-interface Props { title: string; heading: string; description: string; rail: RailSection[]; crumb?: { label: string; href: string } }
-const { title, heading, description, rail, crumb } = Astro.props;
+interface Props { title: string; heading: string; description: string; rail: RailSection[]; crumb?: { label: string; href: string }; lang?: 'en' | 'de' }
+const { title, heading, description, rail, crumb, lang = 'en' } = Astro.props;
+const s = strings(lang).catalog;
 const path = Astro.url.pathname;
 ---
-<Base title={title} description={description}>
+<Base title={title} description={description} lang={lang}>
   <section class="page-head catalog-head">
     <div class="wrap">
       {crumb && <p class="catalog-crumb"><a href={crumb.href}>{crumb.label}</a></p>}
       <h1>{heading}</h1>
-      <CatalogSearch />
+      <CatalogSearch lang={lang} />
     </div>
   </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
   <div class="wrap catalog">
-    <nav class="catalog-rail" aria-label={`${heading}: sections`}>
+    <nav class="catalog-rail" aria-label={fill(s.sections, { heading })}>
       {rail.map((s) => (
         <div>
           {s.title && <p class="catalog-rail-title">{s.title}</p>}

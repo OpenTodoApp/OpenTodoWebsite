@@ -8,6 +8,12 @@ import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
 import { versionTag } from '../lib/bundle';
 import { publishedPosts } from '../lib/blog';
+import { splitLang } from '../i18n/index.mjs';
+import { chromeLabel, href as hrefIn, p as strings } from '../i18n/path/index.mjs';
+// German pages get German labels, and links to German pages where they exist (german-pages).
+const [lang] = splitLang(Astro.url.pathname) as ['en' | 'de'];
+const t = chromeLabel(lang);
+const to = hrefIn(lang);
 const blog = (await publishedPosts()).length > 0;
 const year = new Date().getFullYear();
 const groups: [string, [string, string][]][] = [
@@ -15,11 +21,12 @@ const groups: [string, [string, string][]][] = [
   ['Learn', [['Guides and how-tos', NAV.learn], ['Docs', '/docs/'], ['Under the hood', '/under-the-hood/'], ['Moving from another app', '/switch/'], ...(blog ? [['Blog', '/blog/'] as [string, string]] : [])]],
   ['Project', [['About', '/about/'], ['Press kit', '/press-kit/'], ['Support OpenTodo', '/support/'], ['Demo status', '/status/'], ['Security', '/security/'], ['Accessibility', '/accessibility/'], ['Privacy', '/privacy/']]],
 ];
+const localGroups = groups.map(([title, items]) => [t(title), items.map(([label, href]) => [t(label), to(href)])] as [string, [string, string][]]);
 // Ways to help and follow (website-restyle-chrome D4): plain text links, nothing loaded from the services.
 const community: { label: string; href: string; icon: string; data: string }[] = [
-  { label: 'Star on GitHub', href: SITE.appRepo, icon: 'star', data: 'data-star' },
-  { label: 'Sponsor', href: SITE.sponsor, icon: 'heart', data: 'data-sponsor' },
-  { label: 'Buy me a coffee', href: SITE.coffee, icon: 'coffee', data: 'data-coffee' },
+  { label: t('Star on GitHub'), href: SITE.appRepo, icon: 'star', data: 'data-star' },
+  { label: t('Sponsor'), href: SITE.sponsor, icon: 'heart', data: 'data-sponsor' },
+  { label: t('Buy me a coffee'), href: SITE.coffee, icon: 'coffee', data: 'data-coffee' },
   { label: 'Discord', href: SITE.discord, icon: 'messages-square', data: 'data-discord' },
   { label: 'X', href: SITE.x, icon: 'at-sign', data: 'data-x' },
   { label: 'RSS', href: '/feed.xml', icon: 'rss', data: 'data-rss' },
@@ -29,11 +36,11 @@ const community: { label: string; href: string; icon: string; data: string }[] =
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <a class="brand" href="/"><img src={BRAND.favicon} width="24" height="24" alt="" /><span>OpenTodo</span></a>
-        <p>The task manager you host yourself. Free and open source.</p>
+        <a class="brand" href={to('/')}><img src={BRAND.favicon} width="24" height="24" alt="" /><span>OpenTodo</span></a>
+        <p>{strings(lang).chrome.footerTagline}</p>
         <LangSwitch up />
       </div>
-      {groups.map(([title, items]) => (
+      {localGroups.map(([title, items]) => (
         <nav aria-label={title} class="footer-group">
           <h2>{title}</h2>
           <ul>
@@ -42,7 +49,7 @@ const community: { label: string; href: string; icon: string; data: string }[] =
         </nav>
       ))}
       <div class="footer-fold">
-        {groups.map(([title, items]) => (
+        {localGroups.map(([title, items]) => (
           <nav aria-label={title}>
             <details>
               <summary><span>{title}</span><Icon name="chevron-down" size={16} class="chev" /></summary>
@@ -54,7 +61,7 @@ const community: { label: string; href: string; icon: string; data: string }[] =
         ))}
       </div>
     </div>
-    <nav class="footer-community" aria-label="Community">
+    <nav class="footer-community" aria-label={t('Community')}>
       <ul>
         {community.map((c) => <li><a href={c.href} {...{ [c.data]: '' }}><Icon name={c.icon} size={16} />{c.label}</a></li>)}
       </ul>

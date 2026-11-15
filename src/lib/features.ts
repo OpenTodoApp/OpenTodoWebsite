@@ -5,6 +5,7 @@
 // docs page can't go unnoticed. Lines are restated from each page's summary; change them here
 // when the docs change.
 import { docExists, manifest } from './bundle';
+import { FEATURES_DE, GROUPS_DE, INTEGRATIONS_DE, LANGUAGES_BEFORE_ZH_DE } from './features.de';
 
 export interface Feature { name: string; line: string; doc: string; since?: string }
 export interface FeatureGroup { key: string; title: string; icon: string; items: Feature[] }
@@ -145,17 +146,29 @@ export function shipped(since: string | undefined, version = manifest.version): 
 }
 
 /** The groups as the pinned release has them; throws when a shipped entry's docs page is missing. */
-export function featureGroups(): FeatureGroup[] {
+export function featureGroups(lang: 'en' | 'de' = 'en'): FeatureGroup[] {
   return GROUPS.map((g) => ({
     ...g,
+    title: lang === 'de' ? german(GROUPS_DE[g.key], `group "${g.key}"`) : g.title,
     items: g.items.filter((f) => {
       if (!shipped(f.since)) return false;
       if (!docExists(f.doc)) throw new Error(`features: "${f.name}" links ${f.doc}, which the pinned bundle (${manifest.version}) does not have; fix the slug or its "since"`);
       return true;
+    }).map((f) => {
+      if (lang !== 'de') return f;
+      const de = f.doc === '/docs/language/' && !ZH_SHIPPED ? LANGUAGES_BEFORE_ZH_DE : german(FEATURES_DE[f.doc], `feature "${f.name}" (${f.doc})`);
+      return { ...f, name: de.name, line: de.line };
     }),
   })).filter((g) => g.items.length > 0);
 }
 
+// A German twin is required (german-pages, "The German text stays complete"): the build stops
+// rather than show an English line on a German page. scripts/test/i18n.test.mjs says it earlier.
+function german<T>(v: T | undefined, what: string): T {
+  if (v === undefined) throw new Error(`features: ${what} has no German twin in src/lib/features.de.ts`);
+  return v;
+}
+
 export const featureCount = () => featureGroups().reduce((n, g) => n + g.items.length, 0);
-export const integrations = () => INTEGRATIONS.filter(([, doc]) => docExists(doc)).map(([name]) => name);
+export const integrations = (lang: 'en' | 'de' = 'en') => INTEGRATIONS.filter(([, doc]) => docExists(doc)).map(([name]) => (lang === 'de' ? INTEGRATIONS_DE[name] ?? name : name));
 export const importApps = () => IMPORT_APPS.filter(([format]) => manifest.importFormats.includes(format)).map(([, name]) => name);
