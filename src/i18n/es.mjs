@@ -78,6 +78,7 @@ export default {
       news: 'Noticias, versiones y cómo se hace',
       allPosts: 'Todas las entradas',
       star: 'Dale una estrella a OpenTodo en GitHub',
+      support: 'Apoya a OpenTodo',
     },
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
