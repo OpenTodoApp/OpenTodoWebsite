@@ -94,6 +94,8 @@ export function switchSchema({ docExists, today = () => new Date() }) {
     keeps: z.array(z.string().min(1)).min(1),
     drops: z.array(z.string().min(1)).min(1, { message: 'say honestly what does not come across ("drops")' }),
     order: z.number().default(0),
+    // german-pages D4: a German twin of an English guide lives in switch/de/ with `lang: de`.
+    lang: z.enum(['en', 'de']).default('en'),
   });
 }
 

@@ -2,17 +2,20 @@
 // One section of a catalog (website-catalog D1): a heading with its count and, on overview
 // pages, a link to the whole section; then one row per entry with its line and a property.
 import Icon from '../Icon.astro';
+import { p as strings } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
 
 export interface CatalogItem { title: string; href: string; line?: string; meta?: string }
-interface Props { id: string; title: string; icon?: string; items: CatalogItem[]; total?: number; more?: string; headingLevel?: 2 | 3 }
-const { id, title, icon, items, total, more, headingLevel = 2 } = Astro.props;
+interface Props { id: string; title: string; icon?: string; items: CatalogItem[]; total?: number; more?: string; headingLevel?: 2 | 3; lang?: 'en' | 'de' }
+const { id, title, icon, items, total, more, headingLevel = 2, lang = 'en' } = Astro.props;
+const s = strings(lang).catalog;
 const H = `h${headingLevel}` as 'h2' | 'h3';
 const count = total ?? items.length;
 ---
 <section class="catalog-rows" id={id} aria-labelledby={`${id}-title`}>
   <H id={`${id}-title`} class="catalog-rows-title">
     {icon && <Icon name={icon} size={16} />}<span>{title}</span><span class="count">{count}</span>
-    {more && count > items.length && <a class="catalog-more" href={more}>All {count}<span class="visually-hidden"> in {title}</span> <Icon name="arrow-right" size={14} /></a>}
+    {more && count > items.length && <a class="catalog-more" href={more}>{fill(s.all, { count })}<span class="visually-hidden">{fill(s.allIn, { title })}</span> <Icon name="arrow-right" size={14} /></a>}
   </H>
   <ul>
     {items.map((i) => (

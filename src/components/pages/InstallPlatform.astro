@@ -1,0 +1,71 @@
+---
+// One install page per platform (website-help-and-howtos D3, german-pages D2): steps, reminders,
+// sharing into the app and the missing-install-option note, each line with its docs link.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import LangNote from '../LangNote.astro';
+import AndroidNotice from '../AndroidNotice.astro';
+import IosNotice from '../IosNotice.astro';
+import { INSTALL_DOC, NO_INSTALL_DOC } from '../../lib/install';
+import { platforms } from '../../lib/platforms';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { slug: string; lang?: 'en' | 'de' }
+const { slug, lang = 'en' } = Astro.props;
+const s = strings(lang).platform;
+const to = hrefIn(lang);
+const all = platforms(lang);
+const p = all.find((x) => x.slug === slug)!;
+const others = all.filter((o) => o.slug !== p.slug);
+---
+<Base title={fill(s.title, { name: p.name })} description={fill(s.description, { name: p.name })} ogType="article" lang={lang}>
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="breadcrumb"><a href={to('/install/')}>{s.crumb}</a></p>
+      <h1>{fill(s.title, { name: p.name })}</h1>
+      <p class="lede">{fill(s.lede, { browser: p.browser })} <a href={INSTALL_DOC}>{s.ledeLink}</a></p>
+    </div>
+  </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap narrow prose">
+      {p.slug === 'android' && <AndroidNotice lang={lang} />}
+      {p.slug === 'iphone-ipad' && <IosNotice lang={lang} />}
+      <h2>{s.beforeH2}</h2>
+      <p set:html={fill(s.before, { noInstall: NO_INSTALL_DOC })} />
+
+      <h2>{s.installH2}</h2>
+      <ol class="steps">
+        {p.steps.map((step) => <li>{step}</li>)}
+      </ol>
+      <p>{p.after} <a href={p.source}>{s.stepsLink}</a></p>
+
+      <h2>{s.remindersH2}</h2>
+      <p>{p.reminders.text} <a href={p.reminders.doc}>{s.remindersLink}</a></p>
+
+      <h2>{s.shareH2}</h2>
+      <p>{p.share.text} <a href={p.share.doc}>{s.shareLink}</a> · <a href="/capture/">{s.shareMore}</a></p>
+
+      <h2>{s.offlineH2}</h2>
+      <p>{s.offline} <a href="/docs/install-app/#keep-using-it-offline">{s.offlineLink}</a></p>
+      <p>{s.updates} <a href="/docs/install-app/#updates">{s.updatesLink}</a></p>
+      <p>{s.remove} <a href="/docs/install-app/#remove-it">{s.removeLink}</a></p>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="other-title">
+    <div class="wrap">
+      <h2 id="other-title" style="font-size: 1.5rem">{s.othersH2}</h2>
+      <ul class="grid grid-3 plain">
+        {others.map((o) => (
+          <li><a class="card" href={to(`/install/${o.slug}/`)}><span class="card-icon"><Icon name={o.icon} size={22} /></span><h3>{o.name}</h3><p>{o.short}</p></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <EndCta title={s.end} lang={lang} />
+</Base>

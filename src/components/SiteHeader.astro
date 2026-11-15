@@ -7,47 +7,54 @@ import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
 import { NAV, SITE } from '../lib/site';
 import { publishedPosts } from '../lib/blog';
+import { splitLang } from '../i18n/index.mjs';
+import { chromeLabel, href as hrefIn } from '../i18n/path/index.mjs';
 
 const path = Astro.url.pathname;
+// German pages get a German header whose links lead to German pages where they exist (german-pages).
+const [lang] = splitLang(path) as ['en' | 'de'];
+const t = chromeLabel(lang);
+const to = hrefIn(lang);
+const english = splitLang(path)[1];
 // Blog appears once a post is published (website-blog spec "Blog in navigation").
 const blog = (await publishedPosts()).length > 0;
 
 interface Link { href: string; label: string; match: string[] }
 // Learn is current on the guidance pages it gathers (website-shell-v2 D1).
 const links: Link[] = [
-  { href: NAV.features, label: 'Features', match: ['/features/'] },
-  { href: NAV.learn, label: 'Learn', match: ['/learn/', '/help/', '/guides/', '/how-to/', '/toolkit/', '/topics/', '/templates/', '/switch/'] },
-  { href: '/docs/', label: 'Docs', match: [] },
-  ...(blog ? [{ href: '/blog/', label: 'Blog', match: ['/blog/'] }] : []),
+  { href: to(NAV.features), label: t('Features'), match: ['/features/'] },
+  { href: NAV.learn, label: t('Learn'), match: ['/learn/', '/help/', '/guides/', '/how-to/', '/toolkit/', '/topics/', '/templates/', '/switch/'] },
+  { href: '/docs/', label: t('Docs'), match: [] },
+  ...(blog ? [{ href: '/blog/', label: t('Blog'), match: ['/blog/'] }] : []),
   // Managed hosting (hosting-page): the site's own page, never PikaPods itself.
-  { href: '/hosting/', label: 'Hosting', match: ['/hosting/'] },
-  { href: '/ecosystem/', label: 'Ecosystem', match: ['/ecosystem/'] },
+  { href: '/hosting/', label: t('Hosting'), match: ['/hosting/'] },
+  { href: '/ecosystem/', label: t('Ecosystem'), match: ['/ecosystem/'] },
 ];
-const current = (l: Link) => (l.match.some((m) => path.startsWith(m)) ? 'page' : undefined);
+const current = (l: Link) => (l.match.some((m) => english.startsWith(m)) ? 'page' : undefined);
 ---
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="/">
+    <a class="brand" href={to('/')}>
       <img src={BRAND.favicon} width="28" height="28" alt="" />
       <span>OpenTodo</span>
     </a>
-    <nav class="nav-desktop" aria-label="Main">
+    <nav class="nav-desktop" aria-label={t('Main')}>
       <ul>
         {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
       </ul>
     </nav>
     <div class="header-tools">
       <LangSwitch class="header-lang" />
-      <a class="header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /><span>Star<span class="visually-hidden"> OpenTodo on GitHub</span></span></a>
-      <a class="btn btn-primary btn-small header-demo" href={SITE.demo}>Try the demo</a>
+      <a class="header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /><span>{t('Star')}<span class="visually-hidden"> {t('OpenTodo on GitHub')}</span></span></a>
+      <a class="btn btn-primary btn-small header-demo" href={SITE.demo}>{t('Try the demo')}</a>
       <details class="nav-menu">
-        <summary><Icon name="menu" size={18} /><span class="visually-hidden">Menu</span></summary>
+        <summary><Icon name="menu" size={18} /><span class="visually-hidden">{t('Menu')}</span></summary>
         <div class="menu-panel">
-          <nav aria-label="Main">
+          <nav aria-label={t('Main')}>
             <ul>
               {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
-              <li><a class="nav-link" href={NAV.start}>Get started</a></li>
-              <li><a class="nav-link" href={SITE.appRepo} data-star><Icon name="star" size={18} /> Star on GitHub</a></li>
+              <li><a class="nav-link" href={to(NAV.start)}>{t('Get started')}</a></li>
+              <li><a class="nav-link" href={SITE.appRepo} data-star><Icon name="star" size={18} /> {t('Star on GitHub')}</a></li>
             </ul>
           </nav>
           <LangSwitch />

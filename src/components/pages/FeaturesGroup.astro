@@ -1,0 +1,21 @@
+---
+// /features/<group> and /de/features/<group> (website-catalog D1, german-pages D2): every feature
+// of one group, each linking its docs page.
+import Catalog from '../catalog/Catalog.astro';
+import CatalogRows from '../catalog/CatalogRows.astro';
+import EndCta from '../EndCta.astro';
+import { featureGroups } from '../../lib/features';
+import { featuresRail } from '../../lib/catalog';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { group: string; lang?: 'en' | 'de' }
+const { group, lang = 'en' } = Astro.props;
+const s = strings(lang).features;
+const g = featureGroups(lang).find((x) => x.key === group)!;
+const lower = lang === 'en' ? g.title.toLowerCase() : g.title;
+---
+<Catalog title={fill(s.groupTitle, { group: g.title })} heading={g.title} crumb={{ label: s.title, href: hrefIn(lang)('/features/') }} description={fill(s.groupDescription, { count: g.items.length, group: lower })} rail={featuresRail(lang)} lang={lang}>
+  <CatalogRows id={g.key} title={s.allFeatures} icon={g.icon} items={g.items.map((f) => ({ title: f.name, href: f.doc, line: f.line }))} lang={lang} />
+  <EndCta slot="after" lang={lang} />
+</Catalog>

@@ -1,7 +1,7 @@
 ---
 // The language switch (website-restyle-chrome D2): one disclosure in the header and the
 // footer instead of a row of seven names. It opens without JavaScript. It lists this page in
-// every language when the page is translated, otherwise each language's home page.
+// every language: this page's version where it exists, otherwise that language's home page.
 import Icon from './Icon.astro';
 import { DEFAULT_LANG, LANGS, alternatesFor, localePath, splitLang } from '../i18n/index.mjs';
 
@@ -9,8 +9,11 @@ interface Props { up?: boolean; class?: string }
 const { up = false, class: className } = Astro.props;
 const [lang] = splitLang(Astro.url.pathname) as [keyof typeof LANGS, string];
 const current = LANGS[lang] ?? LANGS[DEFAULT_LANG];
-const languages = alternatesFor(Astro.url.pathname)
-  ?? Object.keys(LANGS).map((l) => ({ lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] }));
+// Every language, linking this page's version where it exists and that language's home page
+// otherwise (german-pages D1: a page may exist in some languages only).
+const versions = alternatesFor(Astro.url.pathname) ?? [];
+const languages = Object.keys(LANGS).map((l) => versions.find((v) => v.lang === l)
+  ?? { lang: l, href: localePath('/', l), ...LANGS[l as keyof typeof LANGS] });
 const code = lang === 'zh' ? '中文' : lang.toUpperCase();
 ---
 <details class:list={['lang-switch', { 'lang-up': up }, className]}>

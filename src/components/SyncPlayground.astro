@@ -2,48 +2,51 @@
 // Interactive sync playground (island, on /self-host only). Without JavaScript
 // the page shows the same story as text.
 import Icon from './Icon.astro';
+import { p as strings } from '../i18n/path/index.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).sync;
+const fmtN = (t: string, n: number) => t.replace('{n}', String(n));
 ---
 <div class="sync-static card">
-  <h3>What happens in a conflict</h3>
+  <h3>{s.staticTitle}</h3>
   <ol>
-    <li>Your laptop and your phone both lose their connection.</li>
-    <li>On the phone you complete "Book flights to Lisbon". On the laptop you rename the same task.</li>
-    <li>Both reconnect. Each device sends its queued changes, one per field, to your server, and receives the other's.</li>
-    <li>Both devices end up with the renamed, completed task. No "pick a version" dialog.</li>
+    {s.staticSteps.map((step) => <li>{step}</li>)}
   </ol>
-  <p class="muted">With JavaScript on, this section is an interactive playground.</p>
+  <p class="muted">{s.staticNote}</p>
 </div>
 
-<div class="sync-live" data-sync>
+<div class="sync-live" data-sync data-strings={JSON.stringify(s)}>
   <div class="sync-controls">
-    <button class="btn btn-primary" data-sync-conflict type="button"><Icon name="zap" size={18} /> Play a conflict</button>
-    <button class="btn btn-secondary" data-sync-reset type="button"><Icon name="rotate-ccw" size={18} /> Reset</button>
-    <p class="sync-caption" data-sync-caption aria-live="polite">Switch Wi-Fi off on a device, change something, then switch it back on.</p>
+    <button class="btn btn-primary" data-sync-conflict type="button"><Icon name="zap" size={18} /> {s.play}</button>
+    <button class="btn btn-secondary" data-sync-reset type="button"><Icon name="rotate-ccw" size={18} /> {s.reset}</button>
+    <p class="sync-caption" data-sync-caption aria-live="polite">{s.hint}</p>
   </div>
   <div class="sync-stage" data-sync-stage>
     <div class="device" data-device="laptop">
       <div class="device-head">
-        <span class="device-name"><Icon name="laptop" size={18} /> Laptop</span>
-        <span class="status" data-status>Synced</span>
-        <label class="switch"><input type="checkbox" checked data-online /> Wi-Fi</label>
+        <span class="device-name"><Icon name="laptop" size={18} /> {s.laptop}</span>
+        <span class="status" data-status>{s.synced}</span>
+        <label class="switch"><input type="checkbox" checked data-online /> {s.wifi}</label>
       </div>
-      <ul class="device-list" data-list aria-label="Tasks on the laptop"></ul>
+      <ul class="device-list" data-list aria-label={s.tasksOn.laptop}></ul>
     </div>
     <div class="server" data-server>
       <Icon name="server" size={40} />
-      <b>Your server</b>
-      <span class="server-log" data-server-log>0 changes</span>
+      <b>{s.server}</b>
+      <span class="server-log" data-server-log>{fmtN(s.changes, 0)}</span>
     </div>
     <div class="device" data-device="phone">
       <div class="device-head">
-        <span class="device-name"><Icon name="smartphone" size={18} /> Phone</span>
-        <span class="status" data-status>Synced</span>
-        <label class="switch"><input type="checkbox" checked data-online /> Wi-Fi</label>
+        <span class="device-name"><Icon name="smartphone" size={18} /> {s.phone}</span>
+        <span class="status" data-status>{s.synced}</span>
+        <label class="switch"><input type="checkbox" checked data-online /> {s.wifi}</label>
       </div>
-      <ul class="device-list" data-list aria-label="Tasks on the phone"></ul>
+      <ul class="device-list" data-list aria-label={s.tasksOn.phone}></ul>
     </div>
   </div>
-  <p class="meta">Click a title to rename it, click the circle to complete it.</p>
+  <p class="meta">{s.clickHint}</p>
 </div>
 
 <script>
@@ -62,6 +65,9 @@ import Icon from './Icon.astro';
 
   const root = document.querySelector<HTMLElement>('[data-sync]');
   if (root) {
+    // The page's strings (german-pages D2), English or German.
+    const T = JSON.parse(root.dataset.strings!);
+    const f = (t: string, v: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (m, k) => (k in v ? String(v[k]) : m));
     const $ = <T extends Element>(s: string, el: ParentNode = root) => el.querySelector<T>(s)!;
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -72,9 +78,8 @@ import Icon from './Icon.astro';
     const conflictBtn = $<HTMLButtonElement>('[data-sync-conflict]');
     const resetBtn = $<HTMLButtonElement>('[data-sync-reset]');
     const ORDER = ['a', 'b', 'c'];
-    const START: Record<string, [string, boolean]> = { a: ['Buy oat milk', false], b: ['Book flights to Lisbon', false], c: ['Renew passport', true] };
+    const START: Record<string, [string, boolean]> = { a: [T.start[0], false], b: [T.start[1], false], c: [T.start[2], true] };
     const FLY = reduced ? 120 : 780;
-    const NAMES: Record<string, string> = { laptop: 'Laptop', phone: 'Phone' };
     let gen = 0, clock = 0;
     let server: { state: State; log: Op[] };
     let devices: Record<string, Device> = {};
@@ -107,7 +112,7 @@ import Icon from './Icon.astro';
           btn.addEventListener('click', () => edit(d, id, 'done', !d.state[id].done.v));
           const title = document.createElement('span');
           title.className = 'title'; title.contentEditable = 'true'; title.spellcheck = false;
-          title.setAttribute('role', 'textbox'); title.setAttribute('aria-label', `Title of task ${id.toUpperCase()} on the ${NAMES[name].toLowerCase()}`);
+          title.setAttribute('role', 'textbox'); title.setAttribute('aria-label', f(T.titleOf, { id: id.toUpperCase(), on: T.on[name] }));
           title.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); title.blur(); } });
           title.addEventListener('blur', () => {
             const v = (title.textContent ?? '').replace(/\s+/g, ' ').trim().slice(0, 60);
@@ -120,7 +125,7 @@ import Icon from './Icon.astro';
         }
         render(d);
       }
-      serverLog.textContent = '0 changes';
+      serverLog.textContent = f(T.changes, { n: 0 });
     }
 
     function render(d: Device) {
@@ -128,12 +133,12 @@ import Icon from './Icon.astro';
         const { li, btn, title } = d.rows[id];
         const s = d.state[id];
         li.classList.toggle('done', !!s.done.v);
-        btn.setAttribute('aria-label', `${s.done.v ? 'Reopen' : 'Complete'} "${s.title.v}" on the ${NAMES[d.name].toLowerCase()}`);
+        btn.setAttribute('aria-label', f(s.done.v ? T.reopen : T.complete, { title: String(s.title.v), on: T.on[d.name] }));
         if (document.activeElement !== title) title.textContent = String(s.title.v);
       }
       d.el.classList.toggle('offline', !d.online);
       d.status.classList.toggle('busy', d.online && d.pending > 0);
-      d.status.textContent = !d.online ? (d.outbox.length ? `Offline, ${d.outbox.length} queued` : 'Offline') : d.pending > 0 ? 'Syncing' : 'Synced';
+      d.status.textContent = !d.online ? (d.outbox.length ? f(T.offlineQueued, { n: d.outbox.length }) : T.offline) : d.pending > 0 ? T.syncing : T.synced;
     }
 
     const enqueue = (d: Device, fn: (g: number) => Promise<void>) => {
@@ -175,7 +180,7 @@ import Icon from './Icon.astro';
           await fly(d.el, serverEl, label(op));
           if (g !== gen) return;
           d.outbox.shift(); server.log.push(op); apply(server.state, op);
-          serverLog.textContent = `${server.log.length} change${server.log.length === 1 ? '' : 's'}`;
+          serverLog.textContent = f(server.log.length === 1 ? T.change : T.changes, { n: server.log.length });
           serverEl.classList.remove('ping'); void serverEl.offsetWidth; serverEl.classList.add('ping');
           render(d);
           for (const other of Object.values(devices)) if (other !== d) pull(other);
@@ -210,31 +215,31 @@ import Icon from './Icon.astro';
       if (!box) return;
       const d = devices[box.closest<HTMLElement>('[data-device]')!.dataset.device!];
       setOnline(d, box.checked);
-      say(box.checked ? `The ${NAMES[d.name].toLowerCase()} is back online and exchanges its changes.` : 'Offline. Edits apply on the device and wait in a queue.');
+      say(box.checked ? T.back[d.name] : T.goneOffline);
     });
     conflictBtn.addEventListener('click', async () => {
       setup();
       const g = gen, { laptop, phone } = devices;
       conflictBtn.disabled = true;
       try {
-        say('Both devices lose their connection.');
+        say(T.play1);
         setOnline(laptop, false); setOnline(phone, false);
         await sleep(1100); if (g !== gen) return;
-        say('The phone completes "Book flights to Lisbon".');
+        say(T.play2);
         edit(phone, 'b', 'done', true);
         await sleep(1400); if (g !== gen) return;
-        say('The laptop renames the same task, at the same time.');
-        edit(laptop, 'b', 'title', 'Book flights to Lisbon, window seat');
+        say(T.play3);
+        edit(laptop, 'b', 'title', T.renamed);
         await sleep(1600); if (g !== gen) return;
-        say('Both reconnect and exchange their queued changes.');
+        say(T.play4);
         setOnline(laptop, true); setOnline(phone, true);
         await idle(g); if (g !== gen) return;
-        say('Converged. Both edits survived: renamed and completed. No "pick a version" dialog.', true);
+        say(T.play5, true);
       } finally {
         if (g === gen) conflictBtn.disabled = false;
       }
     });
-    resetBtn.addEventListener('click', () => { setup(); conflictBtn.disabled = false; say('Switch Wi-Fi off on a device, change something, then switch it back on.'); });
+    resetBtn.addEventListener('click', () => { setup(); conflictBtn.disabled = false; say(T.hint); });
     setup();
   }
 </script>

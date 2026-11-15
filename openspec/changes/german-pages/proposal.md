@@ -16,6 +16,7 @@ Today the website-languages spec allows a translated page only when it exists in
   - `/de/switch/`, the index of the switch guides, and the guides for Todoist, Microsoft To Do (where Wunderlist, made in Berlin, sent its users) and Things.
 - Each German page renders from the same component as its English original, with the same sections in the same order, the same figures from the bundle and the language note. The components shared with the English pages (install tabs, sync playground, end band, the run choice, the catalogue) take their strings as an optional prop whose default is today's English, so the English pages are unchanged.
 - The data the pages read get German twins: the feature catalogue, the platforms, the deploy targets, and a German entry of the switch collection for each of the three guides, tied to the English entry's facts. A unit test fails when an English item has no German twin, naming it.
+- On German pages, the German home and apps pages included, the header and footer are in German and link the German pages where they exist.
 - A page may exist in a subset of the site's languages. Its `hreflang` alternates and the sitemap list English, `x-default` and the languages it exists in, nothing else. The language switch still lists every language; a language without this page links that language's home page, as it does on English-only pages today.
 - The German text is written by an agent and is not read by a person before merging, at the maintainer's decision.
 
@@ -35,8 +36,8 @@ Pages affected: the English originals of the pages above (their head gains the G
 
 - Language plumbing: `src/i18n/index.mjs` (`TRANSLATED_PAGES` per page and language), `src/components/LangSwitch.astro`, `src/layouts/Base.astro`.
 - Strings: `src/i18n/en.mjs` and `de.mjs` (page and component strings); German twins in `src/lib/features.ts`, `src/lib/install.ts`, `src/lib/start.ts` and `src/lib/hosting.ts` (the PikaPods note).
-- Components: `InstallTabs`, `SyncPlayground`, `EndCta`, `RunChoice`, `catalog/Catalog`, `catalog/CatalogRows` gain an optional strings prop; new `SelfHostPage`, `StartPage`, `InstallIndex`, `InstallPlatform`, `SwitchIndex` and `SwitchPage` components extracted from the English pages.
+- Components: `InstallTabs`, `SyncPlayground`, `EndCta`, `RunChoice`, the catalogue components, `AndroidNotice`, `IosNotice`, `SiteHeader` and `SiteFooter` follow the page's language; new page components in `src/components/pages/` extracted from the English pages; strings in `src/i18n/path/`.
 - Routes: `src/pages/de/` with `features/index.astro`, `features/[group].astro`, `start.astro`, `install/index.astro`, `install/[platform].astro`, `self-host.astro`, `switch/index.astro`, `switch/[slug].astro`.
 - Content: the switch collection gains `lang` (default `en`) and `src/content/switch/de/{todoist,microsoft-todo,things}.md`.
 - Tests: `scripts/test/i18n.test.mjs`.
-- No new dependency. Nineteen more pages to build and to check.
+- No new dependency. Twenty more pages to build and to check.

@@ -26,7 +26,7 @@ Every translated page and its English original SHALL carry `hreflang` alternates
 ## ADDED Requirements
 
 ### Requirement: Pages in English and German only
-The visitor's path SHALL also exist in German, under `/de/` with the English slugs, and in no other language: the features catalogue (`/features/` and its group pages), `/start/`, `/install/` and its platform pages, `/self-host/`, the switch index `/switch/`, and the switch guides for Todoist, Microsoft To Do and Things. Each German page SHALL render the same sections in the same order as its English original from the same component, show the language note, state the same facts drawn from the same sources (the bundle, the feature catalogue, the platform records), keep the English page's links to the documentation (which is English), and read at 360 px wide without JavaScript. Links from a German page to a page that exists in German SHALL lead to the German page; links to any other page SHALL lead to the English one. Adding a further page or language to this list SHALL be a change to this requirement.
+The visitor's path SHALL also exist in German, under `/de/` with the English slugs, and in no other language: the features catalogue (`/features/` and its group pages), `/start/`, `/install/` and its platform pages, `/self-host/`, the switch index `/switch/`, and the switch guides for Todoist, Microsoft To Do and Things. Each German page SHALL render the same sections in the same order as its English original from the same component, show the language note, state the same facts drawn from the same sources (the bundle, the feature catalogue, the platform records), keep the English page's links to the documentation (which is English), and read at 360 px wide without JavaScript. Links from a German page to a page that exists in German SHALL lead to the German page; links to any other page SHALL lead to the English one. Adding a further page or language to this list SHALL be a change to this requirement. Every page in German, the German home and phone apps pages included, SHALL show the header and footer in German, with their links leading to German pages where they exist; pages in the other languages keep the English header and footer.
 
 #### Scenario: German self-hosting page
 - **WHEN** a visitor opens `/de/self-host/` on a 390 px wide phone without JavaScript
@@ -39,6 +39,10 @@ The visitor's path SHALL also exist in German, under `/de/` with the English slu
 #### Scenario: Moving through the German path
 - **WHEN** a visitor on `/de/start/` follows "Install the app" and then the Android card
 - **THEN** `/de/install/` and then `/de/install/android/` open in German, and the Android steps link the English documentation section they come from
+
+#### Scenario: German header on the German path
+- **WHEN** a visitor opens `/de/` and follows the header's first link
+- **THEN** the header reads Funktionen, Lernen, Doku, and the link opens `/de/features/`
 
 #### Scenario: English pages unchanged
 - **WHEN** the English originals are built after this change

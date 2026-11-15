@@ -1,28 +1,5 @@
 ---
-// /install (website-help-and-howtos D3): one card per platform.
-import Base from '../../layouts/Base.astro';
-import EndCta from '../../components/EndCta.astro';
-import Icon from '../../components/Icon.astro';
-import RunChoice from '../../components/RunChoice.astro';
-import { INSTALL_DOC, PLATFORMS } from '../../lib/install';
+// /install (website-help-and-howtos D3), rendered by InstallIndex, which /de/install/ shares (german-pages D2).
+import InstallIndex from '../../components/pages/InstallIndex.astro';
 ---
-<Base title="Install the app" description="Install OpenTodo on iPhone, iPad, Android, Windows, Mac, Linux and ChromeOS straight from the browser. No app store, works offline, reminders included.">
-  <section class="page-head">
-    <div class="wrap">
-      <h1>On your phone and your computer, from the browser.</h1>
-      <p class="lede">The iPhone and iPad app is now <a href="/apps/">in the App Store</a> as a first release, but no store is needed: open your server's address, choose install, and it gets its own icon, its own window, works without a connection and shows reminders while it is closed. Pick your device. <a href={INSTALL_DOC}>How installing works</a></p>
-    </div>
-  </section>
-  <section class="section" style="padding-top: 1rem">
-    <div class="wrap">
-      <ul class="grid grid-3 plain">
-        {PLATFORMS.map((p) => (
-          <li><a class="card" href={`/install/${p.slug}/`}><span class="card-icon"><Icon name={p.icon} size={22} /></span><h2 style="font-size: 1.2rem">{p.name}</h2><p>{p.short}</p></a></li>
-        ))}
-      </ul>
-      <p class="meta" style="margin-top: 1.5rem">Firefox on a computer does not install web apps; OpenTodo still works fully in a Firefox tab, offline included. <a href="/docs/install-app/#windows-macos-linux-and-chromeos">Details</a></p>
-    </div>
-  </section>
-  <RunChoice tight />
-  <EndCta title="No server to sign in to yet?" />
-</Base>
+<InstallIndex />

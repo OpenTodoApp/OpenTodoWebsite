@@ -1,0 +1,86 @@
+---
+// One switch page per app (website-help-and-howtos D4, german-pages D4): export steps, the import
+// path of the pinned release, what comes across, the term map, the first week. The one-step path
+// appears only when the bundle ships the named importer. A German guide is the entry de/<id>.
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import LangNote from '../LangNote.astro';
+import { canImport, docExists, versionTag } from '../../lib/bundle';
+import { SITE } from '../../lib/site';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { entry: CollectionEntry<'switch'> }
+const { entry } = Astro.props;
+const d = entry.data;
+const lang = d.lang;
+const id = entry.id.replace(/^de\//, '');
+const s = strings(lang).switchPage;
+const to = hrefIn(lang);
+const { Content } = await render(entry);
+const guide = `/docs/switch/${id}/`;
+const oneStep = canImport(d.importFormat) && docExists(guide);
+const day = d.checkedOn.toLocaleDateString(s.dateLocale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const v = { app: d.app };
+const [checkedBefore, checkedAfter] = s.checked.split('{date}').map((t) => fill(t, { app: d.app, version: versionTag }));
+---
+<Base title={fill(s.title, v)} description={fill(s.description, { app: d.app, summary: d.summary })} ogType="article" crumbs={[{ name: s.crumb, href: to('/switch/') }, { name: d.app, href: to(`/switch/${id}/`) }]} lang={lang}>
+  <section class="page-head">
+    <div class="wrap narrow">
+      <p class="breadcrumb"><a href={to('/switch/')}>{s.crumb}</a></p>
+      <h1 style="font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem)">{d.title}</h1>
+      <p class="lede">{d.summary}</p>
+      <p class="updated"><Icon name="calendar-check" size={16} /> {checkedBefore}<time datetime={d.checkedOn.toISOString().slice(0, 10)}>{day}</time>{checkedAfter}</p>
+      <div class="cta-row" style="margin-top: 1.25rem">
+        {oneStep
+          ? <a class="btn btn-primary" href={guide} data-switch={d.app}><Icon name="arrow-right" size={18} /> {fill(s.oneStep, v)}</a>
+          : <a class="btn btn-primary" href="#before-you-start"><Icon name="arrow-down" size={18} /> {s.stepByStep}</a>}
+        <a class="btn btn-secondary" href={SITE.demo}>{s.demoFirst}</a>
+      </div>
+      {!oneStep && <p class="meta" style="margin-top: 0.75rem" set:html={fill(s.noImporter, v)} />}
+    </div>
+  </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
+
+  <section class="section" style="padding-top: 0">
+    <div class="wrap narrow">
+      <div class="versus" style="margin-bottom: 2rem">
+        <div class="card us">
+          <h2 class="as-h3"><Icon name="check" size={20} /> {s.keeps}</h2>
+          <ul class="plain-list">{d.keeps.map((k) => <li>{k}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h2 class="as-h3"><Icon name="x" size={20} /> {s.drops}</h2>
+          <ul class="plain-list">{d.drops.map((k) => <li>{k}</li>)}</ul>
+        </div>
+      </div>
+      <div class="prose howto-body"><Content /></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="terms-title">
+    <div class="wrap narrow">
+      <h2 id="terms-title">{fill(s.termsH2, v)}</h2>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="terms-title">
+        <table class="terms">
+          <caption class="visually-hidden">{fill(s.termsCaption, v)}</caption>
+          <thead><tr><th scope="col">{fill(s.inApp, v)}</th><th scope="col">{s.inUs}</th><th scope="col">{s.note}</th></tr></thead>
+          <tbody>{d.terms.map((t) => <tr><td>{t.them}</td><td>{t.us}</td><td>{t.note ?? ''}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="meta" style="margin-top: 1rem" set:html={fill(s.named, v)} />
+    </div>
+  </section>
+
+  <section class="section" style="padding-block: 2.5rem" aria-labelledby="sources">
+    <div class="wrap narrow">
+      <h2 id="sources" style="font-size: 1.25rem">{s.sources}</h2>
+      <ul class="checks">{d.sources.map((src) => <li><Icon name="book-open" size={16} /><a href={src}>{src}</a></li>)}</ul>
+    </div>
+  </section>
+
+  <EndCta kind="import" lang={lang} />
+</Base>

@@ -7,7 +7,7 @@
 // store names and the badge's text stay English, as on the artwork.
 import Icon from './Icon.astro';
 import { SITE } from '../lib/site';
-import { DEFAULT_LANG } from '../i18n/index.mjs';
+import { DEFAULT_LANG, localHref } from '../i18n/index.mjs';
 import { DICT } from '../i18n/dict.mjs';
 import type en from '../i18n/en.mjs';
 
@@ -35,7 +35,7 @@ const soon = [
       ))}
     </ul>
     <p class="meta" set:html={s.webPush} />
-    <p><a class="btn btn-primary" href="/install/">{s.webInstall}</a></p>
+    <p><a class="btn btn-primary" href={localHref('/install/', lang)}>{s.webInstall}</a></p>
   </div>
 </section>
 

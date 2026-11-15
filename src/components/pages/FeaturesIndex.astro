@@ -1,0 +1,31 @@
+---
+// /features and /de/features (website-catalog D1, german-pages D2): the overview of everything the
+// pinned release does, each group's first entries with a link to the group's page; every entry
+// links its docs page.
+import Catalog from '../catalog/Catalog.astro';
+import CatalogRows from '../catalog/CatalogRows.astro';
+import EndCta from '../EndCta.astro';
+import { featureCount, featureGroups, importApps, integrations } from '../../lib/features';
+import { featuresRail } from '../../lib/catalog';
+import { versionTag } from '../../lib/bundle';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).features;
+const to = hrefIn(lang);
+const groups = featureGroups(lang);
+const SHOWN = 5;
+---
+<Catalog title={s.title} heading={s.title} description={fill(s.description, { version: versionTag, count: featureCount(), groups: groups.length })} rail={featuresRail(lang)} lang={lang}>
+  {groups.map((g) => (
+    <CatalogRows id={g.key} title={g.title} icon={g.icon} total={g.items.length} more={to(`/features/${g.key}/`)} items={g.items.slice(0, SHOWN).map((f) => ({ title: f.name, href: f.doc, line: f.line }))} lang={lang} />
+  ))}
+  <dl class="catalog-strips">
+    <div><dt>{s.connectsTo}</dt><dd>{integrations(lang).join(' · ')}</dd></div>
+    <div><dt>{s.importsFrom}</dt><dd>{importApps().join(' · ')} · <a href="/docs/import/">{s.importFormats}</a></dd></div>
+    <div><dt>{s.noTiers}</dt><dd>{s.noTiersText}</dd></div>
+  </dl>
+  <EndCta slot="after" lang={lang} />
+</Catalog>

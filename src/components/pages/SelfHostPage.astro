@@ -1,0 +1,88 @@
+---
+// /self-host and /de/self-host (website-switcher-pages D4, german-pages D2): footprint from the
+// manifest, the sync playground, install methods, backups and links to the self-hosting docs.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import InstallTabs from '../InstallTabs.astro';
+import LangNote from '../LangNote.astro';
+import SyncPlayground from '../SyncPlayground.astro';
+import { manifest, versionTag } from '../../lib/bundle';
+import { p as strings } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).selfHost;
+const x = s.facts;
+const f = manifest.facts;
+const facts = [
+  f.imageMB ? { label: x.image, value: fill(x.about, { n: f.imageMB }) } : f.binaryMB && { label: x.binary, value: fill(x.about, { n: Math.round(f.binaryMB) }) },
+  f.idleMemoryMB && { label: x.memory, value: fill(x.about, { n: f.idleMemoryMB }) },
+  f.database && { label: x.database, value: fill(x.oneFile, { db: f.database }) },
+  f.architectures && { label: x.runsOn, value: f.architectures.map((a) => a.replace('linux/', '')).join(` ${x.and} `) },
+].filter(Boolean) as { label: string; value: string }[];
+// The minimum server is a phrase from the bundle, in English; the German page says it in its own words.
+const minimum = lang === 'en' ? f.minimumServer : undefined;
+const cap = (t: string) => `${t[0].toUpperCase()}${t.slice(1)}`;
+const cardLinks = ['/docs/self-hosting/docker/', '/docs/backups/', '/docs/import-export/'];
+const cardIcons = ['hard-drive', 'database', 'file-down'];
+---
+<Base title={s.title} description={fill(s.description, { minimum: minimum ?? s.smallServer })} lang={lang}>
+  <section class="page-head">
+    <div class="wrap split">
+      <div>
+        <h1>{s.h1}</h1>
+        <p class="lede">{s.lede}</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#install">{s.install} <Icon name="arrow-down" size={18} /></a>
+          <a class="btn btn-secondary" href="/self-host/plan/"><Icon name="list-checks" size={18} /> {s.plan}</a>
+          <a class="btn btn-secondary" href="/docs/self-hosting/docker/"><Icon name="book-open" size={18} /> {s.docs}</a>
+        </div>
+      </div>
+      <dl class="facts" aria-label={fill(s.footprint, { version: versionTag })}>
+        {facts.map((x) => <div><dt>{x.label}</dt><dd>{x.value}</dd></div>)}
+      </dl>
+    </div>
+    <div class="wrap"><p class="meta" style="margin-top: 1rem">{fill(s.figures, { version: versionTag })} {minimum && fill(s.plenty, { minimum: cap(minimum) })}</p></div>
+  </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
+
+  <section class="section section-alt" id="install" aria-labelledby="install-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="install-title">{s.installH2}</h2>
+        <p class="lede">{s.installLede}</p>
+        <ul class="checks">
+          {s.checks.map((c) => <li><Icon name="check" size={18} /> {c}</li>)}
+        </ul>
+        <p><a class="link-arrow" href="/docs/self-hosting/sso/">{s.sso}</a> · <a class="link-arrow" href="/docs/self-hosting/speech-to-text/">{s.stt}</a> · <a class="link-arrow" href="/docs/troubleshooting/">{s.troubleshooting}</a></p>
+      </div>
+      <InstallTabs lang={lang} />
+    </div>
+  </section>
+
+  <section class="section" id="sync" aria-labelledby="sync-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="sync-title">{s.syncH2}</h2>
+        <p class="lede">{s.syncLede}</p>
+        <p><a class="link-arrow" href="/docs/sync/">{s.syncLink} <Icon name="arrow-right" size={16} /></a></p>
+      </div>
+      <SyncPlayground lang={lang} />
+    </div>
+  </section>
+
+  <section class="section section-alt" id="data" aria-labelledby="data-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="data-title">{s.dataH2}</h2>
+      </div>
+      <div class="grid grid-3">
+        {s.cards.map((c, i) => <div class="card"><span class="card-icon"><Icon name={cardIcons[i]} size={22} /></span><h3>{c.title}</h3><p>{c.text}</p><a class="card-link" href={cardLinks[i]}>{c.link} <Icon name="arrow-right" size={16} /></a></div>)}
+      </div>
+    </div>
+  </section>
+
+  <EndCta kind="self-host" title={s.end} lang={lang} />
+</Base>

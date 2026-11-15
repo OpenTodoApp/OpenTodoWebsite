@@ -81,6 +81,17 @@ Content is drafted following `content/VOICE.md`, picked from `content/BACKLOG.md
 3. Write in Markdown following the "Blog posts" section of `content/VOICE.md`. Every claim about what OpenTodo does links to its docs page (`/docs/...`); a paragraph that only looks like a claim gets `<!-- no-claim -->` on the line above. Posts with `inDevelopment: true` skip the claim rule and show an "In development" notice instead, but their docs links must still resolve.
 4. Run `node scripts/check-content.mjs` (it also runs before every `npm run build`) and open a draft pull request. The post appears on the blog index, its category page, the home page, `/feed.xml` and `/blog/feed.xml` once it is published and the site is built.
 
+## Languages
+
+The site is English. The home page and the phone apps page (`/apps/`) exist in German, French, Italian, Spanish, Portuguese and Simplified Chinese, with their strings in `src/i18n/<lang>.mjs`.
+
+The German visitor's path also exists in German only: Features and its groups, Get started, Install and its platforms, Self-host, the switch index and the guides for Todoist, Microsoft To Do and Things (`GERMAN_PAGES` in `src/i18n/index.mjs`). On German pages the header and footer are German too.
+
+- **Change an English string on one of these pages** in `src/i18n/path/en.mjs`, and its German twin in `src/i18n/path/de.mjs` in the same pull request. `npm test` fails when the two differ in shape, not when a sentence is reworded, so the German has to be updated by hand.
+- **Add a feature, a platform or a deploy target** in `src/lib/features.ts`, `install.ts` or `start.ts`, and its German text in `features.de.ts` or `install.de.ts`. `npm test` and the build fail without it.
+- **Change an English switch guide** that has a German twin in `src/content/switch/de/`, and keep the twin's `checkedOn`, `sources`, `importFormat` and number of items the same; `npm test` names the field that differs.
+- **Add a page to the German path** by adding it to `GERMAN_PAGES`, giving the English page's component a `lang`, and adding the route under `src/pages/de/`. That is a change to the website-languages spec first.
+
 ## Deploy on Coolify
 
 1. **+ New Resource → Public Repository**, `https://github.com/OpenTodoApp/OpenTodoWebsite`, branch `main`.

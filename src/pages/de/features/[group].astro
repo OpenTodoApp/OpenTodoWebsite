@@ -1,0 +1,10 @@
+---
+// /de/features/<group> (german-pages): one feature group in German.
+import FeaturesGroup from '../../../components/pages/FeaturesGroup.astro';
+import { featureGroups } from '../../../lib/features';
+
+export function getStaticPaths() {
+  return featureGroups().map((g) => ({ params: { group: g.key } }));
+}
+---
+<FeaturesGroup group={Astro.params.group!} lang="de" />

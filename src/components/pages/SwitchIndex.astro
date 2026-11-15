@@ -1,0 +1,100 @@
+---
+// /switch and /de/switch (website-help-and-howtos D4, german-pages D2): one card per app and the
+// glossary. On the German page the guides that exist in German link their German page.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EndCta from '../EndCta.astro';
+import Icon from '../Icon.astro';
+import LangNote from '../LangNote.astro';
+import { canImport } from '../../lib/bundle';
+import { p as strings, href as hrefIn } from '../../i18n/path/index.mjs';
+import { fill } from '../../i18n/dict.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).switchIndex;
+const to = hrefIn(lang);
+const all = await getCollection('switch');
+const entries = all.filter((e) => e.data.lang === 'en').sort((a, b) => a.data.order - b.data.order)
+  .map((e) => all.find((t) => t.data.lang === lang && t.id === `${lang}/${e.id}`) ?? e)
+  .map((e) => ({ id: e.id.replace(/^de\//, ''), data: e.data }));
+// Rows: each app's word in the entries' order ('' when the app has no equivalent); the OpenTodo
+// word and the note are the page's strings (s.rows), in the same order.
+// The glossary covers the first entries only; every switch page has its own word list.
+const THEM: string[][] = [
+  ['Task', 'To-do', 'Task', 'Issue'],
+  ['Project', 'Project', 'List', 'Project'],
+  ['Sub-project', 'Area (holds projects)', 'Folder', 'Team'],
+  ['', 'Area', '', ''],
+  ['Section', 'Heading', 'Section (column in Kanban)', 'Status / column'],
+  ['Label', 'Tag', 'Tag', 'Label'],
+  ['P1 to P4', 'Flagged / no flags', 'High, Medium, Low, None', 'Urgent, High, Medium, Low'],
+  ['Due date', 'Deadline', 'Due date', 'Due date'],
+  ['', 'When (a later date), Someday', 'Start date', ''],
+  ['', 'This Evening', '', ''],
+  ['Recurring due date', 'Repeat', 'Repeat', ''],
+  ['Reminder', 'Reminder', 'Reminder', ''],
+  ['Duration', '', 'Pomodoro / duration', 'Estimate'],
+  ['Filter', '', 'Filter', 'Custom view'],
+  ['', '', '', 'Dashboard'],
+  ['Sub-task', 'Checklist item', 'Subtask / checklist', 'Sub-issue'],
+  ['Shared project', 'Shared list (Things Cloud)', 'Shared list', 'Team'],
+  ['Assignee', '', 'Assignee', 'Assignee'],
+  ['Comment', '', 'Comment', 'Comment'],
+  ['Inbox', 'Inbox', 'Inbox', 'Triage'],
+  ['Today, Upcoming', 'Today, Upcoming', 'Today, Next 7 days', 'My issues'],
+  ['Completed tasks', 'Logbook', 'Completed', 'Done'],
+  ['', 'Trash', 'Trash', 'Canceled / archived'],
+];
+const glossary = s.rows.map((r, i) => ({ ...r, them: THEM[i] }));
+const apps = entries.slice(0, THEM[0].length).map((e) => e.data.app);
+---
+<Base title={s.title} description={s.description} lang={lang}>
+  <section class="page-head">
+    <div class="wrap">
+      <h1>{s.h1}</h1>
+      <p class="lede" set:html={s.lede} />
+    </div>
+  </section>
+  {lang !== 'en' && <LangNote lang={lang} />}
+  <section class="section" style="padding-top: 1rem">
+    <div class="wrap">
+      <ul class="grid grid-2 plain">
+        {entries.map((e) => (
+          <li><a class="card" href={to(`/switch/${e.id}/`)}>
+            <span class="card-icon"><Icon name="door-open" size={22} /></span>
+            <h2 style="font-size: 1.3rem">{fill(s.movingFrom, { app: e.data.app })}</h2>
+            <p>{e.data.summary}</p>
+            <p class="meta">{canImport(e.data.importFormat) ? s.oneStep : s.byFile}</p>
+          </a></li>
+        ))}
+      </ul>
+      <p class="meta" style="margin-top: 1.5rem">{s.another} <a href="/docs/import/">{s.formatsLink}</a></p>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="glossary" aria-labelledby="glossary-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="glossary-title">{s.glossaryH2}</h2>
+        <p class="lede">{s.glossaryLede}</p>
+      </div>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="glossary-title">
+        <table class="terms">
+          <caption class="visually-hidden">{s.caption}</caption>
+          <thead><tr><th scope="col">OpenTodo</th>{apps.map((a) => <th scope="col">{a}</th>)}</tr></thead>
+          <tbody>
+            {glossary.map((r) => (
+              <tr>
+                <th scope="row">{r.us}{r.note && <span class="meta" style="display: block; font-weight: 400">{r.note}</span>}</th>
+                {r.them.map((t) => <td>{t || <span class="meta">·</span>}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="meta" style="margin-top: 1rem" set:html={s.named} />
+    </div>
+  </section>
+  <EndCta kind="import" lang={lang} />
+</Base>

@@ -1,9 +1,14 @@
 ---
 // The iPhone and iPad app in the App Store (first release, approved 2026-11-09). The badge leads
 // to /apps/, which links the store (phone-apps-page).
+import { p as strings, href as hrefIn } from '../i18n/path/index.mjs';
+
+interface Props { lang?: 'en' | 'de' }
+const { lang = 'en' } = Astro.props;
+const s = strings(lang).notices;
 ---
-<aside class="post-notice" aria-label="iPhone and iPad app">
-  <p><a href="/apps/"><img src="/badges/app-store.svg" height="40" width="120" alt="Download on the App Store"></a></p>
+<aside class="post-notice" aria-label={s.iosLabel}>
+  <p><a href={hrefIn(lang)('/apps/')}><img src="/badges/app-store.svg" height="40" width="120" alt={s.iosBadge}></a></p>
   <!-- no-claim -->
-  <p><strong>OpenTodo for iPhone and iPad is in the App Store.</strong> It is the first release, a first step: it connects to your OpenTodo server and adds reminders on the phone, the share sheet, a Today widget and Face ID unlock. Expect some rough edges, and <a href="https://github.com/OpenTodoApp/OpenTodo/issues/new/choose">tell us what to improve</a>. Installing from the browser, as described below, works too and starts offline.</p>
+  <p set:html={s.ios} />
 </aside>
