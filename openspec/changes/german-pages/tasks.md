@@ -6,7 +6,7 @@
 
 ## 2. Shared components
 
-- [x] 2.1 Give `InstallTabs`, `SyncPlayground`, `EndCta`, `RunChoice`, `Catalog` and `CatalogRows` an optional strings prop with today's English text as default, English strings in `en.mjs` with a comment asking to update `de.mjs` (D2). Verify the built English pages' visible text is unchanged (text diff of `dist/` before and after for `/`, `/features/`, `/start/`, `/install/`, `/self-host/`, `/switch/`).
+- [x] 2.1 Give `InstallTabs`, `SyncPlayground`, `EndCta`, `RunChoice`, the catalogue components and the two notices an optional `lang` (English by default), with their strings in `src/i18n/path/en.mjs` and a comment asking to update `de.mjs` (D2). Verify the built English pages' visible text is unchanged (text diff of `dist/` before and after for `/`, `/features/`, `/start/`, `/install/`, `/self-host/`, `/switch/`).
 - [x] 2.2 German twins of the data modules (D6): `FEATURES_DE`, `GROUPS_DE`, `PLATFORMS_DE`, German deploy-target texts, `PIKAPODS_NOTE_DE`; `featureGroups(lang)`, `platforms(lang)`, `deployTargets(lang)`. Test: every English key has a German twin, list lengths match, naming the item that is missing. Verify `npm test` passes and fails when one German feature is removed by hand.
 
 ## 3. German pages
