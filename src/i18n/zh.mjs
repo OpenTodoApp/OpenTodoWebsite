@@ -79,6 +79,7 @@ export default {
       news: '新闻、发布说明以及它是如何构建的',
       allPosts: '所有文章',
       star: '在 GitHub 上为 OpenTodo 点亮星标',
+      support: '支持 OpenTodo',
     },
   },
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.

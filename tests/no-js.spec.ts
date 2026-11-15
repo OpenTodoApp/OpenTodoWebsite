@@ -73,3 +73,14 @@ test('the language switch opens without JavaScript and leads to a translation', 
   await expect(page).toHaveURL(/\/it\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'it');
 });
+
+// The home page ends with one quiet way to the support page (home-support-link).
+test('the home page ends with the support link, in its language', async ({ page }) => {
+  for (const [url, name] of [['/', 'Support OpenTodo'], ['/de/', 'OpenTodo unterstützen']]) {
+    await page.goto(url);
+    const link = page.locator('#blog a[data-support]');
+    await expect(link, url).toHaveText(name);
+    await expect(link, url).toHaveAttribute('href', '/support/');
+    await expect(page.locator('main a[data-support]'), url).toHaveCount(1);
+  }
+});
