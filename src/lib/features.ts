@@ -5,13 +5,10 @@
 // docs page can't go unnoticed. Lines are restated from each page's summary; change them here
 // when the docs change.
 import { docExists, manifest } from './bundle';
-import { FEATURES_DE, GROUPS_DE, INTEGRATIONS_DE, LANGUAGES_BEFORE_ZH_DE } from './features.de';
+import { FEATURES_DE, GROUPS_DE, INTEGRATIONS_DE } from './features.de';
 
 export interface Feature { name: string; line: string; doc: string; since?: string }
 export interface FeatureGroup { key: string; title: string; icon: string; items: Feature[] }
-
-// 简体中文 ships after 0.22.0: the languages entry follows the pinned release (released facts only).
-const ZH_SHIPPED = ((v) => v[0] > 0 || v[1] >= 23)(manifest.version.replace(/^v/, '').split('.').map(Number));
 
 const GROUPS: FeatureGroup[] = [
   { key: 'plan', title: 'Plan', icon: 'sun', items: [
@@ -84,9 +81,7 @@ const GROUPS: FeatureGroup[] = [
     { name: 'Offline on every device', line: 'Edit anywhere; changes merge field by field.', doc: '/docs/offline-and-sync/' },
     { name: 'Phone, desktop and browser', line: 'Install from the browser on any system.', doc: '/docs/install-app/' },
     { name: 'An Android app', line: 'Available from GitHub as an APK; Google Play and F-Droid are coming.', doc: '/docs/android-app/#install-the-app', since: '0.10.0' },
-    ZH_SHIPPED
-      ? { name: 'Seven languages', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文.', doc: '/docs/language/' }
-      : { name: 'Six languages', line: 'English, Deutsch, Français, Español, Italiano, Português; 简体中文 in the next release.', doc: '/docs/language/' },
+    { name: 'Eight languages', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文, Nederlands.', doc: '/docs/language/' },
     { name: 'Themes', line: 'Fourteen editor palettes, your own in an editor or from a VS Code theme.', doc: '/docs/themes/', since: '0.20.0' },
     { name: 'Today’s count on the app icon', line: 'The installed app’s icon shows how many of today’s tasks are open.', doc: '/docs/app-icon-badge/', since: '0.20.0' },
     { name: 'Your own accent colour', line: 'Any colour, adjusted until it reads well in light and dark.', doc: '/docs/custom-accent/', since: '0.19.0' },
@@ -156,7 +151,7 @@ export function featureGroups(lang: 'en' | 'de' = 'en'): FeatureGroup[] {
       return true;
     }).map((f) => {
       if (lang !== 'de') return f;
-      const de = f.doc === '/docs/language/' && !ZH_SHIPPED ? LANGUAGES_BEFORE_ZH_DE : german(FEATURES_DE[f.doc], `feature "${f.name}" (${f.doc})`);
+      const de = german(FEATURES_DE[f.doc], `feature "${f.name}" (${f.doc})`);
       return { ...f, name: de.name, line: de.line };
     }),
   })).filter((g) => g.items.length > 0);

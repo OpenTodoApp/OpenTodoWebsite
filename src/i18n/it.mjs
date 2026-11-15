@@ -25,7 +25,7 @@ export default {
       h2: 'La tua giornata, i tuoi progetti, una schermata tranquilla.',
       rows: [
         { title: 'Oggi ti dice cosa conta', text: 'Una frase sotto la data dice cosa è in ritardo, cosa è al completo e chi ha risposto, e ogni parte apre ciò che nomina. La calcola il tuo dispositivo, anche offline, senza IA.', prop: 'Oggi, In programma' },
-        { title: 'Scrivilo come lo diresti', text: '«Chiamare l\'idraulico venerdì alle 10 #Casa p1» diventa un\'attività con data, progetto e priorità, in sei lingue.', prop: 'Ovunque' },
+        { title: 'Scrivilo come lo diresti', text: '«Chiamare l\'idraulico venerdì alle 10 #Casa p1» diventa un\'attività con data, progetto e priorità, in {quickAdd} lingue.', prop: 'Ovunque' },
         { title: 'Progetti come elenco, bacheca o cronologia', text: 'Sezioni, scadenze e avanzamento a colpo d\'occhio. Condividi un progetto e assegna le attività alle persone che ne fanno parte.', prop: 'Progetti' },
       ],
       quickAlt: 'L\'aggiunta rapida che elenca la data, il progetto, l\'etichetta e la priorità che ha riconosciuto in una riga scritta.',

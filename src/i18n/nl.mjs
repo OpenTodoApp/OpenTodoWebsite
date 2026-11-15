@@ -1,0 +1,102 @@
+// Dutch (website-languages, dutch-site). Informal "je", as the app's own Dutch does, and the
+// app's words (Vandaag, Binnenkort, Snelle invoer). Published with the first release whose
+// language docs list Nederlands. `home` has the shape of src/i18n/en.mjs (website-home-languages).
+export default {
+  common: {
+    langNote: 'Deze pagina is in het Nederlands, en de app ook: je kiest de taal in de instellingen, en de snelle invoer begrijpt datums en tijden in het Nederlands. De rest van deze website en de documentatie zijn in het Engels.',
+  },
+  home: {
+    title: 'OpenTodo · Een rustige takenlijst op je eigen server',
+    description: 'Een gratis, opensource takenlijst die je zelf host: offline op elk apparaat, synchronisatie via CalDAV, gedeelde lijsten, {count} functies en geen betaalde versie.',
+    hero: {
+      eyebrow: 'Gratis en opensource · {licence}',
+      say: 'Drie dingen doen er vandaag toe.',
+      late: 'Twee taken zijn te laat,',
+      soft: 'maandag zit al vol, en Mia heeft je vraag over de reis beantwoord.',
+      caption: 'Zo begint Vandaag in OpenTodo: één zin over wat opvalt, berekend op je eigen apparaat.',
+      ledeStrong: 'OpenTodo is een rustige takenlijst die op je eigen server draait.',
+      lede: 'Plan je dag, houd projecten op orde en deel lijsten met de mensen met wie je woont en werkt.',
+      tryDemo: 'Probeer de demo',
+      getStarted: 'Aan de slag',
+      note: 'Geen account, niets te installeren.',
+      iosApp: 'Nieuw: de app voor iPhone en iPad, een eerste versie.',
+      alt: 'Vandaag in OpenTodo: de zin over de dag onder de titel, daaronder de taken op één regel elk, met hun datum, project en labels in uitgelijnde kolommen.',
+    },
+    day: {
+      h2: 'Je dag, je projecten, één rustig scherm.',
+      rows: [
+        { title: 'Vandaag zegt wat ertoe doet', text: 'Eén zin onder de datum noemt wat te laat is, wat vol zit en wie heeft geantwoord, en elk deel opent wat het noemt. Je apparaat berekent het zelf, offline en zonder AI.', prop: 'Vandaag, Binnenkort' },
+        { title: 'Typ het zoals je het zegt', text: '„Loodgieter bellen vrijdag 10 uur #Thuis p1” wordt een taak met datum, project en prioriteit, in {quickAdd} talen.', prop: 'Overal' },
+        { title: 'Projecten als lijst, bord of tijdlijn', text: 'Secties, deadlines en voortgang in één oogopslag. Deel een project en wijs de taken toe aan de mensen erin.', prop: 'Projecten' },
+      ],
+      quickAlt: 'De snelle invoer toont de datum, het project, het label en de prioriteit die hij in een getypte regel herkende.',
+      quickCaption: 'De snelle invoer laat zien wat hij begreep.',
+      boardAlt: 'Een gedeeld project als bord met de kolommen Backlog, This week en Review.',
+      boardCaption: 'Een gedeeld project als bord.',
+    },
+    features: {
+      h2: 'Alles inbegrepen.',
+      intro: '{count} functies in {groups} groepen, plus de koppelingen die je al gebruikt. Niets wordt bewaard voor een betaald abonnement.',
+      pill: 'Geen niveaus',
+      noTiers: 'Elke functie, voor iedereen.',
+      all: 'Alle functies, met hun documentatie',
+      more: 'en {count} meer',
+      connects: 'Werkt samen met',
+      imports: 'Importeert uit',
+      groups: { plan: 'Plannen', capture: 'Vastleggen', projects: 'Projecten en teams', devices: 'Synchronisatie en apparaten', integrations: 'Koppelingen', admin: 'Privacy en beheer' },
+    },
+    yours: {
+      h2: 'Van jou, voorgoed.',
+      intro: 'Geen OpenTodo-account en geen OpenTodo-cloud. Eén server voor iedereen met wie je <a href="/docs/sharing/">lijsten deelt</a>, en je kunt <a href="/docs/import-export/">met alles vertrekken</a> wanneer je wilt.',
+      rows: [
+        { title: 'Gratis, helemaal', text: 'Geen niveaus, geen licenties per persoon, geen proefperiode: elke functie voor iedereen op je server, het hele huishouden inbegrepen.', link: 'Wat het kost' },
+        { title: 'Op je eigen server', text: 'Eén container en één map met gegevens. Een Raspberry Pi of de kleinste gehuurde server is genoeg.', link: 'Zelf hosten' },
+        { title: 'Werkt offline', text: 'Elk apparaat heeft een volledige kopie. Bewerk in de trein; wijzigingen worden veld voor veld samengevoegd als je weer online bent.', link: 'Offline en synchronisatie' },
+        { title: 'Versleuteld als je wilt', text: 'Met end-to-endversleuteling wordt de tekst van je taken op je apparaten versleuteld voordat hij de server bereikt.', link: 'Versleuteling' },
+        { title: 'AI op jouw voorwaarden', text: 'Uit tenzij je het aanzet. Jouw model, ook lokale; de assistent stelt wijzigingen voor die jij goedkeurt, en elke wijziging kun je ongedaan maken. Je eigen AI-hulpmiddelen koppel je via MCP of de plugin voor Claude Code, met een agenttoken.', link: 'Hoe het werkt' },
+      ],
+    },
+    ways: {
+      h2: 'Vier manieren om te beginnen.',
+      intro: 'OpenTodo heeft geen eigen cloud, dus je hoeft je hier nergens voor aan te melden. Je kunt later wisselen; je gegevens gaan mee.',
+      items: [
+        { title: 'Probeer de demo', text: 'Een privé-testomgeving in je browser met voorbeeldprojecten, verwijderd na twee uur zonder activiteit.', cta: 'Open de demo', more: 'Zo werkt de demo' },
+        { title: 'Voor je gehost', text: 'PikaPods draait het voor je vanaf $2 per maand, met updates en HTTPS geregeld. Een deel van wat je betaalt steunt OpenTodo.', cta: 'Draai het op PikaPods', more: 'Gehost of je eigen server' },
+        { title: 'Word lid van een server', text: 'Draait iemand het voor je huishouden of team? Open de uitnodigingslink die je kreeg en installeer daarna de app vanuit de browser.', cta: 'Installeer de app', more: 'De app installeren' },
+        { title: 'Draai je eigen', text: 'Docker, Umbrel, Unraid, TrueNAS, een Pi of een VPS, de eerste keer in zo’n twintig minuten.', cta: 'Zelf hosten', more: 'Plan je server' },
+      ],
+      switch: 'Kom je van Todoist, Things, TickTick of Linear?',
+      switchLink: 'Neem je taken mee',
+    },
+    community: {
+      kicker: 'Community',
+      h2: 'Kom gedag zeggen.',
+      intro: 'OpenTodo wordt in het openbaar gemaakt, en de mensen die het gebruiken bepalen wat er komt. Doe mee op Discord: stel een vraag, laat zien hoe je je dagen indeelt, of vertel wat je zou willen dat het kon. Vragen worden beantwoord door mensen die het draaien en door de maintainer.',
+      button: 'Doe mee op Discord',
+    },
+    end: {
+      h2: 'Probeer het eerst, en maak het dan van jou.',
+      news: 'Nieuws, releases en hoe het gemaakt wordt',
+      allPosts: 'Alle berichten',
+      star: 'Geef OpenTodo een ster op GitHub',
+    },
+  },
+  // The phone apps page (phone-apps-page): store names and the badge's text stay English.
+  apps: {
+    title: 'Apps voor telefoon en computer',
+    description: 'Installeer OpenTodo vanuit je browser op elke telefoon of computer, of haal het uit de App Store. Google Play is in gesloten test en opname in F-Droid is aangevraagd.',
+    googlePlay: 'In gesloten test',
+    fdroid: 'Opname aangevraagd',
+    version: 'Deze eerste versie van de app toont de web-app in een native omhulsel, een webweergave. Dat is niet de kwaliteit die we willen: het voelt niet native aan en er zitten haperingen in. We bouwen een nieuwe, volledig native versie met React Native, die waarschijnlijk over een à twee weken klaar is. Tot die tijd werkt deze app, en de web-app die je vanuit je browser installeert is een goed alternatief. <a href="/install/">De web-app installeren</a>',
+    android: 'Op Android komt de app voorlopig van GitHub. <a href="/docs/android-app/#install-the-app">De Android-app installeren</a>',
+    webTitle: 'De web-app',
+    webIntro: 'Tot de native apps klaar zijn, raden we deze manier aan op telefoons en computers. Het is de volledige app, geïnstalleerd vanuit je browser: hij werkt offline, synchroniseert en werkt zichzelf bij. <a href="/docs/install-app/">De app installeren</a>',
+    webIos: '<strong>iPhone en iPad</strong>: tik in Safari op Deel en daarna op Zet op beginscherm.',
+    webAndroid: '<strong>Android</strong>: open in Chrome het menu en tik op App installeren.',
+    webDesktop: '<strong>Computer</strong>: klik in Chrome of Edge op het installatiepictogram in de adresbalk.',
+    webPush: 'Herinneringen komen binnen als pushmeldingen, overal waar de browser dat toestaat. Op iPhone en iPad is daarvoor iOS 16.4 of later en de geïnstalleerde app nodig. <a href="/docs/push-notifications/">Pushmeldingen</a>',
+    webInstall: 'De web-app installeren',
+    storesTitle: 'Apps in de stores',
+    more: 'Plugins, koppelingen en manieren om het te hosten: <a href="/ecosystem/">Ecosysteem</a>',
+  },
+};

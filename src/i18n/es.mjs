@@ -25,7 +25,7 @@ export default {
       h2: 'Tu día, tus proyectos, una sola pantalla tranquila.',
       rows: [
         { title: 'Hoy te dice qué importa', text: 'Una frase bajo la fecha nombra lo que va con retraso, lo que está completo y quién ha respondido, y cada parte abre lo que nombra. Lo calcula tu dispositivo, sin conexión y sin IA.', prop: 'Hoy, Próximo' },
-        { title: 'Escríbelo como lo dirías', text: '«Llamar al fontanero el viernes a las 10 #Casa p1» se convierte en una tarea con su fecha, proyecto y prioridad, en seis idiomas.', prop: 'En todas partes' },
+        { title: 'Escríbelo como lo dirías', text: '«Llamar al fontanero el viernes a las 10 #Casa p1» se convierte en una tarea con su fecha, proyecto y prioridad, en {quickAdd} idiomas.', prop: 'En todas partes' },
         { title: 'Proyectos como lista, tablero o cronología', text: 'Secciones, fechas límite y progreso de un vistazo. Comparte un proyecto y asigna sus tareas a las personas que forman parte de él.', prop: 'Proyectos' },
       ],
       quickAlt: 'El añadido rápido muestra la fecha, el proyecto, la etiqueta y la prioridad que ha reconocido en una línea escrita.',

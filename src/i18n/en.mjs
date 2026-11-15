@@ -23,7 +23,7 @@ export default {
       h2: 'Your day, your projects, one quiet screen.',
       rows: [
         { title: 'Today says what matters', text: 'One sentence under the date names what is late, what is full and who replied, and each part opens what it names. Your device works it out, offline, with no AI.', prop: 'Today, Upcoming' },
-        { title: 'Type it the way you say it', text: '“Book the plumber friday 10am #Home p1” becomes a task with its date, project and priority, in six languages.', prop: 'Everywhere' },
+        { title: 'Type it the way you say it', text: '“Book the plumber friday 10am #Home p1” becomes a task with its date, project and priority, in {quickAdd} languages.', prop: 'Everywhere' },
         { title: 'Projects as a list, a board or a timeline', text: 'Sections, deadlines and progress at a glance. Share a project and assign its tasks to the people in it.', prop: 'Projects' },
       ],
       quickAlt: 'Quick add listing the date, project, label and priority it understood in a typed line.',

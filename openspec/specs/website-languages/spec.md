@@ -47,7 +47,7 @@ The translation dictionaries SHALL share one shape, contain no empty strings, us
 - **THEN** the unit test fails naming the language and the path
 
 ### Requirement: Translated home page
-The site SHALL be English with a translated home page and a translated phone apps page (`/apps/`) in German, French, Italian, Spanish, Portuguese and Simplified Chinese, at most ten languages in all. A translated page SHALL live under its language's prefix, SHALL render the same sections in the same order as the English page from the same component, and SHALL state the same facts as the English page, drawn from the bundle where the English page draws them. Its strings SHALL have the same shape as the English page's strings, enforced by the unit test. Links without a translated target SHALL lead to the English pages. It SHALL read at 360 px wide without JavaScript.
+The site SHALL be English with a translated home page and a translated phone apps page (`/apps/`) in German, French, Italian, Spanish, Portuguese, Simplified Chinese and Dutch, at most ten languages in all. Dutch is published together with the first pinned release whose language documentation lists Nederlands, so the Dutch page never says the app speaks Dutch before a released app does. A translated page SHALL live under its language's prefix, SHALL render the same sections in the same order as the English page from the same component, and SHALL state the same facts as the English page, drawn from the bundle where the English page draws them. Its strings SHALL have the same shape as the English page's strings, enforced by the unit test. Links without a translated target SHALL lead to the English pages. It SHALL read at 360 px wide without JavaScript.
 
 #### Scenario: A language is added
 - **WHEN** a dictionary for a seventh language is added with every string of the German one
@@ -68,6 +68,10 @@ The site SHALL be English with a translated home page and a translated phone app
 #### Scenario: Phone apps page in a language
 - **WHEN** a visitor opens `/fr/apps/`
 - **THEN** the page is in French with the language note, and its hreflang alternates list every language's `/apps/`
+
+#### Scenario: Dutch home page
+- **WHEN** a visitor opens `/nl/` on a 390 px wide phone without JavaScript
+- **THEN** the page is in Dutch with `lang="nl"`, tells the same story as the English home page in the same order, and its language note says the app and quick add are in Dutch too
 
 ### Requirement: Pages in English and German only
 The visitor's path SHALL also exist in German, under `/de/` with the English slugs, and in no other language: the features catalogue (`/features/` and its group pages), `/start/`, `/install/` and its platform pages, `/self-host/`, the switch index `/switch/`, and the switch guides for Todoist, Microsoft To Do and Things. Each German page SHALL render the same sections in the same order as its English original from the same component, show the language note, state the same facts drawn from the same sources (the bundle, the feature catalogue, the platform records), keep the English page's links to the documentation (which is English), and read at 360 px wide without JavaScript. Links from a German page to a page that exists in German SHALL lead to the German page; links to any other page SHALL lead to the English one. Adding a further page or language to this list SHALL be a change to this requirement. Every page in German, the German home and phone apps pages included, SHALL show the header and footer in German, with their links leading to German pages where they exist; pages in the other languages keep the English header and footer.

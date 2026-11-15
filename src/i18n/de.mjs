@@ -25,7 +25,7 @@ export default {
       h2: 'Dein Tag, deine Projekte, ein ruhiger Bildschirm.',
       rows: [
         { title: 'Heute sagt, was zählt', text: 'Ein Satz unter dem Datum nennt, was spät dran ist, was voll ist und wer geantwortet hat, und jeder Teil öffnet, was er nennt. Dein Gerät ermittelt das selbst, offline und ohne KI.', prop: 'Heute, Demnächst' },
-        { title: 'Tipp es, wie du es sagst', text: '„Klempner anrufen Freitag 10 Uhr #Zuhause p1“ wird eine Aufgabe mit Datum, Projekt und Priorität, in sechs Sprachen.', prop: 'Überall' },
+        { title: 'Tipp es, wie du es sagst', text: '„Klempner anrufen Freitag 10 Uhr #Zuhause p1“ wird eine Aufgabe mit Datum, Projekt und Priorität, in {quickAdd} Sprachen.', prop: 'Überall' },
         { title: 'Projekte als Liste, Board oder Zeitleiste', text: 'Abschnitte, Fristen und Fortschritt auf einen Blick. Teile ein Projekt und weise seine Aufgaben den Menschen darin zu.', prop: 'Projekte' },
       ],
       quickAlt: 'Die Schnelleingabe zeigt Datum, Projekt, Label und Priorität, die sie in einer getippten Zeile erkannt hat.',

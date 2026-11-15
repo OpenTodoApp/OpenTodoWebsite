@@ -100,7 +100,7 @@ test('the search index and the sitemap list /hosting/', { skip }, () => {
 // The home page's ways in (landing-hosted-card): four equal cards in every language, the hosted
 // one second, and no PikaPods link in the header or navigation.
 test('every home page shows four ways in, hosted for you second', { skip }, () => {
-  for (const page of ['index.html', ...['de', 'fr', 'it', 'es', 'pt', 'zh'].map((l) => `${l}/index.html`)]) {
+  for (const page of ['index.html', ...['de', 'fr', 'it', 'es', 'pt', 'zh', 'nl'].map((l) => `${l}/index.html`)]) {
     const root = load(path.join(dist, page));
     const cards = root.querySelectorAll('#get-it .lp-ways > li');
     assert.equal(cards.length, 4, `${page}: four cards`);

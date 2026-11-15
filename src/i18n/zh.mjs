@@ -1,9 +1,9 @@
-// Simplified Chinese (zh-Hans). The pinned release's language docs do not list it,
-// so the note under the hero does not say the app speaks it.
+// Simplified Chinese (zh-Hans). The app speaks it since 0.23 (the pinned release's language docs
+// list 简体中文); quick add does not read Chinese dates yet, so the note says so.
 // `home` has the shape of src/i18n/en.mjs (website-home-languages).
 export default {
   common: {
-    langNote: '本页是简体中文。本网站的其余页面和文档是英文。应用目前的语言是英语、德语、法语、西班牙语、意大利语和葡萄牙语：在设置中选择，快速添加会按所选语言理解日期和时间。',
+    langNote: '本页是简体中文，应用也是：在设置中选择语言即可。快速添加目前能理解英语、德语、法语、西班牙语、意大利语、葡萄牙语和荷兰语的日期和时间，暂不支持中文。本网站的其余页面和文档是英文。',
   },
   home: {
     title: 'OpenTodo · 运行在你自己的服务器上的宁静待办事项列表',
@@ -26,7 +26,7 @@ export default {
       h2: '你的一天，你的项目，全在一个清爽的屏幕上。',
       rows: [
         { title: '“今天”告诉你什么最重要', text: '日期下方的一句话会指出哪些任务逾期了，哪些日程排满了，以及谁回复了你，点击每个部分即可打开对应的内容。这一切都在你的设备上离线计算得出，不依赖 AI。', prop: '今天、即将到来' },
-        { title: '像说话一样输入', text: '输入“周五上午 10 点预约水管工 #Home p1”，它就会变成一个带有日期、项目和优先级的任务，支持六种语言。', prop: '无处不在' },
+        { title: '像说话一样输入', text: '输入“周五上午 10 点预约水管工 #Home p1”，它就会变成一个带有日期、项目和优先级的任务，支持 {quickAdd} 种语言。', prop: '无处不在' },
         { title: '项目可以表现为列表、看板或时间线', text: '区块、截止日期和进度一目了然。共享项目并将其中的任务分配给参与的人员。', prop: '项目' },
       ],
       quickAlt: '快速添加功能，列出它从输入的一行文字中识别出的日期、项目、标签和优先级。',
