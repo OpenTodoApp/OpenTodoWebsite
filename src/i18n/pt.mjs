@@ -25,7 +25,7 @@ export default {
       h2: 'O teu dia, os teus projetos, um só ecrã tranquilo.',
       rows: [
         { title: 'Hoje diz o que importa', text: 'Uma frase por baixo da data diz o que está atrasado, o que está cheio e quem respondeu, e cada parte abre o que nomeia. É o teu dispositivo que a calcula, offline e sem IA.', prop: 'Hoje, Em breve' },
-        { title: 'Escreve como o dirias', text: '«Ligar ao canalizador sexta às 10 #Casa p1» vira uma tarefa com data, projeto e prioridade, em seis línguas.', prop: 'Em todo o lado' },
+        { title: 'Escreve como o dirias', text: '«Ligar ao canalizador sexta às 10 #Casa p1» vira uma tarefa com data, projeto e prioridade, em {quickAdd} línguas.', prop: 'Em todo o lado' },
         { title: 'Projetos em lista, quadro ou cronologia', text: 'Secções, prazos e progresso num relance. Partilha um projeto e atribui as tarefas às pessoas que fazem parte dele.', prop: 'Projetos' },
       ],
       quickAlt: 'A adição rápida mostra a data, o projeto, a etiqueta e a prioridade que reconheceu numa linha escrita.',

@@ -132,7 +132,7 @@ export default defineConfig({
   site: 'https://open-todo.app',
   output: 'static',
   // The site is English; the home page also exists in the other languages (website-languages D1).
-  i18n: { defaultLocale: 'en', locales: ['en', 'de', 'fr', 'it', 'es', 'pt', 'zh'], routing: { prefixDefaultLocale: false } },
+  i18n: { defaultLocale: 'en', locales: ['en', 'de', 'fr', 'it', 'es', 'pt', 'zh', 'nl'], routing: { prefixDefaultLocale: false } },
   trailingSlash: 'ignore',
   build: { format: 'directory' },
   integrations: [
@@ -142,7 +142,7 @@ export default defineConfig({
     sitemap({
       customPages: docsUrls(),
       filter: (page) => !page.endsWith('/404/') && !page.endsWith('/404.html'),
-      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', it: 'it', es: 'es', pt: 'pt', zh: 'zh-Hans' } },
+      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', it: 'it', es: 'es', pt: 'pt', zh: 'zh-Hans', nl: 'nl' } },
     }),
     socialCards(),
   ],

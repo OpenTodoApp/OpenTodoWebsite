@@ -11,6 +11,10 @@ import ScreenshotFrame from '../ScreenshotFrame.astro';
 import LangNote from '../LangNote.astro';
 import PostRow from '../blog/PostRow.astro';
 import { NAV, SITE } from '../../lib/site';
+import { manifest } from '../../lib/bundle';
+// How many languages quick add reads, from the pinned release (dutch-site): the count changes with a release.
+const quickAdd = manifest.facts.quickAddLanguages?.length;
+if (!quickAdd) throw new Error('home: the pinned bundle does not list quickAddLanguages');
 import { publishedPosts } from '../../lib/blog';
 import { featureCount, featureGroups, importApps, integrations } from '../../lib/features';
 import { DEFAULT_LANG, localePath, localHref } from '../../i18n/index.mjs';
@@ -90,7 +94,7 @@ const ways = [
         <li>
           <Icon name={d.icon} size={20} />
           <h3><a href={d.doc}>{d.title}</a></h3>
-          <p>{d.text}</p>
+          <p>{fill(d.text, { quickAdd })}</p>
         </li>
       ))}
     </ul>

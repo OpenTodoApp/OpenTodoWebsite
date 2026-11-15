@@ -25,7 +25,7 @@ export default {
       h2: 'Votre journée, vos projets, un seul écran calme.',
       rows: [
         { title: 'Aujourd’hui dit ce qui compte', text: 'Une phrase sous la date nomme ce qui est en retard, ce qui est complet et qui a répondu, et chaque partie ouvre ce qu’elle nomme. Votre appareil la calcule lui-même, hors ligne, sans IA.', prop: 'Aujourd’hui, À venir' },
-        { title: 'Tapez-le comme vous le dites', text: '« Appeler le plombier vendredi à 10h #Maison p1 » devient une tâche avec sa date, son projet et sa priorité, en six langues.', prop: 'Partout' },
+        { title: 'Tapez-le comme vous le dites', text: '« Appeler le plombier vendredi à 10h #Maison p1 » devient une tâche avec sa date, son projet et sa priorité, en {quickAdd} langues.', prop: 'Partout' },
         { title: 'Des projets en liste, en tableau ou en chronologie', text: 'Sections, échéances et avancement d’un coup d’œil. Partagez un projet et assignez ses tâches aux personnes qui en font partie.', prop: 'Projets' },
       ],
       quickAlt: 'L’ajout rapide affiche la date, le projet, l’étiquette et la priorité qu’il a reconnus dans une ligne saisie.',

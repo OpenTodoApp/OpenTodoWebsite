@@ -12,6 +12,7 @@ export const LANGS = {
   es: { name: 'Español', hreflang: 'es', og: 'es_ES' },
   pt: { name: 'Português', hreflang: 'pt', og: 'pt_PT' },
   zh: { name: '简体中文', hreflang: 'zh-Hans', og: 'zh_CN' },
+  nl: { name: 'Nederlands', hreflang: 'nl', og: 'nl_NL' },
 };
 export const OTHER_LANGS = Object.keys(LANGS).filter((l) => l !== DEFAULT_LANG);
 

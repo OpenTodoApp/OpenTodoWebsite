@@ -30,7 +30,7 @@ test('every phone apps page has the English apps strings', () => {
 });
 
 test('links in the answers stay on this site or the docs, and placeholders are known', () => {
-  const known = new Set(['licence', 'version', 'demo', 'minimum', 'memory', 'count', 'groups']);
+  const known = new Set(['licence', 'version', 'demo', 'minimum', 'memory', 'count', 'groups', 'quickAdd']);
   for (const [lang, dict] of [...OTHER_LANGS.map((l) => [l, DICT[l]]), ['en', en]]) {
     for (const p of leafPaths(dict)) {
       const v = p.split('.').reduce((o, k) => o[k], dict);
