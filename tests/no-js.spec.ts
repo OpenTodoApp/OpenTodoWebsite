@@ -24,7 +24,7 @@ for (const url of sitePages()) {
     await page.locator('details.nav-menu > summary').click();
     const nav = page.locator('details.nav-menu .menu-panel');
     // German pages have a German header (german-pages D7).
-    for (const label of MENU.map((l) => (url.startsWith('/de/') ? de.chrome[l] ?? l : l))) {
+    for (const label of MENU.map((l) => (url.startsWith('/de/') ? (de.chrome as Record<string, string>)[l] ?? l : l))) {
       await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
     await expect(page.locator('.site-header a.header-demo')).toBeVisible();
