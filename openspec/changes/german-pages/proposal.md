@@ -2,21 +2,26 @@
 
 ## Why
 
-German-speaking visitors are the site's largest audience: 4,704 of the visits in the 30 days to 14 November 2026 came from Germany, Austria and Switzerland, against 2,399 from the United States (the site's self-hosted analytics). Only the home page (`/de/`, the fourth most visited page) and the phone apps page exist in German, so a German visitor who goes one step further, to run it or to leave Todoist, lands in English. The two pages that answer those two steps are the self-hosting page and the Todoist switch guide.
+German-speaking visitors are the site's largest audience: 4,704 of the visits in the 30 days to 14 November 2026 came from Germany, Austria and Switzerland, against 2,399 from the United States (the site's self-hosted analytics). Only the home page (`/de/`, the fourth most visited page) and the phone apps page exist in German. A German visitor who goes one step further, to see what it does, to start, to install it on a device, to run it or to leave another app, lands in English. After the home page, the most visited pages are exactly those steps: Features, Get started, Install and Self-host.
 
-Today the website-languages spec allows a translated page only when it exists in all six other languages. Translating these two pages into six languages would be six times the work and the upkeep for an audience the analytics do not show. This change lets a page exist in English and German only.
+Today the website-languages spec allows a translated page only when it exists in all six other languages. Translating these pages into six languages would be six times the work and the upkeep for an audience the analytics do not show. This change lets a page exist in English and German only, and translates the German visitor's path.
 
 ## What Changes
 
-- `/de/self-host/`: the self-hosting page in German, from the same component as `/self-host/`, with the same sections in the same order, the same footprint figures from the bundle and the language note. The install tabs, the sync playground and the end band take their strings from the dictionary, English by default, so the English page is unchanged.
-- `/de/switch/todoist/`: the Todoist switch guide in German. Its German text is a second entry of the switch collection, tied to the English entry: the same `checkedOn`, `sources` and `importFormat`, and the same number of kept, dropped and mapped items. The page template's own strings (headings, the "checked on" line, the term table, the sources list) come from the dictionary.
-- A page may now exist in a subset of the site's languages. Its `hreflang` alternates and the sitemap list English, `x-default` and the languages it exists in, nothing else. The language switch still lists every language; a language without this page links that language's home page, as it does on English-only pages today.
-- `/self-host/` and `/switch/todoist/` gain alternates for German; every other English page is unchanged.
-- The unit tests check the German self-hosting strings against the English shape, the German switch entry against the English facts, and that the two German pages are the only partial translations.
+- German versions, under `/de/` with the English slugs, of:
+  - the features catalogue: `/de/features/` and its six group pages, every feature with a German name and line;
+  - `/de/start/`, with the ways in, where it runs, the devices and the switch guides;
+  - `/de/install/` and its six platform pages;
+  - `/de/self-host/`, with the install tabs, the sync playground and the data cards;
+  - `/de/switch/`, the index of the switch guides, and the guides for Todoist, Microsoft To Do (where Wunderlist, made in Berlin, sent its users) and Things.
+- Each German page renders from the same component as its English original, with the same sections in the same order, the same figures from the bundle and the language note. The components shared with the English pages (install tabs, sync playground, end band, the run choice, the catalogue) take their strings as an optional prop whose default is today's English, so the English pages are unchanged.
+- The data the pages read get German twins: the feature catalogue, the platforms, the deploy targets, and a German entry of the switch collection for each of the three guides, tied to the English entry's facts. A unit test fails when an English item has no German twin, naming it.
+- A page may exist in a subset of the site's languages. Its `hreflang` alternates and the sitemap list English, `x-default` and the languages it exists in, nothing else. The language switch still lists every language; a language without this page links that language's home page, as it does on English-only pages today.
+- The German text is written by an agent and is not read by a person before merging, at the maintainer's decision.
 
-Out of scope: these pages in French, Italian, Spanish, Portuguese or Chinese; the other switch guides; the documentation, which stays English and comes from the pinned bundle; any German page without an English original; translated page addresses (the paths keep the English slugs under `/de/`).
+Out of scope: these pages in French, Italian, Spanish, Portuguese or Chinese; the documentation, which stays English and comes from the pinned bundle (German pages link the English docs); the blog, method guides, how-tos, templates, toolkit, hosting and developer pages; the other six switch guides; translated page addresses.
 
-Pages affected: `/self-host/`, `/switch/todoist/`, the two new German pages, the header and footer language switch on those four pages, and the sitemap.
+Pages affected: the English originals of the pages above (their head gains the German alternate), the new German pages, the language switch on those pages, and the sitemap.
 
 ## Capabilities
 
@@ -24,9 +29,14 @@ Pages affected: `/self-host/`, `/switch/todoist/`, the two new German pages, the
 - (none)
 
 ### Modified Capabilities
-- `website-languages`: a page may be translated into some languages only, with alternates and the sitemap limited to the languages it exists in; the self-hosting page and the Todoist switch guide exist in German.
+- `website-languages`: a page may be translated into some languages only, with alternates and the sitemap limited to the languages it exists in; the visitor's path (features, start, install, self-host, switch index and three switch guides) exists in German, and the German data stays complete by test.
 
 ## Impact
 
-- `src/i18n/index.mjs` (`TRANSLATED_PAGES` becomes per page and language), `src/components/LangSwitch.astro`, `src/layouts/Base.astro` (alternates), `src/i18n/en.mjs` and `de.mjs` (strings for the self-hosting page, the switch template, the two islands and the end band), `src/components/InstallTabs.astro`, `SyncPlayground.astro`, `EndCta.astro` (an optional strings prop), new `src/components/SelfHostPage.astro` and `SwitchPage.astro` extracted from the two pages, new routes `src/pages/de/self-host.astro` and `src/pages/de/switch/[slug].astro`, the switch collection schema (a `lang` field, default `en`), `scripts/test/i18n.test.mjs`.
-- No new dependency. Two more pages to build and to check.
+- Language plumbing: `src/i18n/index.mjs` (`TRANSLATED_PAGES` per page and language), `src/components/LangSwitch.astro`, `src/layouts/Base.astro`.
+- Strings: `src/i18n/en.mjs` and `de.mjs` (page and component strings); German twins in `src/lib/features.ts`, `src/lib/install.ts`, `src/lib/start.ts` and `src/lib/hosting.ts` (the PikaPods note).
+- Components: `InstallTabs`, `SyncPlayground`, `EndCta`, `RunChoice`, `catalog/Catalog`, `catalog/CatalogRows` gain an optional strings prop; new `SelfHostPage`, `StartPage`, `InstallIndex`, `InstallPlatform`, `SwitchIndex` and `SwitchPage` components extracted from the English pages.
+- Routes: `src/pages/de/` with `features/index.astro`, `features/[group].astro`, `start.astro`, `install/index.astro`, `install/[platform].astro`, `self-host.astro`, `switch/index.astro`, `switch/[slug].astro`.
+- Content: the switch collection gains `lang` (default `en`) and `src/content/switch/de/{todoist,microsoft-todo,things}.md`.
+- Tests: `scripts/test/i18n.test.mjs`.
+- No new dependency. Nineteen more pages to build and to check.

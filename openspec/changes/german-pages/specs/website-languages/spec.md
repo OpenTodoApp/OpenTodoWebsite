@@ -26,31 +26,54 @@ Every translated page and its English original SHALL carry `hreflang` alternates
 ## ADDED Requirements
 
 ### Requirement: Pages in English and German only
-The self-hosting page (`/self-host/`) and the Todoist switch guide (`/switch/todoist/`) SHALL also exist in German, at `/de/self-host/` and `/de/switch/todoist/`, and in no other language. Each German page SHALL render the same sections in the same order as its English original from the same component, show the language note, keep the English page's links to the documentation (which is English), and read at 360 px wide without JavaScript, with the install tabs showing every method's commands and the sync playground's static fallback when scripts do not run. Adding a further page or language to this list SHALL be a change to this requirement.
+The visitor's path SHALL also exist in German, under `/de/` with the English slugs, and in no other language: the features catalogue (`/features/` and its group pages), `/start/`, `/install/` and its platform pages, `/self-host/`, the switch index `/switch/`, and the switch guides for Todoist, Microsoft To Do and Things. Each German page SHALL render the same sections in the same order as its English original from the same component, show the language note, state the same facts drawn from the same sources (the bundle, the feature catalogue, the platform records), keep the English page's links to the documentation (which is English), and read at 360 px wide without JavaScript. Links from a German page to a page that exists in German SHALL lead to the German page; links to any other page SHALL lead to the English one. Adding a further page or language to this list SHALL be a change to this requirement.
 
 #### Scenario: German self-hosting page
 - **WHEN** a visitor opens `/de/self-host/` on a 390 px wide phone without JavaScript
 - **THEN** the page is in German with `lang="de"` and the language note, and shows the headline and actions, the footprint figures of the pinned release, the install methods with their commands, the sync section, the three data cards and the end band, in that order
 
-#### Scenario: English page unchanged
-- **WHEN** `/self-host/` is built after this change
-- **THEN** its visible text is the same as before; only its head gains the German alternate
+#### Scenario: German features catalogue
+- **WHEN** a visitor opens `/de/features/`
+- **THEN** every group of the English catalogue appears with its German title, its first entries with German names and lines linking the same documentation pages, and a link to `/de/features/<group>/`, which lists every feature of the group in German
+
+#### Scenario: Moving through the German path
+- **WHEN** a visitor on `/de/start/` follows "Install the app" and then the Android card
+- **THEN** `/de/install/` and then `/de/install/android/` open in German, and the Android steps link the English documentation section they come from
+
+#### Scenario: English pages unchanged
+- **WHEN** the English originals are built after this change
+- **THEN** their visible text is the same as before; only their head gains the German alternate
 
 #### Scenario: Another language asked for
 - **WHEN** a visitor opens `/fr/self-host/`
 - **THEN** the site answers with its not-found page, as for any page that does not exist
 
-### Requirement: German switch guide stays true to the English one
-The German Todoist switch guide SHALL state the same facts as the English guide: the same checked-on date, the same documentation sources, the same import format, and the same number of items that come across, that do not, and of mapped terms. A unit test SHALL fail when the English guide changes any of these and the German guide does not follow, naming the field. The German guide SHALL be held to the same freshness rule as the English one: its checked-on date at most 180 days old, or the build fails.
+### Requirement: The German text stays complete
+Every item the German pages read SHALL have a German twin: each feature and feature group of the catalogue, each platform record, each deploy target, and each string of the shared components and pages. A unit test SHALL fail when an English item has none, naming the item, so a feature or platform added in English cannot ship with an English line on a German page.
+
+#### Scenario: A feature is added in English
+- **WHEN** a feature is added to the catalogue with an English name and line only
+- **THEN** the unit test fails naming the feature's documentation page and German
+
+#### Scenario: A platform's steps change
+- **WHEN** a step is added to the English Android platform record
+- **THEN** the unit test fails until the German record has the same number of steps
+
+### Requirement: German switch guides stay true to the English ones
+Each German switch guide SHALL state the same facts as its English guide: the same checked-on date, the same documentation sources, the same import format, and the same number of items that come across, that do not, and of mapped terms. A unit test SHALL fail when an English guide changes any of these and its German guide does not follow, naming the guide and the field. The German guides SHALL be held to the same freshness rule as the English ones: their checked-on date at most 180 days old, or the build fails.
 
 #### Scenario: English guide is rechecked
 - **WHEN** the English Todoist guide's `checkedOn` moves to a new date and the German guide keeps the old one
-- **THEN** the unit test fails naming `checkedOn` and the German guide
+- **THEN** the unit test fails naming `checkedOn` and the German Todoist guide
 
 #### Scenario: An item is added to what comes across
-- **WHEN** the English guide gains an item under what comes across
-- **THEN** the unit test fails until the German guide has the same number of items
+- **WHEN** the English Things guide gains an item under what comes across
+- **THEN** the unit test fails until the German Things guide has the same number of items
 
-#### Scenario: Reading the German guide
-- **WHEN** a visitor opens `/de/switch/todoist/` at 360 px wide without JavaScript
+#### Scenario: Reading a German guide
+- **WHEN** a visitor opens `/de/switch/microsoft-todo/` at 360 px wide without JavaScript
 - **THEN** the page is in German with the language note, shows what comes across and what does not, the steps, the term table and the list of documentation pages, and its actions lead to the import guide in the documentation and to the demo
+
+#### Scenario: The German switch index
+- **WHEN** a visitor opens `/de/switch/`
+- **THEN** the guides for Todoist, Microsoft To Do and Things link their German pages, and every other guide links its English page
