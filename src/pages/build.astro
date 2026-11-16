@@ -1,0 +1,63 @@
+---
+// /build (build-your-client): build your own OpenTodo client. The three ways in, how a client
+// signs in, the guide, the clients to learn from and the community clients. Built on what the
+// pinned release documents; what is on main but not released (the guide, the OpenAPI description)
+// is linked on GitHub and labelled so. Plain HTML, so it reads without JavaScript.
+import Base from '../layouts/Base.astro';
+import LinkRows, { type LinkRow } from '../components/LinkRows.astro';
+import { SITE } from '../lib/site';
+import { docExists } from '../lib/bundle';
+import clients from '../data/community-clients.json';
+
+const main = `${SITE.appRepo}/blob/main`;
+// The guide and the OpenAPI description reach the site with the release that carries them.
+const guide = docExists('/docs/build-a-client/') ? '/docs/build-a-client/' : `${main}/docs/build-a-client.md`;
+const released = guide.startsWith('/');
+
+const ways: LinkRow[] = [
+  { icon: 'braces', title: 'REST API', href: '/docs/api/', line: 'Tasks, projects, notes, labels and everything else over <code>/api/v1</code>, with JSON in and out. Enough for a script, a bot or a client that works online.' },
+  { icon: 'refresh-cw', title: 'Sync protocol', href: '/docs/sync/', line: 'The operation log the official apps use: send changes made offline, or keep a full copy and merge everyone’s changes.' },
+  { icon: 'webhook', title: 'Webhooks and MCP', href: '/docs/webhooks/', line: 'Signed events when tasks and projects change, and <a href="/docs/mcp/">MCP</a> for AI assistants.' },
+];
+
+const start: LinkRow[] = [
+  { icon: 'key-round', title: 'Sign in with an API token', href: '/docs/api/#authentication', line: 'The person creates a token on their server and gives it to your client. There is no sign-in flow for other apps.' },
+  { icon: 'book-open', title: 'Build your own OpenTodo client', href: guide, line: 'The guide: which way in to choose, tokens, device ids, the outbox and rate limits.', ...(released ? {} : { note: 'On GitHub, not in a release yet' }) },
+  { icon: 'code', title: 'OpenAPI description', href: `${main}/docs/openapi.json`, line: 'Every route and field, for generating types. From the next release, every server also serves it at <code>/api/v1/openapi.json</code>.', note: 'On GitHub, not in a release yet' },
+];
+
+const examples: LinkRow[] = [
+  { icon: 'terminal', title: 'The ot command line', href: '/docs/cli/', line: 'REST, online.', actions: [{ label: 'Source', href: `${SITE.appRepo}/tree/main/internal/cli` }] },
+  { icon: 'notebook-pen', title: 'Obsidian plugin', href: '/docs/obsidian/', line: 'Sends changes through the sync protocol and keeps them in an outbox while offline.', actions: [{ label: 'Source', href: 'https://github.com/OpenTodoApp/obsidian-opentodo' }] },
+  { icon: 'webhook', title: 'n8n nodes', href: '/docs/n8n/', line: 'REST for actions, webhooks for the trigger.', actions: [{ label: 'Source', href: 'https://github.com/OpenTodoApp/n8n-nodes-opentodo' }] },
+  { icon: 'globe', title: 'Browser extension', href: '/docs/capture/#browser-extension', line: 'REST, from a browser popup.', actions: [{ label: 'Source', href: `${SITE.appRepo}/tree/main/extension` }] },
+  { icon: 'house', title: 'Home Assistant integration', href: '/docs/home-assistant/', line: 'REST, with instant updates.', actions: [{ label: 'Source', href: 'https://github.com/OpenTodoApp/opentodo-homeassistant' }] },
+];
+
+// Community clients (build-your-client): src/data/community-clients.json, added by pull request.
+const community: LinkRow[] = (clients as { name: string; url: string; description: string }[])
+  .map((c) => ({ icon: 'users', title: c.name, href: c.url, line: c.description, note: 'Not vetted by OpenTodo' }));
+const listFile = 'https://github.com/OpenTodoApp/OpenTodoWebsite/blob/main/src/data/community-clients.json';
+---
+<Base title="Build your own client" description="Build an OpenTodo client: the REST API, the sync protocol, webhooks and MCP, how a client signs in, the guide and the clients to learn from.">
+  <section class="page-head tech-head">
+    <div class="wrap narrow">
+      <h1>Build your own client</h1>
+      <p class="lede">Every OpenTodo server speaks the same HTTP API the official apps use.</p>
+    </div>
+  </section>
+  <div class="wrap narrow tech-body">
+    <LinkRows id="ways" title="Three ways in" items={ways} />
+    <LinkRows id="start" title="Start here" items={start} />
+    <LinkRows id="examples" title="Clients to learn from" items={examples} />
+    {community.length > 0 ? (
+      <LinkRows id="community" title="Community clients" items={community} />
+    ) : (
+      <section class="link-rows" id="community" aria-labelledby="community-title">
+        <h2 id="community-title">Community clients</h2>
+        <p class="build-note">None yet.</p>
+      </section>
+    )}
+    <p class="build-note">Built one? Add the topic <code>opentodo-client</code> to its repository and open a pull request adding it to <a href={listFile}>community-clients.json</a>. Listed clients are marked not vetted by OpenTodo.</p>
+  </div>
+</Base>

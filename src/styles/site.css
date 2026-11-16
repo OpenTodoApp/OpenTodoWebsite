@@ -1038,3 +1038,4 @@ h2.as-h3 { font-size: 1.0625rem; letter-spacing: -0.01em; font-weight: 600; }
 .apps-steps strong { color: var(--strong); font-weight: 600; }
 .apps-stores .stores { margin: 0 0 1.25rem; }
 .apps-stores .lang-note { margin-top: 2rem; }
+.build-note { color: var(--muted); font-size: 0.9375rem; margin: 0.75rem 0 0; }
