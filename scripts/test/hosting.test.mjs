@@ -82,6 +82,7 @@ test('/hosting/ ends with the managed hosting line and its disclosure', { skip }
   assert.ok(line, 'the line sits in the own-server block');
   assert.match(text(line), /^Managed hosting:/);
   assert.ok(line.querySelector(`a[href="${PIKAPODS}"]`), 'links PikaPods');
+  assert.ok(line.querySelector('a[href="https://railway.com/deploy/opentodo"]'), 'links Railway');
   assert.ok(text(line).endsWith('These links support the project, which receives a share when they’re used.'));
   assert.equal(line.querySelectorAll('.btn').length, 0, 'no buttons');
 });
