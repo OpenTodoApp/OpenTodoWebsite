@@ -1,0 +1,75 @@
+---
+// /api-reference (api-reference): the REST API of the pinned release, rendered at build time from
+// the bundle's api/openapi.json. One index page and one page per group of routes; plain HTML, no
+// script. No page is built while the pinned bundle has no description.
+import Base from '../../layouts/Base.astro';
+import { api, inline } from '../../lib/openapi';
+import { SITE } from '../../lib/site';
+import Fields from '../../components/api/Fields.astro';
+import BodyTable from '../../components/api/BodyTable.astro';
+
+export function getStaticPaths() {
+  if (!api) return [];
+  return [
+    { params: { slug: undefined } },
+    ...api.groups.map((g) => ({ params: { slug: g.slug } })),
+    { params: { slug: 'schemas' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const a = api!;
+const group = slug && slug !== 'schemas' ? a.groups.find((g) => g.slug === slug) : undefined;
+const isSchemas = slug === 'schemas';
+const title = group ? `${group.name}: API reference` : isSchemas ? 'Schemas: API reference' : 'API reference';
+const description = group
+  ? `The ${group.name} routes of the OpenTodo REST API ${a.version}: methods, paths, authentication, request and response fields.`
+  : isSchemas ? `The shared schemas of the OpenTodo REST API ${a.version}: tasks, projects, labels, notes and their fields.`
+  : `Every route of the OpenTodo REST API ${a.version}, generated from its OpenAPI description, by group.`;
+const anchor = (o: { method: string; path: string }) => `${o.method.toLowerCase()}-${o.path.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
+const schemaHref = (name: string) => `/api-reference/schemas/#${name.toLowerCase()}`;
+const schemaNames = new Set(a.schemas.map((s) => s.name));
+---
+<Base title={title} description={description}>
+  <section class="page-head tech-head">
+    <div class="wrap narrow">
+      <p class="eyebrow">{group || isSchemas ? <a href="/api-reference/">API reference</a> : 'OpenTodo ' + a.version}</p>
+      <h1>{group ? group.name : isSchemas ? 'Schemas' : 'API reference'}</h1>
+      {!group && !isSchemas && (
+        <p class="lede">Every route of the REST API under <code>/api/v1/</code>, generated from its <a href={`${SITE.appRepo}/releases/tag/v${a.version}`}>OpenAPI description</a>. Your server serves the same file at <code>/api/v1/openapi.json</code>. The <a href="/docs/api/">HTTP API guide</a> explains authentication, errors and examples.</p>
+      )}
+      {group && group.description && group.description !== `The ${group.name} routes.` && <p class="lede" set:html={inline(group.description)} />}
+    </div>
+  </section>
+
+  <div class="wrap narrow tech-body api-ref">
+    {!group && !isSchemas && (
+      <>
+        <ul class="api-groups">
+          {a.groups.map((g) => <li><a href={`/api-reference/${g.slug}/`}>{g.name}</a> <span class="meta">{g.operations.length} {g.operations.length === 1 ? 'route' : 'routes'}</span></li>)}
+          <li><a href="/api-reference/schemas/">Schemas</a> <span class="meta">{a.schemas.length} shared</span></li>
+        </ul>
+      </>
+    )}
+
+    {group && group.operations.map((o) => (
+      <section class="api-op" id={anchor(o)}>
+        <h2><span class="api-method">{o.method}</span> <code>{o.path}</code></h2>
+        <p><strong>{o.summary}</strong>{o.deprecated && <> · <em>deprecated</em></>} · {o.auth}</p>
+        {o.description && <p set:html={inline(o.description)} />}
+        {o.params.length > 0 && <Fields title="Path parameters" fields={o.params} schemaNames={schemaNames} schemaHref={schemaHref} />}
+        {o.request && <BodyTable title="Request body" body={o.request} schemaNames={schemaNames} schemaHref={schemaHref} />}
+        {o.responses.map((r) => r.body ? <BodyTable title={`Response ${r.status}`} body={r.body} schemaNames={schemaNames} schemaHref={schemaHref} /> : <p class="meta">Response {r.status}: {r.description}</p>)}
+      </section>
+    ))}
+    {group && group.docs && <p><a href={group.docs.replace(/^https:\/\/open-todo\.app/, '')}>This group in the HTTP API guide</a></p>}
+
+    {isSchemas && a.schemas.map((s) => (
+      <section class="api-op" id={s.name.toLowerCase()}>
+        <h2>{s.name}</h2>
+        {s.description && <p set:html={inline(s.description)} />}
+        {s.fields.length > 0 && <Fields title="Fields" fields={s.fields} schemaNames={schemaNames} schemaHref={schemaHref} />}
+      </section>
+    ))}
+  </div>
+</Base>
