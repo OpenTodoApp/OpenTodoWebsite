@@ -25,8 +25,8 @@ const localGroups = groups.map(([title, items]) => [t(title), items.map(([label,
 // Ways to help and follow (website-restyle-chrome D4): plain text links, nothing loaded from the services.
 const community: { label: string; href: string; icon: string; data: string }[] = [
   { label: t('Star on GitHub'), href: SITE.appRepo, icon: 'star', data: 'data-star' },
-  { label: t('Sponsor'), href: SITE.sponsor, icon: 'heart', data: 'data-sponsor' },
   { label: t('Buy me a coffee'), href: SITE.coffee, icon: 'coffee', data: 'data-coffee' },
+  { label: t('Sponsor'), href: SITE.sponsor, icon: 'heart', data: 'data-sponsor' },
   { label: 'Discord', href: SITE.discord, icon: 'messages-square', data: 'data-discord' },
   { label: 'X', href: SITE.x, icon: 'at-sign', data: 'data-x' },
   { label: 'RSS', href: '/feed.xml', icon: 'rss', data: 'data-rss' },

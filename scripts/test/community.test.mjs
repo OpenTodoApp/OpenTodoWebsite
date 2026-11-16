@@ -125,3 +125,18 @@ test('the footer links to the X account after Discord, and About names it', { sk
   const about = load(path.join(dist, 'about/index.html'));
   assert.ok(about.querySelector(`#who a[href="${SITE.x}"]`), 'about: "Who makes it" links to X');
 });
+
+// Buy Me a Coffee first (coffee-first): people support the project mainly there.
+test('Buy Me a Coffee comes before GitHub Sponsors wherever both are offered', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  const before = (links, where) => {
+    const hrefs = links.map((a) => a.getAttribute('href'));
+    const c = hrefs.indexOf(SUPPORT.coffee);
+    const s = hrefs.indexOf(SUPPORT.sponsor);
+    assert.ok(c !== -1 && s !== -1 && c < s, `${where}: coffee before sponsor`);
+  };
+  const support = load(path.join(dist, 'support/index.html')).querySelector('main');
+  for (const row of support.querySelectorAll('.cta-row').filter((r) => r.querySelector('a.btn-coffee'))) before(row.querySelectorAll('a'), 'a support page button row');
+  before(load(path.join(dist, 'index.html')).querySelectorAll('footer nav[aria-label="Community"] a'), 'the footer');
+  const post = fs.readdirSync(path.join(dist, 'blog')).find((d) => fs.existsSync(path.join(dist, 'blog', d, 'index.html')) && !['page', 'category', 'series'].includes(d));
+  before(load(path.join(dist, 'blog', post, 'index.html')).querySelectorAll('.end-cta-support a'), 'the end of a blog post');
+});

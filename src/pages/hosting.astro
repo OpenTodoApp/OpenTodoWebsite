@@ -6,7 +6,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { SITE } from '../lib/site';
-import { PIKAPODS_FACTS as f, PIKAPODS_NOTE } from '../lib/hosting';
+import { MANAGED_HOSTS, MANAGED_HOSTS_NOTE, PIKAPODS_FACTS as f, PIKAPODS_NOTE } from '../lib/hosting';
 
 const points = [
   { icon: 'wallet', title: `${f.price}`, text: `Billed by the hour from prepaid credit. The smallest pod has ${f.minimum}.` },
@@ -61,6 +61,9 @@ const points = [
         <a class="btn btn-secondary" href="/self-host/">Self-host</a>
         <a class="btn btn-secondary" href="/install/">Install the app</a>
       </div>
+      {MANAGED_HOSTS.length > 0 && (
+        <p class="hosting-managed" id="managed"><strong>Managed hosting:</strong> {MANAGED_HOSTS.map((h, i) => <>{i > 0 && ', '}<a href={h.url} data-host={h.name}>{h.name}</a></>)}. {MANAGED_HOSTS_NOTE}</p>
+      )}
     </div>
   </section>
 </Base>

@@ -712,6 +712,7 @@ a.btn-discord, a.btn-discord:hover, a.btn-discord:visited { color: #fff; text-de
 .hosting-narrow > * { max-width: 46rem; }
 .hosting-get { padding-top: 2.5rem; }
 .hosting-note { margin: 1.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9375rem; }
+.hosting-managed { margin: 1.5rem 0 0; color: var(--muted); font-size: 0.9375rem; }
 .start-block h2 { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem); }
 .start-block .lede { font-size: 1rem; margin-bottom: 1.25rem; }
 .targets { list-style: none; margin: 0 0 1.25rem; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
