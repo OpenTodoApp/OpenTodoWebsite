@@ -26,7 +26,7 @@ const k = KINDS[kind];
     <h2 id="end-cta-title">{title ?? k.title}</h2>
     <a class:list={['btn', kind === 'demo' || kind === 'start' ? 'btn-primary' : 'btn-secondary']} href={k.href} {...(k.data ? { [k.data]: '' } : {})}>{k.label} <Icon name={k.icon} size={18} /></a>
     {kind === 'follow' && (
-      <p class="end-cta-support">OpenTodo is free and always will be. If it helps you: <a href={SITE.appRepo} data-star>star it</a>, <a href={SITE.sponsor} data-sponsor>sponsor</a>, <a href={SITE.coffee} data-coffee>buy a coffee</a> or <a href="/support/" data-support>see how else to help</a>.</p>
+      <p class="end-cta-support">OpenTodo is free and always will be. If it helps you: <a href={SITE.appRepo} data-star>star it</a>, <a href={SITE.coffee} data-coffee>buy a coffee</a>, <a href={SITE.sponsor} data-sponsor>sponsor</a> or <a href="/support/" data-support>see how else to help</a>.</p>
     )}
   </div>
 </section>
