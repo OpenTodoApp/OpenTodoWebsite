@@ -168,7 +168,7 @@ The site SHALL have a page at `/status/` describing the demo as the demo documen
 - **THEN** the page says the health endpoint names the demo's version and which version the site describes
 
 ### Requirement: Five-destination navigation
-From 768 px wide, the header SHALL show Features, Learn, Docs and Blog on one line, then the language switch, a "Star" link to the app repository and one primary action, Try the demo. Below 768 px the header SHALL show the logo, Try the demo and a menu button whose panel opens without JavaScript, by keyboard and pointer, and shows the same destinations, Get started, Star on GitHub and the language switch. The guidance content (guides, how-tos, toolkit, templates, switch pages and topics) SHALL be reached through the Learn page and the footer rather than a menu in the header.
+From 768 px wide, the header SHALL show Features, Learn, Docs, Blog and Hosting on one line, then the language switch, a "Star" link to the app repository and one primary action, Try the demo. Below 768 px the header SHALL show the logo, Try the demo and a menu button whose panel opens without JavaScript, by keyboard and pointer, and shows the same destinations, Get started, Star on GitHub and the language switch. Hosting SHALL link the site's `/hosting/` page and be marked current there; the header SHALL NOT link PikaPods itself. The guidance content (guides, how-tos, toolkit, templates, switch pages and topics) SHALL be reached through the Learn page and the footer rather than a menu in the header.
 
 #### Scenario: Learn without JavaScript on a laptop
 - **WHEN** a visitor at 1280 px wide with JavaScript disabled activates Learn with the keyboard
@@ -180,7 +180,11 @@ From 768 px wide, the header SHALL show Features, Learn, Docs and Blog on one li
 
 #### Scenario: Phone menu
 - **WHEN** a visitor on a 360 px wide screen without JavaScript opens the menu
-- **THEN** it shows Features, Learn, Docs and Blog, then Get started and Star on GitHub, and each works, while Try the demo stays visible in the bar
+- **THEN** it shows Features, Learn, Docs, Blog and Hosting, then Get started and Star on GitHub, and each works, while Try the demo stays visible in the bar
+
+#### Scenario: Hosting is current on its page
+- **WHEN** a visitor opens `/hosting/`
+- **THEN** the header's Hosting link, on desktop and in the phone menu, is marked as the current page
 
 #### Scenario: Tablet width
 - **WHEN** the header is shown at 768 px wide
@@ -205,7 +209,7 @@ The feature list SHALL come from one data module whose entries name their docume
 - **THEN** the build fails naming the feature and the missing page
 
 ### Requirement: Get started page
-The site SHALL have a page at `/start/`, opened by the header's Get started action, that offers the three ways in (try the demo, join a server, run your own), lists every deploy target whose self-hosting guide the pinned bundle has with the Docker command built from the bundle manifest, links each install page and the capture page, and links each switch guide saying whether the pinned release imports that app's export. It SHALL read at 360 px wide without JavaScript.
+The site SHALL have a page at `/start/`, opened by the header's Get started action, that offers the three ways in (try the demo, join a server, run your own), leads the "run your own" way to the choice of how to run the server (on your own hardware or managed hosting), lists every deploy target whose self-hosting guide the pinned bundle has with the Docker command built from the bundle manifest, links each install page and the capture page, and links each switch guide saying whether the pinned release imports that app's export. It SHALL read at 360 px wide without JavaScript.
 
 #### Scenario: A new deploy guide
 - **WHEN** the pinned bundle adds a self-hosting guide for a platform the page knows
@@ -213,7 +217,7 @@ The site SHALL have a page at `/start/`, opened by the header's Get started acti
 
 #### Scenario: Phone without JavaScript
 - **WHEN** a visitor opens `/start/` at 360 px wide with JavaScript disabled
-- **THEN** the three ways in, the deploy targets, the Docker command, the device list and the switch guides are shown and their links work, and nothing scrolls sideways
+- **THEN** the three ways in, the choice of how to run it, the deploy targets, the Docker command, the device list and the switch guides are shown and their links work, and nothing scrolls sideways
 
 ### Requirement: Everything included on the home page
 The home page SHALL show the breadth of the pinned release in one compact part: every feature group with its count, each linking its page on the features catalog, the integrations and import apps by name, and a link to the features page saying no feature is held back for a paid plan. It SHALL use the features page's data, so it follows the pinned release. At 360 px wide and without JavaScript every group link SHALL work.
@@ -236,3 +240,40 @@ The site SHALL have a page at `/security/`, linked as "Security" from the footer
 #### Scenario: Phone without JavaScript
 - **WHEN** a visitor opens `/security/` at 360 px wide with JavaScript disabled
 - **THEN** every group and link is readable and works, and the page does not scroll sideways
+
+### Requirement: How to run the server
+The get started page (`/start/`) and the install index (`/install/`) SHALL show a choice titled "How do you want to run it?" with two options of the same layout and button style, in this order: "On your own hardware" (free, full control, with links to Docker, the binary, Raspberry Pi, NAS and server app stores) and "Managed hosting" (PikaPods, linking https://www.pikapods.com/apps/opentodo). Wherever the site offers PikaPods it SHALL show the disclosure "PikaPods shares part of its revenue with the OpenTodo project. You get the same open-source OpenTodo, and you can export your data and move to your own server at any time.", from one site constant, and SHALL NOT call it recommended or the easiest way. The header and navigation SHALL NOT link PikaPods. The choice SHALL read at 360 px wide without JavaScript, the options stacked.
+
+#### Scenario: A visitor who will not run a server
+- **WHEN** a visitor reads the choice on `/install/` at 360 px wide without JavaScript
+- **THEN** they see "On your own hardware" first and "Managed hosting" second, each with one button of the same style, and the managed option carries the disclosure and links PikaPods' OpenTodo page
+
+#### Scenario: The wording changes
+- **WHEN** the maintainer changes the disclosure
+- **THEN** one constant changes and every page that offers PikaPods shows the new wording
+
+### Requirement: Hosting page
+The site SHALL have an English page at `/hosting/` about running OpenTodo on PikaPods, with a title and meta description, listed in the sitemap and the search index Features and Learn share. It SHALL show, in this order: a headline for people who do not want to run a server; what they get in at most four short points (the price and hourly billing from prepaid credit with the smallest pod's size, managed and tested updates with HTTPS, nightly encrypted backups to their own S3 storage with the note that PikaPods' server backups are not a per-pod restore, and the welcome credit); three or four setup steps (create the pod, finish the owner screen before sharing the address, the setup code from the pod logs or the configured token, registration closed by default and people invited from Settings); the disclosure from the site-wide constant; and a short block for people who prefer their own server linking `/self-host/` and `/install/`. Its only primary button SHALL be "Run it on PikaPods", linking https://www.pikapods.com/apps/opentodo. The page SHALL NOT call PikaPods recommended or the easiest. The facts SHALL be PikaPods' own, kept with the date they were checked in one site constant and updated when PikaPods' OpenTodo page changes; the app's PikaPods guide SHALL be linked once it is in the pinned bundle. The page SHALL read and link without JavaScript at 360 px wide, in light and dark.
+
+#### Scenario: A visitor who will not run a server
+- **WHEN** a visitor on a 360 px wide phone without JavaScript opens `/hosting/`
+- **THEN** the headline, the "Run it on PikaPods" button, what they get and the setup steps are shown, and the page does not scroll sideways
+
+#### Scenario: The arrangement is stated
+- **WHEN** a visitor reads `/hosting/`
+- **THEN** the page shows the disclosure that PikaPods shares part of its revenue with the project and that data can be exported and moved to an own server at any time
+
+#### Scenario: Own server instead
+- **WHEN** a visitor would rather run OpenTodo themselves
+- **THEN** the page links `/self-host/` and `/install/`, which cover Docker, Raspberry Pi, NAS and server app stores
+
+### Requirement: Managed hosting line
+The hosting page SHALL end, below the block for people who prefer their own server, with one line headed "Managed hosting". The line SHALL name every listed hosting company as a text link, followed by the sentence "These links support the project, which receives a share when they're used." The hosting companies SHALL come from one site-wide list, with the rule for being on it written beside the list: a company is listed when it shares revenue with the project or sponsors it, and on no other ground. The list SHALL hold PikaPods (revenue share) and Railway (template kickback), and another company only when the owner adds it. The line SHALL show no deploy button, no logo and no ranking, and SHALL be absent while the list is empty. It SHALL read and link without JavaScript at 360 px wide.
+
+#### Scenario: The line on the hosting page
+- **WHEN** a visitor reaches the end of `/hosting/` on a 360 px wide phone without JavaScript
+- **THEN** below "Prefer your own server?" they see "Managed hosting" with links to PikaPods and Railway and the sentence that the links support the project, which receives a share when they're used
+
+#### Scenario: A second host
+- **WHEN** the owner adds a hosting company that shares revenue to the site-wide list and the site is rebuilt
+- **THEN** the line names both companies as links, with the same single sentence
