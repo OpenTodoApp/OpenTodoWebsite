@@ -1,0 +1,23 @@
+---
+// A table of fields for the API reference (api-reference): name, type, required, description.
+// A type that names a shared schema links to it.
+import { inline, type Field } from '../../lib/openapi';
+interface Props { title: string; fields: Field[]; schemaNames: Set<string>; schemaHref: (name: string) => string }
+const { title, fields, schemaNames, schemaHref } = Astro.props;
+const typeHtml = (t: string) => t.split(/(\b[A-Z][A-Za-z]+\b)/).map((part) => schemaNames.has(part) ? `<a href="${schemaHref(part)}">${part}</a>` : part.replace(/&/g, '&amp;').replace(/</g, '&lt;')).join('');
+---
+<div class="api-table">
+  <table>
+    <caption>{title}</caption>
+    <thead><tr><th scope="col">Field</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
+    <tbody>
+      {fields.map((f) => (
+        <tr>
+          <th scope="row"><code>{f.name}</code>{f.required && <span class="api-req"> required</span>}</th>
+          <td set:html={typeHtml(f.type)} />
+          <td set:html={inline(f.description)} />
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

@@ -6,6 +6,7 @@ import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
 import LinkRows, { type LinkRow } from '../components/LinkRows.astro';
 import { SITE } from '../lib/site';
+import { api } from '../lib/openapi';
 
 const works: LinkRow[] = [
   { icon: 'layers', title: 'Architecture', href: '/docs/architecture/', line: 'How data flows from a tap on the screen to every device: server packages, tables, client modules and the build.' },
@@ -15,6 +16,8 @@ const works: LinkRow[] = [
 ];
 const build: LinkRow[] = [
   { icon: 'braces', title: 'HTTP API', href: '/docs/api/', line: 'Authentication, every route, entity fields, error codes and examples.' },
+  // The reference exists only when the pinned release carries its OpenAPI description (api-reference).
+  ...(api ? [{ icon: 'book-open', title: 'API reference', href: '/api-reference/', line: 'Every route and field, generated from the OpenAPI description of this release.' }] : []),
   { icon: 'terminal', title: 'The ot command line', href: '/docs/cli/', line: 'JSON output, exit codes and dry runs, for scripts and AI agents.' },
   { icon: 'bot', title: 'MCP for AI assistants', href: '/docs/mcp/', line: 'Read-only by default; changes only when you allow them, and every one can be undone.' },
   { icon: 'webhook', title: 'Webhooks', href: '/docs/webhooks/', line: 'Signed events with retries, and recipes for Home Assistant, n8n and Telegram.' },

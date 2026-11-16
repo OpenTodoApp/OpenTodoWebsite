@@ -1,0 +1,11 @@
+---
+// A request or response body in the API reference (api-reference): a link to its shared schema
+// when it is one, and a table of its own fields.
+import Fields from './Fields.astro';
+import type { Body } from '../../lib/openapi';
+interface Props { title: string; body: Body; schemaNames: Set<string>; schemaHref: (name: string) => string }
+const { title, body, schemaNames, schemaHref } = Astro.props;
+---
+{body.ref && <p class="meta">{title}: <a href={schemaHref(body.ref)}>{body.ref}</a>{body.fields.length > 0 && ', plus:'}</p>}
+{body.fields.length > 0 && <Fields title={body.ref ? `${title}: other fields` : title} fields={body.fields} schemaNames={schemaNames} schemaHref={schemaHref} />}
+{!body.ref && body.fields.length === 0 && <p class="meta">{title}: JSON</p>}
