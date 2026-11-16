@@ -74,6 +74,18 @@ test('/hosting/ says what you get, how to set it up and the arrangement, with on
   assert.equal(text(primary[0]), 'Run it on PikaPods');
 });
 
+// The managed hosting line (managed-hosting-line): every listed host as a link, one disclosure
+// sentence, below the own-server block, with no button.
+test('/hosting/ ends with the managed hosting line and its disclosure', { skip }, () => {
+  const main = load(path.join(dist, 'hosting/index.html')).querySelector('main');
+  const line = main.querySelector('#own #managed');
+  assert.ok(line, 'the line sits in the own-server block');
+  assert.match(text(line), /^Managed hosting:/);
+  assert.ok(line.querySelector(`a[href="${PIKAPODS}"]`), 'links PikaPods');
+  assert.ok(text(line).endsWith('These links support the project, which receives a share when they’re used.'));
+  assert.equal(line.querySelectorAll('.btn').length, 0, 'no buttons');
+});
+
 test('the header lists Features, Learn, Docs, Blog, Hosting, Ecosystem, with Hosting current only on /hosting/', { skip }, () => {
   for (const page of ['index.html', 'de/index.html', 'blog/index.html', 'start/index.html', 'hosting/index.html']) {
     const header = load(path.join(dist, page)).querySelector('header.site-header');

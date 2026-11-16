@@ -12,3 +12,12 @@ export const PIKAPODS_FACTS = {
   minimum: '0.25 CPU, 0.25 GB RAM and 5 GB of storage',
   credit: '$5',
 };
+
+// Managed hosting line (managed-hosting-line): the hosting companies named at the end of
+// /hosting/. The owner's rule (2026-11-16): a company is listed when it shares revenue with the
+// project or sponsors it, and on no other ground; no favours case by case. Add one only on the
+// owner's word, after they have read its terms.
+export const MANAGED_HOSTS: { name: string; url: string }[] = [
+  { name: 'PikaPods', url: 'https://www.pikapods.com/apps/opentodo' },
+];
+export const MANAGED_HOSTS_NOTE = 'These links support the project, which receives a share when they’re used.';
