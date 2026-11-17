@@ -6,11 +6,11 @@ The marketing pages of the website: the home page, features, switch pages, the t
 ## Requirements
 
 ### Requirement: Paths to get OpenTodo on the home page
-The home page SHALL show the three ways to get OpenTodo: trying the demo, joining a server someone else runs with an invitation link, and running one's own server. It SHALL state that OpenTodo is not offered as a hosted service. Each path SHALL link to the page or documentation of the pinned release that continues it. The block SHALL read and link without JavaScript at 360 px wide.
+The home page in every language SHALL show four ways to get OpenTodo as equal cards of the same layout: trying the demo, hosted for you by PikaPods (from its price, with updates and HTTPS handled and part of what you pay supporting OpenTodo), joining a server someone else runs with an invitation link, and running one's own server. Only the demo card SHALL use the primary button. The block SHALL say that OpenTodo has no cloud of its own, so there is nothing to sign up for on the site. The hosted card SHALL link PikaPods' OpenTodo page and the site's choice of how to run the server, where the disclosure stands in full; it SHALL NOT be called recommended or the easiest way, and the header SHALL NOT link PikaPods. Each other path SHALL link to the page or documentation of the pinned release that continues it. The price SHALL be the one on PikaPods' OpenTodo page, checked when it changes. The block SHALL read and link without JavaScript at 360 px wide, the cards stacked.
 
 #### Scenario: A visitor who will not run a server
 - **WHEN** a visitor reads the block on a 360 px wide phone without JavaScript
-- **THEN** the second path tells them to open the invitation link they were sent and links to the documentation for installing the app from the browser
+- **THEN** the third path tells them to open the invitation link they were sent and links to the documentation for installing the app from the browser
 
 #### Scenario: Demo lifetime from the docs
 - **WHEN** the demo card states how long a sandbox lives
@@ -18,7 +18,11 @@ The home page SHALL show the three ways to get OpenTodo: trying the demo, joinin
 
 #### Scenario: No hosted sign-up is implied
 - **WHEN** a visitor looks for a "sign up" or "start for free" path
-- **THEN** the block says OpenTodo is not offered as a hosted service and offers the demo instead
+- **THEN** the block says OpenTodo has no cloud of its own and offers the demo, managed hosting by PikaPods and the other ways in
+
+#### Scenario: Equal weight
+- **WHEN** a visitor compares the cards at 1280 px
+- **THEN** the four cards stand in one row with the same size and layout, and the hosted, join and run-your-own cards use the same button style
 
 ### Requirement: About and trust page
 The site SHALL have a page at `/about/` that says who maintains OpenTodo, when it was first and last released, what the licence means in plain words, where the security policy and the specifications are, how long the demo keeps a sandbox, what this website collects, and how to leave with one's data. Maintainer details SHALL come from the authors file and release dates from the bundle's changelog. The page SHALL be in the footer and SHALL read fully at 360 px wide without JavaScript.
@@ -253,27 +257,66 @@ The get started page (`/start/`) and the install index (`/install/`) SHALL show 
 - **THEN** one constant changes and every page that offers PikaPods shows the new wording
 
 ### Requirement: Hosting page
-The site SHALL have an English page at `/hosting/` about running OpenTodo on PikaPods, with a title and meta description, listed in the sitemap and the search index Features and Learn share. It SHALL show, in this order: a headline for people who do not want to run a server; what they get in at most four short points (the price and hourly billing from prepaid credit with the smallest pod's size, managed and tested updates with HTTPS, nightly encrypted backups to their own S3 storage with the note that PikaPods' server backups are not a per-pod restore, and the welcome credit); three or four setup steps (create the pod, finish the owner screen before sharing the address, the setup code from the pod logs or the configured token, registration closed by default and people invited from Settings); the disclosure from the site-wide constant; and a short block for people who prefer their own server linking `/self-host/` and `/install/`. Its only primary button SHALL be "Run it on PikaPods", linking https://www.pikapods.com/apps/opentodo. The page SHALL NOT call PikaPods recommended or the easiest. The facts SHALL be PikaPods' own, kept with the date they were checked in one site constant and updated when PikaPods' OpenTodo page changes; the app's PikaPods guide SHALL be linked once it is in the pinned bundle. The page SHALL read and link without JavaScript at 360 px wide, in light and dark.
+The site SHALL have an English page at `/hosting/` titled "Where to run OpenTodo", with a title and meta description, listed in the sitemap and the search index Features and Learn share. Under the title it SHALL say in at most three short lines which option suits whom, each line linking its option. It SHALL then show the options side by side from 768 px wide and one below the other below that, in the order of how much a person looks after themselves, least first, and SHALL say that this is the order: each hosting company on the site-wide list of hosts, then the person's own server. Every option SHALL show the same facts in the same order: cost and how it is billed, what setup takes, updates, backups, HTTPS and an own domain, and how to leave with the data. Each SHALL have one button of the same weight and its setup steps; the own server's button SHALL link `/self-host/`, and the option SHALL also link `/install/`. A host's facts SHALL be that host's own, read from its pages on the day, kept with the date they were checked in one site constant per host, and shown with that date; a host's guide in the app's docs SHALL be linked once it is in the pinned bundle. The page SHALL show the disclosure "These links support the project, which receives a share when they're used." exactly once, and nothing else about the arrangement. It SHALL NOT call any option recommended, best or the easiest, compare prices, or show a logo. It SHALL read and link without JavaScript at 360 px wide, in light and dark.
 
 #### Scenario: A visitor who will not run a server
 - **WHEN** a visitor on a 360 px wide phone without JavaScript opens `/hosting/`
-- **THEN** the headline, the "Run it on PikaPods" button, what they get and the setup steps are shown, and the page does not scroll sideways
+- **THEN** they see "Where to run OpenTodo", the lines on which option suits whom, then PikaPods, Railway and their own server one below the other, each with the six facts and one button, and the page does not scroll sideways
+
+#### Scenario: The same facts in the same order
+- **WHEN** a visitor compares two options on `/hosting/`
+- **THEN** both show cost and billing, setup, updates, backups, HTTPS and an own domain, and leaving with the data, in that order, and each host's facts carry the date they were checked
 
 #### Scenario: The arrangement is stated
 - **WHEN** a visitor reads `/hosting/`
-- **THEN** the page shows the disclosure that PikaPods shares part of its revenue with the project and that data can be exported and moved to an own server at any time
+- **THEN** the sentence that these links support the project, which receives a share when they're used, appears exactly once
 
 #### Scenario: Own server instead
 - **WHEN** a visitor would rather run OpenTodo themselves
-- **THEN** the page links `/self-host/` and `/install/`, which cover Docker, Raspberry Pi, NAS and server app stores
+- **THEN** the own server option links `/self-host/` and `/install/`, which cover Docker, Raspberry Pi, NAS and server app stores
 
-### Requirement: Managed hosting line
-The hosting page SHALL end, below the block for people who prefer their own server, with one line headed "Managed hosting". The line SHALL name every listed hosting company as a text link, followed by the sentence "These links support the project, which receives a share when they're used." The hosting companies SHALL come from one site-wide list, with the rule for being on it written beside the list: a company is listed when it shares revenue with the project or sponsors it, and on no other ground. The list SHALL hold PikaPods (revenue share) and Railway (template kickback), and another company only when the owner adds it. The line SHALL show no deploy button, no logo and no ranking, and SHALL be absent while the list is empty. It SHALL read and link without JavaScript at 360 px wide.
+#### Scenario: A host is added to the list
+- **WHEN** the owner adds a hosting company to the site-wide list with its facts and the site is rebuilt
+- **THEN** `/hosting/` shows it as one more option with the same facts, button and steps, and the disclosure still appears once
 
-#### Scenario: The line on the hosting page
-- **WHEN** a visitor reaches the end of `/hosting/` on a 360 px wide phone without JavaScript
-- **THEN** below "Prefer your own server?" they see "Managed hosting" with links to PikaPods and Railway and the sentence that the links support the project, which receives a share when they're used
+### Requirement: Build your own client page
+The site SHALL have an English page at `/build/`, "Build your own client", listed in the sitemap, linked from the "Build on it" group of Under the hood, from the Ecosystem page and from the footer's Learn group. It SHALL show, as groups of link rows: three ways in (the REST API, the sync protocol, webhooks with MCP), each linking its docs page of the pinned release; where to start, saying that a client signs in with an API token the person creates and that there is no sign-in flow for other apps, and linking the client guide and the OpenAPI description; the clients to learn from (the `ot` command line, the Obsidian plugin, the n8n nodes, the browser extension and the Home Assistant integration), each with what it uses, its docs page and its source; and community clients. Anything the page links that is not in the pinned release SHALL be linked on GitHub and labelled "On GitHub, not in a release yet", and the guide SHALL link its docs page once the pinned bundle has it. Community clients SHALL come from a list committed in the website repository, which anyone can add to by pull request, and each SHALL be marked "Not vetted by OpenTodo"; while the list is empty the page SHALL say "None yet". The page SHALL say how to be listed: the repository topic `opentodo-client` and a pull request adding the client to the list. The build SHALL NOT call GitHub. The page SHALL read and link without JavaScript at 360 px wide, in light and dark.
 
-#### Scenario: A second host
-- **WHEN** the owner adds a hosting company that shares revenue to the site-wide list and the site is rebuilt
-- **THEN** the line names both companies as links, with the same single sentence
+#### Scenario: A developer looking for a way in
+- **WHEN** a visitor on a 360 px wide phone without JavaScript opens `/build/`
+- **THEN** they see the three ways in, how a client signs in, the guide, the OpenAPI description and the clients to learn from, each linked, and the page does not scroll sideways
+
+#### Scenario: Not released yet
+- **WHEN** the pinned release has no client guide
+- **THEN** the guide links the file on GitHub with the label "On GitHub, not in a release yet", and once a pinned release has the guide, it links its docs page without the label
+
+#### Scenario: No community clients yet
+- **WHEN** the committed list is empty
+- **THEN** the community clients group says "None yet" and how to be listed
+
+#### Scenario: A client is added
+- **WHEN** a pull request adds a client to the list and the site is rebuilt
+- **THEN** the community clients group shows it as a link row marked "Not vetted by OpenTodo"
+
+#### Scenario: Found from the technical pages
+- **WHEN** a visitor opens Under the hood, the Ecosystem page or any page's footer
+- **THEN** each links `/build/`
+
+### Requirement: Press kit page
+The site SHALL have a Press kit page at `/press-kit/`, linked from the footer, whose first section offers OpenTodo's brand assets for download.
+- **Each asset:** a preview on a background it is meant for, its intended use, and one download link per file format and size.
+- **Also shown:** the usage rules and the licence.
+- **Source:** the files SHALL be the pinned bundle's `brand/` files, served by the site under `/brand/`, so the page always offers the logo of the release the site describes. With a bundle that carries the brand kit (`brand/kit/`), the page SHALL offer every kit file. With an older bundle, it SHALL offer the brand files that bundle has, and no link SHALL point to a file the bundle lacks.
+- **Layout:** at 360 px the previews stack in one column, and every preview and link works without JavaScript.
+
+#### Scenario: A journalist needs the logo for a dark slide
+- **WHEN** someone opens the press kit on a site pinned to a release with the brand kit
+- **THEN** they find the lockup on dark with an SVG link and two PNG sizes, each link downloads that file from the release's bundle, and the page names the use and the licence
+
+#### Scenario: Pinned to a release without the kit
+- **WHEN** the site is pinned to v0.22.0, whose bundle has no `brand/kit/`
+- **THEN** the page offers that release's colour mark, mono mark, wordmark and 512 px icon, and the link check finds no broken link
+
+#### Scenario: Phone without JavaScript
+- **WHEN** the page is opened at 360 px with JavaScript turned off
+- **THEN** every preview is visible in one column and every download link works
