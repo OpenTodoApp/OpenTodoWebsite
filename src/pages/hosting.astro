@@ -1,69 +1,68 @@
 ---
-// /hosting (hosting-page): OpenTodo on a managed PikaPods pod. What you get, how to set it up,
-// the arrangement, and your own server instead. One primary action, to PikaPods. The facts are
-// PikaPods' own (PIKAPODS_FACTS, with the day they were checked). English only, like every
-// page but the home page (website-languages). Plain HTML, so it reads without JavaScript.
+// /hosting (hosting-choice-page): where to run OpenTodo. Which option suits whom, then every
+// listed host and your own server side by side, in the order of how much you look after yourself,
+// least first, each with the same facts in the same order, one button and its setup steps. The
+// hosts' facts are their own, with the day they were checked (MANAGED_HOSTS). One disclosure.
+// English only, like every page but the home page (website-languages). Plain HTML, so it reads
+// without JavaScript.
 import Base from '../layouts/Base.astro';
-import Icon from '../components/Icon.astro';
-import { SITE } from '../lib/site';
-import { MANAGED_HOSTS, MANAGED_HOSTS_NOTE, PIKAPODS_FACTS as f, PIKAPODS_NOTE } from '../lib/hosting';
+import { docExists } from '../lib/bundle';
+import { FACTS, MANAGED_HOSTS, MANAGED_HOSTS_NOTE, OWN_SERVER, type Facts } from '../lib/hosting';
 
-const points = [
-  { icon: 'wallet', title: `${f.price}`, text: `Billed by the hour from prepaid credit. The smallest pod has ${f.minimum}.` },
-  { icon: 'refresh-cw', title: 'Updates and HTTPS', text: 'Handled for you. Every update is tested before it reaches your pod.' },
-  { icon: 'database', title: 'Nightly backups', text: 'Encrypted, to your own S3 storage. PikaPods’ server backups can’t restore a single pod, so keep your own.' },
-  { icon: 'gift', title: `${f.credit} to start`, text: 'Welcome credit when you sign up.' },
+const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const owns = (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`);
+const day = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+interface Option { id: string; name: string; facts: Facts; steps: string[]; button: { label: string; href: string }; checked?: string; guide?: string; extra?: string }
+const options: Option[] = [
+  ...MANAGED_HOSTS.map((h) => ({
+    id: slug(h.name), name: h.name, facts: h.facts, steps: h.steps, button: { label: h.button, href: h.url },
+    checked: h.checkedOn, guide: docExists(h.guide) ? h.guide : undefined,
+  })),
+  {
+    id: 'own', name: 'Your own server', facts: OWN_SERVER, button: { label: 'Self-host', href: '/self-host/' },
+    steps: [
+      'Pick your hardware on <a href="/self-host/">Self-host</a> and follow its guide.',
+      'Open the address and create the owner account.',
+      'Put the app on your phone and computer: <a href="/install/">Install the app</a>.',
+    ],
+  },
 ];
+const which = [
+  ...MANAGED_HOSTS.map((h) => ({ text: h.who, name: h.name, id: slug(h.name) })),
+  { text: 'Free, on hardware you own', name: 'Your own server', id: 'own' },
+];
+const description = `${[...MANAGED_HOSTS.map((h) => h.name), 'your own server'].join(', ').replace(/, ([^,]*)$/, ' or $1')}: what each costs, how setup, updates, backups and your own domain work, and how to leave with your data.`;
 ---
-<Base title="Hosted OpenTodo on PikaPods" description={`Run OpenTodo without a server of your own: a managed PikaPods pod ${f.price.toLowerCase()}, with tested updates, HTTPS and nightly backups to your own storage. ${f.credit} welcome credit.`}>
+<Base title="Where to run OpenTodo" description={description}>
   <section class="page-head" aria-labelledby="hosting-title">
     <div class="wrap">
-      <h1 id="hosting-title">Don’t want to run a server? Let PikaPods run it.</h1>
-      <div class="cta-row">
-        <a class="btn btn-primary btn-large" href={SITE.pikapods}>Run it on PikaPods <Icon name="arrow-right" size={18} /></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section start-block hosting-get" id="get" aria-labelledby="get-title">
-    <div class="wrap">
-      <h2 id="get-title">What you get</h2>
-      <ul class="ways ways-4">
-        {points.map((p) => (
-          <li>
-            <Icon name={p.icon} size={20} />
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-          </li>
-        ))}
+      <h1 id="hosting-title">Where to run OpenTodo</h1>
+      <ul class="hosting-which">
+        {which.map((w) => <li>{w.text}: <a href={`#${w.id}`}>{w.name}</a></li>)}
       </ul>
     </div>
   </section>
 
-  <section class="section section-alt start-block" id="setup" aria-labelledby="setup-title">
-    <div class="wrap hosting-narrow">
-      <h2 id="setup-title">Set it up</h2>
-      <ol class="steps">
-        <li>Add OpenTodo on PikaPods and start the pod.</li>
-        <li>Open it right away and create the owner account. Whoever finishes that screen first becomes the owner, so do it before you share the address.</li>
-        <li>If it asks for a setup code, use the one in the pod’s logs or the setup token you configured.</li>
-        <li>Registration is closed by default. Invite people from Settings, then People.</li>
-      </ol>
-      <p class="hosting-note">{PIKAPODS_NOTE}</p>
-    </div>
-  </section>
-
-  <section class="section start-block" id="own" aria-labelledby="own-title">
-    <div class="wrap hosting-narrow">
-      <h2 id="own-title">Prefer your own server?</h2>
-      <p class="lede">It’s free: Docker, a Raspberry Pi, a NAS or a server app store.</p>
-      <div class="cta-row">
-        <a class="btn btn-secondary" href="/self-host/">Self-host</a>
-        <a class="btn btn-secondary" href="/install/">Install the app</a>
+  <section class="section start-block hosting-options-block" aria-label="The options">
+    <div class="wrap">
+      <p class="hosting-order">In order of how much you look after yourself, least first.</p>
+      <div class="hosting-options">
+        {options.map((o) => (
+          <section class="hosting-option" id={o.id} aria-labelledby={`${o.id}-title`}>
+            <h2 id={`${o.id}-title`}>{o.name}</h2>
+            <dl class="hosting-facts">
+              {FACTS.map((f) => (<><dt>{f}</dt><dd set:html={o.facts[f]} /></>))}
+            </dl>
+            <a class="btn btn-primary" href={o.button.href}>{o.button.label}</a>
+            <h3>Set it up</h3>
+            <ol class="steps">{o.steps.map((s) => <li set:html={s} />)}</ol>
+            {o.guide && <p class="hosting-meta"><a href={o.guide}>{o.name} guide</a></p>}
+            {o.checked && <p class="hosting-meta">From {owns(o.name)} own pages, checked <time datetime={o.checked}>{day(o.checked)}</time>.</p>}
+          </section>
+        ))}
       </div>
-      {MANAGED_HOSTS.length > 0 && (
-        <p class="hosting-managed" id="managed"><strong>Managed hosting:</strong> {MANAGED_HOSTS.map((h, i) => <>{i > 0 && ', '}<a href={h.url} data-host={h.name}>{h.name}</a></>)}. {MANAGED_HOSTS_NOTE}</p>
-      )}
+      {MANAGED_HOSTS.length > 0 && <p class="hosting-note" id="disclosure">{MANAGED_HOSTS_NOTE}</p>}
     </div>
   </section>
 </Base>

@@ -51,40 +51,41 @@ test('no page calls PikaPods recommended or the easiest', { skip }, () => {
   for (const page of ['hosting/index.html', 'start/index.html', 'install/index.html', 'index.html']) assert.ok(checked.includes(page), `${page} is checked`);
 });
 
-// The hosting page (hosting-page): headline, what you get, the steps, the disclosure, your own
-// server instead, and one primary action, to PikaPods.
-test('/hosting/ says what you get, how to set it up and the arrangement, with one primary action', { skip }, () => {
+// The hosting page (hosting-choice-page): where to run OpenTodo. Every listed host and your own
+// server, in one stated order, each with the same facts in the same order, one button of the same
+// weight and its steps; the hosts' facts dated; the disclosure exactly once.
+const FACTS = ['Cost', 'Setup', 'Updates', 'Backups', 'HTTPS and domain', 'Leaving'];
+const DISCLOSURE = 'These links support the project, which receives a share when they’re used.';
+
+test('/hosting/ helps a person choose: the options side by side with the same facts', { skip }, () => {
   const root = load(path.join(dist, 'hosting/index.html'));
   const main = root.querySelector('main');
-  assert.match(text(root.querySelector('head title')), /PikaPods/);
-  assert.ok(root.querySelector('meta[name="description"]').getAttribute('content').includes('PikaPods'));
-  assert.equal(text(main.querySelector('h1')), 'Don’t want to run a server? Let PikaPods run it.');
-  const points = main.querySelectorAll('#get li');
-  assert.ok(points.length >= 3 && points.length <= 4, 'three or four points');
-  for (const fact of [/\$2/, /HTTPS/, /backups/, /\$5/]) assert.ok(points.some((li) => fact.test(text(li))), `a point matching ${fact}`);
-  const steps = main.querySelectorAll('#setup ol > li');
-  assert.ok(steps.length >= 3 && steps.length <= 4, 'three or four steps');
-  assert.ok(text(main).includes(NOTE), 'the disclosure');
-  const own = main.querySelector('#own');
-  assert.equal(text(own.querySelector('h2')), 'Prefer your own server?');
-  for (const href of ['/self-host/', '/install/']) assert.ok(own.querySelector(`a[href="${href}"]`), `links ${href}`);
-  const primary = main.querySelectorAll('a.btn-primary');
-  assert.equal(primary.length, 1, 'one primary button');
-  assert.equal(primary[0].getAttribute('href'), PIKAPODS);
-  assert.equal(text(primary[0]), 'Run it on PikaPods');
+  assert.match(text(root.querySelector('head title')), /^Where to run OpenTodo/);
+  assert.equal(text(main.querySelector('h1')), 'Where to run OpenTodo');
+  const which = main.querySelectorAll('.hosting-which li');
+  assert.deepEqual(which.map((li) => li.querySelector('a').getAttribute('href')), ['#pikapods', '#railway', '#own'], 'which one is for me, linking each option');
+  assert.match(text(main.querySelector('.hosting-order')), /least first/);
+  const options = main.querySelectorAll('.hosting-option');
+  assert.deepEqual(options.map((o) => text(o.querySelector('h2'))), ['PikaPods', 'Railway', 'Your own server'], 'the order');
+  const buttons = options.map((o) => o.querySelectorAll('a.btn'));
+  for (const [i, o] of options.entries()) {
+    assert.deepEqual(o.querySelectorAll('dt').map(text), FACTS, `${text(o.querySelector('h2'))}: the same facts in the same order`);
+    assert.equal(buttons[i].length, 1, 'one button each');
+    assert.ok(o.querySelectorAll('ol.steps > li').length >= 3, 'its setup steps');
+  }
+  assert.equal(new Set(buttons.map((b) => b[0].getAttribute('class'))).size, 1, 'buttons of the same weight');
+  assert.deepEqual(buttons.map((b) => b[0].getAttribute('href')), [PIKAPODS, 'https://railway.com/deploy/opentodo?referralCode=nbgVDr', '/self-host/']);
+  for (const o of options.slice(0, 2)) assert.ok(o.querySelector('.hosting-meta time[datetime]'), 'a host’s facts carry the day they were checked');
+  for (const href of ['/self-host/', '/install/']) assert.ok(main.querySelector(`#own a[href="${href}"]`), `own server links ${href}`);
+  assert.ok(text(main.querySelector('#railway')).includes('Generate Domain with port 8080'), 'Railway’s public domain step');
 });
 
-// The managed hosting line (managed-hosting-line): every listed host as a link, one disclosure
-// sentence, below the own-server block, with no button.
-test('/hosting/ ends with the managed hosting line and its disclosure', { skip }, () => {
+test('/hosting/ states the arrangement exactly once, and no logo', { skip }, () => {
   const main = load(path.join(dist, 'hosting/index.html')).querySelector('main');
-  const line = main.querySelector('#own #managed');
-  assert.ok(line, 'the line sits in the own-server block');
-  assert.match(text(line), /^Managed hosting:/);
-  assert.ok(line.querySelector(`a[href="${PIKAPODS}"]`), 'links PikaPods');
-  assert.ok(line.querySelector('a[href="https://railway.com/deploy/opentodo?referralCode=nbgVDr"]'), 'links Railway');
-  assert.ok(text(line).endsWith('These links support the project, which receives a share when they’re used.'));
-  assert.equal(line.querySelectorAll('.btn').length, 0, 'no buttons');
+  assert.equal(text(main).split(DISCLOSURE).length - 1, 1, 'the disclosure once');
+  assert.ok(!text(main).includes(NOTE), 'no second disclosure');
+  assert.equal(main.querySelectorAll('img').length, 0, 'no logos');
+  assert.doesNotMatch(text(main), /\bbest\b|cheapest|recommended|easiest/i);
 });
 
 test('the header lists Features, Learn, Docs, Blog, Hosting, Ecosystem, with Hosting current only on /hosting/', { skip }, () => {

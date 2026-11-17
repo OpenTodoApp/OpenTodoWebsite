@@ -6,7 +6,7 @@ import path from 'node:path';
 import { bundle } from '../lib/bundle';
 import { featureGroups } from '../lib/features';
 import { LEARN_TYPES, learnEntries } from '../lib/learn';
-import { PIKAPODS_FACTS } from '../lib/hosting';
+import { MANAGED_HOSTS } from '../lib/hosting';
 
 const decode = (s: string) => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 
@@ -25,6 +25,6 @@ export async function GET() {
   const label = Object.fromEntries(LEARN_TYPES.map((t) => [t.key, t.label]));
   const learn = (await learnEntries()).map((e) => ({ t: e.title, s: e.summary, u: e.href, k: label[e.type] }));
   // Site pages people search for by name (hosting-page).
-  const pages = [{ t: 'Hosted OpenTodo on PikaPods', s: `A managed pod ${PIKAPODS_FACTS.price.toLowerCase()}: updates, HTTPS and backups handled.`, u: '/hosting/', k: 'Page' }];
+  const pages = [{ t: 'Where to run OpenTodo', s: `${[...MANAGED_HOSTS.map((h) => h.name), 'your own server'].join(', ')}: cost, setup, updates, backups and leaving with your data.`, u: '/hosting/', k: 'Page' }];
   return new Response(JSON.stringify([...features, ...learn, ...pages, ...docsPages()]), { headers: { 'Content-Type': 'application/json' } });
 }
