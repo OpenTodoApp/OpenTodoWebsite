@@ -15,6 +15,7 @@ const works: LinkRow[] = [
   { icon: 'git-branch', title: 'Shared contracts', href: '/docs/contracts/', line: 'The logic that exists in both Go and TypeScript, and the shared fixtures that keep each pair in step.' },
 ];
 const build: LinkRow[] = [
+  { icon: 'code', title: 'Build your own client', href: '/build/', line: 'The ways in, how a client signs in, the guide, and the clients to learn from.' },
   { icon: 'braces', title: 'HTTP API', href: '/docs/api/', line: 'Authentication, every route, entity fields, error codes and examples.' },
   // The reference exists only when the pinned release carries its OpenAPI description (api-reference).
   ...(api ? [{ icon: 'book-open', title: 'API reference', href: '/api-reference/', line: 'Every route and field, generated from the OpenAPI description of this release.' }] : []),

@@ -27,6 +27,7 @@ export default {
     'Changelog': 'Änderungen',
     'Guides and how-tos': 'Anleitungen',
     'Under the hood': 'Unter der Haube',
+    'Build your own client': 'Einen eigenen Client bauen',
     'Moving from another app': 'Von einer anderen App wechseln',
     footerTagline: 'Die Aufgabenverwaltung, die du selbst hostest. Frei und quelloffen.',
     'About': 'Über OpenTodo',

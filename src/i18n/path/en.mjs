@@ -28,6 +28,7 @@ export default {
     'Changelog': 'Changelog',
     'Guides and how-tos': 'Guides and how-tos',
     'Under the hood': 'Under the hood',
+    'Build your own client': 'Build your own client',
     'Moving from another app': 'Moving from another app',
     footerTagline: 'The task manager you host yourself. Free and open source.',
     'About': 'About',

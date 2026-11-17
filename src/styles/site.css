@@ -1051,3 +1051,4 @@ h2.as-h3 { font-size: 1.0625rem; letter-spacing: -0.01em; font-weight: 600; }
 .api-table th, .api-table td { text-align: left; vertical-align: top; padding: 0.375rem 0.5rem; border-bottom: 1px solid var(--line); }
 .api-table th[scope="row"] { font-weight: 400; white-space: nowrap; }
 .api-req { color: var(--muted); font-size: 0.8125rem; }
+.build-note { color: var(--muted); font-size: 0.9375rem; margin: 0.75rem 0 0; }
