@@ -73,7 +73,7 @@ Every page, in every language, SHALL link to the OpenTodo account on X from the 
 - **THEN** every X link on every page carries the new address and the link check passes
 
 ### Requirement: Support page
-The site SHALL have an English page at `/support/` that shows the maintainer's approved text about why OpenTodo stays free, what he promises, what it costs to run and how to help, without changing its wording. The promises SHALL be an ordered list, the costs a table with a header row, and the sponsor links buttons: "Sponsor on GitHub" and "Buy me a coffee" in the opening section and again in the section about helping, and the Discord button with the ways to help without money. The sponsor, coffee and Discord addresses SHALL come from the site-wide constants. The buttons SHALL be drawn by the site, loading nothing from GitHub, Buy Me a Coffee or Discord. The costs are the project's own and SHALL stay in the currency the maintainer wrote them in; when they change, the maintainer's text and the page change together. The page SHALL read at 360 px wide and without JavaScript, in light and dark, with no serious or critical accessibility violation.
+The site SHALL have an English page at `/support/` that shows the maintainer's approved text about why OpenTodo stays free, what he promises, what it costs to run and how to help, without changing its wording. The promises SHALL be an ordered list, the costs a table with a header row, and the sponsor links buttons: "Sponsor on GitHub" and "Buy me a coffee" in the opening section and again in the section about helping, and the Discord button with the ways to help without money. Under the ways to give money, the page SHALL name hosting on PikaPods as a way to help, in the line "Host on PikaPods: part of what you pay goes to the project." linking PikaPods' OpenTodo page from the site-wide constants. The sponsor, coffee and Discord addresses SHALL come from the site-wide constants. The buttons SHALL be drawn by the site, loading nothing from GitHub, Buy Me a Coffee or Discord. The costs are the project's own and SHALL stay in the currency the maintainer wrote them in; when they change, the maintainer's text and the page change together. The page SHALL read at 360 px wide and without JavaScript, in light and dark, with no serious or critical accessibility violation.
 
 #### Scenario: Reading the page on a phone
 - **WHEN** a visitor opens `/support/` at 360 px wide with JavaScript disabled
@@ -82,6 +82,10 @@ The site SHALL have an English page at `/support/` that shows the maintainer's a
 #### Scenario: Changed sponsor address
 - **WHEN** the sponsor address in the site-wide constants changes and the site is rebuilt
 - **THEN** every Sponsor on GitHub button carries the new address
+
+#### Scenario: Hosting as a way to help
+- **WHEN** a visitor reads the section about helping
+- **THEN** below the sponsor and coffee buttons a line says "Host on PikaPods: part of what you pay goes to the project." and links PikaPods' OpenTodo page
 
 ### Requirement: Ways to the support page
 Every page SHALL link to `/support/` from the footer's Project group, and the footer's Community row SHALL link the GitHub repository (Star on GitHub), GitHub Sponsors, Buy me a coffee and Discord as plain text links. The header SHALL carry no support pill or button. The closing call to action of blog posts and blog listings SHALL say that OpenTodo is free and always will be, in one line of text links to the star, Sponsors, Buy me a coffee and `/support/`; other content pages SHALL NOT repeat the ask. The About page's licence section SHALL link to `/support/`, and the Support page SHALL say that both ways to give take a one-off amount or a monthly membership. The footer SHALL fit without sideways scrolling from 360 px.
