@@ -8,7 +8,7 @@ cover: ./list.webp
 coverAlt: "A project called Home in OpenTodo with five chores, each with the repeat symbol: Put the bins out and Water the plants for today, Change the beds on Saturday, Descale the kettle on 28 November and Pay the rent on 1 December."
 tags: [task-management]
 series: in-practice
-part: 2
+part: 6
 draft: false
 ---
 <!-- no-claim -->

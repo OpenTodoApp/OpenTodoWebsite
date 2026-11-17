@@ -5,5 +5,5 @@
 
 ## 2. Pilot
 
-- [x] 2.1 "Chores that come back on their own" (part 2 of the series), recorded against OpenTodo 1.5.0
+- [x] 2.1 "Chores that come back on their own" (part 6 of the series, `blog/SERIES.md` in the social repository), recorded against OpenTodo 1.5.0
 - [ ] 2.2 The owner judges the preview before it is merged
