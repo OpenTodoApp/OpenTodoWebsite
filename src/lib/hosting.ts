@@ -20,6 +20,6 @@ export const PIKAPODS_FACTS = {
 export const MANAGED_HOSTS: { name: string; url: string }[] = [
   { name: 'PikaPods', url: 'https://www.pikapods.com/apps/opentodo' },
   // Railway: template kickback (template programme), published and tested by the owner on 2026-11-16.
-  { name: 'Railway', url: 'https://railway.com/deploy/opentodo' },
+  { name: 'Railway', url: 'https://railway.com/deploy/opentodo?referralCode=nbgVDr' },
 ];
 export const MANAGED_HOSTS_NOTE = 'These links support the project, which receives a share when they’re used.';
