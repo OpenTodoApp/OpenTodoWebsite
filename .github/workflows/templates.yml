@@ -1,7 +1,10 @@
 # Template check (website-content-hub design D2): imports every template into a
 # fresh server of the pinned release and captures its screenshots. On a pull
 # request it fails, naming the template and the import error, when a template
-# does not import cleanly. On main it opens a pull request when screenshots change.
+# does not import cleanly. On main it opens a pull request when screenshots change:
+# the import job runs the repository's code with a read-only token and hands the
+# screenshots on as an artefact; only the screenshots job, which runs no code from
+# the repository, may write.
 name: Templates
 
 on:
@@ -21,8 +24,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   import:
@@ -30,6 +32,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -53,9 +57,33 @@ jobs:
         run: npm run templates:check
         env:
           OPENTODO_URL: http://127.0.0.1:8080
-      - name: Open a pull request with changed screenshots
+      - name: Keep the screenshots for the screenshots job
         if: github.event_name != 'pull_request'
-        uses: peter-evans/create-pull-request@v7
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-shots
+          path: src/assets/template-shots/
+          if-no-files-found: error
+          retention-days: 1
+
+  screenshots:
+    needs: import
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: template-shots
+          path: src/assets/template-shots/
+      - name: Open a pull request with changed screenshots
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
         with:
           branch: bot/template-screenshots
           commit-message: Refresh template screenshots against the pinned release
