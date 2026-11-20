@@ -2,6 +2,10 @@
 // translated home page follows. Placeholders: {licence}, {count}, {groups}. A string with
 // inline links carries them as HTML, links within this site only.
 export default {
+  common: {
+    // The survey strip (survey-strip), until the end date in src/lib/survey.mjs.
+    survey: { text: '5 minutes to help shape OpenTodo. Anonymous, no account.', link: 'Take the survey', close: 'Hide the survey' },
+  },
   home: {
     title: 'OpenTodo · The open-source task manager you host yourself',
     description: 'A free, open-source task manager you host yourself: offline-first on every device, CalDAV sync, shared lists, {count} features and no paid tier.',

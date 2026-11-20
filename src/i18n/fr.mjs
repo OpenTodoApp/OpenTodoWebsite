@@ -3,6 +3,8 @@
 export default {
   common: {
     langNote: 'Cette page est en français, et l\'application aussi : la langue se choisit dans ses réglages, et la saisie rapide comprend les dates et les heures en français. Le reste de ce site et la documentation sont en anglais.',
+    // The survey strip (survey-strip), until the end date in src/lib/survey.mjs.
+    survey: { text: '5 minutes pour aider à façonner OpenTodo. Anonyme, sans compte.', link: 'Répondre au sondage (en anglais)', close: 'Masquer le sondage' },
   },
   home: {
     title: 'OpenTodo · Une liste de tâches sereine, sur votre propre serveur',

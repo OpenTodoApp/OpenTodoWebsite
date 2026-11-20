@@ -1,5 +1,6 @@
 // The interactive parts work, and load only on the pages that use them.
 import { expect, test } from '@playwright/test';
+import fs from 'node:fs';
 
 test('sync playground converges after a conflict', async ({ page }) => {
   await page.goto('/self-host/');
@@ -87,4 +88,18 @@ test('the catalog search finds features, how-tos and docs, and clears with Escap
   await page.keyboard.press('Escape');
   await expect(page.locator('#catalog-results')).toBeHidden();
   await expect(page.locator('[data-catalog-main]')).toBeVisible();
+});
+
+// The survey strip (survey-strip) closes by keyboard and stays closed on the next page;
+// once its end date has passed the build leaves it out and there is nothing to test.
+test('the survey strip closes and stays closed', async ({ page }) => {
+  test.skip(!fs.readFileSync('dist/index.html', 'utf8').includes('survey-strip'), 'survey strip ended');
+  await page.goto('/');
+  const strip = page.locator('.survey-strip');
+  await expect(strip.getByRole('link', { name: 'Take the survey' })).toHaveAttribute('href', 'https://tally.so/r/1W41xQ');
+  await strip.getByRole('button', { name: 'Hide the survey' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(strip).toBeHidden();
+  await page.goto('/de/');
+  await expect(page.locator('.survey-strip')).toBeHidden();
 });

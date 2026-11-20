@@ -84,3 +84,14 @@ test('the home page ends with the support link, in its language', async ({ page 
     await expect(page.locator('main a[data-support]'), url).toHaveCount(1);
   }
 });
+
+// Without JavaScript the survey strip (survey-strip) stays, without its close button.
+test('the survey strip reads without JavaScript', async ({ page }) => {
+  test.skip(!fs.readFileSync('dist/index.html', 'utf8').includes('survey-strip'), 'survey strip ended');
+  await page.goto('/');
+  const strip = page.locator('.survey-strip');
+  await expect(strip.getByRole('link', { name: 'Take the survey' })).toBeVisible();
+  await expect(strip.locator('.survey-close')).toBeHidden();
+  await page.goto('/de/');
+  await expect(page.locator('.survey-strip')).toContainText('auf Englisch');
+});

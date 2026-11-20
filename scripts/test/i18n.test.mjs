@@ -138,3 +138,9 @@ test('every German switch guide states the facts of its English guide', async ()
     assert.ok(GERMAN_PAGES.includes(`/switch/${f.replace('.md', '')}/`), `de/${f} is not in GERMAN_PAGES`);
   }
 });
+
+// The survey strip (survey-strip) speaks every language; the survey itself is English.
+test('every language has the English survey strings', () => {
+  const ref = leafPaths(en.common.survey);
+  for (const lang of OTHER_LANGS) assert.deepEqual(leafPaths(DICT[lang].common.survey), ref, `${lang}.common.survey differs from en.common.survey`);
+});
