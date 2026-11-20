@@ -4,6 +4,8 @@
 export default {
   common: {
     langNote: '本页是简体中文，应用也是：在设置中选择语言即可。快速添加目前能理解英语、德语、法语、西班牙语、意大利语、葡萄牙语和荷兰语的日期和时间，暂不支持中文。本网站的其余页面和文档是英文。',
+    // The survey strip (survey-strip), until the end date in src/lib/survey.mjs.
+    survey: { text: '花 5 分钟，帮助塑造 OpenTodo。匿名，无需账号。', link: '参与调查（英文）', close: '隐藏调查' },
   },
   home: {
     title: 'OpenTodo · 运行在你自己的服务器上的宁静待办事项列表',

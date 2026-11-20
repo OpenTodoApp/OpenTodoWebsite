@@ -3,6 +3,8 @@
 export default {
   common: {
     langNote: 'Diese Seite ist auf Deutsch, und die App ist es auch: Die Sprache stellst du in ihren Einstellungen ein, und die Schnelleingabe versteht Daten und Zeiten auf Deutsch. Der Rest dieser Website und die Dokumentation sind auf Englisch.',
+    // The survey strip (survey-strip), until the end date in src/lib/survey.mjs.
+    survey: { text: '5 Minuten, um OpenTodo mitzugestalten. Anonym, ohne Konto.', link: 'Zur Umfrage (auf Englisch)', close: 'Umfrage ausblenden' },
   },
   home: {
     title: 'OpenTodo · Eine ruhige Aufgabenliste auf deinem eigenen Server',

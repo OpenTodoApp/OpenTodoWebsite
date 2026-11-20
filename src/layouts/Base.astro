@@ -7,6 +7,8 @@ import '@bundle/tokens/tokens.css';
 import '../styles/site.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import SurveyStrip from '../components/SurveyStrip.astro';
+import { SURVEY, surveyActive } from '../lib/survey.mjs';
 import { bundle } from '../lib/bundle';
 import { SITE } from '../lib/site';
 import { ogPathFor } from '../../scripts/lib/og.mjs';
@@ -46,6 +48,8 @@ const alternates = alternatesFor(Astro.url.pathname);
 const ogImage = image ? new URL(image, SITE.url).href : `${SITE.url}${ogPathFor(Astro.url.pathname)}`;
 const fullTitle = bareTitle ? title : `${title} · OpenTodo`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
+// The survey strip is built until its end date (survey-strip), then leaves on its own.
+const survey = surveyActive();
 ---
 <!doctype html>
 <html lang={LANGS[lang].hreflang} class="no-js">
@@ -80,6 +84,7 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
     {SITE.verification.bing && <meta name="msvalidate.01" content={SITE.verification.bing} />}
     {breadcrumb && <script type="application/ld+json" set:html={JSON.stringify(breadcrumb).replace(/</g, '\\u003c')} />}
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
+    {survey && <script is:inline define:vars={{ key: SURVEY.key }}>try { if (localStorage.getItem(key)) document.documentElement.classList.add('survey-closed'); } catch {}</script>}
     <!-- Analytics (Umami, self-hosted, no cookies): this website only; the app never loads analytics. -->
     <script is:inline defer data-cfasync="false" src={SITE.analytics.src} data-website-id={SITE.analytics.websiteId}></script>
     <slot name="head" />
@@ -91,6 +96,7 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
         <div class="wrap"><strong>Preview</strong>: built from {bundle.label}, not from a release. Not for production.</div>
       </div>
     )}
+    {survey && <SurveyStrip lang={lang} />}
     <SiteHeader />
     <main id="main" tabindex="-1">
       <slot />

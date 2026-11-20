@@ -1,0 +1,26 @@
+---
+// The survey strip (survey-strip): one line above the header until SURVEY.end, a plain link to
+// the anonymous survey. The close button needs JavaScript, so it shows only with it; a closed
+// strip is remembered in localStorage and hidden before paint by the script in Base's <head>.
+import Icon from './Icon.astro';
+import { SURVEY } from '../lib/survey.mjs';
+import en from '../i18n/en.mjs';
+import { DICT } from '../i18n/dict.mjs';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const s = (DICT as Record<string, typeof en>)[lang]?.common.survey ?? en.common.survey;
+---
+<div class="survey-strip" role="note">
+  <div class="wrap">
+    <p><span>{s.text}</span> <a href={SURVEY.url}>{s.link}</a></p>
+    <button type="button" class="survey-close" aria-label={s.close}><Icon name="x" size={16} /></button>
+  </div>
+</div>
+<script is:inline define:vars={{ key: SURVEY.key }}>
+  document.querySelector('.survey-close')?.addEventListener('click', () => {
+    try { localStorage.setItem(key, '1'); } catch {}
+    document.documentElement.classList.add('survey-closed');
+    document.querySelector('.site-header .brand')?.focus();
+  });
+</script>

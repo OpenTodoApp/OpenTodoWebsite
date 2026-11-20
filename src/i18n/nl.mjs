@@ -4,6 +4,8 @@
 export default {
   common: {
     langNote: 'Deze pagina is in het Nederlands, en de app ook: je kiest de taal in de instellingen, en de snelle invoer begrijpt datums en tijden in het Nederlands. De rest van deze website en de documentatie zijn in het Engels.',
+    // The survey strip (survey-strip), until the end date in src/lib/survey.mjs.
+    survey: { text: '5 minuten om OpenTodo mee vorm te geven. Anoniem, zonder account.', link: 'Doe mee aan de enquête (in het Engels)', close: 'Enquête verbergen' },
   },
   home: {
     title: 'OpenTodo · Een rustige takenlijst op je eigen server',
