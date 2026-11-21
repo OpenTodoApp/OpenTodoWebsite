@@ -6,7 +6,7 @@ interface Props { title: string; fields: Field[]; schemaNames: Set<string>; sche
 const { title, fields, schemaNames, schemaHref } = Astro.props;
 const typeHtml = (t: string) => t.split(/(\b[A-Z][A-Za-z]+\b)/).map((part) => schemaNames.has(part) ? `<a href="${schemaHref(part)}">${part}</a>` : part.replace(/&/g, '&amp;').replace(/</g, '&lt;')).join('');
 ---
-<div class="api-table">
+<div class="api-table" tabindex="0" role="region" aria-label={title}>
   <table>
     <caption>{title}</caption>
     <thead><tr><th scope="col">Field</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
