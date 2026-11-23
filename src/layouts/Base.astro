@@ -26,8 +26,10 @@ interface Props {
   lang?: keyof typeof LANGS;
   /** The page's place in the site, home excluded, for the BreadcrumbList (website-seo-depth D2). */
   crumbs?: { name: string; href: string }[];
+  /** The page's schema.org type (site-polish D2): a list of pieces is a CollectionPage. */
+  schemaType?: 'WebPage' | 'CollectionPage' | 'AboutPage';
 }
-const { title, bareTitle = false, ogType = 'website', image, lang = DEFAULT_LANG, crumbs } = Astro.props;
+const { title, bareTitle = false, ogType = 'website', image, lang = DEFAULT_LANG, crumbs, schemaType = 'WebPage' } = Astro.props;
 // Search results show about 160 characters (website-seo-depth D1): a longer description is cut at
 // the last sentence, or the last word, that fits.
 const clamp = (s: string, max = 160) => {
@@ -37,17 +39,35 @@ const clamp = (s: string, max = 160) => {
   return sentence > 80 ? cut.slice(0, sentence + 1) : `${cut.slice(0, cut.lastIndexOf(' '))}…`;
 };
 const description = clamp(Astro.props.description);
-const breadcrumb = crumbs && crumbs.length > 0 ? {
-  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-  itemListElement: [{ name: 'OpenTodo', href: '/' }, ...crumbs].map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href, SITE.url).href })),
-} : undefined;
 // Pages that exist in every language point at each other (hreflang), English being the default.
 const alternates = alternatesFor(Astro.url.pathname);
 // Every page gets its own social card (website-seo D2), drawn after the build from this
 // page's title and description; a page may pass its own image (a post's cover) instead.
 const ogImage = image ? new URL(image, SITE.url).href : `${SITE.url}${ogPathFor(Astro.url.pathname)}`;
-const fullTitle = bareTitle ? title : `${title} · OpenTodo`;
+// A title that already names OpenTodo (a release post, "About OpenTodo") needs no suffix (site-polish D1).
+const fullTitle = bareTitle || title.includes('OpenTodo') ? title : `${title} · OpenTodo`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogAlt = image ? description : `${fullTitle}: ${description}`;
+// Every page says what it is and which site it belongs to (site-polish D2): one JSON-LD graph,
+// a WebPage tied to the WebSite and the Organization the home page describes, and the page's
+// BreadcrumbList when it has a place in the site (website-seo-depth D2).
+const breadcrumb = crumbs && crumbs.length > 0 ? {
+  '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`,
+  itemListElement: [{ name: 'OpenTodo', href: '/' }, ...crumbs].map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.href, SITE.url).href })),
+} : undefined;
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': schemaType, '@id': `${canonical}#webpage`, url: canonical, name: fullTitle, description, inLanguage: LANGS[lang].hreflang,
+      isPartOf: { '@type': 'WebSite', '@id': `${SITE.url}/#website`, name: SITE.name, url: SITE.url },
+      publisher: { '@type': 'Organization', '@id': `${SITE.url}/#organization`, name: SITE.name, url: SITE.url },
+      primaryImageOfPage: ogImage,
+      ...(breadcrumb && { breadcrumb: { '@id': breadcrumb['@id'] } }),
+    },
+    ...(breadcrumb ? [breadcrumb] : []),
+  ],
+};
 // The survey strip is built until its end date (survey-strip), then leaves on its own.
 const survey = surveyActive();
 ---
@@ -70,19 +90,24 @@ const survey = surveyActive();
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={image ? description : `${fullTitle}: ${description}`} />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:locale" content={LANGS[lang].og} />
     {alternates && alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={new URL(a.href, SITE.url).href} />)}
     {alternates && <link rel="alternate" hreflang="x-default" href={new URL(alternates[0].href, SITE.url).href} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={`@${new URL(SITE.x).pathname.slice(1)}`} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
     <link rel="icon" href={BRAND.favicon} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={BRAND.touchIcon} />
     <link rel="preload" href="/fonts/InterVariable-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title="OpenTodo" href="/feed.xml" />
-    {bundle.preview && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={bundle.preview ? 'noindex' : 'max-image-preview:large'} />
     {SITE.verification.google && <meta name="google-site-verification" content={SITE.verification.google} />}
     {SITE.verification.bing && <meta name="msvalidate.01" content={SITE.verification.bing} />}
-    {breadcrumb && <script type="application/ld+json" set:html={JSON.stringify(breadcrumb).replace(/</g, '\\u003c')} />}
+    <script type="application/ld+json" set:html={JSON.stringify(graph).replace(/</g, '\\u003c')} />
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
     {survey && <script is:inline define:vars={{ key: SURVEY.key }}>try { if (localStorage.getItem(key)) document.documentElement.classList.add('survey-closed'); } catch {}</script>}
     <!-- Analytics (Umami, self-hosted, no cookies): this website only; the app never loads analytics. -->

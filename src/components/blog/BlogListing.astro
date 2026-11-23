@@ -15,7 +15,7 @@ interface Props {
 const { title, heading, description, posts, page, pages, base, category } = Astro.props;
 const pageUrl = (n: number) => (n === 1 ? base : `${base}page/${n}/`);
 ---
-<Base title={page > 1 ? `${title}, page ${page}` : title} description={description}>
+<Base title={page > 1 ? `${title}, page ${page}` : title} description={description} schemaType="CollectionPage">
   <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
   <section class="page-head blog-head">
     <div class="wrap">

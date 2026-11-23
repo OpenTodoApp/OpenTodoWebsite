@@ -16,7 +16,7 @@ const { title, heading, description, rail, crumb, lang = 'en' } = Astro.props;
 const s = strings(lang).catalog;
 const path = Astro.url.pathname;
 ---
-<Base title={title} description={description} lang={lang}>
+<Base title={title} description={description} lang={lang} schemaType="CollectionPage">
   <section class="page-head catalog-head">
     <div class="wrap">
       {crumb && <p class="catalog-crumb"><a href={crumb.href}>{crumb.label}</a></p>}

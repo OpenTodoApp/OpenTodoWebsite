@@ -21,7 +21,7 @@ if (cover) {
 {cover && fallback ? (
   <picture class:list={['post-cover', className]}>
     {sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} />)}
-    <img src={fallback.src} width={cover.width} height={cover.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <img src={fallback.src} width={cover.width} height={cover.height} alt={alt} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
   </picture>
 ) : (
   <div class:list={['post-cover', 'post-cover-panel', `cat-${category}`, className]} aria-hidden="true"><Icon name={ICONS[category]} size={40} /></div>

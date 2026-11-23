@@ -6,7 +6,7 @@ interface Item { href: string; title: string; summary: string }
 interface Props { kicker: string; title: string; lede: string; description: string; items: Item[]; icon: string }
 const { kicker, title, lede, description, items, icon } = Astro.props;
 ---
-<Base title={kicker} description={description}>
+<Base title={kicker} description={description} schemaType="CollectionPage">
   <section class="page-head">
     <div class="wrap">
       <h1>{title}</h1>

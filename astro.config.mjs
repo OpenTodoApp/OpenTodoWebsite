@@ -146,6 +146,9 @@ export default defineConfig({
     }),
     socialCards(),
   ],
+  // Pictures in posts and articles come in several widths, so a phone does not download the
+  // 2560 px capture (site-polish D6). Components that build their own <picture> are unaffected.
+  image: { layout: 'constrained', breakpoints: [640, 960, 1280, 1920, 2560] },
   // Code in posts is highlighted at build time (website-blog D4): inline colours for
   // both themes, switched by the visitor's colour-scheme preference in site.css.
   markdown: { shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false } },
