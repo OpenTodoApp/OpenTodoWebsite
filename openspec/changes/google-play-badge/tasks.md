@@ -6,7 +6,8 @@
 
 ## 2. Text
 
-- [x] 2.1 The apps description and Android text, and the hero line, in every language; the install-guide Android notice (en, de); the Ecosystem Android row
+- [x] 2.1 The apps description and Android text, and the hero line, in every language; the install-guide Android notice (en, de); the Ecosystem Android row; the Android feature line (en, de)
+- [ ] 2.2 Pin the first app release whose docs say the Play listing is open (`bundle.json`), so the text matches the docs it links
 
 ## 3. Check
 

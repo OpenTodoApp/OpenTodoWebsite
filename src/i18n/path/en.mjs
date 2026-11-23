@@ -237,7 +237,7 @@ export default {
   },
   notices: {
     androidLabel: 'Android app status',
-    android: '<strong>Get the Android app from Google Play.</strong> The APK on GitHub is the same app, signed with the same certificate, so you can switch later without losing anything. <a href="/docs/android-app/#install-the-app">Install the app</a>. Many apps on Google Play have names similar to OpenTodo; this one is published by OpenTodo as <code>app.opentodo</code>. You can also install OpenTodo from the browser as described below.',
+    android: '<strong>Get the Android app from Google Play.</strong> It is also an APK on GitHub; switching between the two means reinstalling the app. <a href="/docs/android-app/#install-the-app">Install the app</a>. Many apps on Google Play have names similar to OpenTodo; the real one has the ID <code>app.opentodo</code>. You can also install OpenTodo from the browser as described below.',
     iosLabel: 'iPhone and iPad app',
     iosBadge: 'Download on the App Store',
     ios: '<strong>OpenTodo for iPhone and iPad is in the App Store.</strong> It is the first release, a first step: it connects to your OpenTodo server and adds reminders on the phone, the share sheet, a Today widget and Face ID unlock. Expect some rough edges, and <a href="https://github.com/OpenTodoApp/OpenTodo/issues/new/choose">tell us what to improve</a>. Installing from the browser, as described below, works too and starts offline.',

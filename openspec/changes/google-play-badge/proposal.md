@@ -6,7 +6,8 @@ The Android app is live on Google Play (`app.opentodo`). The site still shows Go
 
 - `/apps/` in every language shows Google's official "Get it on Google Play" badge next to the App Store badge, the same height (44 px), linking to the listing. F-Droid stays a greyed button.
 - The Android text on `/apps/`, its description, the Android notice of the install guide and the Ecosystem row send Android users to Google Play first, with the GitHub APK (and F-Droid, once included) as alternatives.
-- The home hero shows the Google Play badge beside the App Store badge (40 px), both leading to `/apps/` in the page's language, and its line names both apps.
+- The home hero shows the Google Play badge beside the App Store badge (40 px), both leading to `/apps/` in the page's language, and its line names both stores.
+- Lands with the `bundle.json` pin of the first app release whose docs say the Play listing is open (released facts only).
 
 ## Capabilities
 

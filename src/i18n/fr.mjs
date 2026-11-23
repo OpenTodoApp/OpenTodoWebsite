@@ -20,7 +20,7 @@ export default {
       tryDemo: 'Essayer la démo',
       getStarted: 'Commencer',
       note: 'Pas de compte, rien à installer.',
-      iosApp: 'Nouveau : les apps pour iPhone, iPad et Android, une première version.',
+      iosApp: 'Nouveau : OpenTodo sur l’App Store et sur Google Play.',
       alt: 'La vue Aujourd’hui d’OpenTodo : la phrase sur la journée sous le titre, puis les tâches, une par ligne, avec leurs dates, projets et étiquettes en colonnes alignées.',
     },
     day: {
@@ -89,7 +89,7 @@ export default {
     description: 'Installez OpenTodo depuis votre navigateur sur n’importe quel téléphone ou ordinateur, ou depuis l’App Store ou Google Play. L’inclusion dans F-Droid a été demandée.',
     fdroid: 'Inclusion demandée',
     version: 'Cette première version de l’app affiche l’application web dans une coque native, une vue web. Sa qualité n’est pas celle que nous voulons : elle ne donne pas l’impression d’une app native, et elle a des défauts. Nous préparons une nouvelle version entièrement native avec React Native, sans doute prête d’ici une à deux semaines. D’ici là, cette app fonctionne, et l’application web installée depuis votre navigateur est une bonne alternative. <a href="/install/">Installer l’application web</a>',
-    android: 'Sur Android, installez l’app depuis Google Play. La même app, avec la même signature, existe aussi en APK sur GitHub. <a href="/docs/android-app/#install-the-app">Installer l’app Android</a>',
+    android: 'Sur Android, installez l’app depuis Google Play. Elle existe aussi en APK sur GitHub ; passer de l’une à l’autre demande de réinstaller l’app. <a href="/docs/android-app/#install-the-app">Installer l’app Android</a>',
     webTitle: 'L’application web',
     webIntro: 'En attendant les applications natives, c’est ce que nous recommandons sur téléphone et ordinateur. C’est l’application complète, installée depuis le navigateur : elle fonctionne hors ligne, se synchronise et se met à jour toute seule. <a href="/docs/install-app/">Installer l’application</a>',
     webIos: '<strong>iPhone et iPad</strong> : dans Safari, touchez Partager, puis Sur l’écran d’accueil.',
