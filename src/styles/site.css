@@ -563,6 +563,22 @@ a.card h3 { color: var(--strong); }
 }
 
 
+/* ------------------------------------------------------------------ polish (site-polish D5) */
+/* Text: no paragraph ends on a single word, figures line up in tables, selection takes the accent. */
+p, li, dd, figcaption, blockquote { text-wrap: pretty; }
+.prose table { font-variant-numeric: tabular-nums; }
+::selection { background: var(--accent-soft); color: var(--accent-soft-text); }
+/* Hover: colours ease instead of jumping, and an arrow leans the way it leads. */
+.nav-link, .header-star, .lang-switch > summary, .lang-panel a, .site-footer a, .blog-cats a, .catalog-rail a, a.article-step, .changelog-index a, .rows .row-action, .wants a { transition: color 120ms, background-color 120ms; }
+.post-nav a, .jump a, .lp-groups a, .nav-menu > summary { transition: border-color 120ms, background-color 120ms; }
+.btn .icon[data-icon="arrow-right"], .link-arrow .icon[data-icon="arrow-right"] { transition: transform 160ms cubic-bezier(0.2, 0.7, 0.3, 1); }
+.btn:hover .icon[data-icon="arrow-right"], .link-arrow:hover .icon[data-icon="arrow-right"] { transform: translateX(3px); }
+/* Going from page to page cross-fades briefly where the browser can, and never for people who asked for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 140ms; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }

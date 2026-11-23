@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 // SEO check (website-seo-depth D3): every built page, the docs included, has a non-empty <title>,
-// a meta description, a canonical link and a social card that is built; titles are unique; every hreflang alternate is a built
+// a meta description, a canonical link and a social card that is built, exactly one <h1> and an alt
+// attribute on every image; the site's own pages carry structured data that parses (site-polish D3);
+// titles are unique; every hreflang alternate is a built
 // page that lists the same set back, with an x-default; and the sitemap lists every page that is
 // not marked noindex.
 import fs from 'node:fs';
 import path from 'node:path';
-import { htmlFiles, load, report, urlOf } from './lib.mjs';
+import { htmlFiles, isDocs, load, report, urlOf } from './lib.mjs';
 
 const SITE = 'https://open-todo.app';
 
@@ -25,6 +27,12 @@ export function checkSeo(dir) {
     else titles.set(title, [...(titles.get(title) ?? []), page]);
     if (!root.querySelector('meta[name="description"]')?.getAttribute('content')?.trim()) problems.push(`${page}: no meta description`);
     if (!root.querySelector('link[rel="canonical"]')?.getAttribute('href')) problems.push(`${page}: no canonical link`);
+    const h1 = root.querySelectorAll('h1').length;
+    if (h1 !== 1) problems.push(`${page}: ${h1} <h1> headings, a page has exactly one`);
+    for (const img of root.querySelectorAll('img')) if (img.getAttribute('alt') === undefined) problems.push(`${page}: image ${img.getAttribute('src')} has no alt attribute`);
+    const data = root.querySelectorAll('script[type="application/ld+json"]');
+    if (!isDocs(page) && !data.length) problems.push(`${page}: no structured data`);
+    for (const d of data) { try { JSON.parse(d.text); } catch { problems.push(`${page}: structured data that is not valid JSON`); } }
     const og = root.querySelector('meta[property="og:image"]')?.getAttribute('content');
     if (!og) problems.push(`${page}: no og:image`);
     else if (og.startsWith(SITE) && !fs.existsSync(path.join(dir, decodeURI(og.slice(SITE.length))))) problems.push(`${page}: og:image ${og} is not built`);
@@ -50,5 +58,5 @@ export function checkSeo(dir) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const dir = path.resolve(process.argv[2] ?? 'dist');
   const { problems, pages, sitemap } = checkSeo(dir);
-  report('seo', problems, `${pages} pages with a title, description and canonical; hreflang reciprocal; ${sitemap} sitemap entries cover every page`);
+  report('seo', problems, `${pages} pages with a title, description, canonical, one h1, image alts and structured data; hreflang reciprocal; ${sitemap} sitemap entries cover every page`);
 }

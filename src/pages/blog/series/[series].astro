@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 const { id, series, parts } = Astro.props as { id: string; series: Series; parts: Post[] };
 ---
-<Base title={`${series.title} · Blog`} description={`OpenTodo blog: ${series.title}. ${series.summary}`} crumbs={[{ name: 'Blog', href: '/blog/' }, { name: series.title, href: seriesUrl(id) }]}>
+<Base schemaType="CollectionPage" title={`${series.title} · Blog`} description={`OpenTodo blog: ${series.title}. ${series.summary}`} crumbs={[{ name: 'Blog', href: '/blog/' }, { name: series.title, href: seriesUrl(id) }]}>
   <link slot="head" rel="alternate" type="application/rss+xml" title="OpenTodo blog" href="/blog/feed.xml" />
   <section class="page-head blog-head series-head">
     <div class="wrap">

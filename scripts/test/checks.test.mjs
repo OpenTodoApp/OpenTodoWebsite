@@ -81,9 +81,26 @@ test('the SEO check names a missing description, a one-way hreflang and a page m
   page('', `<title>Home</title><meta name="description" content="d"><link rel="canonical" href="https://open-todo.app/">${alt([['en', '/'], ['de', '/de/'], ['x-default', '/']])}`);
   page('de', `<title>Start</title><meta name="description" content="d"><link rel="canonical" href="https://open-todo.app/de/">${alt([['de', '/de/'], ['x-default', '/']])}`);
   page('about', '<title>About</title><link rel="canonical" href="https://open-todo.app/about/">');
+  page('two', '<title>Two</title></head><body><h1>y</h1><img src="/a.png"><script type="application/ld+json">{</script>');
   fs.writeFileSync(path.join(dir, 'sitemap-0.xml'), '<urlset><url><loc>https://open-todo.app/</loc></url><url><loc>https://open-todo.app/de/</loc></url></urlset>');
   const { problems } = checkSeo(dir);
   assert.ok(problems.includes('/about/: no meta description'));
   assert.ok(problems.includes('/about/: not in the sitemap'));
+  assert.ok(problems.includes('/about/: no structured data'));
+  assert.ok(problems.includes('/two/: 2 <h1> headings, a page has exactly one'));
+  assert.ok(problems.includes('/two/: image /a.png has no alt attribute'));
+  assert.ok(problems.includes('/two/: structured data that is not valid JSON'));
   assert.ok(problems.some((p) => p.startsWith('/: hreflang de (/de/) does not list the same alternates back')));
+});
+
+test('server headers: the policy allows the scripts the script check allows, and the preview server sends it', async () => {
+  const { serverHeaders } = await import('../serve.mjs');
+  const headers = serverHeaders(fs.readFileSync(new URL('../../nginx.conf', import.meta.url), 'utf8'));
+  const csp = Object.fromEntries(headers['Content-Security-Policy'].split('; ').map((d) => [d.split(' ')[0], d.split(' ').slice(1)]));
+  const { ALLOWED_ORIGINS } = await import('../checks/scripts.mjs');
+  assert.deepEqual(csp['script-src'].filter((o) => o.startsWith('https:')), ALLOWED_ORIGINS);
+  assert.deepEqual(csp['connect-src'].filter((o) => o.startsWith('https:')), ALLOWED_ORIGINS);
+  assert.deepEqual(csp['object-src'], ["'none'"]);
+  assert.ok(headers['Strict-Transport-Security'] && headers['X-Content-Type-Options'] && headers['Referrer-Policy'] && headers['Permissions-Policy']);
+  assert.equal(headers['Cache-Control'], undefined);
 });

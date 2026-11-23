@@ -14,6 +14,6 @@ const fallback = await getImage({ src: light, width: Math.min(1200, light.width)
   <div class="frame-bar" aria-hidden="true"><i /><i /><i /><span>{url}</span></div>
   <picture>
     {list.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} media={s.media} />)}
-    <img src={fallback.src} width={light.width} height={light.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <img src={fallback.src} width={light.width} height={light.height} alt={alt} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
   </picture>
 </figure>
