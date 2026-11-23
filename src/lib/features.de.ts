@@ -80,7 +80,7 @@ export const FEATURES_DE: Record<string, { name: string; line: string }> = {
   // devices
   '/docs/offline-and-sync/': { name: 'Offline auf jedem Gerät', line: 'Bearbeite überall; Änderungen werden Feld für Feld zusammengeführt.' },
   '/docs/install-app/': { name: 'Smartphone, Computer und Browser', line: 'Aus dem Browser installieren, auf jedem System.' },
-  '/docs/android-app/#install-the-app': { name: 'Eine Android-App', line: 'Als APK von GitHub erhältlich; Google Play und F-Droid folgen.' },
+  '/docs/android-app/#install-the-app': { name: 'Eine Android-App', line: 'Bei Google Play und als APK von GitHub; F-Droid folgt.' },
   '/docs/language/': { name: 'Acht Sprachen', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文, Nederlands.' },
   '/docs/themes/': { name: 'Designs', line: 'Vierzehn Editor-Paletten, deine eigene im Editor oder aus einem VS-Code-Design.' },
   '/docs/app-icon-badge/': { name: 'Die Zahl für Heute auf dem App-Symbol', line: 'Das Symbol der installierten App zeigt, wie viele Aufgaben von heute offen sind.' },

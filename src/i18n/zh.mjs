@@ -21,7 +21,7 @@ export default {
       tryDemo: '体验演示',
       getStarted: '开始使用',
       note: '无需账号，无需安装。',
-      iosApp: '新：iPhone 和 iPad 应用，首个版本。',
+      iosApp: '新：OpenTodo 已上架 App Store 和 Google Play。',
       alt: 'OpenTodo 的“今天”视图：标题下方是对今天的一句话总结，接着是每行一个的任务，它们的日期、项目和标签在列中整齐排列。',
     },
     day: {
@@ -87,11 +87,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: '应用',
-    description: '在任何手机或电脑上通过浏览器安装 OpenTodo，或从 App Store 下载。Google Play 版本正在封闭测试中，F-Droid 收录申请已提交。',
-    googlePlay: '封闭测试中',
+    description: '在任何手机或电脑上通过浏览器安装 OpenTodo，或从 App Store、Google Play 下载。F-Droid 收录申请已提交。',
     fdroid: '已申请收录',
     version: '这个应用的首个版本是在原生外壳（WebView）中显示网页应用。它的质量还没有达到我们的要求：用起来不像原生应用，也有一些小故障。我们正在用 React Native 开发一个全新的、完全原生的版本，大约一到两周内完成。在此之前，现有应用可以正常使用，从浏览器安装的网页应用也是一个不错的选择。<a href="/install/">安装网页应用</a>',
-    android: '在 Android 上，目前请从 GitHub 获取应用。<a href="/docs/android-app/#install-the-app">安装 Android 应用</a>',
+    android: '在 Android 上，请从 Google Play 获取应用。GitHub 上也提供 APK；在两者之间切换需要重新安装应用。<a href="/docs/android-app/#install-the-app">安装 Android 应用</a>',
     webTitle: '网页应用',
     webIntro: '在原生应用准备好之前，我们推荐在手机和电脑上使用它。它是完整的应用，从浏览器安装：可离线使用、会同步，并自动更新。<a href="/docs/install-app/">安装应用</a>',
     webIos: '<strong>iPhone 和 iPad</strong>：在 Safari 中轻点“共享”，再轻点“添加到主屏幕”。',

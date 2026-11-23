@@ -20,7 +20,7 @@ export default {
       tryDemo: 'Prova la demo',
       getStarted: 'Inizia',
       note: 'Nessun account, niente da installare.',
-      iosApp: 'Novità: l’app per iPhone e iPad, una prima versione.',
+      iosApp: 'Novità: OpenTodo nell’App Store e su Google Play.',
       alt: 'La vista Oggi di OpenTodo: la frase sulla giornata sotto il titolo, poi le attività, una per riga, con date, progetti ed etichette in colonne allineate.',
     },
     day: {
@@ -86,11 +86,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: 'App',
-    description: 'Installa OpenTodo dal browser su qualsiasi telefono o computer, oppure scaricalo dall’App Store. Google Play è in test chiuso, e l’inclusione in F-Droid è stata richiesta.',
-    googlePlay: 'In test chiuso',
+    description: 'Installa OpenTodo dal browser su qualsiasi telefono o computer, oppure scaricalo dall’App Store o da Google Play. L’inclusione in F-Droid è stata richiesta.',
     fdroid: 'Inclusione richiesta',
     version: 'Questa prima versione dell’app mostra l’app web dentro un guscio nativo, una web view. La qualità non è quella che vogliamo: non sembra un’app nativa e ha dei difetti. Stiamo costruendo una nuova versione completamente nativa con React Native, probabilmente pronta tra una o due settimane. Fino ad allora questa app funziona, e l’app web installata dal browser è una buona alternativa. <a href="/install/">Installa l’app web</a>',
-    android: 'Su Android, per ora l’app arriva da GitHub. <a href="/docs/android-app/#install-the-app">Installa l’app Android</a>',
+    android: 'Su Android, scarica l’app da Google Play. È disponibile anche come APK su GitHub; per passare dall’una all’altra bisogna reinstallare l’app. <a href="/docs/android-app/#install-the-app">Installa l’app Android</a>',
     webTitle: 'L’app web',
     webIntro: 'Finché le app native non sono pronte, è il modo che consigliamo su telefoni e computer. È l’app completa, installata dal browser: funziona offline, si sincronizza e si aggiorna da sola. <a href="/docs/install-app/">Installare l’app</a>',
     webIos: '<strong>iPhone e iPad</strong>: in Safari tocca Condividi, poi Aggiungi alla schermata Home.',

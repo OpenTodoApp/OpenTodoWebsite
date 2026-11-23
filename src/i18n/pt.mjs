@@ -20,7 +20,7 @@ export default {
       tryDemo: 'Experimentar a demo',
       getStarted: 'Começar',
       note: 'Sem conta, sem nada para instalar.',
-      iosApp: 'Novo: o app para iPhone e iPad, uma primeira versão.',
+      iosApp: 'Novo: o OpenTodo na App Store e no Google Play.',
       alt: 'A vista Hoje do OpenTodo: a frase sobre o dia por baixo do título e, a seguir, as tarefas numa linha cada, com as datas, os projetos e as etiquetas em colunas alinhadas.',
     },
     day: {
@@ -86,11 +86,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: 'Aplicações',
-    description: 'Instale o OpenTodo a partir do navegador em qualquer telemóvel ou computador, ou descarregue-o da App Store. O Google Play está em testes fechados, e a inclusão no F-Droid foi pedida.',
-    googlePlay: 'Em testes fechados',
+    description: 'Instale o OpenTodo a partir do navegador em qualquer telemóvel ou computador, ou descarregue-o da App Store ou do Google Play. A inclusão no F-Droid foi pedida.',
     fdroid: 'Inclusão pedida',
     version: 'Esta primeira versão da aplicação mostra a aplicação web dentro de uma camada nativa, uma vista web. A qualidade não é a que queremos: não parece nativa e tem falhas. Estamos a criar uma nova versão totalmente nativa com React Native, provavelmente pronta dentro de uma a duas semanas. Até lá, esta aplicação funciona, e a aplicação web instalada a partir do browser é uma boa alternativa. <a href="/install/">Instalar a aplicação web</a>',
-    android: 'No Android, por agora a aplicação vem do GitHub. <a href="/docs/android-app/#install-the-app">Instalar a aplicação Android</a>',
+    android: 'No Android, descarregue a aplicação do Google Play. Também está disponível como APK no GitHub; mudar de uma para a outra obriga a reinstalar a aplicação. <a href="/docs/android-app/#install-the-app">Instalar a aplicação Android</a>',
     webTitle: 'A aplicação web',
     webIntro: 'Até as aplicações nativas estarem prontas, é a forma que recomendamos em telemóveis e computadores. É a aplicação completa, instalada a partir do navegador: funciona sem ligação, sincroniza e atualiza-se sozinha. <a href="/docs/install-app/">Instalar a aplicação</a>',
     webIos: '<strong>iPhone e iPad</strong>: no Safari, toque em Partilhar e depois em Adicionar ao ecrã principal.',

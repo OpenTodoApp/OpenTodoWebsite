@@ -80,7 +80,7 @@ const GROUPS: FeatureGroup[] = [
   { key: 'devices', title: 'Sync and devices', icon: 'monitor-smartphone', items: [
     { name: 'Offline on every device', line: 'Edit anywhere; changes merge field by field.', doc: '/docs/offline-and-sync/' },
     { name: 'Phone, desktop and browser', line: 'Install from the browser on any system.', doc: '/docs/install-app/' },
-    { name: 'An Android app', line: 'Available from GitHub as an APK; Google Play and F-Droid are coming.', doc: '/docs/android-app/#install-the-app', since: '0.10.0' },
+    { name: 'An Android app', line: 'On Google Play, and as an APK from GitHub; F-Droid is coming.', doc: '/docs/android-app/#install-the-app', since: '0.10.0' },
     { name: 'Eight languages', line: 'English, Deutsch, Français, Español, Italiano, Português, 简体中文, Nederlands.', doc: '/docs/language/' },
     { name: 'Themes', line: 'Fourteen editor palettes, your own in an editor or from a VS Code theme.', doc: '/docs/themes/', since: '0.20.0' },
     { name: 'Today’s count on the app icon', line: 'The installed app’s icon shows how many of today’s tasks are open.', doc: '/docs/app-icon-badge/', since: '0.20.0' },

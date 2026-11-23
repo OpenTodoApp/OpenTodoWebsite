@@ -65,7 +65,7 @@ const ways = [
       <a class="btn btn-secondary btn-large" href={localHref(NAV.start, lang)}>{s.hero.getStarted}</a>
     </div>
     <p class="lp-note">{s.hero.note}</p>
-    <p class="lp-app"><a href={localePath('/apps/', lang)}><img src="/badges/app-store.svg" width="120" height="40" alt="Download on the App Store" /></a><span>{s.hero.iosApp}</span></p>
+    <p class="lp-app"><a href={localePath('/apps/', lang)}><img src="/badges/app-store.svg" width="120" height="40" alt="Download on the App Store" /></a><a href={localePath('/apps/', lang)}><img src="/badges/google-play.svg" width="135" height="40" alt="Get it on Google Play" /></a><span>{s.hero.iosApp}</span></p>
   </div>
   <div class="wrap">
     <div class="lp-stage" id="tour">

@@ -20,7 +20,7 @@ export default {
       tryDemo: 'Probar la demo',
       getStarted: 'Empezar',
       note: 'Sin cuenta, sin instalar nada.',
-      iosApp: 'Nuevo: la app para iPhone y iPad, una primera versión.',
+      iosApp: 'Nuevo: OpenTodo en el App Store y en Google Play.',
       alt: 'La vista Hoy de OpenTodo: la frase sobre el día bajo el título y, debajo, las tareas en una línea cada una, con sus fechas, proyectos y etiquetas en columnas alineadas.',
     },
     day: {
@@ -86,11 +86,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: 'Aplicaciones',
-    description: 'Instala OpenTodo desde el navegador en cualquier móvil u ordenador, o descárgalo del App Store. Google Play está en pruebas cerradas, y se ha solicitado su inclusión en F-Droid.',
-    googlePlay: 'En pruebas cerradas',
+    description: 'Instala OpenTodo desde el navegador en cualquier móvil u ordenador, o descárgalo del App Store o de Google Play. Se ha solicitado su inclusión en F-Droid.',
     fdroid: 'Inclusión solicitada',
     version: 'Esta primera versión de la app muestra la app web dentro de un contenedor nativo, una vista web. Su calidad no es la que queremos: no se siente nativa y tiene fallos. Estamos creando una nueva versión totalmente nativa con React Native, que probablemente estará lista en una o dos semanas. Hasta entonces, esta app funciona, y la app web instalada desde tu navegador es una buena alternativa. <a href="/install/">Instalar la app web</a>',
-    android: 'En Android, por ahora la app se descarga de GitHub. <a href="/docs/android-app/#install-the-app">Instalar la app de Android</a>',
+    android: 'En Android, descarga la app de Google Play. También está disponible como APK en GitHub; para cambiar de una a otra hay que reinstalar la app. <a href="/docs/android-app/#install-the-app">Instalar la app de Android</a>',
     webTitle: 'La app web',
     webIntro: 'Hasta que las apps nativas estén listas, es la forma que recomendamos en móviles y ordenadores. Es la app completa, instalada desde el navegador: funciona sin conexión, se sincroniza y se actualiza sola. <a href="/docs/install-app/">Instalar la app</a>',
     webIos: '<strong>iPhone y iPad</strong>: en Safari, toca Compartir y luego Añadir a pantalla de inicio.',
