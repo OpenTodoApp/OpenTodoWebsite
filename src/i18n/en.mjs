@@ -20,7 +20,7 @@ export default {
       tryDemo: 'Try the demo',
       getStarted: 'Get started',
       note: 'No account, nothing to install.',
-      iosApp: 'New: the iPhone and iPad app, a first release.',
+      iosApp: 'New: the apps for iPhone, iPad and Android, a first release.',
       alt: 'OpenTodo\'s Today: the sentence about the day under the title, then the tasks in one line each with their dates, projects and labels in aligned columns.',
     },
     day: {
@@ -86,11 +86,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: 'Apps',
-    description: 'Install OpenTodo from your browser on any phone or computer, or get it from the App Store. Google Play is in closed testing, and F-Droid inclusion has been requested.',
-    googlePlay: 'In closed testing',
+    description: 'Install OpenTodo from your browser on any phone or computer, or get it from the App Store or Google Play. F-Droid inclusion has been requested.',
     fdroid: 'Inclusion requested',
     version: 'This first version of the app shows the web app inside a native shell, a web view. It isn’t the quality we want: it doesn’t feel native, and it has glitches. We’re building a new, fully native version with React Native, likely ready in one to two weeks. Until then this app works, and the web app installed from your browser is a good alternative. <a href="/install/">Install the web app</a>',
-    android: 'On Android, the app comes from GitHub for now. <a href="/docs/android-app/#install-the-app">Install the Android app</a>',
+    android: 'On Android, get the app from Google Play. The same app, with the same signature, is also an APK on GitHub. <a href="/docs/android-app/#install-the-app">Install the Android app</a>',
     webTitle: 'The web app',
     webIntro: 'Until the native apps are ready, this is the way we recommend on phones and computers. It’s the full app, installed from your browser: it works offline, syncs, and updates itself. <a href="/docs/install-app/">Installing the app</a>',
     webIos: '<strong>iPhone and iPad</strong>: in Safari, tap Share, then Add to Home Screen.',

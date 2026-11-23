@@ -20,7 +20,7 @@ export default {
       tryDemo: 'Demo ausprobieren',
       getStarted: 'Loslegen',
       note: 'Kein Konto, nichts zu installieren.',
-      iosApp: 'Neu: die App für iPhone und iPad, eine erste Version.',
+      iosApp: 'Neu: die Apps für iPhone, iPad und Android, eine erste Version.',
       alt: 'Die Ansicht Heute in OpenTodo: der Satz über den Tag unter dem Titel, darunter die Aufgaben in je einer Zeile, mit Datum, Projekt und Labels in bündigen Spalten.',
     },
     day: {
@@ -86,11 +86,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: 'OpenTodo-Apps',
-    description: 'Installiere OpenTodo aus dem Browser auf jedem Smartphone oder Computer, oder hol es dir aus dem App Store. Google Play ist im geschlossenen Test, die Aufnahme in F-Droid ist beantragt.',
-    googlePlay: 'Im geschlossenen Test',
+    description: 'Installiere OpenTodo aus dem Browser auf jedem Smartphone oder Computer, oder hol es dir aus dem App Store oder von Google Play. Die Aufnahme in F-Droid ist beantragt.',
     fdroid: 'Aufnahme beantragt',
     version: 'Diese erste Version der App zeigt die Web-App in einer nativen Hülle, einer Web-Ansicht. Sie hat noch nicht die Qualität, die wir wollen: Sie fühlt sich nicht nativ an und hat Macken. Wir bauen eine neue, vollständig native Version mit React Native, die voraussichtlich in ein bis zwei Wochen fertig ist. Bis dahin funktioniert diese App, und die im Browser installierte Web-App ist eine gute Alternative. <a href="/de/install/">Web-App installieren</a>',
-    android: 'Unter Android kommt die App vorerst von GitHub. <a href="/docs/android-app/#install-the-app">Android-App installieren</a>',
+    android: 'Unter Android holst du dir die App von Google Play. Dieselbe App mit derselben Signatur gibt es auch als APK auf GitHub. <a href="/docs/android-app/#install-the-app">Android-App installieren</a>',
     webTitle: 'Die Web-App',
     webIntro: 'Bis die nativen Apps fertig sind, empfehlen wir diesen Weg auf Smartphones und Computern. Es ist die vollständige App, aus dem Browser installiert: Sie funktioniert offline, synchronisiert und aktualisiert sich selbst. <a href="/docs/install-app/">Die App installieren</a>',
     webIos: '<strong>iPhone und iPad</strong>: In Safari auf Teilen tippen, dann Zum Home-Bildschirm.',

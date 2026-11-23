@@ -14,8 +14,10 @@ export const SITE = {
   x: 'https://x.com/opentodoapp',
   // Managed hosting (hosting-choice): a plain link; PikaPods shares part of its revenue with the project.
   pikapods: 'https://www.pikapods.com/apps/opentodo',
-  // The iPhone and iPad app (phone-apps-page): only /apps/ links the store; other badges lead there.
+  // The iPhone and iPad app (phone-apps-page): only /apps/ links the stores; other badges lead there.
   appStore: 'https://apps.apple.com/us/app/opentodo/id6832200428',
+  // The Android app on Google Play (google-play-badge): linked from /apps/ like the App Store.
+  googlePlay: 'https://play.google.com/store/apps/details?id=app.opentodo',
   // Search engine ownership tokens (website-seo-depth D5): the maintainer pastes the value from
   // Google Search Console or Bing Webmaster Tools here; empty means no tag.
   verification: { google: '', bing: '' },

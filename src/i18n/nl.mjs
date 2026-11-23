@@ -21,7 +21,7 @@ export default {
       tryDemo: 'Probeer de demo',
       getStarted: 'Aan de slag',
       note: 'Geen account, niets te installeren.',
-      iosApp: 'Nieuw: de app voor iPhone en iPad, een eerste versie.',
+      iosApp: 'Nieuw: de apps voor iPhone, iPad en Android, een eerste versie.',
       alt: 'Vandaag in OpenTodo: de zin over de dag onder de titel, daaronder de taken op één regel elk, met hun datum, project en labels in uitgelijnde kolommen.',
     },
     day: {
@@ -87,11 +87,10 @@ export default {
   // The phone apps page (phone-apps-page): store names and the badge's text stay English.
   apps: {
     title: 'Apps voor telefoon en computer',
-    description: 'Installeer OpenTodo vanuit je browser op elke telefoon of computer, of haal het uit de App Store. Google Play is in gesloten test en opname in F-Droid is aangevraagd.',
-    googlePlay: 'In gesloten test',
+    description: 'Installeer OpenTodo vanuit je browser op elke telefoon of computer, of haal het uit de App Store of Google Play. Opname in F-Droid is aangevraagd.',
     fdroid: 'Opname aangevraagd',
     version: 'Deze eerste versie van de app toont de web-app in een native omhulsel, een webweergave. Dat is niet de kwaliteit die we willen: het voelt niet native aan en er zitten haperingen in. We bouwen een nieuwe, volledig native versie met React Native, die waarschijnlijk over een à twee weken klaar is. Tot die tijd werkt deze app, en de web-app die je vanuit je browser installeert is een goed alternatief. <a href="/install/">De web-app installeren</a>',
-    android: 'Op Android komt de app voorlopig van GitHub. <a href="/docs/android-app/#install-the-app">De Android-app installeren</a>',
+    android: 'Op Android haal je de app uit Google Play. Dezelfde app, met dezelfde handtekening, staat ook als APK op GitHub. <a href="/docs/android-app/#install-the-app">De Android-app installeren</a>',
     webTitle: 'De web-app',
     webIntro: 'Tot de native apps klaar zijn, raden we deze manier aan op telefoons en computers. Het is de volledige app, geïnstalleerd vanuit je browser: hij werkt offline, synchroniseert en werkt zichzelf bij. <a href="/docs/install-app/">De app installeren</a>',
     webIos: '<strong>iPhone en iPad</strong>: tik in Safari op Deel en daarna op Zet op beginscherm.',
