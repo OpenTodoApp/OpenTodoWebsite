@@ -98,9 +98,8 @@ test('server headers: the policy allows the scripts the script check allows, and
   const headers = serverHeaders(fs.readFileSync(new URL('../../nginx.conf', import.meta.url), 'utf8'));
   const csp = Object.fromEntries(headers['Content-Security-Policy'].split('; ').map((d) => [d.split(' ')[0], d.split(' ').slice(1)]));
   const { ALLOWED_ORIGINS } = await import('../checks/scripts.mjs');
-  // Besides the site's own analytics: the beacon Cloudflare adds at the edge, which no built page contains.
-  assert.deepEqual(csp['script-src'].filter((o) => o.startsWith('https:')), [...ALLOWED_ORIGINS, 'https://static.cloudflareinsights.com']);
-  assert.deepEqual(csp['connect-src'].filter((o) => o.startsWith('https:')), [...ALLOWED_ORIGINS, 'https://cloudflareinsights.com']);
+  assert.deepEqual(csp['script-src'].filter((o) => o.startsWith('https:')), ALLOWED_ORIGINS);
+  assert.deepEqual(csp['connect-src'].filter((o) => o.startsWith('https:')), ALLOWED_ORIGINS);
   assert.deepEqual(csp['object-src'], ["'none'"]);
   assert.ok(headers['Strict-Transport-Security'] && headers['X-Content-Type-Options'] && headers['Referrer-Policy'] && headers['Permissions-Policy']);
   assert.equal(headers['Cache-Control'], undefined);
