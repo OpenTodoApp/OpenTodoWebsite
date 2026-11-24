@@ -123,6 +123,16 @@ pre code { background: none; border: 0; padding: 0; font-size: 0.875rem; }
 .header-star:hover { color: var(--strong); }
 .header-demo { white-space: nowrap; }
 .header-lang { display: none; }
+/* The Microsoft To Do link (ms-todo-home-notice): a plain nav link, quieter than Try the demo, in the
+   wide header from 1200 px (narrower, it does not fit beside the links) and in the menu below 960 px.
+   The header's links and tools sit a little closer so the German header fits too. */
+.header-ms-todo { display: none; font-size: 0.875rem; padding-inline: 0.3rem; }
+@media (min-width: 1200px) {
+  .header-ms-todo { display: inline-flex; }
+  .nav-desktop { margin-left: 0.25rem; }
+  .nav-desktop .nav-link { padding-inline: 0.5rem; }
+  .header-tools { gap: 0.25rem; }
+}
 .nav-menu { position: static; }
 .nav-menu > summary { list-style: none; display: inline-grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--strong); cursor: pointer; }
 .nav-menu > summary::-webkit-details-marker { display: none; }
