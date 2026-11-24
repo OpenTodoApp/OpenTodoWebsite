@@ -1,0 +1,15 @@
+---
+// A release's changes by section (upgrade notes, security, added, changed, fixed), every item,
+// from the pinned bundle's changelog.json. Shared by /changelog/ and each release's own page.
+import type { releases } from '../lib/bundle';
+import { inline } from '../lib/changelog';
+
+interface Props { sections: (typeof releases)[number]['sections'] }
+const { sections } = Astro.props;
+---
+{sections.map((s) => (
+  <section>
+    <h3>{s.title}</h3>
+    <ul>{s.items.map((item) => <li set:html={inline(item)} />)}</ul>
+  </section>
+))}

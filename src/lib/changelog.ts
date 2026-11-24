@@ -43,3 +43,5 @@ export function inline(md: string): string {
 export const changelogAnchor = (version: string) => `v${version.replace(/^v/, '').replace(/\./g, '-')}`;
 /** A version's place on /changelog/. */
 export const changelogUrl = (version: string) => `/changelog/#${changelogAnchor(version)}`;
+/** The page with every change of a version (changelog-release-pages): 0.22.0 -> /changelog/v0-22-0/. */
+export const releasePageUrl = (version: string) => `/changelog/${changelogAnchor(version)}/`;

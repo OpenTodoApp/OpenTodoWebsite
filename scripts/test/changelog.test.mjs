@@ -25,6 +25,25 @@ test('every released version has its section with an anchor, date and summary', 
   assert.ok(sections[0].querySelector('details[open]'), 'the latest release is open');
 });
 
+test('every older release links its own page, which holds every change', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
+  const releases = normalizeChangelog(JSON.parse(fs.readFileSync(path.join(resolveBundle().dir, 'changelog.json'), 'utf8')));
+  const sections = load(path.join(dist, 'changelog/index.html')).querySelectorAll('section.release');
+  releases.forEach((r, i) => {
+    if (!r.sections.length) return;
+    const count = r.sections.reduce((n, s) => n + s.items.length, 0);
+    const file = path.join(dist, 'changelog', anchor(r.version), 'index.html');
+    assert.ok(fs.existsSync(file), `${r.version}: its page is built`);
+    const page = load(file);
+    assert.equal(page.querySelectorAll('.release-changes li').length, count, `${r.version}: every change on its page`);
+    assert.equal(page.querySelectorAll('.release-changes h3').length, r.sections.length, `${r.version}: every section on its page`);
+    if (i > 0) {
+      assert.ok(sections[i].querySelector(`a[href="/changelog/${anchor(r.version)}/"]`), `${r.version}: linked from the changelog`);
+      assert.equal(sections[i].querySelector('details'), null, `${r.version}: no list inline`);
+    }
+  });
+  assert.ok(fs.statSync(path.join(dist, 'changelog/index.html')).size < 250_000, 'the changelog stays under 250 KB');
+});
+
 test('the footer and the release posts link the changelog', { skip: !built && 'no dist/ (run npm run build first)' }, () => {
   assert.ok(load(path.join(dist, 'index.html')).querySelector('footer a[href="/changelog/"]'), 'footer');
   const post = load(path.join(dist, 'blog/opentodo-0-22-0/index.html'));
