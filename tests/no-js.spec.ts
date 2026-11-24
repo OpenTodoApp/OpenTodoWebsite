@@ -95,3 +95,16 @@ test('the survey strip reads without JavaScript', async ({ page }) => {
   await page.goto('/de/');
   await expect(page.locator('.survey-strip')).toContainText('auf Englisch');
 });
+
+// The Microsoft To Do notice (ms-todo-home-notice) reads without JavaScript, in the page's language,
+// until its end date. Delete this test with the component.
+test('the Microsoft To Do notice reads without JavaScript', async ({ page }) => {
+  test.skip(!fs.readFileSync('dist/index.html', 'utf8').includes('ms-todo-notice'), 'notice ended');
+  await page.goto('/');
+  await expect(page.locator('.ms-todo-notice').getByRole('link', { name: 'Here’s how to bring your tasks' })).toHaveAttribute('href', '/blog/leaving-microsoft-to-do/');
+  await page.goto('/de/');
+  const link = page.locator('.ms-todo-notice a');
+  await expect(link).toContainText('auf Englisch');
+  await expect(link).toHaveAttribute('hreflang', 'en');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
