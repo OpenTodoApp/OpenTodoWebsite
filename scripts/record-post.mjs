@@ -89,7 +89,7 @@ try {
     execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', trim, '-i', path.join(dir, webm), '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', '26', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', path.join(VIDEO_OUT, `${file}.mp4`)]);
     // The poster is the last frame: what the video ends on, shown before it plays.
     execFileSync('ffmpeg', ['-v', 'error', '-y', '-sseof', '-0.5', '-i', path.join(VIDEO_OUT, `${file}.mp4`), '-frames:v', '1', path.join(dir, 'poster.png')]);
-    await sharp(path.join(dir, 'poster.png')).jpeg({ quality: 82 }).toFile(path.join(VIDEO_OUT, `${file}-poster.jpg`));
+    await sharp(path.join(dir, 'poster.png')).resize({ width: 1440, withoutEnlargement: true }).jpeg({ quality: 72, mozjpeg: true }).toFile(path.join(VIDEO_OUT, `${file}-poster.jpg`));
     fs.rmSync(dir, { recursive: true });
     console.log(`  ${file}.mp4 (${Math.round(fs.statSync(path.join(VIDEO_OUT, `${file}.mp4`)).size / 1024)} KB)`);
   };
