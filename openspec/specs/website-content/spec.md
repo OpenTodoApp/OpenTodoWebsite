@@ -152,19 +152,23 @@ The toolkit SHALL include a guide that explains in plain words how AI works in O
 - **THEN** the guide opens
 
 ### Requirement: Changelog page
-The site SHALL have a page at `/changelog/` listing every released version in the pinned bundle's changelog (the app's CHANGELOG.md, carried as `changelog.json`), newest first, each as a section with the id `v<major>-<minor>-<patch>`, its version as a heading linking that anchor, its date, its summary, a link to the release on GitHub, and its sections (upgrade notes, security, added, changed, fixed) with every item. The newest release's changes SHALL be shown open; older releases SHALL show their summary with their changes in a disclosure that opens without JavaScript. From 900 px wide a list of versions SHALL stay beside the releases; below that a closed disclosure SHALL offer the same jumps. Nothing on the page SHALL be written by hand: a new pin changes it with no edit in this repository. The footer's Product group SHALL link it as "Changelog", and a release post SHALL link its version's anchor.
+The site SHALL have a page at `/changelog/` listing every released version in the pinned bundle's changelog (the app's CHANGELOG.md, carried as `changelog.json`), newest first, each as a section with the id `v<major>-<minor>-<patch>`, its version as a heading linking that anchor, its date, its summary and a link to the release on GitHub. The newest release's sections (upgrade notes, security, added, changed, fixed) SHALL be shown open on it with every item. Every release with changes SHALL also have a page of its own at `/changelog/v<major>-<minor>-<patch>/` with its date, summary, GitHub link and every item of every section, linking the release before and after it; on `/changelog/` each older release SHALL link that page, naming the number of changes, instead of carrying them. From 900 px wide a list of versions SHALL stay beside the releases; below that a closed disclosure SHALL offer the same jumps. Nothing on these pages SHALL be written by hand: a new pin changes them with no edit in this repository. The footer's Product group SHALL link `/changelog/` as "Changelog", and a release post SHALL link its version's anchor.
 
 #### Scenario: A new release is pinned
 - **WHEN** `bundle.json` moves to a release whose changelog has a new version and the site is rebuilt
-- **THEN** `/changelog/` shows that version first, open, with its date and summary, and `/changelog/#v<version>` lands on it
+- **THEN** `/changelog/` shows that version first, open, with its date and summary, `/changelog/#v<version>` lands on it, and the release before it now links its own page
 
 #### Scenario: Phone without JavaScript
 - **WHEN** a visitor opens `/changelog/` at 360 px wide with JavaScript disabled
-- **THEN** the jump list opens, every version link reaches its section, an older release's changes open, and the page does not scroll sideways
+- **THEN** the jump list opens, every version link reaches its section, an older release's link opens the page with all its changes, and neither page scrolls sideways
 
 #### Scenario: From a release post
 - **WHEN** a visitor reads the 0.22.0 release post
 - **THEN** its release notice links `/changelog/#v0-22-0`
+
+#### Scenario: Every change is still on the site
+- **WHEN** the site is built
+- **THEN** each release's page holds as many items as the bundle's changelog has for that version, and `/changelog/` stays under 250 KB
 
 ### Requirement: Catalog search
 The Features and Learn pages SHALL offer one search box over every feature of the pinned release, every Learn entry and every docs page of the pinned bundle, from an index built with the site (`/search.json`, with title, summary, address and kind) and fetched on first use; no request leaves the site while typing. Results SHALL replace the page's content while the box has text, show each entry's kind (feature and its group, the Learn type, or Docs) and summary, rank title matches above summary matches, announce their count to assistive technology, and clear with Escape; `/` SHALL focus the box. Without JavaScript the box SHALL be hidden and the rail SHALL reach the same pages. The index SHALL stay under 120 KB and every address in it SHALL be a built page.
