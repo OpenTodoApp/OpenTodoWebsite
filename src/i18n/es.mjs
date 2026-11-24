@@ -18,7 +18,7 @@ export default {
       ledeStrong: 'OpenTodo es una lista de tareas tranquila que funciona en tu propio servidor.',
       lede: 'Planifica tu día, mantén tus proyectos en orden y comparte listas con las personas con las que vives y trabajas.',
       tryDemo: 'Probar la demo',
-      getStarted: 'Empezar',
+      getStarted: 'Primeros pasos',
       note: 'Sin cuenta, sin instalar nada.',
       iosApp: 'Nuevo: OpenTodo en el App Store y en Google Play.',
       alt: 'La vista Hoy de OpenTodo: la frase sobre el día bajo el título y, debajo, las tareas en una línea cada una, con sus fechas, proyectos y etiquetas en columnas alineadas.',

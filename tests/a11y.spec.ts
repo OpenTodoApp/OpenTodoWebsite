@@ -13,6 +13,8 @@ for (const scheme of ['light', 'dark'] as const) {
       test.use({ colorScheme: scheme, viewport: { width, height: 900 } });
       for (const url of pages) {
         test(`${url}`, async ({ page }) => {
+          // The audit of the longest pages takes 18 s on a normal CI runner and over 30 s on a slow one.
+          test.setTimeout(90_000);
           const errors: string[] = [];
           page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
           page.on('pageerror', (e) => errors.push(String(e)));
