@@ -22,6 +22,8 @@ See proposal.md. Measured before the change on the built site served locally, Li
 
 The policy: `default-src 'self'`, scripts from the site and the analytics origin, images from the site, `data:` and `https:` (the docs show a Render button), connections to the site and the analytics origin, no objects, no foreign framing, forms to the site only. Scripts and styles keep `'unsafe-inline'`: the layout, the islands and the bundle's docs use inline scripts and `style` attributes, and hashing them would tie `nginx.conf` to every bundle. The policy therefore stops foreign scripts, frames and form targets, not an injected inline script; the site takes no input it renders.
 
+Found on the live site after the first deploy: Cloudflare, in front of the site, adds its Web Analytics beacon to every page it serves to a browser. No built page contains it, so no check saw it, and the policy refused it. The policy allows its two origins so it keeps working as before; whether a second analytics belongs on the site is the maintainer's call, in Cloudflare's settings.
+
 `Strict-Transport-Security` is one year without `includeSubDomains`, since other hosts under the domain are not this repository's to decide for.
 
 `scripts/serve.mjs` reads the fixed `add_header` lines of `nginx.conf` and sends them, so the browser checks run under the production policy. `tests/a11y.spec.ts` fails on any console error or page error, and answers the analytics script itself, so a check is not counted as a visit. A unit test holds the policy's script and connection origins equal to the script check's allow-list.
