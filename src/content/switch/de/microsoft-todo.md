@@ -3,7 +3,7 @@ app: Microsoft To Do
 lang: de
 title: Von Microsoft To Do wechseln
 summary: Microsoft To Do hat keine Export-Schaltfläche, aber ein kurzes PowerShell-Skript liest deine Listen über Microsoft Graph in eine Datei, die OpenTodo importiert, mit einer Vorschau, bevor etwas geschrieben wird. Listen, Schritte, Fälligkeitsdaten, Erinnerungen und die meisten Wiederholungen kommen mit.
-checkedOn: 2026-11-06
+checkedOn: 2026-11-24
 sources: [/docs/switch/microsoft-todo/, /docs/import/, /docs/import-export/, /docs/sharing/, /docs/recurring-and-reminders/, /docs/quick-add/]
 importFormat: microsoft-todo-json
 order: 10
@@ -43,7 +43,7 @@ OpenTodo erkennt diese Datei so, wie sie ist. [Microsoft To Do](/docs/import/#mi
 
 ## Aus Microsoft To Do exportieren
 
-1. Installiere PowerShell 7 (Windows, macOS oder Linux) und führe das Skript aus der Wechselanleitung in der Dokumentation aus. Es öffnet eine Microsoft-Anmeldeseite, bittet darum, deine Aufgaben lesen zu dürfen, und schreibt `todo.json` in den aktuellen Ordner. <!-- checked 2026-11-06 --> [Von Microsoft To Do wechseln](/docs/switch/microsoft-todo/#export-from-microsoft-to-do)
+1. Installiere PowerShell 7 (Windows, macOS oder Linux) und führe das Skript aus. Es öffnet eine Microsoft-Anmeldeseite, bittet darum, deine Aufgaben lesen zu dürfen, und schreibt `todo.json`. Das aktuelle Skript, das auch mit privaten Microsoft-Konten funktioniert, steht in [diesem Beitrag](/blog/leaving-microsoft-to-do/) (auf Englisch). <!-- checked 2026-11-24 --> Die Wechselanleitung in der Dokumentation hat eine ältere Fassung. [Von Microsoft To Do wechseln](/docs/switch/microsoft-todo/#export-from-microsoft-to-do)
 2. Kein PowerShell? Dieselbe Anleitung zeigt, wie du deine Listen im Graph Explorer liest und in eine Datei einfügst. [Von Microsoft To Do wechseln](/docs/switch/microsoft-todo/#export-from-microsoft-to-do)
 
 ## In OpenTodo importieren
