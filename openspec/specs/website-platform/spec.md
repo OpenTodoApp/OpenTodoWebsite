@@ -197,7 +197,7 @@ The site's default social card at `/assets/og.png` SHALL be the pinned site bund
 - **THEN** the built `/assets/og.png` is the home page's card
 
 ### Requirement: Security headers
-The server SHALL answer every request with a Content-Security-Policy that allows scripts and connections only from the site and the self-hosted analytics, and forbids plugins, foreign framing and foreign form targets, with Strict-Transport-Security, `nosniff`, a Referrer-Policy and a Permissions-Policy. The headers live in the server configuration; the preview server of the browser checks SHALL read them from there, and the policy's origins SHALL equal the script check's allow-list plus the beacon the CDN adds.
+The server SHALL answer every request with a Content-Security-Policy that allows scripts and connections only from the site and the self-hosted analytics, and forbids plugins, foreign framing and foreign form targets, with Strict-Transport-Security, `nosniff`, a Referrer-Policy and a Permissions-Policy. The headers live in the server configuration; the preview server of the browser checks SHALL read them from there, and the policy's origins SHALL equal the script check's allow-list.
 
 #### Scenario: A page under the policy
 - **WHEN** the browser checks open any page of the build
