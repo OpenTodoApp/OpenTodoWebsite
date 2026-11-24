@@ -566,6 +566,8 @@ a.card h3 { color: var(--strong); }
 /* ------------------------------------------------------------------ polish (site-polish D5) */
 /* Text: no paragraph ends on a single word, figures line up in tables, selection takes the accent. */
 p, li, dd, figcaption, blockquote { text-wrap: pretty; }
+/* Reference pages hold hundreds of short lines: balancing them costs layout time and changes nothing. */
+.api-op :is(h2, h3, h4, p, li, dd) { text-wrap: wrap; }
 .prose table { font-variant-numeric: tabular-nums; }
 ::selection { background: var(--accent-soft); color: var(--accent-soft-text); }
 /* Hover: colours ease instead of jumping, and an arrow leans the way it leads. */
@@ -987,6 +989,8 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 .release-changes h3 { font-size: 0.9375rem; margin: 1.25rem 0 0.4rem; color: var(--strong); }
 .release-changes ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; font-size: 0.9375rem; line-height: 1.6; }
 .release-changes li::marker { color: var(--faint); }
+.release-more { margin: 0.9rem 0 0; font-size: 0.9375rem; }
+.release-page-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); font-size: 0.9375rem; }
 
 /* ------------------------------------------------- technical pages (website-security-page D1) */
 .page-head.tech-head { padding-block: clamp(2rem, 1.5rem + 2vw, 3.5rem) 0.5rem; }

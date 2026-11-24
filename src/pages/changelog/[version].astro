@@ -1,0 +1,49 @@
+---
+// /changelog/<version>/ (changelog-release-pages): every change of one release, from the pinned
+// bundle's changelog.json. /changelog/ shows each release's summary and links here.
+import Base from '../../layouts/Base.astro';
+import EndCta from '../../components/EndCta.astro';
+import ReleaseChanges from '../../components/ReleaseChanges.astro';
+import { releases } from '../../lib/bundle';
+import { changelogAnchor as anchor, changelogUrl, inline, releasePageUrl } from '../../lib/changelog';
+import { releaseUrl } from '../../lib/site';
+
+export function getStaticPaths() {
+  return releases.filter((r) => r.sections.length > 0).map((r) => ({ params: { version: anchor(r.version) }, props: { version: r.version } }));
+}
+const i = releases.findIndex((r) => r.version === Astro.props.version);
+const r = releases[i];
+const paged = (x?: (typeof releases)[number]) => (x && x.sections.length > 0 ? x : undefined);
+const newer = paged(releases[i - 1]);
+const older = paged(releases[i + 1]);
+const date = new Date(`${r.date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const count = r.sections.reduce((n, s) => n + s.items.length, 0);
+const plain = (md: string) => md.replace(/\[([^\[\]]+)\]\([^)\s]+\)/g, '$1').replace(/[*`]/g, '');
+---
+<Base title={`OpenTodo ${r.version}: all changes`} description={`All ${count} changes in OpenTodo ${r.version}, released ${date}.${r.summary ? ` ${plain(r.summary)}` : ''}`} crumbs={[{ name: 'Changelog', href: '/changelog/' }, { name: r.version, href: releasePageUrl(r.version) }]}>
+  <section class="page-head changelog-head">
+    <div class="wrap">
+      <p class="article-crumbs"><a href={changelogUrl(r.version)}>Changelog</a></p>
+      <h1>OpenTodo {r.version}</h1>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="changelog-list">
+      <div class="release">
+        <header>
+          <p><time datetime={r.date}>{date}</time> · <a href={releaseUrl(r.version)}>On GitHub</a></p>
+        </header>
+        {r.summary && <p class="release-summary" set:html={inline(r.summary)} />}
+        <div class="release-changes">
+          <h2 class="visually-hidden">All changes</h2>
+          <ReleaseChanges sections={r.sections} />
+        </div>
+      </div>
+      <nav class="release-page-nav" aria-label="Other releases">
+        {older ? <a href={releasePageUrl(older.version)}>Older: {older.version}</a> : <span />}
+        {newer && <a href={releasePageUrl(newer.version)}>Newer: {newer.version}</a>}
+      </nav>
+    </div>
+  </div>
+  <EndCta kind="source" />
+</Base>

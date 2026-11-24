@@ -1,11 +1,14 @@
 ---
 // /changelog (website-changelog): every release in the pinned bundle's changelog.json (the app's
 // CHANGELOG.md), newest first, one anchor per version. The latest release is open; older ones
-// show their summary with the full list of changes in a disclosure that opens without JavaScript.
+// show their summary and link the page with their full list of changes (changelog-release-pages):
+// with every list inline the page weighed 715 KB and the browser laid out 22,000 boxes.
 import Base from '../layouts/Base.astro';
 import EndCta from '../components/EndCta.astro';
+import Icon from '../components/Icon.astro';
+import ReleaseChanges from '../components/ReleaseChanges.astro';
 import { releases, versionTag } from '../lib/bundle';
-import { changelogAnchor as anchor, inline } from '../lib/changelog';
+import { changelogAnchor as anchor, inline, releasePageUrl } from '../lib/changelog';
 import { releaseUrl } from '../lib/site';
 
 const fmt = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -36,17 +39,14 @@ const count = (r: (typeof releases)[number]) => r.sections.reduce((n, s) => n + 
             <p><time datetime={r.date}>{fmt(r.date)}</time> · <a href={releaseUrl(r.version)}>On GitHub</a></p>
           </header>
           {r.summary && <p class="release-summary" set:html={inline(r.summary)} />}
-          {r.sections.length > 0 && (
-            <details class="release-changes" open={i === 0}>
+          {r.sections.length > 0 && (i === 0 ? (
+            <details class="release-changes" open>
               <summary>All changes <span class="count">{count(r)}</span></summary>
-              {r.sections.map((s) => (
-                <section>
-                  <h3>{s.title}</h3>
-                  <ul>{s.items.map((item) => <li set:html={inline(item)} />)}</ul>
-                </section>
-              ))}
+              <ReleaseChanges sections={r.sections} />
             </details>
-          )}
+          ) : (
+            <p class="release-more"><a class="link-arrow" href={releasePageUrl(r.version)}>All {count(r)} changes in {r.version} <Icon name="arrow-right" size={16} /></a></p>
+          ))}
         </section>
       ))}
     </div>
