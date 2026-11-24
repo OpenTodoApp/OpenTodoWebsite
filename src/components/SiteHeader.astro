@@ -5,6 +5,7 @@
 import { BRAND } from '../lib/brand';
 import Icon from './Icon.astro';
 import LangSwitch from './LangSwitch.astro';
+import MsTodoLink from './MsTodoLink.astro';
 import { NAV, SITE } from '../lib/site';
 import { publishedPosts } from '../lib/blog';
 import { splitLang } from '../i18n/index.mjs';
@@ -12,9 +13,10 @@ import { chromeLabel, href as hrefIn } from '../i18n/path/index.mjs';
 
 const path = Astro.url.pathname;
 // German pages get a German header whose links lead to German pages where they exist (german-pages).
-const [lang] = splitLang(path) as ['en' | 'de'];
+// Every language gets the Microsoft To Do link's own text; the rest of the header is English or German.
+const [lang] = splitLang(path);
 const t = chromeLabel(lang);
-const to = hrefIn(lang);
+const to = hrefIn(lang as 'en' | 'de');
 const english = splitLang(path)[1];
 // Blog appears once a post is published (website-blog spec "Blog in navigation").
 const blog = (await publishedPosts()).length > 0;
@@ -46,6 +48,7 @@ const current = (l: Link) => (l.match.some((m) => english.startsWith(m)) ? 'page
     <div class="header-tools">
       <LangSwitch class="header-lang" />
       <a class="header-star" href={SITE.appRepo} data-star><Icon name="star" size={16} /><span>{t('Star')}<span class="visually-hidden"> {t('OpenTodo on GitHub')}</span></span></a>
+      <MsTodoLink lang={lang} class="header-ms-todo" />
       <a class="btn btn-primary btn-small header-demo" href={SITE.demo}>{t('Try the demo')}</a>
       <details class="nav-menu">
         <summary><Icon name="menu" size={18} /><span class="visually-hidden">{t('Menu')}</span></summary>
@@ -55,6 +58,7 @@ const current = (l: Link) => (l.match.some((m) => english.startsWith(m)) ? 'page
               {links.map((l) => <li><a class="nav-link" href={l.href} aria-current={current(l)}>{l.label}</a></li>)}
               <li><a class="nav-link" href={to(NAV.start)}>{t('Get started')}</a></li>
               <li><a class="nav-link" href={SITE.appRepo} data-star><Icon name="star" size={18} /> {t('Star on GitHub')}</a></li>
+              <MsTodoLink lang={lang} item />
             </ul>
           </nav>
           <LangSwitch />

@@ -96,15 +96,27 @@ test('the survey strip reads without JavaScript', async ({ page }) => {
   await expect(page.locator('.survey-strip')).toContainText('auf Englisch');
 });
 
-// The Microsoft To Do notice (ms-todo-home-notice) reads without JavaScript, in the page's language,
-// until its end date. Delete this test with the component.
-test('the Microsoft To Do notice reads without JavaScript', async ({ page }) => {
-  test.skip(!fs.readFileSync('dist/index.html', 'utf8').includes('ms-todo-notice'), 'notice ended');
+// The Microsoft To Do link (ms-todo-home-notice) reads without JavaScript, in the page's language, until its
+// end date: a plain link before Try the demo in the wide header, a menu link at 360 px. Delete this test with the component.
+test('the Microsoft To Do link reads without JavaScript', async ({ page }) => {
+  test.skip(!fs.readFileSync('dist/index.html', 'utf8').includes('ms-todo-link'), 'link ended');
+  const post = '/blog/leaving-microsoft-to-do/';
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/');
-  await expect(page.locator('.ms-todo-notice').getByRole('link', { name: 'Here’s how to bring your tasks' })).toHaveAttribute('href', '/blog/leaving-microsoft-to-do/');
+  const wide = page.locator('.header-tools > a.ms-todo-link');
+  await expect(wide).toBeVisible();
+  await expect(wide).toHaveText('Leaving Microsoft To Do?');
+  await expect(wide).toHaveAttribute('href', post);
+  await expect(wide).not.toHaveClass(/btn/);
+  expect(await wide.evaluate((a) => a.nextElementSibling?.classList.contains('header-demo'))).toBe(true);
+  await expect(page.locator('main .ms-todo-notice')).toHaveCount(0);
+  await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('/de/');
-  const link = page.locator('.ms-todo-notice a');
-  await expect(link).toContainText('auf Englisch');
-  await expect(link).toHaveAttribute('hreflang', 'en');
+  await expect(page.locator('.header-tools > a.ms-todo-link')).toBeHidden();
+  await page.locator('details.nav-menu > summary').click();
+  const item = page.locator('details.nav-menu .menu-panel').getByRole('link', { name: 'Von Microsoft To Do wechseln?' });
+  await expect(item).toBeVisible();
+  await expect(item).toHaveAttribute('hreflang', 'en');
+  await expect(item).toHaveAttribute('href', post);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });

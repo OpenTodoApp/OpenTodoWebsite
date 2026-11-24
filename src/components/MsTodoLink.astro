@@ -1,0 +1,29 @@
+---
+// The Microsoft To Do link (ms-todo-home-notice): a quiet header link, just before Try the demo, to the
+// post on bringing To Do lists across, until Microsoft retires the To Do apps. SiteHeader includes it
+// twice (the wide header and the menu below 960 px) from one line each. To remove it, delete this file
+// and its two lines in SiteHeader.astro; a build after END leaves it out anyway.
+import { DEFAULT_LANG } from '../i18n/index.mjs';
+
+const END = '2027-06-30';
+const POST = '/blog/leaving-microsoft-to-do/';
+const ASK: Record<string, string> = {
+  en: 'Leaving Microsoft To Do?',
+  de: 'Von Microsoft To Do wechseln?',
+  fr: 'Vous quittez Microsoft To Do ?',
+  it: 'Lasci Microsoft To Do?',
+  es: '¿Dejas Microsoft To Do?',
+  pt: 'Vais deixar o Microsoft To Do?',
+  zh: '要离开 Microsoft To Do？',
+  nl: 'Stop je met Microsoft To Do?',
+};
+
+interface Props { lang: string; class?: string; /** Wrap the link in an <li> (the menu's list). */ item?: boolean }
+const { lang, class: cls, item = false } = Astro.props;
+const ask = ASK[lang];
+if (!ask) throw new Error(`MsTodoLink: no text for "${lang}"`);
+const active = new Date().toISOString().slice(0, 10) <= END;
+---
+{active && (item
+  ? <li><a class:list={['nav-link', 'ms-todo-link', cls]} href={POST} hreflang={lang === DEFAULT_LANG ? undefined : 'en'}>{ask}</a></li>
+  : <a class:list={['nav-link', 'ms-todo-link', cls]} href={POST} hreflang={lang === DEFAULT_LANG ? undefined : 'en'}>{ask}</a>)}
