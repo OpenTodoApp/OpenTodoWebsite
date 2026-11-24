@@ -9,6 +9,7 @@ import DiscordButton from '../DiscordButton.astro';
 import Icon from '../Icon.astro';
 import ScreenshotFrame from '../ScreenshotFrame.astro';
 import LangNote from '../LangNote.astro';
+import MsTodoNotice from './MsTodoNotice.astro';
 import PostRow from '../blog/PostRow.astro';
 import { NAV, SITE } from '../../lib/site';
 import { manifest } from '../../lib/bundle';
@@ -66,6 +67,7 @@ const ways = [
     </div>
     <p class="lp-note">{s.hero.note}</p>
     <p class="lp-app"><a href={localePath('/apps/', lang)}><img src="/badges/app-store.svg" width="120" height="40" alt="Download on the App Store" /></a><a href={localePath('/apps/', lang)}><img src="/badges/google-play.svg" width="135" height="40" alt="Get it on Google Play" /></a><span>{s.hero.iosApp}</span></p>
+    <MsTodoNotice lang={lang} />
   </div>
   <div class="wrap">
     <div class="lp-stage" id="tour">
