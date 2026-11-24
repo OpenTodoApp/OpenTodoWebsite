@@ -4,7 +4,6 @@ summary: Microsoft retires the To Do apps on 30 June 2027, personal accounts inc
 publishedAt: 2026-11-24
 author: raffaele
 category: news
-inDevelopment: true
 tags: [ownership, task-management]
 ---
 <!-- no-claim -->
@@ -15,8 +14,7 @@ To Do is a good app. It is free, it is calm, and many people have years of lists
 
 ## What OpenTodo is
 
-<!-- no-claim -->
-OpenTodo is a free, open-source task manager (AGPL-3.0). It runs on a server you choose, your own or one a [host runs for you](/hosting/), so your lists stay with you and no company can retire them.
+OpenTodo is a free, open-source task manager (AGPL-3.0). It runs on a server you choose, your own or one a [host runs for you](/hosting/), so your lists stay with you and no company can retire them. [Set up your own server](/docs/getting-started/#set-up-your-own-server)
 
 You use it [in the browser or installed as an app](/docs/install-app/) on your computer, on [Android](/docs/android-app/) and on [iPhone and iPad](/docs/ios-app/), and it keeps working offline. To look around first, open the [demo](https://demo.open-todo.app): a private sandbox with sample tasks, no account needed. [Try the demo](/docs/getting-started/#try-the-demo)
 
@@ -64,8 +62,7 @@ To Do has no export button yet. Microsoft Graph, the service behind it, lets you
    ```
 4. Sign in with the account you use in To Do and accept. The script names each list as it reads it and ends with `Saved … lists to …`. The file is in your home folder.
 
-<!-- no-claim -->
-The `consumers` line matters: without it, a personal account's sign-in fails. The guide in the release documentation does not have it yet, so use the script above, or the [rewritten guide on GitHub](https://github.com/OpenTodoApp/OpenTodo/blob/main/docs/switch/microsoft-todo.md), which also covers what to do when a step fails.
+The `consumers` line matters: without it, a personal account's sign-in fails. The guide in the [release documentation](/docs/switch/microsoft-todo/#export-from-microsoft-to-do) does not have it yet, so use the script above, or the [rewritten guide on GitHub](https://github.com/OpenTodoApp/OpenTodo/blob/main/docs/switch/microsoft-todo.md), which also covers what to do when a step fails.
 
 ## Step 2: import it into OpenTodo
 
@@ -74,8 +71,7 @@ The `consumers` line matters: without it, a personal account's sign-in fails. Th
 3. Read the warnings and select **Import**. Your other devices receive everything on their next sync. [Import from another app](/docs/import-export/#import-from-another-app)
 4. Changed your mind? **Undo** under **Past imports** removes everything that import created. [Undo an import](/docs/import-export/#undo-an-import)
 
-<!-- no-claim -->
-The demo does not import files, so do this on your own server.
+The demo does not import files, so do this on your own server. [What is switched off on the demo](/docs/self-hosting/demo/#what-is-switched-off)
 
 ## Where your To Do things live
 
@@ -94,13 +90,11 @@ The demo does not import files, so do this on your own server.
 | Assigned to me | Not in the file: it comes from Planner. In OpenTodo, people [assign tasks](/docs/sharing/#assign-tasks) in shared projects. |
 | Attachments | Links, such as the email a task came from, become link attachments. Files are not in the file; [attach them](/docs/attachments/) again. [What does not](/docs/switch/microsoft-todo/#what-does-not) |
 
-<!-- no-claim -->
-Some things To Do does that OpenTodo does not: flagging an email in Outlook does not add a task, and someone has to run the server, you or a host. If those matter to you, that is a fair reason to choose differently.
+Some things To Do does that OpenTodo does not: flagging an email in Outlook does not add a task, and someone has to run the server, you or a host. If those matter to you, that is a fair reason to choose differently. [Set up your own server](/docs/getting-started/#set-up-your-own-server)
 
 ## Better in the next release
 
-<!-- no-claim -->
-The import works today. I am also improving it for the next release: due dates that land on the right day wherever you live (in the current release, a date can arrive one day early east of UTC, so glance at your dates after importing), more repeat patterns, such as every two weeks on chosen days, the second Thursday of the month and repeats with an end date, and cleaner notes. If you would rather wait for it, your lists are safe in To Do until June 2027, and an import can always be undone and run again.
+The import works today: [Switch from Microsoft To Do](/docs/switch/microsoft-todo/). I am also improving it for the next release: due dates that land on the right day wherever you live (in the current release, a date can arrive one day early east of UTC, so glance at your dates after importing), more repeat patterns, such as every two weeks on chosen days, the second Thursday of the month and repeats with an end date, and cleaner notes. If you would rather wait for it, your lists are safe in To Do until June 2027, and an import can always be undone and run again.
 
 ## If you get stuck
 

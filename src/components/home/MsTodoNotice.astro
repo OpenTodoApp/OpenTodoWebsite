@@ -1,0 +1,37 @@
+---
+// The Microsoft To Do notice (ms-todo-home-notice): one line under the hero on every home page,
+// linking the post on bringing To Do lists across, until Microsoft retires the To Do apps. To remove
+// it, delete this file and its one include in HomeStory.astro; a build after END leaves it out anyway.
+import Icon from '../Icon.astro';
+import { DEFAULT_LANG } from '../../i18n/index.mjs';
+
+const END = '2027-06-30';
+const POST = '/blog/leaving-microsoft-to-do/';
+const STRINGS: Record<string, { ask: string; link: string }> = {
+  en: { ask: 'Leaving Microsoft To Do?', link: 'Here’s how to bring your tasks' },
+  de: { ask: 'Wechselst du von Microsoft To Do?', link: 'So nimmst du deine Aufgaben mit (auf Englisch)' },
+  fr: { ask: 'Vous quittez Microsoft To Do\u202f?', link: 'Voici comment emporter vos tâches (en anglais)' },
+  it: { ask: 'Lasci Microsoft To Do?', link: 'Ecco come portare con te le tue attività (in inglese)' },
+  es: { ask: '¿Dejas Microsoft To Do?', link: 'Así te llevas tus tareas (en inglés)' },
+  pt: { ask: 'Vais deixar o Microsoft To Do?', link: 'Vê como trazer as tuas tarefas (em inglês)' },
+  zh: { ask: '要离开 Microsoft To Do？', link: '了解如何带走你的任务（英文）' },
+  nl: { ask: 'Stop je met Microsoft To Do?', link: 'Zo neem je je taken mee (in het Engels)' },
+};
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const s = STRINGS[lang];
+if (!s) throw new Error(`MsTodoNotice: no strings for "${lang}"`);
+const active = new Date().toISOString().slice(0, 10) <= END;
+---
+{active && (
+  <p class="ms-todo-notice">
+    <span>{s.ask}</span>
+    <a href={POST} hreflang={lang === DEFAULT_LANG ? undefined : 'en'}>{s.link}<Icon name="arrow-right" size={16} /></a>
+  </p>
+)}
+<style>
+  .ms-todo-notice { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.25rem 0.5rem; max-width: 100%; margin: 1.25rem 0 0; padding: 0.375rem 0.875rem; border: 1px solid var(--line); border-radius: 1.25rem; font-size: 0.875rem; line-height: 1.45; color: var(--muted); }
+  .ms-todo-notice a { display: inline-flex; align-items: center; gap: 0.25rem; color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em; }
+  .ms-todo-notice a:hover { color: var(--accent-text); }
+</style>

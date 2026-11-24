@@ -2,7 +2,7 @@
 app: Microsoft To Do
 title: Moving from Microsoft To Do
 summary: Microsoft To Do has no export button, but a short PowerShell script reads your lists through Microsoft Graph into one file that OpenTodo imports, with a preview before anything is written. Lists, steps, due dates, reminders and most repeats come across.
-checkedOn: 2026-11-06
+checkedOn: 2026-11-24
 sources: [/docs/switch/microsoft-todo/, /docs/import/, /docs/import-export/, /docs/sharing/, /docs/recurring-and-reminders/, /docs/quick-add/]
 importFormat: microsoft-todo-json
 order: 10
@@ -42,7 +42,7 @@ OpenTodo recognises that file as it is. [Microsoft To Do](/docs/import/#microsof
 
 ## Export from Microsoft To Do
 
-1. Install PowerShell 7 (Windows, macOS or Linux) and run the script on the switch guide in the docs. It opens a Microsoft sign-in page, asks to read your tasks, and writes `todo.json` in the current folder. <!-- checked 2026-11-06 --> [Switch from Microsoft To Do](/docs/switch/microsoft-todo/#export-from-microsoft-to-do)
+1. Install PowerShell 7 (Windows, macOS or Linux) and run the script. It opens a Microsoft sign-in page, asks to read your tasks, and writes `todo.json`. The current script, which also works with personal Microsoft accounts, is in [this post](/blog/leaving-microsoft-to-do/). <!-- checked 2026-11-24 --> The switch guide in the docs has an earlier version. [Switch from Microsoft To Do](/docs/switch/microsoft-todo/#export-from-microsoft-to-do)
 2. No PowerShell? The same guide shows how to read your lists in Graph Explorer and paste them into one file. [Switch from Microsoft To Do](/docs/switch/microsoft-todo/#export-from-microsoft-to-do)
 
 ## Import into OpenTodo
