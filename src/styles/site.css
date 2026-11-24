@@ -1046,6 +1046,8 @@ a.article-step:hover { background: var(--sel); color: var(--strong); }
 .catalog-rows li > a:hover, .catalog-results li > a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .catalog-rows li p, .catalog-results li p { grid-column: 1; margin: 0; color: var(--muted); font-size: 0.9375rem; line-height: 1.5; }
 .catalog-meta { grid-column: 2; grid-row: 1; font-size: 0.8125rem; color: var(--muted); white-space: nowrap; }
+/* On a phone the summary runs the full width, under the title and its label, instead of stopping at the label's column. */
+@media (max-width: 639px) { .catalog-rows li p, .catalog-results li p { grid-column: 1 / -1; } }
 .catalog-results { max-width: 48rem; margin-top: 1rem; }
 .catalog-results:not([hidden]) + .catalog { display: none; }
 .catalog-empty { display: block !important; color: var(--muted); }
