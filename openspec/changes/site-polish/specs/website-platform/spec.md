@@ -68,7 +68,7 @@ Every page SHALL have a unique title and a meta description of at most 160 chara
 ## ADDED Requirements
 
 ### Requirement: Security headers
-The server SHALL answer every request with a Content-Security-Policy that allows scripts and connections only from the site and the self-hosted analytics, and forbids plugins, foreign framing and foreign form targets, with Strict-Transport-Security, `nosniff`, a Referrer-Policy and a Permissions-Policy. The headers live in the server configuration; the preview server of the browser checks SHALL read them from there, and the policy's analytics origin SHALL equal the script check's allow-list.
+The server SHALL answer every request with a Content-Security-Policy that allows scripts and connections only from the site and the self-hosted analytics, and forbids plugins, foreign framing and foreign form targets, with Strict-Transport-Security, `nosniff`, a Referrer-Policy and a Permissions-Policy. The headers live in the server configuration; the preview server of the browser checks SHALL read them from there, and the policy's origins SHALL equal the script check's allow-list plus the beacon the CDN adds.
 
 #### Scenario: A page under the policy
 - **WHEN** the browser checks open any page of the build
