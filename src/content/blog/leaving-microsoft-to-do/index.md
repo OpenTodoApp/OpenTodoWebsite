@@ -77,18 +77,18 @@ The demo does not import files, so do this on your own server. [What is switched
 
 | If you used this in To Do | In OpenTodo |
 | --- | --- |
-| Lists | Projects, one per list; the default Tasks list goes to your Inbox. [What carries over](/docs/switch/microsoft-todo/#what-carries-over) |
+| Lists | Projects, one per list; the default Tasks list goes to your Inbox. [How things map](/docs/switch/microsoft-todo/#how-things-map) |
 | List groups | Not carried over: lists arrive side by side. Nest them as [sub-projects](/docs/projects/#sub-projects), or keep work and home apart in [workspaces](/docs/workspaces/). |
 | My Day | Not carried over. [Today](/docs/today-and-upcoming/#plan-your-day-with-today) shows what is due today; a task you add there is due today. |
 | Important | Priority 1. To keep an Important list, [save the filter](/docs/labels-and-filters/#save-a-filter-as-a-view) `p1` as a view. |
 | Planned | [Upcoming](/docs/today-and-upcoming/#plan-your-week-with-upcoming) and the [Calendar](/docs/built-in-views/) show every dated task. |
-| Steps | Subtasks; checked steps arrive completed. [What carries over](/docs/switch/microsoft-todo/#what-carries-over) |
+| Steps | Subtasks; checked steps arrive completed. [How things map](/docs/switch/microsoft-todo/#how-things-map) |
 | Reminders | A [reminder](/docs/recurring-and-reminders/#add-a-reminder) at the same moment. |
 | Repeat | A [repeat rule](/docs/recurrence/) for daily, weekly, monthly on a day and yearly repeats. Others arrive without a rule and a warning: set them again, such as [`every 2nd thursday`](/docs/recurrence/#grammar). |
-| Notes | The task's notes, as plain text. [What carries over](/docs/switch/microsoft-todo/#what-carries-over) |
+| Notes | The task's notes, as plain text. [How things map](/docs/switch/microsoft-todo/#how-things-map) |
 | Shared lists | Your own projects, with all their tasks; the members are not in the file. [Share the project](/docs/sharing/#share-a-project) again. |
 | Assigned to me | Not in the file: it comes from Planner. In OpenTodo, people [assign tasks](/docs/sharing/#assign-tasks) in shared projects. |
-| Attachments | Links, such as the email a task came from, become link attachments. Files are not in the file; [attach them](/docs/attachments/) again. [What does not](/docs/switch/microsoft-todo/#what-does-not) |
+| Attachments | Links, such as the email a task came from, become link attachments. Files are not in the file; [attach them](/docs/attachments/) again. [How things map](/docs/switch/microsoft-todo/#how-things-map) |
 
 Some things To Do does that OpenTodo does not: flagging an email in Outlook does not add a task, and someone has to run the server, you or a host. If those matter to you, that is a fair reason to choose differently. [Set up your own server](/docs/getting-started/#set-up-your-own-server)
 
